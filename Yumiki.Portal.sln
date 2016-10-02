@@ -15,6 +15,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.Master", "Presentation Layers\Yumiki.Web.Master\Yumiki.Web.Master.csproj", "{E83ED1DB-6862-47BC-83C8-E48040B9D24E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Data.Master", "Data Layers\Yumiki.Data.Master\Yumiki.Data.Master.csproj", "{79010FE1-2086-452B-8CD0-265D7353FD60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Business.Master", "Business Layers\Yumiki.Business.Master\Yumiki.Business.Master.csproj", "{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Interface.Master", "Interfaces\Yumiki.Interface.Master\Yumiki.Interface.Master.csproj", "{D10DDA3D-EE82-4381-86C9-5F7E0A182085}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Common.ClassHelper", "Yumiki.Common.ClassHelper\Yumiki.Common.ClassHelper.csproj", "{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Common.Dictionary", "Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj", "{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,11 +35,36 @@ Global
 		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79010FE1-2086-452B-8CD0-265D7353FD60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79010FE1-2086-452B-8CD0-265D7353FD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79010FE1-2086-452B-8CD0-265D7353FD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79010FE1-2086-452B-8CD0-265D7353FD60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E83ED1DB-6862-47BC-83C8-E48040B9D24E} = {D3D16F7D-4449-49D7-8122-B4CF8C05FB08}
+		{79010FE1-2086-452B-8CD0-265D7353FD60} = {D2B72F3A-8ABC-4100-A329-2622880E8CCA}
+		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2} = {0BDDC5EE-60EF-4A65-80CA-F57BB737B6AD}
+		{D10DDA3D-EE82-4381-86C9-5F7E0A182085} = {FD60513B-C8E0-43A2-B91B-7594B3DD2A85}
+		{1236C601-2B5A-47DE-A6B3-8B81D56E56DE} = {A93D2A7C-11EA-41CA-9062-BDF539753841}
+		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821} = {A93D2A7C-11EA-41CA-9062-BDF539753841}
 	EndGlobalSection
 EndGlobal
