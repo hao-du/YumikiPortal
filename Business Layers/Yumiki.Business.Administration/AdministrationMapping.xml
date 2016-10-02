@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<class name="user_mapping" source="User" destination="TB_User">
+  <maps>
+    <field input="ID" output="ID"></field>
+    <field input="UserLoginName" output="UserLoginName"></field>
+    <field input="CurrentPassword" output="CurrentPassword"></field>
+    <field input="FirstName" output="FirstName"></field>
+    <field input="LastName" output="LastName"></field>
+    <field input="Descriptions" output="Descriptions"></field>
+    <field input="IsActive" output="IsActive"></field>
+    <field input="CreateDate" output="CreateDate"></field>
+    <field input="LastUpdateDate" output="LastUpdateDate"></field>
+  </maps>
+</class>

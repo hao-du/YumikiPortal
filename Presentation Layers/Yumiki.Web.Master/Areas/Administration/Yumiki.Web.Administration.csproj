@@ -75,7 +75,12 @@
       <DependentUpon>User.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Business Layers\Yumiki.Business.Administration\Yumiki.Business.Administration.csproj">
+      <Project>{ad55e86c-84ae-40d3-b44c-3e71013dbeb2}</Project>
+      <Name>Yumiki.Business.Administration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="User.aspx" />
   </ItemGroup>

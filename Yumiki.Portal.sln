@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.Master", "Presen
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{A21981DF-2EE1-48E1-B392-EFE7A9D75ED5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Common.ClassHelper", "Commons\Yumiki.Common.ClassHelper\Yumiki.Common.ClassHelper.csproj", "{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Common.Helper", "Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj", "{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Common.Dictionary", "Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj", "{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}"
 EndProject

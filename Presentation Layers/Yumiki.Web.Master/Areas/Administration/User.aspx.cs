@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Yumiki.Business.Administration;
 
 namespace Yumiki.Web.Administration
 {
@@ -11,7 +12,7 @@ namespace Yumiki.Web.Administration
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Yumiki.Business.Administration.User.Test();
         }
     }
 }
