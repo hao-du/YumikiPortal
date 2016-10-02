@@ -56,10 +56,6 @@
     <Compile Include="TB_User.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Interfaces\Yumiki.Interface.Administration\Yumiki.Interface.Administration.csproj">
       <Project>{d10dda3d-ee82-4381-86c9-5f7e0a182085}</Project>
       <Name>Yumiki.Interface.Administration</Name>
