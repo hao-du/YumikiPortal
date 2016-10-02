@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation Layers", "Presentation Layers", "{D3D16F7D-4449-49D7-8122-B4CF8C05FB08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business Layers", "Business Layers", "{0BDDC5EE-60EF-4A65-80CA-F57BB737B6AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Layers", "Data Layers", "{D2B72F3A-8ABC-4100-A329-2622880E8CCA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{A93D2A7C-11EA-41CA-9062-BDF539753841}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{FD60513B-C8E0-43A2-B91B-7594B3DD2A85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.Master", "Presentation Layers\Yumiki.Web.Master\Yumiki.Web.Master.csproj", "{E83ED1DB-6862-47BC-83C8-E48040B9D24E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E83ED1DB-6862-47BC-83C8-E48040B9D24E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E83ED1DB-6862-47BC-83C8-E48040B9D24E} = {D3D16F7D-4449-49D7-8122-B4CF8C05FB08}
+	EndGlobalSection
+EndGlobal
