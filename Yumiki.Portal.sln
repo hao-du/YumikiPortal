@@ -25,9 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Business.Administrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Data.Administration", "Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj", "{79010FE1-2086-452B-8CD0-265D7353FD60}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Yumiki.Database.Administration", "Databases\Yumiki.Database.Administration\Yumiki.Database.Administration.sqlproj", "{2EAEF08B-AB1A-4546-8B86-DA916834A872}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Interface.Administration", "Interfaces\Yumiki.Interface.Administration\Yumiki.Interface.Administration.csproj", "{D10DDA3D-EE82-4381-86C9-5F7E0A182085}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.Administration", "Presentation Layers\Yumiki.Web.Master\Areas\Administration\Yumiki.Web.Administration.csproj", "{C73E2EF1-0899-4FA7-82D6-81460D89DFF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Databases", "Databases\Yumiki.Databases\Yumiki.Databases.csproj", "{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,16 +57,18 @@ Global
 		{79010FE1-2086-452B-8CD0-265D7353FD60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79010FE1-2086-452B-8CD0-265D7353FD60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79010FE1-2086-452B-8CD0-265D7353FD60}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D10DDA3D-EE82-4381-86C9-5F7E0A182085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73E2EF1-0899-4FA7-82D6-81460D89DFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73E2EF1-0899-4FA7-82D6-81460D89DFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73E2EF1-0899-4FA7-82D6-81460D89DFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73E2EF1-0899-4FA7-82D6-81460D89DFF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,7 +79,8 @@ Global
 		{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821} = {A93D2A7C-11EA-41CA-9062-BDF539753841}
 		{AD55E86C-84AE-40D3-B44C-3E71013DBEB2} = {0BDDC5EE-60EF-4A65-80CA-F57BB737B6AD}
 		{79010FE1-2086-452B-8CD0-265D7353FD60} = {D2B72F3A-8ABC-4100-A329-2622880E8CCA}
-		{2EAEF08B-AB1A-4546-8B86-DA916834A872} = {A21981DF-2EE1-48E1-B392-EFE7A9D75ED5}
 		{D10DDA3D-EE82-4381-86C9-5F7E0A182085} = {FD60513B-C8E0-43A2-B91B-7594B3DD2A85}
+		{C73E2EF1-0899-4FA7-82D6-81460D89DFF5} = {D3D16F7D-4449-49D7-8122-B4CF8C05FB08}
+		{29B8F432-1BAF-4B12-A3DD-19F19D0EFDCC} = {A21981DF-2EE1-48E1-B392-EFE7A9D75ED5}
 	EndGlobalSection
 EndGlobal

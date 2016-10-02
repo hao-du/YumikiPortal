@@ -9,7 +9,12 @@ namespace Yumiki.Web.Master
 {
     public class RouteConfig
     {
-        public static void RegisterRoutes(RouteCollection routes)
+        public static void RegisterWebFormRoutes(RouteCollection routes)
+        {
+            routes.MapPageRoute("WebForm", "{application}/{page}", "~/Areas/{application}/{page}.aspx");
+        }
+
+        public static void RegisterMVCRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
