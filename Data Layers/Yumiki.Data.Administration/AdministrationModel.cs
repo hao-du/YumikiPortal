@@ -1,10 +1,8 @@
+using System.Data.Entity;
+using Yumiki.Entity.Administration;
+
 namespace Yumiki.Data.Administration
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
     public partial class AdministrationModel : DbContext
     {
         public AdministrationModel()
@@ -13,20 +11,20 @@ namespace Yumiki.Data.Administration
         }
 
         public virtual DbSet<TB_User> TB_User { get; set; }
+        public virtual DbSet<TB_Group> TB_Group { get; set; }
+    }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    public abstract class AdministrationRepository
+    {
+        private AdministrationModel context;
+        protected AdministrationModel Context
         {
-            modelBuilder.Entity<TB_User>()
-                .Property(e => e.UserLoginName)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TB_User>()
-                .Property(e => e.CurrentPassword)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TB_User>()
-                .Property(e => e.IsActive)
-                .IsFixedLength();
+            get
+            {
+                if (context == null)
+                    context = new AdministrationModel();
+                return context;
+            }
         }
     }
 }

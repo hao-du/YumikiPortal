@@ -168,12 +168,6 @@
     <Folder Include="Areas\SampleArea\Models\" />
     <Folder Include="Models\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Interfaces\Yumiki.Interface.Administration\Yumiki.Interface.Administration.csproj">
-      <Project>{d10dda3d-ee82-4381-86c9-5f7e0a182085}</Project>
-      <Name>Yumiki.Interface.Administration</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

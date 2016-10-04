@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration;
+using Yumiki.Entity.Administration;
 
 namespace Yumiki.Web.Administration
 {
@@ -12,7 +13,11 @@ namespace Yumiki.Web.Administration
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Yumiki.Business.Administration.User.Test();
+            GroupService groupService = new GroupService();
+            List<TB_Group> groups = groupService.GetAllGroups();
+
+            rptUsers.DataSource = groups;
+            rptUsers.DataBind();
         }
     }
 }

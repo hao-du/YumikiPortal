@@ -80,6 +80,14 @@
       <Project>{ad55e86c-84ae-40d3-b44c-3e71013dbeb2}</Project>
       <Name>Yumiki.Business.Administration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj">
+      <Project>{79010fe1-2086-452b-8cd0-265d7353fd60}</Project>
+      <Name>Yumiki.Data.Administration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Entities\Yumiki.Entity.Administration\Yumiki.Entity.Administration.csproj">
+      <Project>{9D97C77F-B1DD-435A-B9AB-CC56115E061A}</Project>
+      <Name>Yumiki.Entity.Administration</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="User.aspx" />
