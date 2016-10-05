@@ -18,7 +18,9 @@ namespace Yumiki.Business.Base
         {
             get
             {
-                return DependencyHelper.GetService();
+                //Get domain name such as "SampleService" in "Yumiki.Business.SampleService" (index = 2)
+                string containerName = this.GetType().FullName.Split('.')[2];
+                return DependencyHelper.GetService(containerName);
             }
         }
     }

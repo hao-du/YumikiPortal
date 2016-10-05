@@ -19,7 +19,9 @@ namespace Yumiki.Web.Base
         {
             get
             {
-                return DependencyHelper.GetService();
+                // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
+                string containerName = this.GetType().BaseType.FullName.Split('.')[2];
+                return DependencyHelper.GetService(containerName);
             }
         }
     }
