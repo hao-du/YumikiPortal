@@ -1,5 +1,5 @@
 ﻿using System;
-using Yumiki.Base;
+using Yumiki.Entity.Base;
 
 namespace Yumiki.Entity.Administration
 {

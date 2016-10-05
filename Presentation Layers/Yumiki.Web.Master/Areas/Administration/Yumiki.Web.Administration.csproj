@@ -76,9 +76,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Bases\Yumiki.Web.Base\Yumiki.Web.Base.csproj">
+      <Project>{581BAAB0-B89D-401E-AD6D-6537DE8D47FB}</Project>
+      <Name>Yumiki.Web.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Business Layers\Yumiki.Business.Administration\Yumiki.Business.Administration.csproj">
       <Project>{ad55e86c-84ae-40d3-b44c-3e71013dbeb2}</Project>
       <Name>Yumiki.Business.Administration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
+      <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
+      <Name>Yumiki.Common.Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj">
       <Project>{79010fe1-2086-452b-8cd0-265d7353fd60}</Project>

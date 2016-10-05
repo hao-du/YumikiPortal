@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Base
+namespace Yumiki.Entity.Base
 {
+    /// <summary>
+    /// Contains all common fields which all tables have in Database
+    /// </summary>
     public interface IEntity
     {
         string Descriptions { get; set; }

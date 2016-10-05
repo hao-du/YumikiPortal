@@ -45,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Commons\Yumiki.Base\Yumiki.Base.csproj">
-      <Project>{04117f61-b63a-4414-a95d-63e6288449c6}</Project>
-      <Name>Yumiki.Base</Name>
+    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
+      <Name>Yumiki.Entity.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

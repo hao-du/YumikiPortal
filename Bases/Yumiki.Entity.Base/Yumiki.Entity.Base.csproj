@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}</ProjectGuid>
+    <ProjectGuid>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yumiki.Business.Administration</RootNamespace>
-    <AssemblyName>Yumiki.Business.Administration</AssemblyName>
+    <RootNamespace>Yumiki.Entity.Base</RootNamespace>
+    <AssemblyName>Yumiki.Entity.Base</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Presentation Layers\Yumiki.Web.Master\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -40,29 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IGroupService.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
-    <Compile Include="Services\GroupService.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\UserService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
-      <Project>{a2595517-2380-4fca-8c7f-41ebbcade68b}</Project>
-      <Name>Yumiki.Business.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
-      <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
-      <Name>Yumiki.Common.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj">
-      <Project>{79010fe1-2086-452b-8cd0-265d7353fd60}</Project>
-      <Name>Yumiki.Data.Administration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Entities\Yumiki.Entity.Administration\Yumiki.Entity.Administration.csproj">
-      <Project>{9d97c77f-b1dd-435a-b9ab-cc56115e061a}</Project>
-      <Name>Yumiki.Entity.Administration</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
