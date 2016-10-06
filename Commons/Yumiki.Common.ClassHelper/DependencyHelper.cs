@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Business.Base
+namespace Yumiki.Common.Helper
 {
     public class DependencyHelper
     {
