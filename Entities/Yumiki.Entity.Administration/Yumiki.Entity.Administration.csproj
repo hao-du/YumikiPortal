@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TB_Group.cs" />
+    <Compile Include="TB_Privilege.cs" />
     <Compile Include="TB_User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TB_UserAddress.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
