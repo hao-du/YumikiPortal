@@ -7,6 +7,10 @@ namespace Yumiki.Web.Master
 {
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Custom Route for ASP.NET Web API URLs
+        /// </summary>
+        /// <param name="config">HTTP config which initialized by Global.asax</param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
