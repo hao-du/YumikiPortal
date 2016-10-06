@@ -107,17 +107,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\SampleArea\Sample.aspx" />
-    <Content Include="client\contents\bootstrap.css" />
     <Content Include="client\contents\bootstrap.min.css" />
     <Content Include="client\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="client\scripts\bootstrap.js" />
     <Content Include="client\scripts\bootstrap.min.js" />
     <Content Include="client\contents\site.less" />
-    <None Include="client\scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="client\scripts\jquery-1.10.2.js" />
     <Content Include="client\scripts\jquery-1.10.2.min.js" />
-    <Content Include="client\scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +154,6 @@
     <Content Include="client\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="client\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="client\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="client\scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
