@@ -1,2 +1,27 @@
-﻿body {
+﻿@footerHeight: 40px;
+@headerHeight: 40px;
+@mainColor: #f8f8f8;
+@mainBorderColor: #e7e7e7;
+
+body {
+    padding-top: @headerHeight + 10px;
+    padding-bottom: @footerHeight + 10px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: @footerHeight;
+    background-color: @mainColor;
+    border-top: 1px solid transparent;
+    border-color: @mainBorderColor;
+
+    div {
+        padding-top: @footerHeight / 2 - 10px;
+    }
+}
+
+.navbar {
+    min-height: @headerHeight !important;
 }
