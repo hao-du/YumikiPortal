@@ -88,10 +88,6 @@
       <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
       <Name>Yumiki.Common.Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj">
-      <Project>{79010fe1-2086-452b-8cd0-265d7353fd60}</Project>
-      <Name>Yumiki.Data.Administration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Entities\Yumiki.Entity.Administration\Yumiki.Entity.Administration.csproj">
       <Project>{9D97C77F-B1DD-435A-B9AB-CC56115E061A}</Project>
       <Name>Yumiki.Entity.Administration</Name>
