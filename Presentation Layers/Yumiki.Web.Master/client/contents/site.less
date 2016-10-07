@@ -21,20 +21,32 @@ body {
         padding-top: @footerHeight / 2 - 10px;
     }
 
-    z-index: 999999999;
+    z-index: 1023;
 }
 
 .table-overflow {
     overflow-x: auto;
 }
 
+.full-width {
+    position: absolute;
+    width: 100%;
+    overflow-y:auto;
+    padding-bottom:@footerHeight + 10;
+}
+
 //---------------------Overwrite bootstrap elements---------------------//
 .navbar {
     min-height: @headerHeight !important;
+    width: 100%;
 }
 
 .modal {
-    overflow-y:auto;
+    overflow-y: auto;
+}
+
+.modal-open {
+    overflow: auto !important;
 }
 
 .modal-header {
@@ -46,7 +58,7 @@ body {
     margin-top: 1px;
 }
 
-.modal-footer{
+.modal-footer {
     padding: 5px 5px 5px;
-    margin-top:0px;
+    margin-top: 0px;
 }

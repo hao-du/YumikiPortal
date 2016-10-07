@@ -24,7 +24,7 @@
     <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body>
+<body class="modal-open">
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -57,16 +57,20 @@
             </div>
         </div>
     </nav>
-    <div class="container">
-        <form runat="server">
-            <asp:ScriptManager runat="server"></asp:ScriptManager>
-            <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
-            </asp:ContentPlaceHolder>
-        </form>
+    <div class="full-width">
+        <div class="container">
+            <form runat="server">
+                <asp:ScriptManager runat="server"></asp:ScriptManager>
+                <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
+                </asp:ContentPlaceHolder>
+            </form>
+        </div>
     </div>
+    <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
+    </asp:ContentPlaceHolder>
     <footer class="footer">
         <div class="container-fluid">
-             <p>Yumiki 2016 - Status bar</p>
+            <p>Yumiki 2016 - Status bar</p>
         </div>
     </footer>
 </body>

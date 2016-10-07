@@ -9,9 +9,10 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
-    <h1>Group Management</h1>
+    <h2>Group Management</h2>
+    <hr />
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <asp:Repeater runat="server" ID="rptGroup">
                 <HeaderTemplate>
                     <table id="tblGroup" class="table table-striped table-bordered">
@@ -52,9 +53,11 @@
             </asp:Repeater>
         </div>
     </div>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="SubContentContainer" runat="server">
     <!-- Modal -->
     <div id="dlgGroup" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
