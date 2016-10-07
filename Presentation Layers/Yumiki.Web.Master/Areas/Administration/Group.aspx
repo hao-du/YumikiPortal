@@ -1,19 +1,18 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Yumiki.Web.Administration.User" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Group.aspx.cs" Inherits="Yumiki.Web.Administration.User" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#tblUser').DataTable();
-            $('#tblUser').wrapOverflowX();
+            $('#tblGroup').DataTable();
+            $('#tblGroup').wrapOverflowX();
         });
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
-    <h1>Group Management</h1>
-    <hr />
+    <h1>ADMINISTRATION USER PAGE</h1>
     <div class="row">
         <div class="col-md-10">
-            <asp:Repeater runat="server" ID="rptUsers">
+            <asp:Repeater runat="server" ID="rptGroup">
                 <HeaderTemplate>
                         <table id="tblUser" class="table table-striped table-bordered">
                             <thead>

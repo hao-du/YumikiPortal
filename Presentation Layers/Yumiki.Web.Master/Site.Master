@@ -7,16 +7,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ASP.NET Application</title>
-    <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">
-    </asp:ContentPlaceHolder>
-
-    <!--Yumiki Libraries-->
-    <link href="~/client/contents/site.less" rel="stylesheet" />
 
     <!--3rd Libraries-->
     <script src="../client/scripts/jquery.min.js"></script>
     <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />
     <script src="../client/scripts/bootstrap.min.js"></script>
+
+    <script src="../client/scripts/datatable.min.js"></script>
+    <link href="~/client/contents/datatable.min.css" rel="stylesheet" />
+
+    <!--Global Libraries-->
+    <link href="~/client/contents/site.less" rel="stylesheet" />
+    <script src="../client/scripts/site.js"></script>
+
+    <!--Custom Javascript for each modules-->
+    <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">
+    </asp:ContentPlaceHolder>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">

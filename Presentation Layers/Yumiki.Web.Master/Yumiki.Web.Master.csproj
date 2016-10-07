@@ -108,7 +108,10 @@
   <ItemGroup>
     <Content Include="Areas\SampleArea\Sample.aspx" />
     <Content Include="client\contents\bootstrap.min.css" />
+    <Content Include="client\contents\datatable.min.css" />
     <Content Include="client\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="client\scripts\datatable.min.js" />
+    <Content Include="client\scripts\site.js" />
     <Content Include="Global.asax" />
     <Content Include="client\scripts\bootstrap.min.js" />
     <Content Include="client\contents\site.less" />
