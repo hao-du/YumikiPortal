@@ -6,13 +6,16 @@
             $('#tblGroup').DataTable();
             $('#tblGroup').wrapOverflowX();
         });
+
+        var showGroupDialog = function (groupID) {
+            $('#dlgGroup').modal();
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <h2>Group Management</h2>
-    <hr />
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <asp:Repeater runat="server" ID="rptGroup">
                 <HeaderTemplate>
                     <table id="tblGroup" class="table table-striped table-bordered">
@@ -42,7 +45,7 @@
                             <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval("LastUpdateDateUI") %>'></asp:Literal>
                         </td>
                         <td>
-                            <a href="#" class="btn-link" data-toggle="modal" data-target="#dlgGroup">Edit</a>
+                            <a href="#" class="btn-link" onclick='showGroupDialog("<%# Eval("ID") %>")'>Edit</a>
                         </td>
                     </tr>
                 </ItemTemplate>

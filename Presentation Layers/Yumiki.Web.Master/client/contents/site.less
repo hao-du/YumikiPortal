@@ -2,6 +2,7 @@
 @headerHeight: 40px;
 @mainColor: #f8f8f8;
 @mainBorderColor: #e7e7e7;
+@tableHeaderColor: #eeeeee;
 
 body {
     padding-top: @headerHeight + 10px;
@@ -31,8 +32,16 @@ body {
 .full-width {
     position: absolute;
     width: 100%;
-    overflow-y:auto;
-    padding-bottom:@footerHeight + 10;
+    overflow-y: auto;
+    padding-bottom: @footerHeight + 10;
+}
+
+table {
+    thead {
+        tr {
+            background-color: @tableHeaderColor;
+        }
+    }
 }
 
 //---------------------Overwrite bootstrap elements---------------------//
