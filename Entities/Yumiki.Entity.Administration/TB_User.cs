@@ -1,9 +1,10 @@
 namespace Yumiki.Entity.Administration
 {
+    using Base;
     using System;
     using System.Collections.Generic;
 
-    public partial class TB_User
+    public partial class TB_User : IEntity
     {
         public TB_User()
         {

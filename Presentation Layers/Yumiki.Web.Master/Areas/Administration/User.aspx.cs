@@ -14,10 +14,10 @@ namespace Yumiki.Web.Administration
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            IGroupService groupService = Service.GetInstance<IGroupService>();
-            List<TB_Group> groups = groupService.GetAllGroups();
+            IUserService userService = Service.GetInstance<IUserService>();
+            List<TB_User> users = userService.GetAllUsers();
 
-            rptUsers.DataSource = groups;
+            rptUsers.DataSource = users;
             rptUsers.DataBind();
         }
     }

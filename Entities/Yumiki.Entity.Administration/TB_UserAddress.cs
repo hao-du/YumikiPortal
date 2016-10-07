@@ -1,9 +1,10 @@
 namespace Yumiki.Entity.Administration
 {
+    using Base;
     using System;
     using System.Collections.Generic;
 
-    public partial class TB_UserAddress
+    public partial class TB_UserAddress : IEntity
     {
         public Guid ID { get; set; }
         public string UserAddress { get; set; }

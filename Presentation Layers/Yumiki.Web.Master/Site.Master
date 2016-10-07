@@ -57,7 +57,7 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container">
         <form runat="server">
             <asp:ScriptManager runat="server"></asp:ScriptManager>
             <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
