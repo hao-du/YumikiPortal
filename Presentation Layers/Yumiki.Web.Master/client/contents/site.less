@@ -20,13 +20,33 @@ body {
     div {
         padding-top: @footerHeight / 2 - 10px;
     }
-    z-index : 999999999;
+
+    z-index: 999999999;
 }
 
+.table-overflow {
+    overflow-x: auto;
+}
+
+//---------------------Overwrite bootstrap elements---------------------//
 .navbar {
     min-height: @headerHeight !important;
 }
 
-.table-overflow{
-    overflow-x:auto;
+.modal {
+    overflow-y:auto;
+}
+
+.modal-header {
+    min-height: @headerHeight - 20px !important;
+    padding: 10px;
+}
+
+.modal-header .close {
+    margin-top: 1px;
+}
+
+.modal-footer{
+    padding: 5px 5px 5px;
+    margin-top:0px;
 }
