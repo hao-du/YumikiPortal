@@ -110,6 +110,7 @@
     <Content Include="client\contents\bootstrap.min.css" />
     <Content Include="client\contents\datatable.min.css" />
     <Content Include="client\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="client\scripts\angular.min.js" />
     <Content Include="client\scripts\dataTables.bootstrap.js" />
     <Content Include="client\scripts\jquery.dataTables.js" />
     <Content Include="client\scripts\site.js" />

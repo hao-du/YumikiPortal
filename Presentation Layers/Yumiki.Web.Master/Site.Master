@@ -17,6 +17,8 @@
     <script src="../client/scripts/dataTables.bootstrap.js"></script>
     <link href="~/client/contents/datatable.min.css" rel="stylesheet" />
 
+    <script src="../client/scripts/angular.min.js"></script>
+
     <!--Global Libraries-->
     <link href="~/client/contents/site.less" rel="stylesheet" />
     <script src="../client/scripts/site.js"></script>
@@ -58,17 +60,18 @@
             </div>
         </div>
     </nav>
-    <div class="full-width">
-        <div class="container">
-            <form runat="server">
-                <asp:ScriptManager runat="server"></asp:ScriptManager>
+    <form runat="server">
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
+        <div class="full-width">
+            <div class="container">
                 <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
                 </asp:ContentPlaceHolder>
-            </form>
+
+            </div>
         </div>
-    </div>
-    <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
-    </asp:ContentPlaceHolder>
+        <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
     <footer class="footer">
         <div class="container-fluid">
             <p>Yumiki 2016 - Status bar</p>
