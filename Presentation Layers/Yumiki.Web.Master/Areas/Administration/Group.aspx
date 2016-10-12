@@ -64,31 +64,33 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SubContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlGroupDialog">
-        <div id="dlgGroup" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <asp:Label runat="server" ID="lblGroupName" Text="Group Name"></asp:Label>
-                            <asp:TextBox runat="server" ID="txtGroupName" CssClass="form-control"></asp:TextBox>
+        <ContentTemplate>
+            <div id="dlgGroup" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
                         </div>
-                        <div class="form-group">
-                            <asp:Label runat="server" ID="lblDescription" Text="Description"></asp:Label>
-                            <asp:TextBox runat="server" TextMode="MultiLine" ID="txtDescription" CssClass="form-control form-area"></asp:TextBox>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <asp:Label runat="server" ID="lblGroupName" Text="Group Name"></asp:Label>
+                                <asp:TextBox runat="server" ID="txtGroupName" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <asp:Label runat="server" ID="lblDescription" Text="Description"></asp:Label>
+                                <asp:TextBox runat="server" TextMode="MultiLine" ID="txtDescription" CssClass="form-control form-area"></asp:TextBox>
+                            </div>
+                            <div class="checkbox">
+                                <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
+                            </div>
                         </div>
-                        <div class="checkbox">
-                            <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>
