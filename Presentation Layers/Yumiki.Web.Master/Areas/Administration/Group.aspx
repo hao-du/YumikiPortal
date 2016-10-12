@@ -16,7 +16,7 @@
     <h2>Group Management</h2>
     <div class="well well-sm">
         <div class="btn-group">
-            <button type="button" class="btn btn-default" onclick='showGroupDialog("<%# Eval("ID") %>")'>Create New Group</button>
+            <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClientClick="showGroupDialog('')" OnClick="btnAdd_Click" />
         </div>
     </div>
     <div class="row">
@@ -50,13 +50,13 @@
                             <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval("LastUpdateDateUI") %>'></asp:Literal>
                         </td>
                         <td>
-                            <a href="#" class="btn-link" onclick='showGroupDialog("<%# Eval("ID") %>")'>Edit</a>
+                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClientClick='showGroupDialog("<%# Eval("ID") %>")' OnClick="btnEdit_Click"></asp:LinkButton>
                         </td>
                     </tr>
                 </ItemTemplate>
                 <FooterTemplate>
                     </tbody>
-            </table>
+                            </table>
                 </FooterTemplate>
             </asp:Repeater>
         </div>
@@ -69,8 +69,8 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Modal Header</h4>
+                            <asp:HiddenField ID="hdnID" runat="server" Value="" />
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
@@ -86,7 +86,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" data-dismiss="modal" OnClick="btnDialogSave_Click" />
+                            <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" data-dismiss="modal" OnClick="btnDialogClose_Click" />
                         </div>
                     </div>
                 </div>

@@ -14,11 +14,34 @@ namespace Yumiki.Web.Administration
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            IGroupService groupService = Service.GetInstance<IGroupService>();
-            List<TB_Group> groups = groupService.GetAllGroups();
+            if (!IsPostBack)
+            {
+                IGroupService groupService = Service.GetInstance<IGroupService>();
+                List<TB_Group> groups = groupService.GetAllGroups();
 
-            rptGroup.DataSource = groups;
-            rptGroup.DataBind();
+                rptGroup.DataSource = groups;
+                rptGroup.DataBind();
+            }
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnDialogClose_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnDialogSave_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
