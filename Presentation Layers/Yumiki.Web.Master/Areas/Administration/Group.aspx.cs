@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -22,26 +23,28 @@ namespace Yumiki.Web.Administration
                 rptGroup.DataSource = groups;
                 rptGroup.DataBind();
             }
+
+            AddDefaultMethods("initTable();");
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            
+            ResetClientPlugins();
         }
 
         protected void btnEdit_Click(object sender, EventArgs e)
         {
-
+            ResetClientPlugins();
         }
 
         protected void btnDialogClose_Click(object sender, EventArgs e)
         {
-
+            ResetClientPlugins();
         }
 
         protected void btnDialogSave_Click(object sender, EventArgs e)
         {
-
+            ResetClientPlugins("showGroupDialog();");
         }
-    }
+     }
 }
