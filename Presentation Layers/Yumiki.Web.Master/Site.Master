@@ -66,11 +66,8 @@
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
         <div class="full-width">
-            <div class="container">
                 <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
                 </asp:ContentPlaceHolder>
-
-            </div>
         </div>
         <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
         </asp:ContentPlaceHolder>

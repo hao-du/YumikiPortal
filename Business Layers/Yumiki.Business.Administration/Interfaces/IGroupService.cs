@@ -14,5 +14,12 @@ namespace Yumiki.Business.Administration.Interfaces
         /// </summary>
         /// <returns>List of all active group</returns>
         List<TB_Group> GetAllGroups();
+
+        /// <summary>
+        /// Get specific group from Database
+        /// </summary>
+        /// <param name="id">Group ID - Must be Guid value</param>
+        /// <returns>Group object</returns>
+        TB_Group GetGroup(string id);
     }
 }

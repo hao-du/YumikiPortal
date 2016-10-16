@@ -18,5 +18,15 @@ namespace Yumiki.Data.Administration.Repositories
         {
             return Context.TB_Group.Where(c => c.IsActive).ToList();
         }
+
+        /// <summary>
+        /// Get specific group from Database
+        /// </summary>
+        /// <param name="id">Group ID - Must be Guid value</param>
+        /// <returns>Group object</returns>
+        public TB_Group GetGroup(Guid id)
+        {
+            return Context.TB_Group.Where(c => c.ID == id).SingleOrDefault();
+        }
     }
 }

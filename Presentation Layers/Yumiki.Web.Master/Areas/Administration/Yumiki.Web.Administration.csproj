@@ -95,6 +95,10 @@
       <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
       <Name>Yumiki.Common.Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
+      <Project>{7bdcbfbd-82de-4a9b-97d2-d9c2ffb97821}</Project>
+      <Name>Yumiki.Common.Dictionary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Entities\Yumiki.Entity.Administration\Yumiki.Entity.Administration.csproj">
       <Project>{9D97C77F-B1DD-435A-B9AB-CC56115E061A}</Project>
       <Name>Yumiki.Entity.Administration</Name>

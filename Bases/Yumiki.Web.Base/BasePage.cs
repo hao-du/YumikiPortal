@@ -58,17 +58,32 @@ namespace Yumiki.Web.Base
         /// <param name="scriptMethods">Methods needed to call. Eg. "testFunction1();", "testFunction2();"</param>
         protected void ResetClientPlugins(params string[] scriptMethods)
         {
+            StringBuilder builder = new StringBuilder();
             //Default Methods must be execcuted after postback.
             foreach (string method in DefaultMethods)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), method, method, false);
+                builder.Append(method);
             }
 
             //Custom Methods
             foreach (string method in scriptMethods)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), method, method, false);
+                builder.Append(method);
             }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ResetClientPlugins", builder.ToString(), true);
+        }
+
+        /// <summary>
+        /// Send a message to client side
+        /// </summary>
+        /// <param name="message">A message from server side</param>
+        protected void SendClientMessage(string message)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat("alert('{0}');", message);
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }
     }
 }

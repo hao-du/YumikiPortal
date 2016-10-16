@@ -13,13 +13,13 @@ namespace Yumiki.Web.Administration {
     public partial class Group {
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// upnlGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel upnlGroup;
         
         /// <summary>
         /// btnAdd control.
@@ -40,13 +40,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Repeater rptGroup;
         
         /// <summary>
-        /// upnlGroupDialog control.
+        /// pnlGroupDialog control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlGroupDialog;
+        protected global::System.Web.UI.WebControls.Panel pnlGroupDialog;
         
         /// <summary>
         /// hdnID control.
