@@ -13,14 +13,27 @@ namespace Yumiki.Business.Administration.Services
 {
     public class GroupService : BaseService, IGroupService
     {
+        private IGroupRepository repository;
+        private IGroupRepository Repository
+        {
+            get
+            {
+                if(repository == null)
+                {
+                    repository = Service.GetInstance<IGroupRepository>();
+                }
+                return repository;
+            }
+        }
+
         /// <summary>
         /// Get all active groups from Database
         /// </summary>
+        /// <param name="showInactive">Show list of inactive groups or active groups</param>
         /// <returns>List of all active group</returns>
-        public List<TB_Group> GetAllGroups()
+        public List<TB_Group> GetAllGroups(bool showInactive)
         {
-            IGroupRepository groupRepository = Service.GetInstance<IGroupRepository>();
-            return groupRepository.GetAllGroups();
+            return Repository.GetAllGroups(showInactive);
         }
 
         /// <summary>
@@ -42,8 +55,26 @@ namespace Yumiki.Business.Administration.Services
                 throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
             }
 
-            IGroupRepository groupRepository = Service.GetInstance<IGroupRepository>();
-            return groupRepository.GetGroup(groupID);
+            return Repository.GetGroup(groupID);
+        }
+
+        /// <summary>
+        /// Create/Update a group
+        /// </summary>
+        /// <param name="group">If group id is empty, then this is new group. Otherwise, this needs to be updated</param>
+        public void SaveGroup(TB_Group group)
+        {
+            if (string.IsNullOrEmpty(group.GroupName))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Group Name is required.", null);
+            }
+
+            if (!Repository.CheckValidGroupName(group.GroupName, group.ID))
+            {
+                throw new AdvanceException(ExceptionCode.E_DUPLICATED, "Group Name was used.", null);
+            }
+
+            Repository.SaveGroup(group);
         }
     }
 }

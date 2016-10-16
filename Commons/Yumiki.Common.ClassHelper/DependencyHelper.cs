@@ -22,7 +22,6 @@ namespace Yumiki.Common.Helper
             if (service == null)
             {
                 service = new DependencyHelper();
-
             }
 
             if (!string.IsNullOrEmpty(containerName))

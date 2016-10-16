@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Data.Base;
 
 namespace Yumiki.Data.Administration
 {
     /// <summary>
     /// Administration Database base class which defined all common methods and properties.
     /// </summary>
-    public abstract class AdministrationRepository
+    public class AdministrationRepository : BaseRepository<AdministrationModel>
     {
-        private AdministrationModel context;
         protected AdministrationModel Context
         {
             get

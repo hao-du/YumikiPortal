@@ -31,6 +31,15 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Button btnAdd;
         
         /// <summary>
+        /// btnDisplayInactiveGroups control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplayInactiveGroups;
+        
+        /// <summary>
         /// rptGroup control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Panel pnlGroupDialog;
         
         /// <summary>
+        /// lblGroupDialogHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblGroupDialogHeader;
+        
+        /// <summary>
         /// hdnID control.
         /// </summary>
         /// <remarks>
@@ -58,15 +76,6 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.HiddenField hdnID;
         
         /// <summary>
-        /// lblGroupName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblGroupName;
-        
-        /// <summary>
         /// txtGroupName control.
         /// </summary>
         /// <remarks>
@@ -74,15 +83,6 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtGroupName;
-        
-        /// <summary>
-        /// lblDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDescription;
         
         /// <summary>
         /// txtDescription control.
@@ -101,6 +101,15 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckbIsActive;
+        
+        /// <summary>
+        /// vsGroupValidationSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary vsGroupValidationSummary;
         
         /// <summary>
         /// btnDialogSave control.

@@ -1,6 +1,30 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Group.aspx.cs" Inherits="Yumiki.Web.Administration.Group" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
+    <script>
+        //Validation for asp.net controls on client side.
+        var startValidation = function () {
+            var isValid = true;
+            for (i = 0; i < Page_Validators.length; i++) {
+                var control = Page_Validators[i];
+                ValidatorValidate(control);
+                if (!control.isvalid) {
+                    isValid = false;
+                    $(control).closest(".form-group").addClass("has-error has-feedback");
+
+                } else {
+                    $(control).closest(".form-group").removeClass("has-error has-feedback");
+                }
+            }
+
+            if (!isValid) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlGroup">
@@ -10,7 +34,8 @@
 
                 <div class="well well-sm">
                     <div class="btn-group">
-                        <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click"  CausesValidation="false"/>
+                        <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
+                        <asp:Button ID="btnDisplayInactiveGroups" runat="server" CssClass="btn btn-primary" Text="Show Inactive Groups" OnClick="btnDisplayInactiveGroups_Click" CausesValidation="false" />
                     </div>
                 </div>
                 <div class="row">
@@ -64,26 +89,29 @@
                     <div class=" modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">Modal Header</h4>
+                                <h4 class="modal-title">
+                                    <asp:Literal runat="server" ID="lblGroupDialogHeader"></asp:Literal>
+                                </h4>
                                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <asp:Label runat="server" ID="lblGroupName" Text="Group Name"></asp:Label>
+                                    <label>Group Name</label>
                                     <asp:TextBox runat="server" ID="txtGroupName" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtGroupName" ErrorMessage="User ID is required.">*</asp:RequiredFieldValidator>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtGroupName" Display="None" ErrorMessage="Group Name is required." />
                                 </div>
                                 <div class="form-group">
-                                    <asp:Label runat="server" ID="lblDescription" Text="Description"></asp:Label>
+                                    <label>Descriptions</label>
                                     <asp:TextBox runat="server" TextMode="MultiLine" ID="txtDescription" CssClass="form-control form-area"></asp:TextBox>
                                 </div>
-                                <div class="checkbox">
-                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
+                                <div class="form-group">
+                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
                                 </div>
+                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger"/>
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClick="btnDialogSave_Click" CausesValidation="true"/>
-                                <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false"/>
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false" />
                             </div>
                         </div>
                     </div>
@@ -91,7 +119,6 @@
             </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>
-
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SubContentContainer" runat="server">
 </asp:Content>

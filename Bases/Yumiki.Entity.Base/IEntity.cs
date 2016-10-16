@@ -11,6 +11,7 @@ namespace Yumiki.Entity.Base
     /// </summary>
     public interface IEntity
     {
+        Guid ID { get; set; }
         string Descriptions { get; set; }
         bool IsActive { get; set; }
         DateTime CreateDate { get; set; }

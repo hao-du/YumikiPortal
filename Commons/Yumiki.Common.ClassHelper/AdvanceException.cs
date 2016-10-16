@@ -10,7 +10,8 @@ namespace Yumiki.Common.Helper
     {
         E_EMPTY_VALUE,
         E_WRONG_TYPE,
-        E_HTTP_ERROR
+        E_HTTP_ERROR,
+        E_DUPLICATED,
     }
 
     public class AdvanceException : Exception

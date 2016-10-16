@@ -12,6 +12,7 @@ namespace Yumiki.Business.Base
     /// </summary>
     public class BaseService
     {
+        private DependencyHelper service;
         /// <summary>
         /// Get Dependency Injection Service
         /// </summary>
@@ -19,9 +20,13 @@ namespace Yumiki.Business.Base
         {
             get
             {
-                //Get domain name such as "SampleService" in "Yumiki.Business.SampleService" (index = 2)
-                string containerName = this.GetType().FullName.Split('.')[2];
-                return DependencyHelper.GetService(containerName);
+                if (service == null)
+                {
+                    //Get domain name such as "SampleService" in "Yumiki.Business.SampleService" (index = 2)
+                    string containerName = this.GetType().FullName.Split('.')[2];
+                    service = DependencyHelper.GetService(containerName);
+                }
+                return service;
             }
         }
     }

@@ -48,6 +48,10 @@ table {
     min-height:100px;
 }
 
+.checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+    margin-left: 0 !important;
+}
+
 //---------------------Overwrite bootstrap elements---------------------//
 .navbar {
     min-height: @headerHeight !important;
@@ -80,3 +84,40 @@ table {
 {
     opacity:0.5 !important;
 }
+
+//---------------------Tool tip---------------------//
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted @mainColor;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.glyphicon-validation{
+   
+}
+
