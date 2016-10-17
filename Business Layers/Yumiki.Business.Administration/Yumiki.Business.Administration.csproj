@@ -40,16 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GroupService.cs" />
+    <Compile Include="Interfaces\IGroupService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Services\GroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdministrationMapping.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
+      <Project>{a2595517-2380-4fca-8c7f-41ebbcade68b}</Project>
+      <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
       <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
       <Name>Yumiki.Common.Helper</Name>
