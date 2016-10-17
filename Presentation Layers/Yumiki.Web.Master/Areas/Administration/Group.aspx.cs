@@ -73,6 +73,7 @@ namespace Yumiki.Web.Administration
                 txtDescription.Text = group.Descriptions;
                 ckbIsActive.Checked = group.IsActive;
 
+                ckbIsActive.Enabled = true;
                 lblGroupDialogHeader.Text = "Edit Group";
                 pnlGroupDialog.Visible = true;
             }

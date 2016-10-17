@@ -42,8 +42,13 @@ namespace Yumiki.Web.Administration
             ResetControls();
 
             ckbIsActive.Enabled = false;
-            lblUserDialogHeader.Text = "New User";
-            pnlUserDialog.Visible = true;
+            btnUserProcess.Text = "New User";
+            SwitchPanel(btnUserProcess);
+        }
+
+        protected void LinkButton_Click(object sender, EventArgs e)
+        {
+            SwitchPanel(sender);
         }
 
         protected void btnDisplayInactiveUsers_Click(object sender, EventArgs e)
@@ -74,20 +79,15 @@ namespace Yumiki.Web.Administration
                 txtDescription.Text = user.Descriptions;
                 ckbIsActive.Checked = user.IsActive;
 
+                ckbIsActive.Enabled = true;
                 pnlPasswordSection.Visible = false;
-                lblUserDialogHeader.Text = "Edit User";
-                pnlUserDialog.Visible = true;
+                btnUserProcess.Text = "Edit User";
+                SwitchPanel(btnUserProcess);
             }
             catch (Exception ex)
             {
                 SendClientMessage(ex.Message);
             }
-        }
-
-        protected void btnDialogClose_Click(object sender, EventArgs e)
-        {
-            ResetControls();
-            pnlUserDialog.Visible = false;
         }
 
         protected void btnDialogSave_Click(object sender, EventArgs e)
@@ -110,7 +110,6 @@ namespace Yumiki.Web.Administration
                 LoadUsers();
 
                 ResetControls();
-                pnlUserDialog.Visible = false;
             }
             catch (Exception ex)
             {
@@ -146,6 +145,36 @@ namespace Yumiki.Web.Administration
             List<TB_User> users = UserService.GetAllUsers(showInactive);
             rptUser.DataSource = users;
             rptUser.DataBind();
+        }
+
+        /// <summary>
+        /// Switch panel on UI
+        /// </summary>
+        /// <param name="sender">Link Button from tab headers</param>
+        private void SwitchPanel(object sender)
+        {
+            pnlUserList.Visible = pnlUserProcess.Visible = false;
+            liUserList.Attributes.Remove("class");
+            liUserProcess.Attributes.Remove("class");
+            liUserDetails.Attributes.Remove("class");
+            liResetPassword.Attributes.Remove("class");
+
+            liUserProcess.Visible = false;
+            liUserDetails.Visible = false;
+            liResetPassword.Visible = false;
+
+            if (((LinkButton)sender).ID == btnUserList.ID)
+            {
+                pnlUserList.Visible = true;
+                liUserList.Attributes.Add("class", "active");
+            }
+            else if (((LinkButton)sender).ID == btnUserProcess.ID)
+            {
+                pnlUserProcess.Visible = true;
+                liUserProcess.Visible = true;
+                liUserProcess.Attributes.Add("class", "active");
+                btnUserProcess.Visible = true;
+            }
         }
     }
 }
