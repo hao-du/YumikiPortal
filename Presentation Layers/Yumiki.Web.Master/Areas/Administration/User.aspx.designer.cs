@@ -94,13 +94,22 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.LinkButton btnResetPassword;
         
         /// <summary>
-        /// pnlUserList control.
+        /// mtvUserTabs control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlUserList;
+        protected global::System.Web.UI.WebControls.MultiView mtvUserTabs;
+        
+        /// <summary>
+        /// vwListTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwListTab;
         
         /// <summary>
         /// btnAdd control.
@@ -130,13 +139,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Repeater rptUser;
         
         /// <summary>
-        /// pnlUserProcess control.
+        /// vwAddEditTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlUserProcess;
+        protected global::System.Web.UI.WebControls.View vwAddEditTab;
         
         /// <summary>
         /// btnSave control.
@@ -236,5 +245,23 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckbIsActive;
+        
+        /// <summary>
+        /// vwUserDetailsTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwUserDetailsTab;
+        
+        /// <summary>
+        /// vwResetPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwResetPassword;
     }
 }

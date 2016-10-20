@@ -15,6 +15,11 @@ namespace Yumiki.Web.Administration
         private const string showInactiveString = "Show Inactive Users";
         private const string showActiveString = "Show Active Users";
 
+        private const int listTabIndex = 0;
+        private const int addEditTabIndex = 1;
+        private const int moreDetailTabIndex = 2;
+        private const int resetPasswordTabIndex = 3;
+
         IUserService userService;
         IUserService UserService
         {
@@ -118,7 +123,7 @@ namespace Yumiki.Web.Administration
         }
 
         /// <summary>
-        /// Reset control when creating new User or closing User Dialog
+        /// Reset all server side controls when focus on User List tab
         /// </summary>
         private void ResetControls()
         {
@@ -148,12 +153,12 @@ namespace Yumiki.Web.Administration
         }
 
         /// <summary>
-        /// Switch panel on UI
+        /// Switch panel on UI by setting style and visibility of tabs and views
         /// </summary>
         /// <param name="sender">Link Button from tab headers</param>
         private void SwitchPanel(object sender)
         {
-            pnlUserList.Visible = pnlUserProcess.Visible = false;
+            mtvUserTabs.ActiveViewIndex = listTabIndex;
             liUserList.Attributes.Remove("class");
             liUserProcess.Attributes.Remove("class");
             liUserDetails.Attributes.Remove("class");
@@ -165,15 +170,33 @@ namespace Yumiki.Web.Administration
 
             if (((LinkButton)sender).ID == btnUserList.ID)
             {
-                pnlUserList.Visible = true;
+                mtvUserTabs.ActiveViewIndex = listTabIndex;
                 liUserList.Attributes.Add("class", "active");
             }
-            else if (((LinkButton)sender).ID == btnUserProcess.ID)
+            else
             {
-                pnlUserProcess.Visible = true;
                 liUserProcess.Visible = true;
-                liUserProcess.Attributes.Add("class", "active");
                 btnUserProcess.Visible = true;
+                liUserDetails.Visible = true;
+                btnUserDetails.Visible = true;
+                liResetPassword.Visible = true;
+                btnResetPassword.Visible = true;
+
+                if (((LinkButton)sender).ID == btnUserProcess.ID)
+                {
+                    mtvUserTabs.ActiveViewIndex = addEditTabIndex;
+                    liUserProcess.Attributes.Add("class", "active");
+                }
+                else if (((LinkButton)sender).ID == btnUserDetails.ID)
+                {
+                    mtvUserTabs.ActiveViewIndex = moreDetailTabIndex;
+                    liUserDetails.Attributes.Add("class", "active");
+                }
+                else if (((LinkButton)sender).ID == btnResetPassword.ID)
+                {
+                    mtvUserTabs.ActiveViewIndex = resetPasswordTabIndex;
+                    liResetPassword.Attributes.Add("class", "active");
+                }
             }
         }
     }
