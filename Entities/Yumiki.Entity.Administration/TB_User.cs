@@ -8,6 +8,7 @@ namespace Yumiki.Entity.Administration
     {
         public TB_User()
         {
+            TB_PasswordHistory = new HashSet<TB_PasswordHistory>();
             TB_UserAddress = new HashSet<TB_UserAddress>();
             TB_Group = new HashSet<TB_Group>();
         }
@@ -21,6 +22,7 @@ namespace Yumiki.Entity.Administration
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
+        public virtual ICollection<TB_PasswordHistory> TB_PasswordHistory { get; set; }
         public virtual ICollection<TB_UserAddress> TB_UserAddress { get; set; }
         public virtual ICollection<TB_Group> TB_Group { get; set; }
     }

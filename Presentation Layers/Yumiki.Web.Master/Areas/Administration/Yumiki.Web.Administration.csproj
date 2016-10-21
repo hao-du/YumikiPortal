@@ -66,6 +66,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactType.aspx.cs">
+      <DependentUpon>ContactType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ContactType.aspx.designer.cs">
+      <DependentUpon>ContactType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Group.aspx.cs">
       <DependentUpon>Group.aspx</DependentUpon>
@@ -105,6 +112,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ContactType.aspx" />
     <Content Include="Group.aspx" />
     <Content Include="User.aspx" />
   </ItemGroup>

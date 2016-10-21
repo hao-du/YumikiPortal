@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomFields\TB_ContactType.cs" />
     <Compile Include="CustomFields\TB_Group.cs" />
     <Compile Include="CustomFields\TB_User.cs" />
+    <Compile Include="TB_ContactType.cs" />
     <Compile Include="TB_Group.cs" />
+    <Compile Include="TB_PasswordHistory.cs" />
     <Compile Include="TB_Privilege.cs" />
     <Compile Include="TB_User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

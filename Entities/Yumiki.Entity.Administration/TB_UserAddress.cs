@@ -6,9 +6,14 @@ namespace Yumiki.Entity.Administration
 
     public partial class TB_UserAddress : IEntity
     {
+        public TB_UserAddress()
+        {
+            TB_UserAddress1 = new HashSet<TB_UserAddress>();
+        }
+
         public Guid ID { get; set; }
         public string UserAddress { get; set; }
-        public int? AddressType { get; set; }
+        public Guid UserAddressTypeID { get; set; }
         public Guid UserID { get; set; }
         public bool IsPrimary { get; set; }
         public string Descriptions { get; set; }
@@ -16,5 +21,7 @@ namespace Yumiki.Entity.Administration
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public virtual TB_User TB_User { get; set; }
+        public virtual ICollection<TB_UserAddress> TB_UserAddress1 { get; set; }
+        public virtual TB_UserAddress TB_UserAddress2 { get; set; }
     }
 }
