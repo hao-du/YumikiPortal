@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Business.Base;
@@ -70,12 +71,17 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="user">If user id is empty, then this is new user. Otherwise, this needs to be updated</param>
         public void SaveUser(TB_User user)
         {
+            if (!user.UserLoginName.All(char.IsLetterOrDigit))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User Login Name only allows alphanumeric.", null);
+            }
+
             if (string.IsNullOrEmpty(user.UserLoginName))
             {
                 throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User Name is required.", null);
             }
 
-            if (string.IsNullOrEmpty(user.CurrentPassword))
+            if (string.IsNullOrEmpty(user.CurrentPassword) && user.ID.Equals(Guid.Empty))
             {
                 throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Password is required.", null);
             }
@@ -85,6 +91,8 @@ namespace Yumiki.Business.Administration.Services
                 throw new AdvanceException(ExceptionCode.E_DUPLICATED, "User Login Name was used.", null);
             }
 
+            user.CurrentPassword = SecurityHelper.Encrypt(user.CurrentPassword, user.UserLoginName);
+
             Repository.SaveUser(user);
         }
 
@@ -93,7 +101,7 @@ namespace Yumiki.Business.Administration.Services
         /// </summary>
         /// <param name="userID">GUID for user needs to be updated new value for password</param>
         /// <param name="newPassword">New password for user</param>
-        public void ResetPassword(string userID, string newPassword)
+        public void ResetPassword(string userID, string userLogInName, string newPassword)
         {
             if (string.IsNullOrEmpty(newPassword))
             {
@@ -110,6 +118,15 @@ namespace Yumiki.Business.Administration.Services
             if (convertedID == Guid.Empty)
             {
                 throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+            }
+
+            newPassword = SecurityHelper.Encrypt(newPassword, userLogInName);
+
+            int maxRecord = 5;
+            List<string> passwords = Repository.GetPasswords(maxRecord, convertedID);
+            if (passwords.Contains(newPassword))
+            {
+                throw new AdvanceException(ExceptionCode.E_DUPLICATED, string.Format("New password cannot be the same value with {0} previous password.", maxRecord), null);
             }
 
             Repository.ResetPassword(convertedID, newPassword);

@@ -20,6 +20,17 @@ namespace Yumiki.Web.Administration
         private const int moreDetailTabIndex = 2;
         private const int resetPasswordTabIndex = 3;
 
+        /// <summary>
+        /// If user has ID, it is Edit Mode. Otherwise, it is New Mode.
+        /// </summary>
+        private bool IsNewMode
+        {
+            get
+            {
+                return string.IsNullOrEmpty(hdnID.Value) ? true : false;
+            }
+        }
+
         IUserService userService;
         IUserService UserService
         {
@@ -47,8 +58,8 @@ namespace Yumiki.Web.Administration
             ResetControls();
 
             ckbIsActive.Enabled = false;
-            btnUserProcess.Text = "New User";
-            SwitchPanel(btnUserProcess);
+            btnUserProcessTab.Text = "New User";
+            SwitchPanel(btnUserProcessTab);
         }
 
         protected void LinkButton_Click(object sender, EventArgs e)
@@ -84,10 +95,11 @@ namespace Yumiki.Web.Administration
                 txtDescription.Text = user.Descriptions;
                 ckbIsActive.Checked = user.IsActive;
 
+                txtUserLoginName.Enabled = false;
                 ckbIsActive.Enabled = true;
                 pnlPasswordSection.Visible = false;
-                btnUserProcess.Text = "Edit User";
-                SwitchPanel(btnUserProcess);
+                btnUserProcessTab.Text = "Edit User";
+                SwitchPanel(btnUserProcessTab);
             }
             catch (Exception ex)
             {
@@ -99,8 +111,13 @@ namespace Yumiki.Web.Administration
         {
             try
             {
+                if (!string.Equals(txtPassword.Text, txtConfirmPassword.Text))
+                {
+                    SendClientMessage("Confirm Password must be the same password.");
+                }
+
                 TB_User user = new TB_User();
-                if (!string.IsNullOrEmpty(hdnID.Value))
+                if (!IsNewMode)
                 {
                     user.ID = Guid.Parse(hdnID.Value);
                 }
@@ -114,7 +131,33 @@ namespace Yumiki.Web.Administration
                 UserService.SaveUser(user);
                 LoadUsers();
 
-                ResetControls();
+                if (IsNewMode)
+                {
+                    //If user was just created, switch to User List Tab to avoid saving twice.
+                    SwitchPanel(btnUserListTab);
+                    ResetControls();
+                }
+            }
+            catch (Exception ex)
+            {
+                SendClientMessage(ex.Message);
+            }
+        }
+
+        protected void btnResetPassword_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string userID = hdnID.Value;
+                string password = txtResetPassword.Text;
+                string confirmPassword = txtConfirmResetPassword.Text;
+
+                if(!string.Equals(password, confirmPassword))
+                {
+                    SendClientMessage("Confirm Password must be the same password.");
+                }
+                
+                UserService.ResetPassword(userID, txtUserLoginName.Text, password);
             }
             catch (Exception ex)
             {
@@ -129,6 +172,7 @@ namespace Yumiki.Web.Administration
         {
             txtUserLoginName.Text = txtPassword.Text = txtConfirmPassword.Text = txtFirstName.Text = txtLastName.Text = txtDescription.Text = hdnID.Value = string.Empty;
             ckbIsActive.Checked = true;
+            txtUserLoginName.Enabled = true;
             pnlPasswordSection.Visible = true;
         }
 
@@ -168,7 +212,7 @@ namespace Yumiki.Web.Administration
             liUserDetails.Visible = false;
             liResetPassword.Visible = false;
 
-            if (((LinkButton)sender).ID == btnUserList.ID)
+            if (((LinkButton)sender).ID == btnUserListTab.ID)
             {
                 mtvUserTabs.ActiveViewIndex = listTabIndex;
                 liUserList.Attributes.Add("class", "active");
@@ -176,23 +220,26 @@ namespace Yumiki.Web.Administration
             else
             {
                 liUserProcess.Visible = true;
-                btnUserProcess.Visible = true;
-                liUserDetails.Visible = true;
-                btnUserDetails.Visible = true;
-                liResetPassword.Visible = true;
-                btnResetPassword.Visible = true;
+                btnUserProcessTab.Visible = true;
+                if (!IsNewMode)
+                {
+                    liUserDetails.Visible = true;
+                    btnUserDetailsTab.Visible = true;
+                    liResetPassword.Visible = true;
+                    btnResetPasswordTab.Visible = true;
+                }
 
-                if (((LinkButton)sender).ID == btnUserProcess.ID)
+                if (((LinkButton)sender).ID == btnUserProcessTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = addEditTabIndex;
                     liUserProcess.Attributes.Add("class", "active");
                 }
-                else if (((LinkButton)sender).ID == btnUserDetails.ID)
+                else if (((LinkButton)sender).ID == btnUserDetailsTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = moreDetailTabIndex;
                     liUserDetails.Attributes.Add("class", "active");
                 }
-                else if (((LinkButton)sender).ID == btnResetPassword.ID)
+                else if (((LinkButton)sender).ID == btnResetPasswordTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = resetPasswordTabIndex;
                     liResetPassword.Attributes.Add("class", "active");

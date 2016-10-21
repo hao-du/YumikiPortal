@@ -113,4 +113,7 @@ Global
 		{A2595517-2380-4FCA-8C7F-41EBBCADE68B} = {C967DB9B-F223-4CCF-8043-1B8085C8BB93}
 		{581BAAB0-B89D-401E-AD6D-6537DE8D47FB} = {C967DB9B-F223-4CCF-8043-1B8085C8BB93}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35
+	EndGlobalSection
 EndGlobal

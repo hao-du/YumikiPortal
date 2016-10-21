@@ -42,13 +42,14 @@ namespace Yumiki.Business.Administration.Interfaces
         /// </summary>
         /// <param name="userID">GUID for user needs to be updated new value for password</param>
         /// <param name="newPassword">New password for user</param>
-        void ResetPassword(Guid userID, string newPassword);
+        /// <param name="userLogInName">For security purpose</param>
+        void ResetPassword(string userID, string userLogInName, string newPassword);
 
         /// <summary>
         /// Get history list of specific user.
         /// </summary>
         /// <param name="userID">User Id to retrieve history</param>
         /// <returns>List of user password changed history</returns>
-        List<TB_PasswordHistory> GetPasswordHistoryList(Guid userID);
+        List<TB_PasswordHistory> GetPasswordHistoryList(string userID);
     }
 }

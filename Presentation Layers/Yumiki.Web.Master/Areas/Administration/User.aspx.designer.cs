@@ -22,6 +22,15 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.UpdatePanel upnlUser;
         
         /// <summary>
+        /// hdnID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnID;
+        
+        /// <summary>
         /// liUserList control.
         /// </summary>
         /// <remarks>
@@ -31,13 +40,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liUserList;
         
         /// <summary>
-        /// btnUserList control.
+        /// btnUserListTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnUserList;
+        protected global::System.Web.UI.WebControls.LinkButton btnUserListTab;
         
         /// <summary>
         /// liUserProcess control.
@@ -49,13 +58,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liUserProcess;
         
         /// <summary>
-        /// btnUserProcess control.
+        /// btnUserProcessTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnUserProcess;
+        protected global::System.Web.UI.WebControls.LinkButton btnUserProcessTab;
         
         /// <summary>
         /// liUserDetails control.
@@ -67,13 +76,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liUserDetails;
         
         /// <summary>
-        /// btnUserDetails control.
+        /// btnUserDetailsTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnUserDetails;
+        protected global::System.Web.UI.WebControls.LinkButton btnUserDetailsTab;
         
         /// <summary>
         /// liResetPassword control.
@@ -85,13 +94,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liResetPassword;
         
         /// <summary>
-        /// btnResetPassword control.
+        /// btnResetPasswordTab control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnResetPassword;
+        protected global::System.Web.UI.WebControls.LinkButton btnResetPasswordTab;
         
         /// <summary>
         /// mtvUserTabs control.
@@ -157,15 +166,6 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Button btnSave;
         
         /// <summary>
-        /// hdnID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnID;
-        
-        /// <summary>
         /// vsUserValidationSummary control.
         /// </summary>
         /// <remarks>
@@ -229,6 +229,15 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.TextBox txtConfirmPassword;
         
         /// <summary>
+        /// cmpPasswordCompare control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator cmpPasswordCompare;
+        
+        /// <summary>
         /// txtDescription control.
         /// </summary>
         /// <remarks>
@@ -263,5 +272,50 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.View vwResetPassword;
+        
+        /// <summary>
+        /// btnResetPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnResetPassword;
+        
+        /// <summary>
+        /// vsResetPasswordValidationSummary control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary vsResetPasswordValidationSummary;
+        
+        /// <summary>
+        /// txtResetPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtResetPassword;
+        
+        /// <summary>
+        /// txtConfirmResetPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtConfirmResetPassword;
+        
+        /// <summary>
+        /// cmpResetPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator cmpResetPassword;
     }
 }

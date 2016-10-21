@@ -45,6 +45,14 @@ namespace Yumiki.Data.Administration.Interfaces
         void ResetPassword(Guid userID, string newPassword);
 
         /// <summary>
+        /// Get the last updated records of password changing history.
+        /// </summary>
+        /// <param name="noOfRecords">Max of records will be retrieved</param>
+        /// <param name="userID">GUID for user needs to get the passwords</param>
+        /// <returns></returns>
+        List<string> GetPasswords(int noOfRecords, Guid userID); 
+
+        /// <summary>
         /// Get history list of specific user.
         /// </summary>
         /// <param name="userID">User Id to retrieve history</param>

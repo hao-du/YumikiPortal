@@ -59,7 +59,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             if (user.ID == Guid.Empty)
             {
-                user.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword });
+                user.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword, Descriptions = string.Format("Initial Password: \"{0}\"", user.CurrentPassword) });
                 Context.TB_User.Add(user);
             }
             else
@@ -68,8 +68,6 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUser.UserLoginName = user.UserLoginName;
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
-                dbUser.CurrentPassword = user.CurrentPassword;
-                dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword });
                 dbUser.Descriptions = user.Descriptions;
                 dbUser.IsActive = user.IsActive;
             }
@@ -85,10 +83,21 @@ namespace Yumiki.Data.Administration.Repositories
         public void ResetPassword(Guid userID, string newPassword)
         {
             TB_User dbUser = Context.TB_User.Where(c => c.ID == userID).Single();
-
+            dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = newPassword, Descriptions = string.Format("Password has changed from \"{0}\" to \"{1}\"", dbUser.CurrentPassword, newPassword) });
             dbUser.CurrentPassword = newPassword;
-            dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = newPassword });
+
             Save();
+        }
+
+        /// <summary>
+        /// Get the last updated records of password changing history.
+        /// </summary>
+        /// <param name="noOfRecords">Max of records will be retrieved</param>
+        /// <param name="userID">GUID for user needs to get the passwords</param>
+        /// <returns></returns>
+        public List<string> GetPasswords(int noOfRecords, Guid userID)
+        {
+            return Context.TB_PasswordHistory.Where(c => c.UserID == userID).OrderByDescending(c => c.CreateDate).Take(noOfRecords).Select(c => c.Password).ToList();
         }
 
         /// <summary>

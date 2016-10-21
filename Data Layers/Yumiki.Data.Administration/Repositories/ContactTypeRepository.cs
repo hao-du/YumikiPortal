@@ -38,8 +38,8 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public bool CheckValidContactTypeName(string contactTypeName, Guid excludedContactTypeID)
         {
-            int countContactTypeName = Context.TB_Group.Where(c => c.ID != excludedContactTypeID
-                                                        && c.GroupName.ToLower() == contactTypeName.ToLower()
+            int countContactTypeName = Context.TB_ContactType.Where(c => c.ID != excludedContactTypeID
+                                                        && c.ContactTypeName.ToLower() == contactTypeName.ToLower()
                                                         && c.IsActive).Count();
             if (countContactTypeName > 0)
             {

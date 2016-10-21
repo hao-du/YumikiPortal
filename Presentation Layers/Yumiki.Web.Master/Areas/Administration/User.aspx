@@ -5,15 +5,18 @@
         //Validation for asp.net controls on client side.
         var startValidation = function () {
             var isValid = true;
+            //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
+            for (i = 0; i < Page_Validators.length; i++) {
+                var control = Page_Validators[i];
+                $(control).closest(".form-group").removeClass("has-error has-feedback");
+            }
+
             for (i = 0; i < Page_Validators.length; i++) {
                 var control = Page_Validators[i];
                 ValidatorValidate(control);
                 if (!control.isvalid) {
                     isValid = false;
                     $(control).closest(".form-group").addClass("has-error has-feedback");
-
-                } else {
-                    $(control).closest(".form-group").removeClass("has-error has-feedback");
                 }
             }
 
@@ -30,16 +33,17 @@
     <asp:UpdatePanel runat="server" ID="upnlUser">
         <ContentTemplate>
             <div class="container">
+                <asp:HiddenField ID="hdnID" runat="server" Value="" />
                 <h2>User Management</h2>
                 <ul class="nav nav-tabs">
                     <li class="active" runat="server" id="liUserList">
-                        <asp:LinkButton runat="server" ID="btnUserList" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
+                        <asp:LinkButton runat="server" ID="btnUserListTab" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserProcess" visible="false">
-                        <asp:LinkButton runat="server" ID="btnUserProcess" Text="Add/Edit User" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
+                        <asp:LinkButton runat="server" ID="btnUserProcessTab" Text="Add/Edit User" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserDetails" visible="false">
-                        <asp:LinkButton runat="server" ID="btnUserDetails" Text="More Infomation" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
+                        <asp:LinkButton runat="server" ID="btnUserDetailsTab" Text="More Infomation" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liResetPassword" visible="false">
-                        <asp:LinkButton runat="server" ID="btnResetPassword" Text="Reset Password" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
+                        <asp:LinkButton runat="server" ID="btnResetPasswordTab" Text="Reset Password" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                 </ul>
                 <asp:MultiView runat="server" ID="mtvUserTabs" ActiveViewIndex="0">
                     <asp:View ID="vwListTab" runat="server">
@@ -104,8 +108,6 @@
                                 <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
                             </div>
                         </div>
-
-                        <asp:HiddenField ID="hdnID" runat="server" Value="" />
                         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
                         <div class="row">
                             <div class="col-md-6">
@@ -140,6 +142,7 @@
                                         <label>Confirm Password</label>
                                         <asp:TextBox runat="server" ID="txtConfirmPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
                                         <asp:RequiredFieldValidator runat="server" ControlToValidate="txtConfirmPassword" Display="None" ErrorMessage="Confirm Password is required." />
+                                        <asp:CompareValidator runat="server" ID="cmpPasswordCompare" ControlToValidate="txtPassword" ControlToCompare="txtConfirmPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None" />
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +159,29 @@
                         <h2>User Details Tab</h2>
                     </asp:View>
                     <asp:View runat="server" ID="vwResetPassword">
-                        <h2>Reset Password</h2>
+                        <div class="well well-sm">
+                            <div class="btn-group">
+                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                            </div>
+                        </div>
+                        <asp:ValidationSummary ID="vsResetPasswordValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <asp:TextBox runat="server" ID="txtResetPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtResetPassword" Display="None" ErrorMessage="Password is required." />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Confirm Password</label>
+                                    <asp:TextBox runat="server" ID="txtConfirmResetPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ValidationGroup="ResetPassword" runat="server" ControlToValidate="txtConfirmResetPassword" Display="None" ErrorMessage="Confirm Password is required." />
+                                    <asp:CompareValidator runat="server" ID="cmpResetPassword" ControlToValidate="txtResetPassword" ControlToCompare="txtConfirmResetPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None"/>
+                                </div>
+                            </div>
+                        </div>
                     </asp:View>
                 </asp:MultiView>
             </div>
