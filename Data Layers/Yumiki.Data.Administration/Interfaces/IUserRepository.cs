@@ -36,5 +36,19 @@ namespace Yumiki.Data.Administration.Interfaces
         /// <param name="excludedUserID">ID which need to be excluded to check</param>
         /// <returns></returns>
         bool CheckValidUserName(string userName, Guid excludedUserID);
+
+        /// <summary>
+        /// Update new password of specific user.
+        /// </summary>
+        /// <param name="userID">GUID for user needs to be updated new value for password</param>
+        /// <param name="newPassword">New password for user</param>
+        void ResetPassword(Guid userID, string newPassword);
+
+        /// <summary>
+        /// Get history list of specific user.
+        /// </summary>
+        /// <param name="userID">User Id to retrieve history</param>
+        /// <returns></returns>
+        List<TB_PasswordHistory> GetPasswordHistoryList(Guid userID);
     }
 }

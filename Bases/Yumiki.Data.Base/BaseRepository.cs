@@ -25,7 +25,7 @@ namespace Yumiki.Data.Base
         /// <param name="isNew">Base on this condition to determine the appropriate values for new/exiting values</param>
         protected void AssginBaseProperties(IEntity entity)
         {
-            if(entity.ID == Guid.Empty)
+            if (entity.ID == Guid.Empty)
             {
                 entity.ID = Guid.NewGuid();
                 entity.CreateDate = DateTime.Now;
@@ -44,9 +44,9 @@ namespace Yumiki.Data.Base
         {
             IEnumerable<DbEntityEntry> entries = context.ChangeTracker.Entries();
 
-            foreach(DbEntityEntry entry in entries)
+            foreach (DbEntityEntry entry in entries)
             {
-                if(entry.State == EntityState.Added || entry.State == EntityState.Modified)
+                if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
                     IEntity entity = (IEntity)entry.Entity;
                     AssginBaseProperties(entity);

@@ -87,5 +87,54 @@ namespace Yumiki.Business.Administration.Services
 
             Repository.SaveUser(user);
         }
+
+        /// <summary>
+        /// Update new password of specific user.
+        /// </summary>
+        /// <param name="userID">GUID for user needs to be updated new value for password</param>
+        /// <param name="newPassword">New password for user</param>
+        public void ResetPassword(string userID, string newPassword)
+        {
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "New Password cannot be empty.", null);
+            }
+
+            if (string.IsNullOrEmpty(userID))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+            }
+
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(userID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+            }
+
+            Repository.ResetPassword(convertedID, newPassword);
+        }
+
+        /// <summary>
+        /// Get history list of specific user.
+        /// </summary>
+        /// <param name="userID">User Id to retrieve history</param>
+        /// <returns>List of user password changed history</returns>
+        public List<TB_PasswordHistory> GetPasswordHistoryList(string userID)
+        {
+            if (string.IsNullOrEmpty(userID))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+            }
+
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(userID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+            }
+
+            return Repository.GetPasswordHistoryList(convertedID);
+        }
     }
 }

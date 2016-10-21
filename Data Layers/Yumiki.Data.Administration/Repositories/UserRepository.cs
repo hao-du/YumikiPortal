@@ -59,6 +59,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             if (user.ID == Guid.Empty)
             {
+                user.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword });
                 Context.TB_User.Add(user);
             }
             else
@@ -68,11 +69,36 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
                 dbUser.CurrentPassword = user.CurrentPassword;
+                dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword });
                 dbUser.Descriptions = user.Descriptions;
                 dbUser.IsActive = user.IsActive;
             }
 
             Save();
+        }
+
+        /// <summary>
+        /// Update new password of specific user.
+        /// </summary>
+        /// <param name="userID">GUID for user needs to be updated new value for password</param>
+        /// <param name="newPassword">New password for user</param>
+        public void ResetPassword(Guid userID, string newPassword)
+        {
+            TB_User dbUser = Context.TB_User.Where(c => c.ID == userID).Single();
+
+            dbUser.CurrentPassword = newPassword;
+            dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = newPassword });
+            Save();
+        }
+
+        /// <summary>
+        /// Get history list of specific user.
+        /// </summary>
+        /// <param name="userID">User Id to retrieve history</param>
+        /// <returns></returns>
+        public List<TB_PasswordHistory> GetPasswordHistoryList(Guid userID)
+        {
+            return Context.TB_PasswordHistory.Where(c => c.UserID == userID).ToList();
         }
     }
 }
