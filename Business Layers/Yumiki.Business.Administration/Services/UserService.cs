@@ -34,41 +34,29 @@ namespace Yumiki.Business.Administration.Services
         }
 
         /// <summary>
-        /// Get all active users from Database
+        /// Get all active users from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive users or active users</param>
-        /// <returns>List of all active user</returns>
+        /// <param name="showInactive">Show list of inactive users or active users.</param>
+        /// <returns>List of all active user.</returns>
         public List<TB_User> GetAllUsers(bool showInactive)
         {
             return Repository.GetAllUsers(showInactive);
         }
 
         /// <summary>
-        /// Get specific user from Database
+        /// Get specific user from Database.
         /// </summary>
-        /// <param name="id">User ID - Must be Guid value</param>
-        /// <returns>User object</returns>
+        /// <param name="id">User ID - Must be Guid value.</param>
+        /// <returns>User object.</returns>
         public TB_User GetUser(string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
-            }
-
-            Guid userID = Guid.Empty;
-            Guid.TryParse(id, out userID);
-            if (userID == Guid.Empty)
-            {
-                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
-            }
-
-            return Repository.GetUser(userID);
+            return Repository.GetUser(CheckandConvertUserID(id));
         }
 
         /// <summary>
-        /// Create/Update a user
+        /// Create/Update a user.
         /// </summary>
-        /// <param name="user">If user id is empty, then this is new user. Otherwise, this needs to be updated</param>
+        /// <param name="user">If user id is empty, then this is new user. Otherwise, this needs to be updated.</param>
         public void SaveUser(TB_User user)
         {
             if (!user.UserLoginName.All(char.IsLetterOrDigit))
@@ -99,8 +87,8 @@ namespace Yumiki.Business.Administration.Services
         /// <summary>
         /// Update new password of specific user.
         /// </summary>
-        /// <param name="userID">GUID for user needs to be updated new value for password</param>
-        /// <param name="newPassword">New password for user</param>
+        /// <param name="userID">GUID for user needs to be updated new value for password.</param>
+        /// <param name="newPassword">New password for user.</param>
         public void ResetPassword(string userID, string userLogInName, string newPassword)
         {
             if (string.IsNullOrEmpty(newPassword))
@@ -108,17 +96,7 @@ namespace Yumiki.Business.Administration.Services
                 throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "New Password cannot be empty.", null);
             }
 
-            if (string.IsNullOrEmpty(userID))
-            {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
-            }
-
-            Guid convertedID = Guid.Empty;
-            Guid.TryParse(userID, out convertedID);
-            if (convertedID == Guid.Empty)
-            {
-                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
-            }
+            Guid convertedID = CheckandConvertUserID(userID);
 
             newPassword = SecurityHelper.Encrypt(newPassword, userLogInName);
 
@@ -135,9 +113,32 @@ namespace Yumiki.Business.Administration.Services
         /// <summary>
         /// Get history list of specific user.
         /// </summary>
-        /// <param name="userID">User Id to retrieve history</param>
-        /// <returns>List of user password changed history</returns>
+        /// <param name="userID">User Id to retrieve history.</param>
+        /// <returns>List of user password changed history.</returns>
         public List<TB_PasswordHistory> GetPasswordHistoryList(string userID)
+        {
+            return Repository.GetPasswordHistoryList(CheckandConvertUserID(userID));
+        }
+
+        /// <summary>
+        /// Get All contact types which contain the User Addresses.
+        /// </summary>
+        /// <param name="userID">User need to get address details.</param>
+        /// <param name="showInactive">Get active or inactive records.</param>
+        /// <returns></returns>
+        public List<TB_ContactType> GetAllContacts(string userID, bool showInactive)
+        {
+            Guid convertedID = CheckandConvertUserID(userID);
+
+            return Repository.GetAllContacts(convertedID, showInactive);
+        }
+
+        /// <summary>
+        /// Check validation for the userID before convert it to GUID and then convert it.
+        /// </summary>
+        /// <param name="userID">User ID need to check and convert.</param>
+        /// <returns>A converted GUID User ID.</returns>
+        private Guid CheckandConvertUserID(string userID)
         {
             if (string.IsNullOrEmpty(userID))
             {
@@ -151,7 +152,7 @@ namespace Yumiki.Business.Administration.Services
                 throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
             }
 
-            return Repository.GetPasswordHistoryList(convertedID);
+            return convertedID;
         }
     }
 }

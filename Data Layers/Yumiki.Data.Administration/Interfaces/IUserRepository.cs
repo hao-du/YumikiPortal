@@ -58,5 +58,13 @@ namespace Yumiki.Data.Administration.Interfaces
         /// <param name="userID">User Id to retrieve history</param>
         /// <returns></returns>
         List<TB_PasswordHistory> GetPasswordHistoryList(Guid userID);
+
+        /// <summary>
+        /// Get All contact types which contain the User Addresses.
+        /// </summary>
+        /// <param name="userID">User need to get address details.</param>
+        /// <param name="showInactive">Get active or inactive records.</param>
+        /// <returns></returns>
+        List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive);
     }
 }

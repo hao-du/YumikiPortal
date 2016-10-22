@@ -22,6 +22,12 @@ namespace Yumiki.Data.Administration
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TB_ContactType>()
+                .HasMany(e => e.TB_UserAddress)
+                .WithRequired(e => e.TB_ContactType)
+                .HasForeignKey(e => e.UserContactTypeID)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<TB_Group>()
                 .HasMany(e => e.TB_Privilege)
                 .WithMany(e => e.TB_Group)
@@ -55,6 +61,12 @@ namespace Yumiki.Data.Administration
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.TB_PasswordHistory)
+                .WithRequired(e => e.TB_User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.TB_UserAddress)
                 .WithRequired(e => e.TB_User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);

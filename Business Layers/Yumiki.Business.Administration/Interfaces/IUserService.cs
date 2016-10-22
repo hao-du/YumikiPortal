@@ -10,46 +10,54 @@ namespace Yumiki.Business.Administration.Interfaces
     public interface IUserService
     {
         /// <summary>
-        /// Get all active users from Database
+        /// Get all active users from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive users or active users</param>
-        /// <returns>List of all active user</returns>
+        /// <param name="showInactive">Show list of inactive users or active users.</param>
+        /// <returns>List of all active user.</returns>
         List<TB_User> GetAllUsers(bool showInactive);
 
         /// <summary>
-        /// Get specific user from Database
+        /// Get specific user from Database.
         /// </summary>
-        /// <param name="id">User ID - Must be Guid value</param>
+        /// <param name="id">User ID - Must be Guid value.</param>
         /// <returns>User object</returns>
         TB_User GetUser(string id);
 
         /// <summary>
-        /// Create/Update a user
+        /// Create/Update a user.
         /// </summary>
-        /// <param name="user">If user id is empty, then this is new user. Otherwise, this needs to be updated</param>
+        /// <param name="user">If user id is empty, then this is new user. Otherwise, this needs to be updated.</param>
         void SaveUser(TB_User user);
 
         /// <summary>
-        /// Check duplicate user name between the values in UI and database
+        /// Check duplicate user name between the values in UI and database.
         /// </summary>
-        /// <param name="userName">User Name will be saved into database</param>
-        /// <param name="excludedUserID">ID which need to be excluded to check</param>
+        /// <param name="userName">User Name will be saved into database.</param>
+        /// <param name="excludedUserID">ID which need to be excluded to check.</param>
         /// <returns></returns>
         bool CheckValidUserName(string userName, Guid excludedUserID);
 
         /// <summary>
         /// Update new password of specific user.
         /// </summary>
-        /// <param name="userID">GUID for user needs to be updated new value for password</param>
-        /// <param name="newPassword">New password for user</param>
-        /// <param name="userLogInName">For security purpose</param>
+        /// <param name="userID">GUID for user needs to be updated new value for password.</param>
+        /// <param name="newPassword">New password for user.</param>
+        /// <param name="userLogInName">For security purpose.</param>
         void ResetPassword(string userID, string userLogInName, string newPassword);
 
         /// <summary>
         /// Get history list of specific user.
         /// </summary>
-        /// <param name="userID">User Id to retrieve history</param>
-        /// <returns>List of user password changed history</returns>
+        /// <param name="userID">User Id to retrieve history.</param>
+        /// <returns>List of user password changed history.</returns>
         List<TB_PasswordHistory> GetPasswordHistoryList(string userID);
+
+        /// <summary>
+        /// Get All contact types which contain the User Addresses.
+        /// </summary>
+        /// <param name="userID">User need to get address details.</param>
+        /// <param name="showInactive">Get active or inactive records.</param>
+        /// <returns></returns>
+        List<TB_ContactType> GetAllContacts(string userID, bool showInactive);
     }
 }

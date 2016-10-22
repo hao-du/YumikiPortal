@@ -109,5 +109,16 @@ namespace Yumiki.Data.Administration.Repositories
         {
             return Context.TB_PasswordHistory.Where(c => c.UserID == userID).ToList();
         }
+
+        /// <summary>
+        /// Get All contact types which contain the User Addresses.
+        /// </summary>
+        /// <param name="userID">User need to get address details.</param>
+        /// <param name="showInactive">Get active or inactive records.</param>
+        /// <returns></returns>
+        public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
+        {
+            return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress).Where(c => c.TB_UserAddress.Any(e => e.UserID == userID && e.IsActive != showInactive)).ToList();
+        }
     }
 }

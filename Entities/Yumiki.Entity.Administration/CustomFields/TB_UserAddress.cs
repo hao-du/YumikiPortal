@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yumiki.Common.Dictionary;
-
 namespace Yumiki.Entity.Administration
 {
-    public partial class TB_ContactType
+    using Base;
+    using Common.Dictionary;
+    using System;
+    using System.Collections.Generic;
+
+    public partial class TB_UserAddress
     {
         public string LastUpdateDateUI
         {
@@ -19,7 +17,7 @@ namespace Yumiki.Entity.Administration
 
         public class FieldName
         {
-            public const string TB_ContactType = "TB_ContactType";
+            public const string TB_UserAddress = "TB_UserAddress";
         }
     }
 }

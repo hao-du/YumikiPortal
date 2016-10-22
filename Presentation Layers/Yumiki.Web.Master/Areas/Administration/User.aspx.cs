@@ -53,6 +53,12 @@ namespace Yumiki.Web.Administration
             }
         }
 
+        protected void LinkButton_Click(object sender, EventArgs e)
+        {
+            SwitchPanel(sender);
+        }
+
+        #region User List Tab Events
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             ResetControls();
@@ -60,11 +66,6 @@ namespace Yumiki.Web.Administration
             ckbIsActive.Enabled = false;
             btnUserProcessTab.Text = "New User";
             SwitchPanel(btnUserProcessTab);
-        }
-
-        protected void LinkButton_Click(object sender, EventArgs e)
-        {
-            SwitchPanel(sender);
         }
 
         protected void btnDisplayInactiveUsers_Click(object sender, EventArgs e)
@@ -95,6 +96,8 @@ namespace Yumiki.Web.Administration
                 txtDescription.Text = user.Descriptions;
                 ckbIsActive.Checked = user.IsActive;
 
+                LoadUserAddresses();
+
                 txtUserLoginName.Enabled = false;
                 ckbIsActive.Enabled = true;
                 pnlPasswordSection.Visible = false;
@@ -106,7 +109,9 @@ namespace Yumiki.Web.Administration
                 SendClientMessage(ex.Message);
             }
         }
+        #endregion
 
+        #region User Add/Edit Tab Events
         protected void btnDialogSave_Click(object sender, EventArgs e)
         {
             try
@@ -143,7 +148,9 @@ namespace Yumiki.Web.Administration
                 SendClientMessage(ex.Message);
             }
         }
+        #endregion
 
+        #region User Reset Password Tab Events
         protected void btnResetPassword_Click(object sender, EventArgs e)
         {
             try
@@ -152,11 +159,11 @@ namespace Yumiki.Web.Administration
                 string password = txtResetPassword.Text;
                 string confirmPassword = txtConfirmResetPassword.Text;
 
-                if(!string.Equals(password, confirmPassword))
+                if (!string.Equals(password, confirmPassword))
                 {
                     SendClientMessage("Confirm Password must be the same password.");
                 }
-                
+
                 UserService.ResetPassword(userID, txtUserLoginName.Text, password);
             }
             catch (Exception ex)
@@ -164,6 +171,17 @@ namespace Yumiki.Web.Administration
                 SendClientMessage(ex.Message);
             }
         }
+        #endregion
+
+        #region User Address Detail Tab Events
+        protected void btnAddContact_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnEditContact_Click(object sender, EventArgs e)
+        {
+        }
+        #endregion
 
         /// <summary>
         /// Reset all server side controls when focus on User List tab
@@ -194,6 +212,20 @@ namespace Yumiki.Web.Administration
             List<TB_User> users = UserService.GetAllUsers(showInactive);
             rptUser.DataSource = users;
             rptUser.DataBind();
+        }
+
+        /// <summary>
+        /// Load all contacts of selected user
+        /// </summary>
+        private void LoadUserAddresses()
+        {
+            if (!IsNewMode)
+            {
+                List<TB_ContactType> contactTypes = UserService.GetAllContacts(hdnID.Value, false);
+
+                rptContactType.DataSource = contactTypes;
+                rptContactType.DataBind();
+            }
         }
 
         /// <summary>

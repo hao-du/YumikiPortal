@@ -265,6 +265,24 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.View vwUserDetailsTab;
         
         /// <summary>
+        /// btnAddContact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddContact;
+        
+        /// <summary>
+        /// rptContactType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptContactType;
+        
+        /// <summary>
         /// vwResetPassword control.
         /// </summary>
         /// <remarks>

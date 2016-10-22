@@ -156,7 +156,68 @@
                         </div>
                     </asp:View>
                     <asp:View runat="server" ID="vwUserDetailsTab">
-                        <h2>User Details Tab</h2>
+                        <div class="well well-sm">
+                            <div class="btn-group">
+                                <asp:Button ID="btnAddContact" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAddContact_Click" CausesValidation="false" />
+                            </div>
+                        </div>
+                        <asp:Repeater runat="server" ID="rptContactType">
+                            <ItemTemplate>
+                                <div class="panel-group">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>'><%# Eval("ContactTypeName") %></a>
+                                            </h4>
+                                        </div>
+                                        <div id='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>' class="panel-collapse collapse in">
+                                            <div class="panel-body">
+                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.TB_UserAddress.FieldName.TB_UserAddress) %>'>
+                                                    <HeaderTemplate>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Contact Detail</th>
+                                                                        <th>Primary Contact</th>
+                                                                        <th>Descriptions</th>
+                                                                        <th>Modify Date</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <asp:Literal runat="server" Text='<%# Eval("UserAddress") %>'></asp:Literal>
+                                                            </td>
+                                                            <td>
+                                                                <asp:CheckBox runat="server" Checked='<%# (bool)Eval("IsPrimary") ? true : false %>' Enabled="false" />
+                                                            </td>
+                                                            <td>
+                                                                <asp:Literal runat="server" Text='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.Descriptions) %>'></asp:Literal>
+                                                            </td>
+                                                            <td>
+                                                                <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
+                                                            </td>
+                                                            <td>
+                                                                <asp:LinkButton ID="btAddressEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEditContact_Click" CommandArgument='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                    <FooterTemplate>
+                                                        </tbody>
+                                                        </table>
+                                                        </div>
+                                                    </FooterTemplate>
+                                                </asp:Repeater>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </asp:View>
                     <asp:View runat="server" ID="vwResetPassword">
                         <div class="well well-sm">
@@ -178,7 +239,7 @@
                                     <label>Confirm Password</label>
                                     <asp:TextBox runat="server" ID="txtConfirmResetPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ValidationGroup="ResetPassword" runat="server" ControlToValidate="txtConfirmResetPassword" Display="None" ErrorMessage="Confirm Password is required." />
-                                    <asp:CompareValidator runat="server" ID="cmpResetPassword" ControlToValidate="txtResetPassword" ControlToCompare="txtConfirmResetPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None"/>
+                                    <asp:CompareValidator runat="server" ID="cmpResetPassword" ControlToValidate="txtResetPassword" ControlToCompare="txtConfirmResetPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None" />
                                 </div>
                             </div>
                         </div>
