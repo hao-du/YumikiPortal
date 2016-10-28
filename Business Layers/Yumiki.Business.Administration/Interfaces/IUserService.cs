@@ -59,5 +59,25 @@ namespace Yumiki.Business.Administration.Interfaces
         /// <param name="showInactive">Get active or inactive records.</param>
         /// <returns></returns>
         List<TB_ContactType> GetAllContacts(string userID, bool showInactive);
+
+        /// <summary>
+        /// Remote method to Contact Type Repo to get all contact types for binding data purpose.
+        /// </summary>
+        /// <param name="showInactive">Show list of inactive contact types or active contactTypes</param>
+        /// <returns>List of all active contactType</returns>
+        List<TB_ContactType> GetAllContactTypes(bool showInactive);
+
+        /// <summary>
+        /// Create/Update a user Address
+        /// </summary>
+        /// <param name="userAddress">If user address id is empty, then this is new user address. Otherwise, this needs to be updated</param>
+        void SaveUserAddress(TB_UserAddress userAddress);
+
+        /// <summary>
+        /// Get specific user address from Database
+        /// </summary>
+        /// <param name="id">User Address ID - Must be Guid value</param>
+        /// <returns>User Address object</returns>
+        TB_UserAddress GetUserAddress(string id);
     }
 }

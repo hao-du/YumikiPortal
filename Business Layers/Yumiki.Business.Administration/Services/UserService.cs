@@ -134,6 +134,47 @@ namespace Yumiki.Business.Administration.Services
         }
 
         /// <summary>
+        /// Remote method to Contact Type Repo to get all contact types for binding data purpose.
+        /// </summary>
+        /// <param name="showInactive">Show list of inactive contact types or active contactTypes</param>
+        /// <returns>List of all active contactType</returns>
+        public List<TB_ContactType> GetAllContactTypes(bool showInactive)
+        {
+            return Repository.GetAllContactTypes(showInactive);
+        }
+
+        /// <summary>
+        /// Get specific user address from Database
+        /// </summary>
+        /// <param name="id">User Address ID - Must be Guid value</param>
+        /// <returns>User Address object</returns>
+        public TB_UserAddress GetUserAddress(string id)
+        {
+            Guid convertedID = CheckandConvertUserID(id);
+
+            return Repository.GetUserAddress(convertedID);
+        }
+
+        /// <summary>
+        /// Create/Update a user Address
+        /// </summary>
+        /// <param name="userAddress">If user address id is empty, then this is new user address. Otherwise, this needs to be updated</param>
+        public void SaveUserAddress(TB_UserAddress userAddress)
+        {
+            if (string.IsNullOrEmpty(userAddress.UserAddress))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Contact Details is required.", null);
+            }
+
+            if (userAddress.UserContactTypeID.Equals(Guid.Empty))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Contact Type is required.", null);
+            }
+
+            Repository.SaveUserAddress(userAddress);
+        }
+
+        /// <summary>
         /// Check validation for the userID before convert it to GUID and then convert it.
         /// </summary>
         /// <param name="userID">User ID need to check and convert.</param>

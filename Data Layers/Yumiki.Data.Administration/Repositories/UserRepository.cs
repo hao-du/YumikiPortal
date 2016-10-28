@@ -118,7 +118,67 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
         {
-            return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress).Where(c => c.TB_UserAddress.Any(e => e.UserID == userID && e.IsActive != showInactive)).ToList();
+            return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress)
+                            .Where(c => c.TB_UserAddress.Any(e => e.UserID == userID && e.IsActive != showInactive))
+                            .ToList();
+        }
+
+        /// <summary>
+        /// Remote method to Contact Type Repo to get all contact types for binding data purpose.
+        /// </summary>
+        /// <param name="showInactive">Show list of inactive contact types or active contactTypes</param>
+        /// <returns>List of all active contactType</returns>
+        public List<TB_ContactType> GetAllContactTypes(bool showInactive)
+        {
+            ContactTypeRepository contactTypeRepository = new ContactTypeRepository();
+            contactTypeRepository.AssignContext(Context);
+
+            return contactTypeRepository.GetAllContactTypes(showInactive);
+        }
+
+        /// <summary>
+        /// Get specific user address from Database
+        /// </summary>
+        /// <param name="id">User Address ID - Must be Guid value</param>
+        /// <returns>User Address object</returns>
+        public TB_UserAddress GetUserAddress(Guid id)
+        {
+            return Context.TB_UserAddress.Where(c => c.ID == id).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Create/Update a user Address
+        /// </summary>
+        /// <param name="userAddress">If user address id is empty, then this is new user address. Otherwise, this needs to be updated</param>
+        public void SaveUserAddress(TB_UserAddress userAddress)
+        {
+            if (userAddress.ID == Guid.Empty)
+            {
+                Context.TB_UserAddress.Add(userAddress);
+            }
+            else
+            {
+                TB_UserAddress dbUserAddress = Context.TB_UserAddress.Where(c => c.ID == userAddress.ID).Single();
+                dbUserAddress.UserAddress = userAddress.UserAddress;
+                dbUserAddress.UserContactTypeID = userAddress.UserContactTypeID;
+                dbUserAddress.IsPrimary = userAddress.IsPrimary;
+                dbUserAddress.Descriptions = userAddress.Descriptions;
+                dbUserAddress.IsActive = userAddress.IsActive;
+            }
+
+            if(userAddress.IsPrimary)
+            {
+                //Update Primary flag of all contacts of user which has the same ContactType to false.
+                //Only one contact is primary for each contact type.
+                Context.TB_UserAddress.Where(c => c.ID != userAddress.ID 
+                                                && c.IsPrimary
+                                                && c.UserID == userAddress.UserID
+                                                && c.UserContactTypeID == userAddress.UserContactTypeID)
+                                        .ToList()
+                                        .ForEach(c => c.IsPrimary = false);
+            }
+
+            Save();
         }
     }
 }

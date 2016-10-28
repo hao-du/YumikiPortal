@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration.Interfaces;
+using Yumiki.Common.Dictionary;
 using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
 
@@ -49,8 +50,11 @@ namespace Yumiki.Web.Administration
             if (!IsPostBack)
             {
                 LoadUsers();
+                LoadContactTypes();
                 btnDisplayInactiveUsers.Text = showInactiveString;
             }
+
+            AddDefaultMethods("initPicker();");
         }
 
         protected void LinkButton_Click(object sender, EventArgs e)
@@ -112,7 +116,7 @@ namespace Yumiki.Web.Administration
         #endregion
 
         #region User Add/Edit Tab Events
-        protected void btnDialogSave_Click(object sender, EventArgs e)
+        protected void btnUserSave_Click(object sender, EventArgs e)
         {
             try
             {
@@ -135,6 +139,7 @@ namespace Yumiki.Web.Administration
 
                 UserService.SaveUser(user);
                 LoadUsers();
+                SendClientMessage("Save successfully!");
 
                 if (IsNewMode)
                 {
@@ -165,6 +170,8 @@ namespace Yumiki.Web.Administration
                 }
 
                 UserService.ResetPassword(userID, txtUserLoginName.Text, password);
+
+                SendClientMessage("Password was reset successfully!");
             }
             catch (Exception ex)
             {
@@ -176,11 +183,92 @@ namespace Yumiki.Web.Administration
         #region User Address Detail Tab Events
         protected void btnAddContact_Click(object sender, EventArgs e)
         {
+            ResetUserAddressControls();
+            ckbUserAddressIsActive.Enabled = false;
+
+            lblUserAddressDialogHeader.Text = "Add Contact";
+            pnlUserAddressDialog.Visible = true;
+
+            RegisterScripts();
         }
 
         protected void btnEditContact_Click(object sender, EventArgs e)
         {
+            try
+            {
+                TB_UserAddress userAddress = UserService.GetUserAddress(((LinkButton)sender).CommandArgument);
+
+                hdnUserAddressID.Value = userAddress.ID.ToString();
+                txtUserAddress.Text = userAddress.UserAddress;
+                ddlContactType.SelectedValue = userAddress.UserContactTypeID.ToString();
+                ckbIsPrimary.Checked = userAddress.IsPrimary;
+                txtDescription.Text = userAddress.Descriptions;
+                ckbUserAddressIsActive.Checked = userAddress.IsActive;
+
+                txtUserLoginName.Enabled = false;
+                ckbUserAddressIsActive.Enabled = true;
+                pnlPasswordSection.Visible = false;
+
+                lblUserAddressDialogHeader.Text = "Edit Contact";
+                pnlUserAddressDialog.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                SendClientMessage(ex.Message);
+            }
+            finally
+            {
+                RegisterScripts();
+            }
         }
+
+        protected void btnDialogUserContactClose_Click(object sender, EventArgs e)
+        {
+            ResetUserAddressControls();
+            pnlUserAddressDialog.Visible = false;
+        }
+
+        protected void btnDialogUserContactSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TB_UserAddress userAddress = new TB_UserAddress();
+                if (!string.IsNullOrEmpty(hdnUserAddressID.Value))
+                {
+                    userAddress.ID = Guid.Parse(hdnUserAddressID.Value);
+                }
+                userAddress.UserAddress = txtUserAddress.Text;
+                userAddress.UserContactTypeID = ddlContactType.SelectedValue == CommonValues.EmptyValue? Guid.Empty: Guid.Parse(ddlContactType.SelectedValue);
+                userAddress.IsPrimary = ckbIsPrimary.Checked;
+                userAddress.Descriptions = txtDescription.Text;
+                userAddress.UserID = Guid.Parse(hdnID.Value);
+                userAddress.IsActive = ckbIsActive.Checked;
+
+                UserService.SaveUserAddress(userAddress);
+                LoadUserAddresses();
+                pnlUserAddressDialog.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                SendClientMessage(ex.Message);
+            }
+            finally
+            {
+                RegisterScripts();
+            }
+            
+        }
+
+        /// <summary>
+        /// Reset all server side controls when focus on User Address
+        /// </summary>
+        private void ResetUserAddressControls()
+        {
+            hdnUserAddressID.Value = txtUserAddress.Text = txtUserAddressDescriptions.Text = ddlContactType.SelectedValue = CommonValues.EmptyValue;
+            ckbUserAddressIsActive.Checked = true;
+            ckbIsPrimary.Checked = true;
+        }
+
         #endregion
 
         /// <summary>
@@ -227,6 +315,22 @@ namespace Yumiki.Web.Administration
                 rptContactType.DataBind();
             }
         }
+
+        /// <summary>
+        /// Load all active contact types and bind to dropdownlist
+        /// </summary>
+        private void LoadContactTypes()
+        {
+            List<TB_ContactType> contactTypes = UserService.GetAllContactTypes(false);
+
+            ddlContactType.DataTextField = TB_ContactType.FieldName.ContactTypeName;
+            ddlContactType.DataValueField = TB_ContactType.FieldName.ID;
+            ddlContactType.DataSource = contactTypes;
+            ddlContactType.DataBind();
+
+            ddlContactType.Items.Insert(0, new ListItem { Selected = true, Text = CommonValues.SelectOneForDropDown, Value = CommonValues.EmptyValue });
+        }
+
 
         /// <summary>
         /// Switch panel on UI by setting style and visibility of tabs and views

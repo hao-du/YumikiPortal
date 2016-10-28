@@ -19,6 +19,15 @@ namespace Yumiki.Data.Base
         protected T context;
 
         /// <summary>
+        /// To cross context among repositories to avoid open SQL Connection many times.
+        /// </summary>
+        /// <param name="context">Entity Framework context</param>
+        public void AssignContext(T context)
+        {
+            this.context = context;
+        }
+
+        /// <summary>
         /// Assign the common properties to EF object.
         /// </summary>
         /// <param name="entity">EF object</param>

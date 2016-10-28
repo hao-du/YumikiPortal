@@ -61,13 +61,16 @@ namespace Yumiki.Web.Base
         /// It will call the methods defined in 'DefaultMethods' property first, then call the custom methods.
         /// </summary>
         /// <param name="scriptMethods">Methods needed to call. Eg. "testFunction1();", "testFunction2();"</param>
-        protected void ResetClientPlugins(params string[] scriptMethods)
+        protected void RegisterScripts(params string[] scriptMethods)
         {
             StringBuilder builder = new StringBuilder();
             //Default Methods must be execcuted after postback.
-            foreach (string method in DefaultMethods)
+            if (DefaultMethods != null)
             {
-                builder.Append(method);
+                foreach (string method in DefaultMethods)
+                {
+                    builder.Append(method);
+                }
             }
 
             //Custom Methods
@@ -76,7 +79,7 @@ namespace Yumiki.Web.Base
                 builder.Append(method);
             }
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ResetClientPlugins", builder.ToString(), true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "RegisterScripts", builder.ToString(), true);
         }
 
         /// <summary>

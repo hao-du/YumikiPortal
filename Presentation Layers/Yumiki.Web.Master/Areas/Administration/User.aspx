@@ -27,6 +27,12 @@
                 return true;
             }
         }
+
+        var initPicker = function () {
+            $('.selectpicker').selectpicker({
+                style: 'btn-default'
+            });
+        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
@@ -105,7 +111,7 @@
                     <asp:View runat="server" ID="vwAddEditTab">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnUserSave_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -172,7 +178,7 @@
                                         </div>
                                         <div id='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>' class="panel-collapse collapse in">
                                             <div class="panel-body">
-                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.TB_UserAddress.FieldName.TB_UserAddress) %>'>
+                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.TB_ContactType.FieldName.SortUserAddresses) %>'>
                                                     <HeaderTemplate>
                                                         <div class="table-responsive">
                                                             <table class="table table-striped table-bordered">
@@ -246,6 +252,48 @@
                     </asp:View>
                 </asp:MultiView>
             </div>
+            <asp:Panel runat="server" ID="pnlUserAddressDialog" Visible="false">
+                <div class="modal-backdrop"></div>
+                <div id="dlgGroup" class="modal show" role="dialog">
+                    <div class=" modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <asp:Literal runat="server" ID="lblUserAddressDialogHeader"></asp:Literal>
+                                </h4>
+                                <asp:HiddenField ID="hdnUserAddressID" runat="server" Value="" />
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Contact Details</label>
+                                    <asp:TextBox runat="server" ID="txtUserAddress" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserAddress" Display="None" ErrorMessage="Contact Details is required." />
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Type</label>
+                                    <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control selectpicker"></asp:DropDownList>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlContactType" Display="None" ErrorMessage="Contact Type is required." />
+                                </div>
+                                <div class="form-group">
+                                    <asp:CheckBox runat="server" ID="ckbIsPrimary" Checked="true" Text="Is Primary" CssClass="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Descriptions</label>
+                                    <asp:TextBox runat="server" TextMode="MultiLine" ID="txtUserAddressDescriptions" CssClass="form-control form-area"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:CheckBox runat="server" ID="ckbUserAddressIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
+                                </div>
+                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                            </div>
+                            <div class="modal-footer">
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogUserContactSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogUserContactClose_Click" CausesValidation="false" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </asp:Panel>
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>
