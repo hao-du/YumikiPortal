@@ -42,10 +42,12 @@
   <ItemGroup>
     <Compile Include="Interfaces\IContactTypeService.cs" />
     <Compile Include="Interfaces\IGroupService.cs" />
+    <Compile Include="Interfaces\IPrivilegeService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Services\ContactTypeService.cs" />
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PrivilegeService.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

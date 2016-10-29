@@ -73,6 +73,13 @@
     <Compile Include="ContactType.aspx.designer.cs">
       <DependentUpon>ContactType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Privilege.aspx.cs">
+      <DependentUpon>Privilege.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Privilege.aspx.designer.cs">
+      <DependentUpon>Privilege.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Group.aspx.cs">
       <DependentUpon>Group.aspx</DependentUpon>
@@ -113,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ContactType.aspx" />
+    <Content Include="Privilege.aspx" />
     <Content Include="Group.aspx" />
     <Content Include="User.aspx" />
   </ItemGroup>

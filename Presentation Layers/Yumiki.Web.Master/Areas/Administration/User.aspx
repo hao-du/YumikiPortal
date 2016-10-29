@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
     <script>
         //Validation for asp.net controls on client side.
-        var startValidation = function () {
+        var startUserValidation = function () {
             var isValid = true;
             //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
             for (i = 0; i < Page_Validators.length; i++) {
@@ -111,7 +111,7 @@
                     <asp:View runat="server" ID="vwAddEditTab">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnUserSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnUserSave_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -228,7 +228,7 @@
                     <asp:View runat="server" ID="vwResetPassword">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="startValidation()" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnResetPassword_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsResetPasswordValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -287,7 +287,7 @@
                                 <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogUserContactSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startUserValidation()" OnClick="btnDialogUserContactSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogUserContactClose_Click" CausesValidation="false" />
                             </div>
                         </div>

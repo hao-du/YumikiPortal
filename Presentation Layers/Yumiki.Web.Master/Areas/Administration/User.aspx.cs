@@ -242,7 +242,7 @@ namespace Yumiki.Web.Administration
                 userAddress.IsPrimary = ckbIsPrimary.Checked;
                 userAddress.Descriptions = txtDescription.Text;
                 userAddress.UserID = Guid.Parse(hdnID.Value);
-                userAddress.IsActive = ckbIsActive.Checked;
+                userAddress.IsActive = ckbUserAddressIsActive.Checked;
 
                 UserService.SaveUserAddress(userAddress);
                 LoadUserAddresses();

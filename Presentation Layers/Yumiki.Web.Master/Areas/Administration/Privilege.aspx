@@ -1,28 +1,38 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Group.aspx.cs" Inherits="Yumiki.Web.Administration.Group" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Privilege.aspx.cs" Inherits="Yumiki.Web.Administration.Privilege" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
-    <asp:UpdatePanel runat="server" ID="upnlGroup">
+    <asp:UpdatePanel runat="server" ID="upnlPrivilege">
         <ContentTemplate>
             <div class="container">
-                <h2>Group Management</h2>
+                <h2>Privilege Management</h2>
 
                 <div class="well well-sm">
-                    <div class="btn-group">
+                    <div class="btn-privilege">
                         <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
-                        <asp:Button ID="btnDisplayInactiveGroups" runat="server" CssClass="btn btn-primary" Text="Show Inactive Groups" OnClick="btnDisplayInactiveGroups_Click" CausesValidation="false" />
+                        <asp:Button ID="btnDisplayInactivePrivileges" runat="server" CssClass="btn btn-primary" Text="Show Inactive Privileges" OnClick="btnDisplayInactivePrivileges_Click" CausesValidation="false" />
+                    </div>
+                </div>
+                <div class="row">
+                    <asp:HiddenField ID="hdnNavigationIDs" runat="server" Value="" />
+                    <asp:HiddenField ID="hdnNavigationNames" runat="server" Value="" />
+                    <div class="col-md-12">
+                        <asp:Menu runat="server" ID="mnuNavigation" OnMenuItemClick="mnuNavigation_MenuItemClick" Orientation="Horizontal">
+                        </asp:Menu>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <asp:Repeater runat="server" ID="rptGroup">
+                            <asp:Repeater runat="server" ID="rptPrivilege">
                                 <HeaderTemplate>
-                                    <table id="tblGroup" class="table table-striped table-bordered">
+                                    <table id="tblPrivilege" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Group Name</th>
+                                                <th>Privilege Name</th>
+                                                <th>Page Path</th>
+                                                <th>Displayable on UI</th>
                                                 <th>Descriptions</th>
                                                 <th>Active Status</th>
                                                 <th>Modify Date</th>
@@ -34,13 +44,19 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <asp:Literal runat="server" ID="lblGroupName" Text='<%# Eval("GroupName") %>'></asp:Literal>
+                                            <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID).ToString() + Yumiki.Common.Dictionary.CommonValues.SeparateChar +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>
+                                        </td>
+                                        <td>
+                                            <asp:Literal runat="server" ID="Literal1" Text='<%# Eval("PagePath") %>'></asp:Literal>
+                                        </td>
+                                        <td>
+                                            <asp:CheckBox runat="server" ID="ckbIsDisplayable" Checked='<%# (bool)Eval("IsDisplayable") ? true : false %>' Enabled="false" />
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.Descriptions) %>'></asp:Literal>
                                         </td>
                                         <td>
-                                            <asp:CheckBox runat="server" ID="ckbIsActive" Checked='<%# (bool)Eval(Yumiki.Common.Dictionary.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
+                                            <asp:CheckBox runat="server" ID="ckbIsActiveDisplay" Checked='<%# (bool)Eval(Yumiki.Common.Dictionary.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
@@ -59,22 +75,30 @@
                     </div>
                 </div>
             </div>
-            <asp:Panel runat="server" ID="pnlGroupDialog" Visible="false">
+            <asp:Panel runat="server" ID="pnlPrivilegeDialog" Visible="false">
                 <div class="modal-backdrop"></div>
-                <div id="dlgGroup" class="modal show" role="dialog">
+                <div id="dlgPrivilege" class="modal show" role="dialog">
                     <div class=" modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title">
-                                    <asp:Literal runat="server" ID="lblGroupDialogHeader"></asp:Literal>
+                                    <asp:Literal runat="server" ID="lblPrivilegeDialogHeader"></asp:Literal>
                                 </h4>
                                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label>Group Name</label>
-                                    <asp:TextBox runat="server" ID="txtGroupName" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtGroupName" Display="None" ErrorMessage="Group Name is required." />
+                                    <label>Privilege Name</label>
+                                    <asp:TextBox runat="server" ID="txtPrivilegeName" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPrivilegeName" Display="None" ErrorMessage="Privilege Name is required." />
+                                </div>
+                                <div class="form-group">
+                                    <label>Page Path</label>
+                                    <asp:TextBox runat="server" ID="txtPagePath" CssClass="form-control"></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPagePath" Display="None" ErrorMessage="Page Path is required." />
+                                </div>
+                                <div class="form-group">
+                                    <asp:CheckBox runat="server" ID="ckbIsDisplayable" Checked="true" Text="Is Displayable on UI" CssClass="checkbox" />
                                 </div>
                                 <div class="form-group">
                                     <label>Descriptions</label>
@@ -83,7 +107,7 @@
                                 <div class="form-group">
                                     <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
                                 </div>
-                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger"/>
+                                <asp:ValidationSummary ID="vsPrivilegeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger"/>
                             </div>
                             <div class="modal-footer">
                                 <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
