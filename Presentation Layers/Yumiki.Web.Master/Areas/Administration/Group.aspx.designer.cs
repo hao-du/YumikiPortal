@@ -22,6 +22,69 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.UpdatePanel upnlGroup;
         
         /// <summary>
+        /// hdnGlobalGroupID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnGlobalGroupID;
+        
+        /// <summary>
+        /// liGroupList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liGroupList;
+        
+        /// <summary>
+        /// btnGroupListTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnGroupListTab;
+        
+        /// <summary>
+        /// liUserAssignment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liUserAssignment;
+        
+        /// <summary>
+        /// btnUserAssignmentTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnUserAssignmentTab;
+        
+        /// <summary>
+        /// mtvGroupTabs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView mtvGroupTabs;
+        
+        /// <summary>
+        /// vwGroupListTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwGroupListTab;
+        
+        /// <summary>
         /// btnAdd control.
         /// </summary>
         /// <remarks>
@@ -49,6 +112,33 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Repeater rptGroup;
         
         /// <summary>
+        /// vwUserAssignmentTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwUserAssignmentTab;
+        
+        /// <summary>
+        /// btnUserAssign control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUserAssign;
+        
+        /// <summary>
+        /// btnUserUnassign control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUserUnassign;
+        
+        /// <summary>
         /// pnlGroupDialog control.
         /// </summary>
         /// <remarks>
@@ -67,13 +157,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Literal lblGroupDialogHeader;
         
         /// <summary>
-        /// hdnID control.
+        /// hdnDialogGroupID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnID;
+        protected global::System.Web.UI.WebControls.HiddenField hdnDialogGroupID;
         
         /// <summary>
         /// txtGroupName control.

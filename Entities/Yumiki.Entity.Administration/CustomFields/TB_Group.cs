@@ -16,5 +16,10 @@ namespace Yumiki.Entity.Administration
                 return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeFormat.ShortDateTime) : CreateDate.ToString(DateTimeFormat.ShortDateTime);
             }
         }
+
+        public class FieldName
+        {
+            public const string GroupName = "GroupName";
+        }
     }
 }

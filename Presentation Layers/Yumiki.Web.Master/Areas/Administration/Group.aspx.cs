@@ -17,6 +17,9 @@ namespace Yumiki.Web.Administration
         private const string showInactiveString = "Show Inactive Groups";
         private const string showActiveString = "Show Active Groups";
 
+        private const int groupListTabIndex = 0;
+        private const int userAssignmentTabIndex = 1;
+
         IGroupService groupService;
         IGroupService GroupService
         {
@@ -30,6 +33,17 @@ namespace Yumiki.Web.Administration
             }
         }
 
+        /// <summary>
+        /// If group has ID, it is Edit Mode. Otherwise, it is New Mode.
+        /// </summary>
+        private bool IsNewMode
+        {
+            get
+            {
+                return string.IsNullOrEmpty(hdnGlobalGroupID.Value) ? true : false;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -39,6 +53,12 @@ namespace Yumiki.Web.Administration
             }
         }
 
+        protected void linkButton_Click(object sender, EventArgs e)
+        {
+            SwitchPanel(sender);
+        }
+
+        #region Group List
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             ResetControls();
@@ -68,7 +88,7 @@ namespace Yumiki.Web.Administration
             {
                 TB_Group group = GroupService.GetGroup(((LinkButton)sender).CommandArgument);
 
-                hdnID.Value = group.ID.ToString();
+                hdnDialogGroupID.Value = group.ID.ToString();
                 txtGroupName.Text = group.GroupName;
                 txtDescription.Text = group.Descriptions;
                 ckbIsActive.Checked = group.IsActive;
@@ -94,9 +114,9 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_Group group = new TB_Group();
-                if (!string.IsNullOrEmpty(hdnID.Value))
+                if (!string.IsNullOrEmpty(hdnDialogGroupID.Value))
                 {
-                    group.ID = Guid.Parse(hdnID.Value);
+                    group.ID = Guid.Parse(hdnDialogGroupID.Value);
                 }
                 group.GroupName = txtGroupName.Text;
                 group.Descriptions = txtDescription.Text;
@@ -114,12 +134,61 @@ namespace Yumiki.Web.Administration
             }
         }
 
+        protected void btnShowOtherTabs_Click(object sender, EventArgs e)
+        {
+            hdnGlobalGroupID.Value = ((LinkButton)sender).CommandArgument;
+            SwitchPanel(btnUserAssignmentTab);
+        }
+        #endregion
+
+        #region User Assignment
+        protected void btnUserAssign_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnUserUnassign_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        /// <summary>
+        /// Switch panel on UI by setting style and visibility of tabs and views
+        /// </summary>
+        /// <param name="sender">Link Button from tab headers</param>
+        private void SwitchPanel(object sender)
+        {
+            mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
+            liGroupList.Attributes.Remove("class");
+            liUserAssignment.Attributes.Remove("class");
+
+            liUserAssignment.Visible = false;
+
+            if (((LinkButton)sender).ID == btnGroupListTab.ID)
+            {
+                mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
+                liGroupList.Attributes.Add("class", "active");
+            }
+            else
+            {
+                liUserAssignment.Visible = true;
+                btnUserAssignmentTab.Visible = true;
+
+                if (((LinkButton)sender).ID == btnUserAssignmentTab.ID)
+                {
+                    mtvGroupTabs.ActiveViewIndex = userAssignmentTabIndex;
+                    liUserAssignment.Attributes.Add("class", "active");
+                }
+            }
+        }
+
         /// <summary>
         /// Reset control when creating new Group or closing Group Dialog
         /// </summary>
         private void ResetControls()
         {
-            txtGroupName.Text = txtDescription.Text = hdnID.Value = string.Empty;
+            txtGroupName.Text = txtDescription.Text = hdnDialogGroupID.Value = string.Empty;
             ckbIsActive.Checked = true;
         }
 
