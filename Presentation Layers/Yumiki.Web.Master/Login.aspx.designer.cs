@@ -10,42 +10,51 @@
 namespace Yumiki.Web.Master {
     
     
-    public partial class Site {
+    public partial class Login {
         
         /// <summary>
-        /// HeaderContainer control.
+        /// HiddenField1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeaderContainer;
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField1;
         
         /// <summary>
-        /// lblMenu control.
+        /// btnLogin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lblMenu;
+        protected global::System.Web.UI.WebControls.Button btnLogin;
         
         /// <summary>
-        /// ContentContainer control.
+        /// vsUserValidationSummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentContainer;
+        protected global::System.Web.UI.WebControls.ValidationSummary vsUserValidationSummary;
         
         /// <summary>
-        /// SubContentContainer control.
+        /// txtUserLoginName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder SubContentContainer;
+        protected global::System.Web.UI.WebControls.TextBox txtUserLoginName;
+        
+        /// <summary>
+        /// txtPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPassword;
     }
 }

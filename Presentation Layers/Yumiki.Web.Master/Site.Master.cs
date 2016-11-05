@@ -1,17 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using Yumiki.Business.Master.Interfaces;
+using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master
 {
-    public partial class Site : System.Web.UI.MasterPage
+    public partial class Site : MasterBasePage
     {
+        IGUIService guiService;
+        IGUIService GUIService
+        {
+            get
+            {
+                if (guiService == null)
+                {
+                    guiService = Service.GetInstance<IGUIService>();
+                }
+                return guiService;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                LoadMenu();
+            }
+        }
 
+        /// <summary>
+        /// Load all menu list which current user has permission
+        /// </summary>
+        private void LoadMenu()
+        {
+            try
+            {
+                lblMenu.Text = GUIService.GetPrivilege(Session["UserID"]?.ToString());
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
     }
 }

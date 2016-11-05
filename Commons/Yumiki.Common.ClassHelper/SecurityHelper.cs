@@ -11,6 +11,7 @@ namespace Yumiki.Common.Helper
     {
         private const string Key = "ValueNeedToBeEncryptedWithAnAES.";
         private const string IV = "AesCryptoService";
+        private const string Salt = "00Very5ecureP@ssw0rd00";
 
         public static string Encrypt(string value, string key)
         {
@@ -19,7 +20,7 @@ namespace Yumiki.Common.Helper
                 key = Key;
             }
 
-            byte[] plaintextbytes = System.Text.ASCIIEncoding.ASCII.GetBytes(value);
+            byte[] plaintextbytes = System.Text.ASCIIEncoding.ASCII.GetBytes(value + Salt);
             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
             aes.BlockSize = 128;
             aes.KeySize = 256;

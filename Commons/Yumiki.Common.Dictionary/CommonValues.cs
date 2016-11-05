@@ -11,5 +11,6 @@ namespace Yumiki.Common.Dictionary
         public const string EmptyValue = "";
         public const string SelectOneForDropDown = "-- Select one --";
         public const char SeparateChar = '±';
+        public const string HashTag = "#";
     }
 }

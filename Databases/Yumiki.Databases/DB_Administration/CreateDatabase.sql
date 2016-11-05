@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[TB_User](
 	[ID] [uniqueidentifier] NOT NULL,
 	[UserLoginName] [varchar](20) NOT NULL,
-	[CurrentPassword] [varchar](50) NOT NULL,
+	[CurrentPassword] [varchar](255) NOT NULL,
 	[FirstName] [nvarchar](15) NULL,
 	[LastName] [nvarchar](15) NULL,
 	[Descriptions] [nvarchar](255) NULL,
@@ -123,7 +123,7 @@ ALTER TABLE [dbo].[TB_UserGroup] CHECK CONSTRAINT [FK_TB_UserGroup_TB_User]
 
 CREATE TABLE [dbo].[TB_PasswordHistory](
 	[ID] [uniqueidentifier] NOT NULL,
-	[Password] [varchar](50) NOT NULL,
+	[Password] [varchar](255) NOT NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,

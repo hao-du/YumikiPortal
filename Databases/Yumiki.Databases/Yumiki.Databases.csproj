@@ -38,6 +38,16 @@
   <ItemGroup>
     <None Include="DB_Administration\CreateDatabase.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DB_Master\CreateDatabase.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB_Administration\InsertData.sql" />
+    <Content Include="DB_Master\InsertData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

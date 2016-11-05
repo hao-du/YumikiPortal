@@ -30,8 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,8 +51,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ISecurityRepository.cs" />
+    <Compile Include="Interfaces\IGUIRepository.cs" />
+    <Compile Include="MasterRepository.cs" />
+    <Compile Include="MasterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\SecurityRepository.cs" />
+    <Compile Include="Repositories\GUIRepository.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
+      <Project>{04117F61-B63A-4414-A95D-63E6288449C6}</Project>
+      <Name>Yumiki.Data.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Entities\Yumiki.Entity.Master\Yumiki.Entity.Master.csproj">
+      <Project>{944A77FE-9AF3-460C-B2AF-54ABF5E68F84}</Project>
+      <Name>Yumiki.Entity.Master</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
