@@ -125,7 +125,8 @@
     <Content Include="User.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="web.config" />
+    <None Include="Properties\PublishProfiles\Administrator.pubxml" />
+    <None Include="web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

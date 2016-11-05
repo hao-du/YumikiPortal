@@ -343,6 +343,7 @@ namespace Yumiki.Web.Administration
             liPrivilegeAssignment.Attributes.Remove("class");
 
             liUserAssignment.Visible = false;
+            liPrivilegeAssignment.Visible = false;
 
             if (((LinkButton)sender).ID == btnGroupListTab.ID)
             {
