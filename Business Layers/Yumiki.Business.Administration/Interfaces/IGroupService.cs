@@ -28,5 +28,27 @@ namespace Yumiki.Business.Administration.Interfaces
         /// </summary>
         /// <param name="group">If group id is empty, then this is new group. Otherwise, this needs to be updated</param>
         void SaveGroup(TB_Group group);
+
+        /// <summary>
+        /// Get all users assigned to group or user not in group based on showAssginedUser parameter.
+        /// </summary>
+        /// <param name="groupID">Group ID of group need to be get all users.</param>
+        /// <param name="showAssginedUser">Switch assgined/free user list.</param>
+        /// <returns></returns>
+        List<TB_User> GetUsersFromGroup(string groupID, bool showAssginedUser);
+
+        /// <summary>
+        /// Assign user list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to asssign users.</param>
+        /// <param name="userIDs">List of Users will be assigned to group.</param>
+        void AddUsersToGroup(string groupID, List<string> userIDs);
+
+        /// <summary>
+        /// Unassign user list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to unasssign users.</param>
+        /// <param name="userIDs">List of Users will be unassigned to group.</param>
+        void RemoveUsersFromGroup(string groupID, List<string> userIDs);
     }
 }

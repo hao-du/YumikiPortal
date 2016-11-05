@@ -71,11 +71,54 @@
                     <asp:View ID="vwUserAssignmentTab" runat="server">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnUserAssign" runat="server" CssClass="btn btn-primary" Text="Assign" OnClick="btnUserAssign_Click" CausesValidation="false" />
-                                <asp:Button ID="btnUserUnassign" runat="server" CssClass="btn btn-primary" Text="Unassign" OnClick="btnUserUnassign_Click" CausesValidation="false" />
+                                <asp:Button ID="btnDisplayUser" runat="server" CssClass="btn btn-primary" Text="Show Unassigned Users" OnClick="btnDisplayUser_Click" CausesValidation="false" />
+                                <asp:Button ID="btnAssignUnassignUser" runat="server" CssClass="btn btn-primary" Text="Assign" OnClick="btnAssignUnassignUser_Click" CausesValidation="false" />
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <blockquote>
+                                    <p><asp:Literal runat="server" ID="lblDisplayDescription" Text="Unassigned User List"></asp:Literal></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <asp:Repeater runat="server" ID="rptUser">
+                                        <HeaderTemplate>
+                                            <table id="tblUser" class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Login Name</th>
+                                                        <th>Full Name</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td>
+                                                    <asp:CheckBox runat="server" ID="ckbSelect" Text="" />
+                                                    <asp:HiddenField runat="server" ID="hdnUserID" Value='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>' />
+                                                </td>
+                                                <td>
+                                                    <asp:Literal runat="server" ID="lblUserName" Text='<%# Eval("UserLoginName") %>'></asp:Literal>
+                                                </td>
+                                                <td>
+                                                    <asp:Literal runat="server" ID="lblFullName" Text='<%# Eval("FullName") %>'></asp:Literal>
+                                                </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            </tbody>
+                                            </table>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
+                                </div>
+                            </div>
+                        </div>
                     </asp:View>
                 </asp:MultiView>
             </div>

@@ -121,22 +121,40 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.View vwUserAssignmentTab;
         
         /// <summary>
-        /// btnUserAssign control.
+        /// btnDisplayUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUserAssign;
+        protected global::System.Web.UI.WebControls.Button btnDisplayUser;
         
         /// <summary>
-        /// btnUserUnassign control.
+        /// btnAssignUnassignUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUserUnassign;
+        protected global::System.Web.UI.WebControls.Button btnAssignUnassignUser;
+        
+        /// <summary>
+        /// lblDisplayDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblDisplayDescription;
+        
+        /// <summary>
+        /// rptUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptUser;
         
         /// <summary>
         /// pnlGroupDialog control.

@@ -41,7 +41,7 @@ namespace Yumiki.Data.Administration.Repositories
             int countGroupName = Context.TB_Group.Where(c => c.ID != excludedGroupID
                                                         && c.GroupName.ToLower() == groupName.ToLower()
                                                         && c.IsActive).Count();
-            if(countGroupName > 0)
+            if (countGroupName > 0)
             {
                 return false;
             }
@@ -57,7 +57,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="group">If group id is empty, then this is new group. Otherwise, this needs to be updated</param>
         public void SaveGroup(TB_Group group)
         {
-            if(group.ID == Guid.Empty)
+            if (group.ID == Guid.Empty)
             {
                 Context.TB_Group.Add(group);
             }
@@ -67,6 +67,63 @@ namespace Yumiki.Data.Administration.Repositories
                 dbGroup.GroupName = group.GroupName;
                 dbGroup.Descriptions = group.Descriptions;
                 dbGroup.IsActive = group.IsActive;
+            }
+
+            Save();
+        }
+
+        /// <summary>
+        /// Get all users assigned to group or user not in group based on showAssginedUser parameter.
+        /// </summary>
+        /// <param name="groupID">Group ID of group need to be get all users.</param>
+        /// <param name="showAssginedUser">Switch assgined/free user list.</param>
+        /// <returns></returns>
+        public List<TB_User> GetUsersFromGroup(Guid groupID, bool showAssginedUser)
+        {
+            IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_User.FieldName.TB_User)
+                                                        .Where(c => c.ID == groupID)
+                                                        .SelectMany(c => c.TB_User).Where(c => c.IsActive).AsEnumerable();
+            if (showAssginedUser)
+            {
+                return assginedUsers.ToList();
+            }
+            else
+            {
+                return Context.TB_User.Where(c => c.IsActive).Except(assginedUsers).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Assign user list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to asssign users.</param>
+        /// <param name="userIDs">List of Users will be assigned to group.</param>
+        public void AddUsersToGroup(Guid groupID, List<Guid> userIDs)
+        {
+            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Where(c => c.ID == groupID).Single();
+            List<TB_User> unassignedUsers = Context.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
+
+            foreach (TB_User user in unassignedUsers)
+            {
+                group.TB_User.Add(user);
+            }
+
+            Save();
+        }
+
+        /// <summary>
+        /// Unassign user list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to unasssign users.</param>
+        /// <param name="userIDs">List of Users will be unassigned to group.</param>
+        public void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs)
+        {
+            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Where(c => c.ID == groupID).Single();
+            List<TB_User> assginedUsers = group.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
+
+            foreach (TB_User user in assginedUsers)
+            {
+                group.TB_User.Remove(user);
             }
 
             Save();

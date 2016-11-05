@@ -26,5 +26,10 @@ namespace Yumiki.Entity.Administration
                 return string.IsNullOrEmpty(FirstName) ? lastName : FirstName + " " + LastName;
             }
         }
+
+        public class FieldName
+        {
+            public const string TB_User = "TB_User";
+        }
     }
 }

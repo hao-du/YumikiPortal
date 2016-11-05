@@ -17,6 +17,12 @@ namespace Yumiki.Web.Administration
         private const string showInactiveString = "Show Inactive Groups";
         private const string showActiveString = "Show Active Groups";
 
+        private const string showUnassignedUserString = "Show Unassigned Users";
+        private const string showAssignedUserString = "Show Assigned Users";
+
+        private const string assignString = "Assign";
+        private const string unassignString = "Unassign";
+
         private const int groupListTabIndex = 0;
         private const int userAssignmentTabIndex = 1;
 
@@ -50,6 +56,7 @@ namespace Yumiki.Web.Administration
             {
                 LoadGroups();
                 btnDisplayInactiveGroups.Text = showInactiveString;
+                btnDisplayUser.Text = showAssignedUserString;
             }
         }
 
@@ -138,18 +145,90 @@ namespace Yumiki.Web.Administration
         {
             hdnGlobalGroupID.Value = ((LinkButton)sender).CommandArgument;
             SwitchPanel(btnUserAssignmentTab);
+            LoadUsersFromGroup();
         }
         #endregion
 
         #region User Assignment
-        protected void btnUserAssign_Click(object sender, EventArgs e)
+        protected void btnDisplayUser_Click(object sender, EventArgs e)
         {
+            if (btnDisplayUser.Text == showUnassignedUserString)
+            {
+                btnDisplayUser.Text = showAssignedUserString;
+                btnAssignUnassignUser.Text = assignString;
+                lblDisplayDescription.Text = "Unassigned User List";
+            }
+            else
+            {
+                btnDisplayUser.Text = showUnassignedUserString;
+                btnAssignUnassignUser.Text = unassignString;
+                lblDisplayDescription.Text = "Assigned User List";
+            }
 
+            int userCount = LoadUsersFromGroup();
+            if (userCount == 0)
+            {
+                btnAssignUnassignUser.Visible = false;
+            }
+            else
+            {
+                btnAssignUnassignUser.Visible = true;
+            }
         }
 
-        protected void btnUserUnassign_Click(object sender, EventArgs e)
+        protected void btnAssignUnassignUser_Click(object sender, EventArgs e)
         {
+            try
+            {
+                List<string> userIDs = new List<string>();
+                foreach (RepeaterItem item in rptUser.Items)
+                {
+                    CheckBox ckbSelect = item.FindControl("ckbSelect") as CheckBox;
+                    HiddenField hdnUserID = item.FindControl("hdnUserID") as HiddenField;
 
+                    if (ckbSelect.Checked)
+                    {
+                        userIDs.Add(hdnUserID.Value);
+                    }
+                }
+
+                if (btnDisplayUser.Text == showAssignedUserString)
+                {
+                    GroupService.AddUsersToGroup(hdnGlobalGroupID.Value, userIDs);
+                }
+                else
+                {
+                    GroupService.RemoveUsersFromGroup(hdnGlobalGroupID.Value, userIDs);
+                }
+
+                LoadUsersFromGroup();
+            }
+            catch(Exception ex)
+            {
+                SendClientMessage(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Load users to User List for Assign/Unassgined to group purpose.
+        /// </summary>
+        private int LoadUsersFromGroup()
+        {
+            bool showAssignedUser;
+            if (btnDisplayUser.Text == showAssignedUserString)
+            {
+                showAssignedUser = false;
+            }
+            else
+            {
+                showAssignedUser = true;
+            }
+
+            List<TB_User> users = GroupService.GetUsersFromGroup(hdnGlobalGroupID.Value, showAssignedUser);
+            rptUser.DataSource = users;
+            rptUser.DataBind();
+
+            return users.Count;
         }
         #endregion
 
