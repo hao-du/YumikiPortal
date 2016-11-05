@@ -14,6 +14,8 @@
                         <asp:LinkButton runat="server" ID="btnGroupListTab" Text="Group List" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserAssignment" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserAssignmentTab" Text="User Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
+                    <li runat="server" id="liPrivilegeAssignment" visible="false">
+                        <asp:LinkButton runat="server" ID="btnPrivilegeAssignmentTab" Text="Privilege Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
                 </ul>
                 <asp:MultiView runat="server" ID="mtvGroupTabs" ActiveViewIndex="0">
                     <asp:View ID="vwGroupListTab" runat="server">
@@ -78,7 +80,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <blockquote>
-                                    <p><asp:Literal runat="server" ID="lblDisplayDescription" Text="Unassigned User List"></asp:Literal></p>
+                                    <p><asp:Literal runat="server" ID="lblDisplayUserDescription" Text="Unassigned User List"></asp:Literal></p>
                                 </blockquote>
                             </div>
                         </div>
@@ -108,6 +110,58 @@
                                                 </td>
                                                 <td>
                                                     <asp:Literal runat="server" ID="lblFullName" Text='<%# Eval("FullName") %>'></asp:Literal>
+                                                </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            </tbody>
+                                            </table>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
+                                </div>
+                            </div>
+                        </div>
+                    </asp:View>
+                    <asp:View ID="vwPrivilegeAssignmentTab" runat="server">
+                        <div class="well well-sm">
+                            <div class="btn-group">
+                                <asp:Button ID="btnDisplayPrivilege" runat="server" CssClass="btn btn-primary" Text="Show Unassigned Privileges" OnClick="btnDisplayPrivilege_Click" CausesValidation="false" />
+                                <asp:Button ID="btnAssignUnassignPrivilege" runat="server" CssClass="btn btn-primary" Text="Assign" OnClick="btnAssignUnassignPrivilege_Click" CausesValidation="false" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <blockquote>
+                                    <p><asp:Literal runat="server" ID="lblDisplayPrivilegeDescription" Text="Unassigned Privilege List"></asp:Literal></p>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <asp:Repeater runat="server" ID="rptPrivilege">
+                                        <HeaderTemplate>
+                                            <table id="tblPrivilege" class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Privilege Name</th>
+                                                        <th>Page Path</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td>
+                                                    <asp:CheckBox runat="server" ID="ckbSelect" Text="" />
+                                                    <asp:HiddenField runat="server" ID="hdnPrivilegeID" Value='<%# Eval(Yumiki.Common.Dictionary.CommonProperties.ID) %>' />
+                                                </td>
+                                                <td>
+                                                    <asp:Literal runat="server" ID="lblPrivilegeName" Text='<%# Eval("PrivilegeName") %>'></asp:Literal>
+                                                </td>
+                                                <td>
+                                                    <asp:Literal runat="server" ID="lblFullName" Text='<%# Eval("PagePath") %>'></asp:Literal>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>

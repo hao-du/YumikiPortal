@@ -179,5 +179,108 @@ namespace Yumiki.Business.Administration.Services
 
             Repository.RemoveUsersFromGroup(convertedGroupID, convertedUserIds);
         }
+
+        /// <summary>
+        /// Get all privilegdes assigned to group or privilegde not in group based on showAssginedPrivilege parameter.
+        /// </summary>
+        /// <param name="groupID">Group ID of group need to be get all privileges.</param>
+        /// <param name="showAssginedPrivilege">Switch assgined/free privilege list.</param>
+        /// <returns></returns>
+        public List<TB_Privilege> GetPrivilegesFromGroup(string groupID, bool showAssginedPrivilege)
+        {
+            if (string.IsNullOrEmpty(groupID))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+            }
+
+            Guid convertedGroupID = Guid.Empty;
+            Guid.TryParse(groupID, out convertedGroupID);
+            if (convertedGroupID == Guid.Empty)
+            {
+                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+            }
+
+            return Repository.GetPrivilegesFromGroup(convertedGroupID, showAssginedPrivilege);
+        }
+
+        /// <summary>
+        /// Assign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to asssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
+        public void AddPrivilegesToGroup(string groupID, List<string> privilegeIDs)
+        {
+            if (string.IsNullOrEmpty(groupID))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+            }
+
+            Guid convertedGroupID = Guid.Empty;
+            Guid.TryParse(groupID, out convertedGroupID);
+            if (convertedGroupID == Guid.Empty)
+            {
+                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+            }
+
+            List<Guid> convertedPrivilegeIds = new List<Guid>();
+            foreach (string privilegeID in privilegeIDs)
+            {
+                if (string.IsNullOrEmpty(privilegeID))
+                {
+                    throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", null);
+                }
+
+                Guid convertedPrivilegeID = Guid.Empty;
+                Guid.TryParse(privilegeID, out convertedPrivilegeID);
+                if (convertedPrivilegeID == Guid.Empty)
+                {
+                    throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", null);
+                }
+
+                convertedPrivilegeIds.Add(convertedPrivilegeID);
+            }
+
+            Repository.AddPrivilegesToGroup(convertedGroupID, convertedPrivilegeIds);
+        }
+
+        /// <summary>
+        /// Unassign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to unasssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
+        public void RemovePrivilegesFromGroup(string groupID, List<string> privilegeIDs)
+        {
+            if (string.IsNullOrEmpty(groupID))
+            {
+                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+            }
+
+            Guid convertedGroupID = Guid.Empty;
+            Guid.TryParse(groupID, out convertedGroupID);
+            if (convertedGroupID == Guid.Empty)
+            {
+                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+            }
+
+            List<Guid> convertedPrivilegeIds = new List<Guid>();
+            foreach (string privilegeID in privilegeIDs)
+            {
+                if (string.IsNullOrEmpty(privilegeID))
+                {
+                    throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", null);
+                }
+
+                Guid convertedPrivilegeID = Guid.Empty;
+                Guid.TryParse(privilegeID, out convertedPrivilegeID);
+                if (convertedPrivilegeID == Guid.Empty)
+                {
+                    throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", null);
+                }
+
+                convertedPrivilegeIds.Add(convertedPrivilegeID);
+            }
+
+            Repository.RemovePrivilegesFromGroup(convertedGroupID, convertedPrivilegeIds);
+        }
     }
 }

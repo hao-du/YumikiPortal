@@ -58,5 +58,27 @@ namespace Yumiki.Data.Administration.Interfaces
         /// <param name="groupID">Specify group to unasssign users.</param>
         /// <param name="userIDs">List of Users will be unassigned to group.</param>
         void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs);
+
+        /// <summary>
+        /// Get all privilegdes assigned to group or privilegde not in group based on showAssginedPrivilege parameter.
+        /// </summary>
+        /// <param name="groupID">Group ID of group need to be get all privileges.</param>
+        /// <param name="showAssginedPrivilege">Switch assgined/free privilege list.</param>
+        /// <returns></returns>
+        List<TB_Privilege> GetPrivilegesFromGroup(Guid groupID, bool showAssginedPrivilege);
+
+        /// <summary>
+        /// Assign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to asssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
+        void AddPrivilegesToGroup(Guid groupID, List<Guid> privilegeIDs);
+
+        /// <summary>
+        /// Unassign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to unasssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
+        void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs);
     }
 }

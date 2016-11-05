@@ -17,6 +17,7 @@ namespace Yumiki.Entity.Administration
 
         public class FieldName
         {
+            public const string TB_Privilege = "TB_Privilege";
             public const string PrivilegeName = "PrivilegeName";
         }
     }

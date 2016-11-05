@@ -67,6 +67,24 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.LinkButton btnUserAssignmentTab;
         
         /// <summary>
+        /// liPrivilegeAssignment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liPrivilegeAssignment;
+        
+        /// <summary>
+        /// btnPrivilegeAssignmentTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnPrivilegeAssignmentTab;
+        
+        /// <summary>
         /// mtvGroupTabs control.
         /// </summary>
         /// <remarks>
@@ -139,13 +157,13 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.Button btnAssignUnassignUser;
         
         /// <summary>
-        /// lblDisplayDescription control.
+        /// lblDisplayUserDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lblDisplayDescription;
+        protected global::System.Web.UI.WebControls.Literal lblDisplayUserDescription;
         
         /// <summary>
         /// rptUser control.
@@ -155,6 +173,51 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptUser;
+        
+        /// <summary>
+        /// vwPrivilegeAssignmentTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwPrivilegeAssignmentTab;
+        
+        /// <summary>
+        /// btnDisplayPrivilege control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplayPrivilege;
+        
+        /// <summary>
+        /// btnAssignUnassignPrivilege control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAssignUnassignPrivilege;
+        
+        /// <summary>
+        /// lblDisplayPrivilegeDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblDisplayPrivilegeDescription;
+        
+        /// <summary>
+        /// rptPrivilege control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPrivilege;
         
         /// <summary>
         /// pnlGroupDialog control.

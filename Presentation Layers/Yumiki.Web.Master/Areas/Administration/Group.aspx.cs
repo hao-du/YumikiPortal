@@ -20,11 +20,15 @@ namespace Yumiki.Web.Administration
         private const string showUnassignedUserString = "Show Unassigned Users";
         private const string showAssignedUserString = "Show Assigned Users";
 
+        private const string showUnassignedPrivilegeString = "Show Unassigned Privileges";
+        private const string showAssignedPrivilegeString = "Show Assigned Privileges";
+
         private const string assignString = "Assign";
         private const string unassignString = "Unassign";
 
         private const int groupListTabIndex = 0;
         private const int userAssignmentTabIndex = 1;
+        private const int privilegeAssignmentTabIndex = 2;
 
         IGroupService groupService;
         IGroupService GroupService
@@ -57,6 +61,7 @@ namespace Yumiki.Web.Administration
                 LoadGroups();
                 btnDisplayInactiveGroups.Text = showInactiveString;
                 btnDisplayUser.Text = showAssignedUserString;
+                btnDisplayPrivilege.Text = showAssignedPrivilegeString;
             }
         }
 
@@ -146,6 +151,7 @@ namespace Yumiki.Web.Administration
             hdnGlobalGroupID.Value = ((LinkButton)sender).CommandArgument;
             SwitchPanel(btnUserAssignmentTab);
             LoadUsersFromGroup();
+            LoadPrivilegesFromGroup();
         }
         #endregion
 
@@ -156,13 +162,13 @@ namespace Yumiki.Web.Administration
             {
                 btnDisplayUser.Text = showAssignedUserString;
                 btnAssignUnassignUser.Text = assignString;
-                lblDisplayDescription.Text = "Unassigned User List";
+                lblDisplayUserDescription.Text = "Unassigned User List";
             }
             else
             {
                 btnDisplayUser.Text = showUnassignedUserString;
                 btnAssignUnassignUser.Text = unassignString;
-                lblDisplayDescription.Text = "Assigned User List";
+                lblDisplayUserDescription.Text = "Assigned User List";
             }
 
             int userCount = LoadUsersFromGroup();
@@ -173,6 +179,16 @@ namespace Yumiki.Web.Administration
             else
             {
                 btnAssignUnassignUser.Visible = true;
+            }
+
+            int privilegeCount = LoadPrivilegesFromGroup();
+            if (privilegeCount == 0)
+            {
+                btnAssignUnassignPrivilege.Visible = false;
+            }
+            else
+            {
+                btnAssignUnassignPrivilege.Visible = true;
             }
         }
 
@@ -232,6 +248,89 @@ namespace Yumiki.Web.Administration
         }
         #endregion
 
+        #region Privilege Assignment
+        protected void btnDisplayPrivilege_Click(object sender, EventArgs e)
+        {
+            if (btnDisplayPrivilege.Text == showUnassignedPrivilegeString)
+            {
+                btnDisplayPrivilege.Text = showAssignedPrivilegeString;
+                btnAssignUnassignPrivilege.Text = assignString;
+                lblDisplayPrivilegeDescription.Text = "Unassigned Privilege List";
+            }
+            else
+            {
+                btnDisplayPrivilege.Text = showUnassignedPrivilegeString;
+                btnAssignUnassignPrivilege.Text = unassignString;
+                lblDisplayPrivilegeDescription.Text = "Assigned Privilege List";
+            }
+
+            int privilegeCount = LoadPrivilegesFromGroup();
+            if (privilegeCount == 0)
+            {
+                btnAssignUnassignPrivilege.Visible = false;
+            }
+            else
+            {
+                btnAssignUnassignPrivilege.Visible = true;
+            }
+        }
+
+        protected void btnAssignUnassignPrivilege_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<string> privilegeIDs = new List<string>();
+                foreach (RepeaterItem item in rptPrivilege.Items)
+                {
+                    CheckBox ckbSelect = item.FindControl("ckbSelect") as CheckBox;
+                    HiddenField hdnPrivilegeID = item.FindControl("hdnPrivilegeID") as HiddenField;
+
+                    if (ckbSelect.Checked)
+                    {
+                        privilegeIDs.Add(hdnPrivilegeID.Value);
+                    }
+                }
+
+                if (btnDisplayPrivilege.Text == showAssignedPrivilegeString)
+                {
+                    GroupService.AddPrivilegesToGroup(hdnGlobalGroupID.Value, privilegeIDs);
+                }
+                else
+                {
+                    GroupService.RemovePrivilegesFromGroup(hdnGlobalGroupID.Value, privilegeIDs);
+                }
+
+                LoadPrivilegesFromGroup();
+            }
+            catch (Exception ex)
+            {
+                SendClientMessage(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Load privileges to Privilege List for Assign/Unassgined to group purpose.
+        /// </summary>
+        private int LoadPrivilegesFromGroup()
+        {
+            bool showAssignedPrivilege;
+            if (btnDisplayPrivilege.Text == showAssignedPrivilegeString)
+            {
+                showAssignedPrivilege = false;
+            }
+            else
+            {
+                showAssignedPrivilege = true;
+            }
+
+            List<TB_Privilege> privileges = GroupService.GetPrivilegesFromGroup(hdnGlobalGroupID.Value, showAssignedPrivilege);
+            rptPrivilege.DataSource = privileges;
+            rptPrivilege.DataBind();
+
+            return privileges.Count;
+        }
+        #endregion
+
         /// <summary>
         /// Switch panel on UI by setting style and visibility of tabs and views
         /// </summary>
@@ -241,6 +340,7 @@ namespace Yumiki.Web.Administration
             mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
             liGroupList.Attributes.Remove("class");
             liUserAssignment.Attributes.Remove("class");
+            liPrivilegeAssignment.Attributes.Remove("class");
 
             liUserAssignment.Visible = false;
 
@@ -254,10 +354,18 @@ namespace Yumiki.Web.Administration
                 liUserAssignment.Visible = true;
                 btnUserAssignmentTab.Visible = true;
 
+                liPrivilegeAssignment.Visible = true;
+                btnPrivilegeAssignmentTab.Visible = true;
+
                 if (((LinkButton)sender).ID == btnUserAssignmentTab.ID)
                 {
                     mtvGroupTabs.ActiveViewIndex = userAssignmentTabIndex;
                     liUserAssignment.Attributes.Add("class", "active");
+                }
+                else if (((LinkButton)sender).ID == btnPrivilegeAssignmentTab.ID)
+                {
+                    mtvGroupTabs.ActiveViewIndex = privilegeAssignmentTabIndex;
+                    liPrivilegeAssignment.Attributes.Add("class", "active");
                 }
             }
         }

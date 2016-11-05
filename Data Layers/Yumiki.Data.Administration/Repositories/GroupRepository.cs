@@ -128,5 +128,62 @@ namespace Yumiki.Data.Administration.Repositories
 
             Save();
         }
+
+        /// <summary>
+        /// Get all privileges assigned to group or privilege not in group based on showAssginedPrivilege parameter.
+        /// </summary>
+        /// <param name="groupID">Group ID of group need to be get all privileges.</param>
+        /// <param name="showAssginedPrivilege">Switch assgined/free privilege list.</param>
+        /// <returns></returns>
+        public List<TB_Privilege> GetPrivilegesFromGroup(Guid groupID, bool showAssginedPrivilege)
+        {
+            IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege)
+                                                        .Where(c => c.ID == groupID)
+                                                        .SelectMany(c => c.TB_Privilege).Where(c => c.IsActive).AsEnumerable();
+            if (showAssginedPrivilege)
+            {
+                return assginedPrivileges.ToList();
+            }
+            else
+            {
+                return Context.TB_Privilege.Where(c => c.IsActive).Except(assginedPrivileges).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Assign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to asssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
+        public void AddPrivilegesToGroup(Guid groupID, List<Guid> privilegeIDs)
+        {
+            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Where(c => c.ID == groupID).Single();
+            List<TB_Privilege> unassignedPrivileges = Context.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
+
+            foreach (TB_Privilege privilege in unassignedPrivileges)
+            {
+                group.TB_Privilege.Add(privilege);
+            }
+
+            Save();
+        }
+
+        /// <summary>
+        /// Unassign privilege list to group.
+        /// </summary>
+        /// <param name="groupID">Specify group to unasssign privileges.</param>
+        /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
+        public void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs)
+        {
+            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Where(c => c.ID == groupID).Single();
+            List<TB_Privilege> assginedPrivileges = group.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
+
+            foreach (TB_Privilege privilege in assginedPrivileges)
+            {
+                group.TB_Privilege.Remove(privilege);
+            }
+
+            Save();
+        }
     }
 }
