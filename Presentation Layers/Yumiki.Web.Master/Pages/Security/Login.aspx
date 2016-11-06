@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Yumiki.Web.Master.Login" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Yumiki.Web.Master.Pages.Security.Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
     <script>
@@ -38,12 +38,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <div class="container">
         <asp:HiddenField ID="HiddenField1" runat="server" Value="" />
-        <h2>Welcome to Yumiki Portal!</h2>
-
-
+        <h2 class="text-uppercase">Welcome to Yumiki Portal!</h2>
         <div class="well well-sm">
             <div class="btn-group">
-                <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
+                <asp:Button ID="btnLogin" runat="server" Text="Sign In" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
             </div>
         </div>
         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -56,19 +54,27 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <asp:TextBox runat="server" ID="txtPassword" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="txtPassword" CssClass="form-control" TextMode="Password"></asp:TextBox>
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPassword" Display="None" ErrorMessage="Password is required." />
                 </div>
+                <div class="form-group">
+                    <blockquote>
+                        <asp:LinkButton runat="server" ID="btnForgotPassword" Text="Forgot Password?" OnClick="btnForgotPassword_Click" CausesValidation="false"></asp:LinkButton>
+                    </blockquote>
+                </div>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-7">
-                AAAAAAAAAAA AAAAAA AAAAAA AAAAAAAAA AAAAAA AAAAAAA AAAAAA  AAAAAA AAAAAAAA AAAAAA AAAAAAAAA AAAAAAA AAAAAAAAAAAAA
-                AAAAA AAAA AAAAA AAA AAAAAAAAA AAA AA AAA AA AAAA AAA AAA AAAAAAA A AA AA AAAAA AAA AAAAAAAAAA AAAAAAAAAAAAA
-                AA  AA AAA AAAAA AAAA AA A AAAAAA  AAAA  A  AAAA A AA  AAAAA AA AAA  AAA AAAAAAA A AAAA A AAAAAAAAAAA AA AAAA AAAA AAA AAA  AAAAAA
-                 AAA AAAAAA AAAAAAAAAAA  AAA AAAAAA AAAA AAAA AAAA AAA AAA AAAAAAAA AAA AAAAAAA AAAAAA AAA AAAAAA AAAAAA AAAAAAA AAAAAAAAAAAAAA
-                AAA AAAAA  AAAAAAA AAAAAAAAAA A AAA AAA AA AA AA A  AAAAAAAAA A A AA  AAA AA AA AAAA AA AA AAAA AAA AA A AAAA  A AAAAAA
-                AAAA AAAA AA AAA AA AA AAA A AA A AA  AAA AAAAAAA AAAAAAAA AA AAAA AAAA AAAAAAA AAAA AAAA AAAAAAAA AAA AAA A AAAA AAAAA AAA
-                AAA A AA AA AAAAA A AAA AAAAA A  AAA    AAAAA  AAAAAAA   
+            <div class="col-md-8">
+                <blockquote>
+                    <p class="text-info">Need to activate your account?</p>
+                    <p class="text-muted">Please send an email to <a href="yumiki.help@gmail.com">Yumiki Support</a> to get activation code.</p>
+                    <p class="bg-info paragraph-padding">
+                        Yumiki Portal contains vary application modules which can help managing things better and quicker such as task/time/expense module etc... and is able to expend or add more modules to adapt your business needs.
+                        <br />
+                        <br />
+                        Portal is applicable for a small business or personal. If you need any further information, please contact us at <a href="yumiki.help@gmail.com">Yumiki Support</a> to get better knowlegde on our products.
+                    </p>
+                    <footer>Yumiki Portal&trade; 2016 - a part of Yumiki Studio &reg;.</footer>
+                </blockquote>
             </div>
         </div>
         <div class="row">

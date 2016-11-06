@@ -22,6 +22,15 @@ namespace Yumiki.Web.Master {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeaderContainer;
         
         /// <summary>
+        /// lblYumikiTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblYumikiTitle;
+        
+        /// <summary>
         /// lblMenu control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,15 @@ namespace Yumiki.Web.Master {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal lblMenu;
+        
+        /// <summary>
+        /// lblUserName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblUserName;
         
         /// <summary>
         /// ContentContainer control.

@@ -128,7 +128,7 @@
     <Content Include="client\scripts\bootstrap.min.js" />
     <Content Include="client\contents\site.less" />
     <Content Include="client\scripts\jquery.min.js" />
-    <Content Include="Login.aspx" />
+    <Content Include="Pages\Security\Login.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -147,11 +147,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Login.aspx.cs">
+    <Compile Include="Pages\Security\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Login.aspx.designer.cs">
+    <Compile Include="Pages\Security\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -185,9 +185,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\SampleArea\Models\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Web.Base\Yumiki.Web.Base.csproj">
@@ -201,6 +199,10 @@
     <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
       <Project>{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}</Project>
       <Name>Yumiki.Common.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
+      <Project>{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}</Project>
+      <Name>Yumiki.Common.Dictionary</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Entities\Yumiki.Entity.Master\Yumiki.Entity.Master.csproj">
       <Project>{944A77FE-9AF3-460C-B2AF-54ABF5E68F84}</Project>

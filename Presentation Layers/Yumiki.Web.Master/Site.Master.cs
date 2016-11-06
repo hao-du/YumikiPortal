@@ -1,5 +1,6 @@
 ﻿using System;
 using Yumiki.Business.Master.Interfaces;
+using Yumiki.Common.Dictionary;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master
@@ -24,6 +25,15 @@ namespace Yumiki.Web.Master
             if (!IsPostBack)
             {
                 LoadMenu();
+
+                if(Session[HttpConstants.Session.UserLoginName] != null)
+                {
+                    lblUserName.Text = Session[HttpConstants.Session.UserLoginName].ToString();
+                }
+                else
+                {
+                    lblUserName.Text = string.Empty;
+                }
             }
         }
 

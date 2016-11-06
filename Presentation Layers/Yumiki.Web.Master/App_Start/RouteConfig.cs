@@ -15,7 +15,8 @@ namespace Yumiki.Web.Master
         /// <param name="routes">Route Collection which initialized by Global.asax</param>
         public static void RegisterWebFormRoutes(RouteCollection routes)
         {
-            routes.MapPageRoute("WebForm", "{application}/{page}", "~/Areas/{application}/{page}.aspx");
+            routes.MapPageRoute("WebForm", "Apps/{application}/{page}", "~/Areas/{application}/{page}.aspx");
+            routes.MapPageRoute("Master", "{application}/{page}", "~/Pages/{application}/{page}.aspx");
         }
 
         /// <summary>

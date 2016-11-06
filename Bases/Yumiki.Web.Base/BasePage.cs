@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.SessionState;
 using System.Web.UI;
+using Yumiki.Common.Dictionary;
 using Yumiki.Common.Helper;
 
 namespace Yumiki.Web.Base
@@ -92,6 +94,15 @@ namespace Yumiki.Web.Base
             stringBuilder.AppendFormat("alert('{0}');", message);
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
+        }
+
+        protected override void OnPreInit(EventArgs e)
+        {
+            base.OnPreInit(e);
+            if (Session[HttpConstants.Session.UserLoginName] == null)
+            {
+                Response.Redirect(string.Format("{0}?{1}={2}", HttpConstants.Pages.Login, HttpConstants.QueryStrings.Path, Request.Path));
+            }
         }
     }
 }

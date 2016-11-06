@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Yumiki.Common.Dictionary;
 
 namespace Yumiki.Web.Master.Controllers
 {
@@ -11,7 +12,7 @@ namespace Yumiki.Web.Master.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            return Redirect(HttpConstants.Pages.Login);
         }
     }
 }

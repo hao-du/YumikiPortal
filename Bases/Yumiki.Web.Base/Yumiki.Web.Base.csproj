@@ -56,6 +56,10 @@
       <Project>{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}</Project>
       <Name>Yumiki.Common.Helper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
+      <Project>{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}</Project>
+      <Name>Yumiki.Common.Dictionary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
