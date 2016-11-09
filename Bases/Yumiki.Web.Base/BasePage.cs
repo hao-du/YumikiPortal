@@ -85,9 +85,9 @@ namespace Yumiki.Web.Base
         }
 
         /// <summary>
-        /// Send a message to client side
+        /// Send a message to client side.
         /// </summary>
-        /// <param name="message">A message from server side</param>
+        /// <param name="message">A message from server side.</param>
         protected void SendClientMessage(string message)
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -96,6 +96,10 @@ namespace Yumiki.Web.Base
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }
 
+        /// <summary>
+        /// If session timeout, return to login page with querystring is the current working page.
+        /// </summary>
+        /// <param name="e">Nothing to do with this one.</param>
         protected override void OnPreInit(EventArgs e)
         {
             base.OnPreInit(e);
