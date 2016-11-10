@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Business.MoneyTrace"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Entity.MoneyTrace", "Entities\Yumiki.Entity.MoneyTrace\Yumiki.Entity.MoneyTrace.csproj", "{70328F31-CD05-48A1-8027-FC67B8F9BF7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.MoneyTrace", "Presentation Layers\Yumiki.Web.Master\Areas\Yumiki.Web.MoneyTrace\Yumiki.Web.MoneyTrace.csproj", "{F1AA35D6-B0C3-4DE9-86BD-C6BE6EE8E5E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.MoneyTrace", "Presentation Layers\Yumiki.Web.Master\Areas\MoneyTrace\Yumiki.Web.MoneyTrace.csproj", "{F1AA35D6-B0C3-4DE9-86BD-C6BE6EE8E5E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

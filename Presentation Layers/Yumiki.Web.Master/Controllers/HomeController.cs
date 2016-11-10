@@ -12,7 +12,7 @@ namespace Yumiki.Web.Master.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return Redirect(HttpConstants.Pages.Login);
+            return View();//Redirect(HttpConstants.Pages.Login);
         }
     }
 }

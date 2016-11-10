@@ -3,6 +3,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Http;
+using System.Configuration;
+using Yumiki.Web.Master.App_Config;
+using System.Reflection;
 
 namespace Yumiki.Web.Master
 {
@@ -12,7 +15,7 @@ namespace Yumiki.Web.Master
         {
             RouteConfig.RegisterWebFormRoutes(RouteTable.Routes);
 
-            // Code that runs on application startup
+            //Code that runs on application startup
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterMVCRoutes(RouteTable.Routes);
