@@ -16,7 +16,7 @@ namespace Yumiki.Web.MoneyTrace
         {
             context.MapRoute(
                 "MoneyTrace_default",
-                "MoneyTrace/{controller}/{action}/{id}",
+                "Apps/MoneyTrace/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

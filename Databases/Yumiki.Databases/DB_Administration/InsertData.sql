@@ -15,3 +15,6 @@ INSERT INTO TB_Privilege
 VALUES(NEWID(), 'Contact Type', '/Administration/ContactType', 1, @AdministrationID, 'Contact Type Page', 1, GETDATE(), NULL)
 
 -------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO [dbo].[TB_User]
+VALUES (NEWID(), 'Administrator', 'rMjUHljPYXs41v7DsdvTHUPF5nnhzuQU81+85Oggr04=', 'Admin', 'Account', 'administrator account', 1, GETDATE(), NULL)

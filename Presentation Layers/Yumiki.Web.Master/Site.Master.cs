@@ -44,7 +44,7 @@ namespace Yumiki.Web.Master
         {
             try
             {
-                lblMenu.Text = GUIService.GetPrivilege(Session["UserID"]?.ToString());
+                lblMenu.Text = GUIService.GetPrivilege(Session[HttpConstants.Session.UserID]?.ToString());
             }
             catch(Exception ex)
             {

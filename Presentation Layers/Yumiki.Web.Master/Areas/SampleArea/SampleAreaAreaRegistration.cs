@@ -16,7 +16,7 @@ namespace Yumiki.Web.Master.Areas.SampleArea
         {
             context.MapRoute(
                 "SampleArea_default",
-                "SampleArea/{controller}/{action}/{id}",
+                "Apps/SampleArea/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }
