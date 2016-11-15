@@ -41,8 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Interfaces\ICurrencyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CurrencyService.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
+      <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>
+      <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data Layers\Yumiki.Data.MoneyTrace\Yumiki.Data.MoneyTrace.csproj">
+      <Project>{FA1822A4-3440-4D05-9808-536E5F83B6CC}</Project>
+      <Name>Yumiki.Data.MoneyTrace</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

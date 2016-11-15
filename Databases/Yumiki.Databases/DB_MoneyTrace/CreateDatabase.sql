@@ -15,6 +15,29 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
+CREATE TABLE [dbo].[TB_TransactionType](
+	[ID] [uniqueidentifier] NOT NULL,
+	[TransactionTypeName] [nvarchar](20) NOT NULL,
+	[IsIncome] [bit] NOT NULL,
+	[IsTransfer] [bit] NOT NULL,
+	[UserID] [uniqueidentifier] NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_TransactionType] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [dbo].[TB_TransactionType]  WITH CHECK ADD  CONSTRAINT [FK_TB_TransactionType_TB_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[TB_User] ([ID])
+
+ALTER TABLE [dbo].[TB_TransactionType] CHECK CONSTRAINT [FK_TB_TransactionType_TB_User]
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE TABLE [dbo].[TB_Category](
 	[ID] [uniqueidentifier] NOT NULL,
 	[CategoryName] [nvarchar](50) NOT NULL,
@@ -57,33 +80,10 @@ CREATE TABLE [dbo].[TB_Currency](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-ALTER TABLE [dbo].[TB_Currency]  WITH CHECK ADD  CONSTRAINT [FK_TB_Currency_TB_Currency] FOREIGN KEY([ID])
-REFERENCES [dbo].[TB_Currency] ([ID])
-
-ALTER TABLE [dbo].[TB_Currency] CHECK CONSTRAINT [FK_TB_Currency_TB_Currency]
-
--------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE [dbo].[TB_TransactionType](
-	[ID] [uniqueidentifier] NOT NULL,
-	[TransactionTypeName] [nvarchar](20) NOT NULL,
-	[IsIncome] [bit] NOT NULL,
-	[IsTransfer] [bit] NOT NULL,
-	[UserID] [uniqueidentifier] NULL,
-	[Descriptions] [nvarchar](255) NULL,
-	[IsActive] [bit] NOT NULL,
-	[CreateDate] [datetime] NOT NULL,
-	[LastUpdateDate] [datetime] NULL,
- CONSTRAINT [PK_TB_TransactionType] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-ALTER TABLE [dbo].[TB_TransactionType]  WITH CHECK ADD  CONSTRAINT [FK_TB_TransactionType_TB_User] FOREIGN KEY([UserID])
+ALTER TABLE [dbo].[TB_Currency]  WITH CHECK ADD  CONSTRAINT [FK_TB_Currency_TB_User] FOREIGN KEY([UserID])
 REFERENCES [dbo].[TB_User] ([ID])
 
-ALTER TABLE [dbo].[TB_TransactionType] CHECK CONSTRAINT [FK_TB_TransactionType_TB_User]
+ALTER TABLE [dbo].[TB_Currency] CHECK CONSTRAINT [FK_TB_Currency_TB_User]
 
 -------------------------------------------------------------------------------------------------------------------------------------
 

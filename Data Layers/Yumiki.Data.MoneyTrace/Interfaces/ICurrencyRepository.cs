@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Entity.MoneyTrace
+namespace Yumiki.Data.MoneyTrace.Interfaces
 {
-    public class Class1
+    public interface ICurrencyRepository
     {
     }
 }
