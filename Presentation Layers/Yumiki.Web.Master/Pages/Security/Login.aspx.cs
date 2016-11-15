@@ -11,21 +11,8 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master.Pages.Security
 {
-    public partial class Login : BasePage
+    public partial class Login : BasePage<ISecurityService>
     {
-        ISecurityService securityService;
-        ISecurityService SecurityService
-        {
-            get
-            {
-                if (securityService == null)
-                {
-                    securityService = Service.GetInstance<ISecurityService>();
-                }
-                return securityService;
-            }
-        }
-
         /// <summary>
         /// Overide this to prevent loop when it checks NULL session in BasePage
         /// </summary>
@@ -39,7 +26,7 @@ namespace Yumiki.Web.Master.Pages.Security
         {
             try
             {
-                TB_User user = SecurityService.Login(txtUserLoginName.Text, txtPassword.Text);
+                TB_User user = BusinessService.Login(txtUserLoginName.Text, txtPassword.Text);
 
                 Session[HttpConstants.Session.UserID] = user.ID.ToString();
                 Session[HttpConstants.Session.UserLoginName] = user.UserLoginName.ToString();

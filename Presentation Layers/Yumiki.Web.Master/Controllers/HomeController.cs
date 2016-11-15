@@ -9,31 +9,26 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : BaseController<IGUIService>
     {
-        ISecurityService securityService;
-        ISecurityService SecurityService
-        {
-            get
-            {
-                if (securityService == null)
-                {
-                    securityService = Service.GetInstance<ISecurityService>();
-                }
-                return securityService;
-            }
-        }
-
         // GET: Home
         public ActionResult Index()
         {
-            return View();//Redirect(HttpConstants.Pages.Login);
+            return View();
         }
 
         [ChildActionOnly]
-        public PartialViewResult GetAddress()
+        public PartialViewResult GetMenu()
         {
-            return PartialView("_address");
+            string userID = Session[HttpConstants.Session.UserID]?.ToString();
+            string menu = string.Empty;
+
+            if (!string.IsNullOrEmpty(userID))
+            {
+                menu = BusinessService.GetPrivilege(userID);
+            }
+
+            return PartialView("GetMenu", menu);
         }
 
     }

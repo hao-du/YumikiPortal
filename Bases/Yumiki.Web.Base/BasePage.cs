@@ -14,13 +14,26 @@ namespace Yumiki.Web.Base
     /// <summary>
     /// Parent class for all ASP.NET Webform pages.
     /// </summary>
-    public class BasePage : System.Web.UI.Page
+    public class BasePage<T> : System.Web.UI.Page
     {
+        private T businessService;
+        protected T BusinessService
+        {
+            get
+            {
+                if (businessService == null)
+                {
+                    businessService = Service.GetInstance<T>();
+                }
+                return businessService;
+            }
+        }
+
         private DependencyHelper service;
         /// <summary>
         /// Get Dependency Injection Service
         /// </summary>
-        protected DependencyHelper Service
+        private DependencyHelper Service
         {
             get
             {

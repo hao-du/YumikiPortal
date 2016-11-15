@@ -12,21 +12,8 @@ using Yumiki.Entity.Master;
 
 namespace Yumiki.Business.Master.Services
 {
-    public class GUIService : BaseService, IGUIService
+    public class GUIService : BaseService<IGUIRepository>, IGUIService
     {
-        private IGUIRepository repository;
-        private IGUIRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<IGUIRepository>();
-                }
-                return repository;
-            }
-        }
-
         /// <summary>
         /// Get all privileges (menus) from database and show to UI.
         /// </summary>

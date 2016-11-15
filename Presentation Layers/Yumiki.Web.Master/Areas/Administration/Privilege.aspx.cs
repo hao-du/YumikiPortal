@@ -13,23 +13,10 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class Privilege : BasePage
+    public partial class Privilege : BasePage<IPrivilegeService>
     {
         private const string showInactiveString = "Show Inactive Privileges";
         private const string showActiveString = "Show Active Privileges";
-
-        IPrivilegeService privilegeService;
-        IPrivilegeService PrivilegeService
-        {
-            get
-            {
-                if (privilegeService == null)
-                {
-                    privilegeService = Service.GetInstance<IPrivilegeService>();
-                }
-                return privilegeService;
-            }
-        }
 
         #region Navigation
         /// <summary>
@@ -164,7 +151,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                TB_Privilege privilege = PrivilegeService.GetPrivilege(((LinkButton)sender).CommandArgument);
+                TB_Privilege privilege = BusinessService.GetPrivilege(((LinkButton)sender).CommandArgument);
 
                 hdnID.Value = privilege.ID.ToString();
                 txtPrivilegeName.Text = privilege.PrivilegeName;
@@ -221,7 +208,7 @@ namespace Yumiki.Web.Administration
                 privilege.IsActive = ckbIsActive.Checked;
                 privilege.ParentPrivilegeID = Guid.Parse(ClosestNavigation.NavigationID);
 
-                PrivilegeService.SavePrivilege(privilege);
+                BusinessService.SavePrivilege(privilege);
                 LoadPrivileges();
 
                 ResetControls();
@@ -294,7 +281,7 @@ namespace Yumiki.Web.Administration
                 showInactive = true;
             }
 
-            List<TB_Privilege> privileges = PrivilegeService.GetAllPrivileges(showInactive, ClosestNavigation.NavigationID);
+            List<TB_Privilege> privileges = BusinessService.GetAllPrivileges(showInactive, ClosestNavigation.NavigationID);
             rptPrivilege.DataSource = privileges;
             rptPrivilege.DataBind();
 

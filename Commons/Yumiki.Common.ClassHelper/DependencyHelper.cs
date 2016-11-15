@@ -67,5 +67,14 @@ namespace Yumiki.Common.Helper
             T instance = ServiceLocator.Current.GetInstance<T>();
             return instance;
         }
+
+        /// <summary>
+        /// Resolve an instance of the default requested type from the container
+        /// </summary>
+        /// <returns>Return an object from type</returns>
+        public object Resolve(Type type)
+        {
+            return container.Resolve(type);
+        }
     }
 }

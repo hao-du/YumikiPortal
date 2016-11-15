@@ -12,23 +12,10 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class ContactType : BasePage
+    public partial class ContactType: BasePage<IContactTypeService>
     {
         private const string showInactiveString = "Show Inactive Types";
         private const string showActiveString = "Show Active Types";
-
-        IContactTypeService contactTypeService;
-        IContactTypeService ContactTypeService
-        {
-            get
-            {
-                if (contactTypeService == null)
-                {
-                    contactTypeService = Service.GetInstance<IContactTypeService>();
-                }
-                return contactTypeService;
-            }
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -66,7 +53,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                TB_ContactType contactType = ContactTypeService.GetContactType(((LinkButton)sender).CommandArgument);
+                TB_ContactType contactType = BusinessService.GetContactType(((LinkButton)sender).CommandArgument);
 
                 hdnID.Value = contactType.ID.ToString();
                 txtContactTypeName.Text = contactType.ContactTypeName;
@@ -102,7 +89,7 @@ namespace Yumiki.Web.Administration
                 contactType.Descriptions = txtDescription.Text;
                 contactType.IsActive = ckbIsActive.Checked;
 
-                ContactTypeService.SaveContactType(contactType);
+                BusinessService.SaveContactType(contactType);
                 LoadContentTypes();
 
                 ResetControls();
@@ -138,7 +125,7 @@ namespace Yumiki.Web.Administration
                 showInactive = true;
             }
 
-            List<TB_ContactType> contactTypes = ContactTypeService.GetAllContactTypes(showInactive);
+            List<TB_ContactType> contactTypes = BusinessService.GetAllContactTypes(showInactive);
             rptContactType.DataSource = contactTypes;
             rptContactType.DataBind();
         }

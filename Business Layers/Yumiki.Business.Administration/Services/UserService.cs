@@ -13,21 +13,8 @@ using Yumiki.Entity.Administration;
 
 namespace Yumiki.Business.Administration.Services
 {
-    public class UserService : BaseService, IUserService
+    public class UserService : BaseService<IUserRepository>, IUserService
     {
-        private IUserRepository repository;
-        private IUserRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<IUserRepository>();
-                }
-                return repository;
-            }
-        }
-
         public bool CheckValidUserName(string userName, Guid excludedUserID)
         {
             throw new NotImplementedException();

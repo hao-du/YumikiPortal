@@ -5,28 +5,15 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master
 {
-    public partial class Site : MasterBasePage
+    public partial class Site : MasterBasePage<IGUIService>
     {
-        IGUIService guiService;
-        IGUIService GUIService
-        {
-            get
-            {
-                if (guiService == null)
-                {
-                    guiService = Service.GetInstance<IGUIService>();
-                }
-                return guiService;
-            }
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 LoadMenu();
 
-                if(Session[HttpConstants.Session.UserLoginName] != null)
+                if (Session[HttpConstants.Session.UserLoginName] != null)
                 {
                     lblUserName.Text = Session[HttpConstants.Session.UserLoginName].ToString();
                 }
@@ -42,13 +29,14 @@ namespace Yumiki.Web.Master
         /// </summary>
         private void LoadMenu()
         {
-            try
+            string userID = Session[HttpConstants.Session.UserID]?.ToString();
+            if (!string.IsNullOrEmpty(userID))
             {
-                lblMenu.Text = GUIService.GetPrivilege(Session[HttpConstants.Session.UserID]?.ToString());
+                lblMenu.Text = BusinessService.GetPrivilege(userID);
             }
-            catch(Exception ex)
+            else
             {
-
+                lblMenu.Text = string.Empty;
             }
         }
     }

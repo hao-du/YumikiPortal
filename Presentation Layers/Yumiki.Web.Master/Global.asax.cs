@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Configuration;
 using Yumiki.Web.Master.App_Config;
 using System.Reflection;
+using Yumiki.Common.Helper;
 
 namespace Yumiki.Web.Master
 {

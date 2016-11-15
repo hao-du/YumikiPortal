@@ -12,21 +12,8 @@ using Yumiki.Entity.Administration;
 
 namespace Yumiki.Business.Administration.Services
 {
-    public class PrivilegeService : BaseService, IPrivilegeService
+    public class PrivilegeService : BaseService<IPrivilegeRepository>, IPrivilegeService
     {
-        private IPrivilegeRepository repository;
-        private IPrivilegeRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<IPrivilegeRepository>();
-                }
-                return repository;
-            }
-        }
-
         /// <summary>
         /// Get all active privileges from Database
         /// </summary>

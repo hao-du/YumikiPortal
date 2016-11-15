@@ -12,21 +12,8 @@ using Yumiki.Entity.Master;
 
 namespace Yumiki.Business.Master.Services
 {
-    public class SecurityService : BaseService, ISecurityService
+    public class SecurityService : BaseService<ISecurityRepository>, ISecurityService
     {
-        private ISecurityRepository repository;
-        private ISecurityRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<ISecurityRepository>();
-                }
-                return repository;
-            }
-        }
-
         public TB_User Login(string userName, string password)
         {
             if (string.IsNullOrEmpty(userName))

@@ -11,7 +11,7 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class User : BasePage
+    public partial class User : BasePage<IUserService>
     {
         private const string showInactiveString = "Show Inactive Users";
         private const string showActiveString = "Show Active Users";
@@ -29,19 +29,6 @@ namespace Yumiki.Web.Administration
             get
             {
                 return string.IsNullOrEmpty(hdnID.Value) ? true : false;
-            }
-        }
-
-        IUserService userService;
-        IUserService UserService
-        {
-            get
-            {
-                if (userService == null)
-                {
-                    userService = Service.GetInstance<IUserService>();
-                }
-                return userService;
             }
         }
 
@@ -90,7 +77,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                TB_User user = UserService.GetUser(((LinkButton)sender).CommandArgument);
+                TB_User user = BusinessService.GetUser(((LinkButton)sender).CommandArgument);
 
                 hdnID.Value = user.ID.ToString();
                 txtUserLoginName.Text = user.UserLoginName;
@@ -137,7 +124,7 @@ namespace Yumiki.Web.Administration
                 user.Descriptions = txtDescription.Text;
                 user.IsActive = ckbIsActive.Checked;
 
-                UserService.SaveUser(user);
+                BusinessService.SaveUser(user);
                 LoadUsers();
                 SendClientMessage("Save successfully!");
 
@@ -169,7 +156,7 @@ namespace Yumiki.Web.Administration
                     SendClientMessage("Confirm Password must be the same password.");
                 }
 
-                UserService.ResetPassword(userID, txtUserLoginName.Text, password);
+                BusinessService.ResetPassword(userID, txtUserLoginName.Text, password);
 
                 SendClientMessage("Password was reset successfully!");
             }
@@ -196,7 +183,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                TB_UserAddress userAddress = UserService.GetUserAddress(((LinkButton)sender).CommandArgument);
+                TB_UserAddress userAddress = BusinessService.GetUserAddress(((LinkButton)sender).CommandArgument);
 
                 hdnUserAddressID.Value = userAddress.ID.ToString();
                 txtUserAddress.Text = userAddress.UserAddress;
@@ -244,7 +231,7 @@ namespace Yumiki.Web.Administration
                 userAddress.UserID = Guid.Parse(hdnID.Value);
                 userAddress.IsActive = ckbUserAddressIsActive.Checked;
 
-                UserService.SaveUserAddress(userAddress);
+                BusinessService.SaveUserAddress(userAddress);
                 LoadUserAddresses();
                 pnlUserAddressDialog.Visible = false;
             }
@@ -297,7 +284,7 @@ namespace Yumiki.Web.Administration
                 showInactive = true;
             }
 
-            List<TB_User> users = UserService.GetAllUsers(showInactive);
+            List<TB_User> users = BusinessService.GetAllUsers(showInactive);
             rptUser.DataSource = users;
             rptUser.DataBind();
         }
@@ -309,7 +296,7 @@ namespace Yumiki.Web.Administration
         {
             if (!IsNewMode)
             {
-                List<TB_ContactType> contactTypes = UserService.GetAllContacts(hdnID.Value, false);
+                List<TB_ContactType> contactTypes = BusinessService.GetAllContacts(hdnID.Value, false);
 
                 rptContactType.DataSource = contactTypes;
                 rptContactType.DataBind();
@@ -321,7 +308,7 @@ namespace Yumiki.Web.Administration
         /// </summary>
         private void LoadContactTypes()
         {
-            List<TB_ContactType> contactTypes = UserService.GetAllContactTypes(false);
+            List<TB_ContactType> contactTypes = BusinessService.GetAllContactTypes(false);
 
             ddlContactType.DataTextField = TB_ContactType.FieldName.ContactTypeName;
             ddlContactType.DataValueField = TB_ContactType.FieldName.ID;

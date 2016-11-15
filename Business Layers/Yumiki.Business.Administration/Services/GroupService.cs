@@ -11,21 +11,8 @@ using Yumiki.Entity.Administration;
 
 namespace Yumiki.Business.Administration.Services
 {
-    public class GroupService : BaseService, IGroupService
+    public class GroupService : BaseService<IGroupRepository>, IGroupService
     {
-        private IGroupRepository repository;
-        private IGroupRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<IGroupRepository>();
-                }
-                return repository;
-            }
-        }
-
         /// <summary>
         /// Get all active groups from Database
         /// </summary>

@@ -11,21 +11,8 @@ using Yumiki.Entity.Administration;
 
 namespace Yumiki.Business.Administration.Services
 {
-    public class ContactTypeService : BaseService, IContactTypeService
+    public class ContactTypeService : BaseService<IContactTypeRepository>, IContactTypeService
     {
-        private IContactTypeRepository repository;
-        private IContactTypeRepository Repository
-        {
-            get
-            {
-                if (repository == null)
-                {
-                    repository = Service.GetInstance<IContactTypeRepository>();
-                }
-                return repository;
-            }
-        }
-
         /// <summary>
         /// Get all active contact types from Database
         /// </summary>

@@ -12,7 +12,7 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class Group : BasePage
+    public partial class Group : BasePage<IGroupService>
     {
         private const string showInactiveString = "Show Inactive Groups";
         private const string showActiveString = "Show Active Groups";
@@ -29,19 +29,6 @@ namespace Yumiki.Web.Administration
         private const int groupListTabIndex = 0;
         private const int userAssignmentTabIndex = 1;
         private const int privilegeAssignmentTabIndex = 2;
-
-        IGroupService groupService;
-        IGroupService GroupService
-        {
-            get
-            {
-                if (groupService == null)
-                {
-                    groupService = Service.GetInstance<IGroupService>();
-                }
-                return groupService;
-            }
-        }
 
         /// <summary>
         /// If group has ID, it is Edit Mode. Otherwise, it is New Mode.
@@ -98,7 +85,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                TB_Group group = GroupService.GetGroup(((LinkButton)sender).CommandArgument);
+                TB_Group group = BusinessService.GetGroup(((LinkButton)sender).CommandArgument);
 
                 hdnDialogGroupID.Value = group.ID.ToString();
                 txtGroupName.Text = group.GroupName;
@@ -134,7 +121,7 @@ namespace Yumiki.Web.Administration
                 group.Descriptions = txtDescription.Text;
                 group.IsActive = ckbIsActive.Checked;
 
-                GroupService.SaveGroup(group);
+                BusinessService.SaveGroup(group);
                 LoadGroups();
 
                 ResetControls();
@@ -210,11 +197,11 @@ namespace Yumiki.Web.Administration
 
                 if (btnDisplayUser.Text == showAssignedUserString)
                 {
-                    GroupService.AddUsersToGroup(hdnGlobalGroupID.Value, userIDs);
+                    BusinessService.AddUsersToGroup(hdnGlobalGroupID.Value, userIDs);
                 }
                 else
                 {
-                    GroupService.RemoveUsersFromGroup(hdnGlobalGroupID.Value, userIDs);
+                    BusinessService.RemoveUsersFromGroup(hdnGlobalGroupID.Value, userIDs);
                 }
 
                 LoadUsersFromGroup();
@@ -240,7 +227,7 @@ namespace Yumiki.Web.Administration
                 showAssignedUser = true;
             }
 
-            List<TB_User> users = GroupService.GetUsersFromGroup(hdnGlobalGroupID.Value, showAssignedUser);
+            List<TB_User> users = BusinessService.GetUsersFromGroup(hdnGlobalGroupID.Value, showAssignedUser);
             rptUser.DataSource = users;
             rptUser.DataBind();
 
@@ -293,11 +280,11 @@ namespace Yumiki.Web.Administration
 
                 if (btnDisplayPrivilege.Text == showAssignedPrivilegeString)
                 {
-                    GroupService.AddPrivilegesToGroup(hdnGlobalGroupID.Value, privilegeIDs);
+                    BusinessService.AddPrivilegesToGroup(hdnGlobalGroupID.Value, privilegeIDs);
                 }
                 else
                 {
-                    GroupService.RemovePrivilegesFromGroup(hdnGlobalGroupID.Value, privilegeIDs);
+                    BusinessService.RemovePrivilegesFromGroup(hdnGlobalGroupID.Value, privilegeIDs);
                 }
 
                 LoadPrivilegesFromGroup();
@@ -323,7 +310,7 @@ namespace Yumiki.Web.Administration
                 showAssignedPrivilege = true;
             }
 
-            List<TB_Privilege> privileges = GroupService.GetPrivilegesFromGroup(hdnGlobalGroupID.Value, showAssignedPrivilege);
+            List<TB_Privilege> privileges = BusinessService.GetPrivilegesFromGroup(hdnGlobalGroupID.Value, showAssignedPrivilege);
             rptPrivilege.DataSource = privileges;
             rptPrivilege.DataBind();
 
@@ -395,7 +382,7 @@ namespace Yumiki.Web.Administration
                 showInactive = true;
             }
 
-            List<TB_Group> groups = GroupService.GetAllGroups(showInactive);
+            List<TB_Group> groups = BusinessService.GetAllGroups(showInactive);
             rptGroup.DataSource = groups;
             rptGroup.DataBind();
         }
