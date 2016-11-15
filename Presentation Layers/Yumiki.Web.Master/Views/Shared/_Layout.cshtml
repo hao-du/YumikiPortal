@@ -28,7 +28,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @{ Html.RenderAction("GetMenu", "Home"); }
+                    @{ Html.RenderAction("GetMenu", "Home", new { area = "" }); }
                 </ul>
             </div>
         </div>
