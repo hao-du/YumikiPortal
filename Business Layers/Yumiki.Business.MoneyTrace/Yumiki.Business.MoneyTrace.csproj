@@ -55,6 +55,10 @@
       <Project>{FA1822A4-3440-4D05-9808-536E5F83B6CC}</Project>
       <Name>Yumiki.Data.MoneyTrace</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Entities\Yumiki.Entity.MoneyTrace\Yumiki.Entity.MoneyTrace.csproj">
+      <Project>{70328F31-CD05-48A1-8027-FC67B8F9BF7F}</Project>
+      <Name>Yumiki.Entity.MoneyTrace</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
