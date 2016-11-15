@@ -44,6 +44,8 @@
   <ItemGroup>
     <Content Include="DB_Administration\InsertData.sql" />
     <Content Include="DB_Master\InsertData.sql" />
+    <Content Include="DB_MoneyTrace\InsertData.sql" />
+    <None Include="DB_MoneyTrace\CreateDatabase.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
