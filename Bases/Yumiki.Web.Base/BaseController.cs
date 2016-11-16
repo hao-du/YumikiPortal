@@ -45,7 +45,39 @@ namespace Yumiki.Web.Base
             base.OnActionExecuting(filterContext);
             if (Session[HttpConstants.Session.UserLoginName] == null)
             {
-                filterContext.Result = Redirect(string.Format("{0}?{1}={2}", HttpConstants.Pages.Login, HttpConstants.QueryStrings.Path, Request.Url));
+                filterContext.Result = RedirectToLoginPage();
+            }
+        }
+
+        protected override void OnAuthentication(AuthenticationContext filterContext)
+        {
+            base.OnAuthentication(filterContext);
+
+            ViewBag.UserName = string.Empty;
+            ViewBag.UserID = string.Empty;
+            ViewBag.LastLoginTime = string.Empty;
+
+            if (Session[HttpConstants.Session.UserLoginName] != null)
+            {
+                ViewBag.UserName = Session[HttpConstants.Session.UserLoginName].ToString();
+                ViewBag.UserID = Session[HttpConstants.Session.UserID].ToString();
+                ViewBag.LastLoginTime = Session[HttpConstants.Session.LastLoginTime].ToString();
+            }
+        }
+
+        /// <summary>
+        /// Redirect to login page
+        /// </summary>
+        /// <returns></returns>
+        protected RedirectResult RedirectToLoginPage(bool hasQueryString = true)
+        {
+            if (hasQueryString)
+            {
+                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login, HttpConstants.QueryStrings.Path, Request.Url));
+            }
+            else
+            {
+                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login));
             }
         }
     }

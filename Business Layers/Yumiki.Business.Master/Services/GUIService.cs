@@ -44,7 +44,13 @@ namespace Yumiki.Business.Master.Services
         private string ScanChildrenNodes(VW_Privilege parent, List<VW_Privilege> privileges)
         {
             StringBuilder menu = new StringBuilder();
+
             string path = parent.IsDisplayable ? parent.PagePath : CommonValues.HashTag;
+            //URL Path must be "/Application/PageName/[Action]", has 'slash' char at the first of path
+            if (!path.Equals(CommonValues.HashTag) && !parent.PagePath.First().Equals('/'))
+            {
+                path = string.Format("/{0}", path);
+            }
 
             IEnumerable<VW_Privilege> children = privileges.Where(c => c.ParentPrivilegeID == parent.ID);
 
@@ -55,7 +61,7 @@ namespace Yumiki.Business.Master.Services
             else
             {
                 menu.Append("<li class=\"dropdown\">");
-                menu.AppendFormat("<a href=\"{0}\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">{1}<span class=\"caret\"></span></a>", path, parent.PrivilegeName);
+                menu.AppendFormat("<a href=\"/{0}{1}\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">{2}<span class=\"caret\"></span></a>",  HttpConstants.Pages.WebFormAreaPrefix, path, parent.PrivilegeName);
                 menu.Append("<ul class=\"dropdown-menu\">");
 
                 foreach (VW_Privilege child in children)

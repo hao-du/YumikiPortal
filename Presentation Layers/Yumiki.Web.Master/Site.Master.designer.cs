@@ -49,6 +49,24 @@ namespace Yumiki.Web.Master {
         protected global::System.Web.UI.WebControls.Literal lblUserName;
         
         /// <summary>
+        /// liLogoutSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogoutSection;
+        
+        /// <summary>
+        /// lnkLogout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkLogout;
+        
+        /// <summary>
         /// ContentContainer control.
         /// </summary>
         /// <remarks>

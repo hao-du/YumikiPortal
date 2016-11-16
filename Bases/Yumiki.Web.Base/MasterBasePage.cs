@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Common.Dictionary;
 using Yumiki.Common.Helper;
 
 namespace Yumiki.Web.Base
@@ -40,6 +41,21 @@ namespace Yumiki.Web.Base
                     service = DependencyHelper.GetService(containerName);
                 }
                 return service;
+            }
+        }
+
+        /// <summary>
+        /// Redirect to login page
+        /// </summary>
+        protected void RedirectToLoginPage(bool hasQueryString = true)
+        {
+            if (hasQueryString)
+            {
+                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login, HttpConstants.QueryStrings.Path, Request.Path));
+            }
+            else
+            {
+                Response.Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login));
             }
         }
     }

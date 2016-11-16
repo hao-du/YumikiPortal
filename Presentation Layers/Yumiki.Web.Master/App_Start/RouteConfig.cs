@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Yumiki.Common.Dictionary;
 
 namespace Yumiki.Web.Master
 {
@@ -15,8 +16,8 @@ namespace Yumiki.Web.Master
         /// <param name="routes">Route Collection which initialized by Global.asax</param>
         public static void RegisterWebFormRoutes(RouteCollection routes)
         {
-            routes.MapPageRoute("WebForm", "Apps/{application}/{page}", "~/Areas/{application}/{page}.aspx");
-            routes.MapPageRoute("Master", "{application}/{page}", "~/Pages/{application}/{page}.aspx");
+            routes.MapPageRoute("WebForm", string.Format("{0}/{1}/{2}", HttpConstants.Pages.WebFormAreaPrefix, "{application}", "{page}"), "~/Areas/{application}/{page}.aspx");
+            routes.MapPageRoute("Master", string.Format("{0}/{1}/{2}", HttpConstants.Pages.WebFormMasterPrefix, "{application}", "{page}"), "~/Pages/{application}/{page}.aspx");
         }
 
         /// <summary>

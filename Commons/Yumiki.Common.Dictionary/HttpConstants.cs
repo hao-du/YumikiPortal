@@ -23,7 +23,8 @@ namespace Yumiki.Common.Dictionary
         public class Pages
         {
             public const string Login = "/Security/Login";
-            public const string Home = "/Apps/Administration/User";
+            public const string WebFormMasterPrefix = "Pages";
+            public const string WebFormAreaPrefix = "Apps";
         }
     }
 }

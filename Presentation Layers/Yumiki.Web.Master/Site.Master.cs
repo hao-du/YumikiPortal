@@ -13,13 +13,13 @@ namespace Yumiki.Web.Master
             {
                 LoadMenu();
 
+                liLogoutSection.Visible = false;
+                lblUserName.Text = string.Empty;
+
                 if (Session[HttpConstants.Session.UserLoginName] != null)
                 {
                     lblUserName.Text = Session[HttpConstants.Session.UserLoginName].ToString();
-                }
-                else
-                {
-                    lblUserName.Text = string.Empty;
+                    liLogoutSection.Visible = true;
                 }
             }
         }
@@ -38,6 +38,12 @@ namespace Yumiki.Web.Master
             {
                 lblMenu.Text = string.Empty;
             }
+        }
+
+        protected void lnkLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            RedirectToLoginPage(false);
         }
     }
 }

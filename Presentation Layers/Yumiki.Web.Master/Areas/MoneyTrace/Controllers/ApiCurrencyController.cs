@@ -18,11 +18,11 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             List<TB_Currency> currencyList = BusinessService.GetAllCurrency(true);
 
-            return categoryList;
+            return null;//categoryList;
         }
 
         // GET api/values/1
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
         public TB_Category GetById(int id)
         {
             //TB_Category category = _context.Tbl_Category.Where(c => c.Id == id).FirstOrDefault();
@@ -42,7 +42,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             return null;
         }
 
-        [HttpPut("{id}")]
+        //[HttpPut("{id}")]
         public IEnumerable<TB_Category> Update(int id, [FromBody] TB_Category item)
         {
             //TB_Category dbItem = _context.Tbl_Category.Where(c => c.Id == id).FirstOrDefault();

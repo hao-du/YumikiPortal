@@ -74,6 +74,12 @@ namespace Yumiki.Business.Administration.Services
                 throw new AdvanceException(ExceptionCode.E_DUPLICATED, "Privilege Name or Page Path was used.", null);
             }
 
+            //If parent id is Guild.Empty,it means this is the root node, so need to assign NULL value.
+            if(privilege.ParentPrivilegeID.HasValue && privilege.ParentPrivilegeID.Value == Guid.Empty)
+            {
+                privilege.ParentPrivilegeID = null;
+            }
+
             Repository.SavePrivilege(privilege);
         }
     }

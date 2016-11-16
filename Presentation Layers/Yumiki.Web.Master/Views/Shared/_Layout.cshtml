@@ -30,6 +30,20 @@
                 <ul class="nav navbar-nav">
                     @{ Html.RenderAction("GetMenu", "Home", new { area = "" }); }
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p class="navbar-text">
+                            <span class="glyphicon glyphicon-user"></span>
+                            @ViewBag.UserName
+                        </p>
+                    </li>
+                    @if (!string.IsNullOrEmpty(@ViewBag.UserName))
+                    {
+                        <li>
+                            @Html.ActionLink("Log out", "Logout", "Home", new { area= "" }, null)
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     </nav>

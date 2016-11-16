@@ -57,35 +57,38 @@
     </asp:ContentPlaceHolder>
 </head>
 <body class="modal-open">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <asp:Literal runat="server" ID="lblYumikiTitle" Text="YUMIKI PORTAL"></asp:Literal></a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <asp:Literal runat="server" ID="lblMenu"></asp:Literal>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <p class="navbar-text">
-                            <span class="glyphicon glyphicon-user"></span>
-                            <asp:Literal runat="server" ID="lblUserName" Text=""></asp:Literal>
-                        </p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <asp:Literal runat="server" ID="lblYumikiTitle" Text="YUMIKI PORTAL"></asp:Literal></a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <asp:Literal runat="server" ID="lblMenu"></asp:Literal>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <p class="navbar-text">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <asp:Literal runat="server" ID="lblUserName" Text=""></asp:Literal>
+                            </p>
+                        </li>
+                        <li runat="server" id="liLogoutSection">
+                            <asp:LinkButton runat="server" ID="lnkLogout" Text="Log out" OnClick="lnkLogout_Click"></asp:LinkButton>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <div class="full-width">
             <asp:ContentPlaceHolder ID="ContentContainer" runat="server">
             </asp:ContentPlaceHolder>
