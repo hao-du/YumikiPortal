@@ -15,10 +15,6 @@
     <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />
     <script src="../../client/scripts/bootstrap.min.js"></script>
 
-    <link href="~/client/contents/datatable.min.css" rel="stylesheet" />
-    <script src="../../client/scripts/jquery.dataTables.js"></script>
-    <script src="../../client/scripts/dataTables.bootstrap.js"></script>
-
     <link href="~/client/contents/bootstrap-select.min.css" rel="stylesheet" />
     <script src="../../client/scripts/bootstrap-select.min.js"></script>
 

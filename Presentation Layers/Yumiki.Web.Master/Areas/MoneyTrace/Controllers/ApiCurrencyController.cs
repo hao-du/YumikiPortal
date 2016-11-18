@@ -13,12 +13,13 @@ namespace Yumiki.Web.MoneyTrace.Controllers
     public class ApiCurrencyController : ApiBaseController<ICurrencyService>
     {
         // GET api/values
+        [Route("api/currency/get")]
         [HttpGet]
-        public IEnumerable<TB_Currency> Get()
+        public IHttpActionResult Get()
         {
             List<TB_Currency> currencyList = BusinessService.GetAllCurrency(true);
 
-            return null;//categoryList;
+            return Ok(currencyList);
         }
 
         // GET api/values/1

@@ -11,6 +11,7 @@ namespace Yumiki.Data.MoneyTrace
         public MoneyTraceModel()
             : base("name=MoneyTraceModel")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<TB_Category> TB_Category { get; set; }

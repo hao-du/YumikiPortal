@@ -11,6 +11,7 @@ namespace Yumiki.Data.Administration
         public AdministrationModel()
             : base("name=AdministrationModel")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<TB_Group> TB_Group { get; set; }

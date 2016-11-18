@@ -180,6 +180,7 @@
     <Content Include="client\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="client\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\Home\GetMenu.cshtml" />
+    <None Include="client\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -11,6 +11,7 @@ namespace Yumiki.Data.Master
         public MasterModel()
             : base("name=MasterModel")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<TB_User> TB_User { get; set; }
