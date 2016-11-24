@@ -7,13 +7,14 @@ using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Web.Base;
+using Yumiki.Web.MoneyTrace.Constants;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
     public class ApiCurrencyController : ApiBaseController<ICurrencyService>
     {
         // GET api/values
-        [Route("api/currency/get")]
+        [Route("api/currency/get", Name = RouteNames.CurrencyGet)]
         [HttpGet]
         public IHttpActionResult Get()
         {

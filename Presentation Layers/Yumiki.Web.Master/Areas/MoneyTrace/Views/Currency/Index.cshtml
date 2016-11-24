@@ -1,4 +1,4 @@
-﻿
+﻿@using Yumiki.Web.MoneyTrace.Constants
 @{
     ViewBag.Title = "Currency";
 }
@@ -8,8 +8,7 @@
         var app = angular.module('moneyTrace', []);
         app.controller('currencyController', function ($scope, $http) {
             $scope.inActiveButtonName = 'Show Inactive Currency';
-
-            $http.get("http://localhost:1732/api/currency/get")
+            $http.get('@Url.RouteUrl(RouteNames.CurrencyGet)')
                 .then(function mySucces(response) {
                     $scope.currencyList = response.data;
                 }, function myError(response) {

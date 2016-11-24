@@ -108,6 +108,7 @@
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\RouteNames.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
