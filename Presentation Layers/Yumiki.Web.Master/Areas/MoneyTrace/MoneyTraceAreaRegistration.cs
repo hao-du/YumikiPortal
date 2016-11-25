@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Yumiki.Commons.Dictionaries;
 
 namespace Yumiki.Web.MoneyTrace
 {
@@ -16,7 +17,7 @@ namespace Yumiki.Web.MoneyTrace
         {
             context.MapRoute(
                 "MoneyTrace_default",
-                "Apps/MoneyTrace/{controller}/{action}/{id}",
+                string.Format("{0}/{1}/{2}", HttpConstants.Pages.WebFormAreaPrefix, AreaName, "{controller}/{action}/{id}"),
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

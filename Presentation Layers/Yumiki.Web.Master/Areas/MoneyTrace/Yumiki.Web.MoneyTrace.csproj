@@ -136,6 +136,10 @@
       <Project>{014B7B1B-4F71-4E32-9631-F5DD2B686A3C}</Project>
       <Name>Yumiki.Business.MoneyTrace</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Entities\Yumiki.Entity.MoneyTrace\Yumiki.Entity.MoneyTrace.csproj">
       <Project>{70328F31-CD05-48A1-8027-FC67B8F9BF7F}</Project>
       <Name>Yumiki.Entity.MoneyTrace</Name>
