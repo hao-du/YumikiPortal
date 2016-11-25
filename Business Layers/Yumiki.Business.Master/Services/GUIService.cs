@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.Master.Interfaces;
-using Yumiki.Common.Dictionary;
-using Yumiki.Common.Helper;
+using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Exceptions;
 using Yumiki.Data.Master.Interfaces;
 using Yumiki.Entity.Master;
 
@@ -84,14 +83,14 @@ namespace Yumiki.Business.Master.Services
         {
             if (string.IsNullOrEmpty(userID))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
             }
 
             Guid convertedID = Guid.Empty;
             Guid.TryParse(userID, out convertedID);
             if (convertedID == Guid.Empty)
             {
-                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
             }
 
             return convertedID;

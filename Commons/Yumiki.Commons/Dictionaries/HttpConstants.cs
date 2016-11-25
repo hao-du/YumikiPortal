@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Common.Dictionary
+namespace Yumiki.Commons.Dictionaries
 {
     public class HttpConstants
     {
@@ -22,7 +22,6 @@ namespace Yumiki.Common.Dictionary
 
         public class Pages
         {
-            public const string Login = "/Security/Login";
             public const string WebFormMasterPrefix = "Pages";
             public const string WebFormAreaPrefix = "Apps";
         }

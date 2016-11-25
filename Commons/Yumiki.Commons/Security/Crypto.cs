@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-namespace Yumiki.Common.Helper
+namespace Yumiki.Commons.Security
 {
-    public class SecurityHelper
+    public class Crypto
     {
         private const string Key = "ValueNeedToBeEncryptedWithAnAES.";
         private const string IV = "AesCryptoService";

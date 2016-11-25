@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration.Interfaces;
-using Yumiki.Common.Dictionary;
-using Yumiki.Common.Helper;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
 

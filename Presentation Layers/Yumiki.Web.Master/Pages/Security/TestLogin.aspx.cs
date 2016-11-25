@@ -6,7 +6,7 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master.Pages.Security
 {
-    public partial class Login : BasePage<ISecurityService>
+    public partial class TestLogin : BasePage<ISecurityService>
     {
         /// <summary>
         /// Overide this to prevent loop when it checks NULL session in BasePage
@@ -21,7 +21,7 @@ namespace Yumiki.Web.Master.Pages.Security
         {
             try
             {
-                TB_User user = BusinessService.Login(txtUserLoginName.Text, txtPassword.Text);
+                TB_User user = BusinessService.Login(txtUserLoginName.Text);
 
                 Session[HttpConstants.Session.UserID] = user.ID.ToString();
                 Session[HttpConstants.Session.UserLoginName] = user.UserLoginName.ToString();
@@ -34,18 +34,6 @@ namespace Yumiki.Web.Master.Pages.Security
                 }
                 Response.Redirect(path);
                 
-            }
-            catch (Exception ex)
-            {
-                SendClientMessage(ex.Message);
-            }
-        }
-
-        protected void btnForgotPassword_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SendClientMessage("To do...");
             }
             catch (Exception ex)
             {

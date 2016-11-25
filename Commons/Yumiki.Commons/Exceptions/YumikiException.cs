@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Common.Helper
+namespace Yumiki.Commons.Exceptions
 {
     public enum ExceptionCode
     {
@@ -15,7 +15,7 @@ namespace Yumiki.Common.Helper
         E_SECURITY_ERROR
     }
 
-    public class AdvanceException : Exception
+    public class YumikiException : Exception
     {
         public ExceptionCode ExCode { get; set; }
 
@@ -24,7 +24,7 @@ namespace Yumiki.Common.Helper
         /// </summary>
         public object ReferenceObject { get; set; }
 
-        public AdvanceException(ExceptionCode exCode, string errorMessage, Exception innerException) : base(errorMessage, innerException)
+        public YumikiException(ExceptionCode exCode, string errorMessage, Exception innerException) : base(errorMessage, innerException)
         {
             this.ExCode = exCode;
         }
@@ -36,7 +36,7 @@ namespace Yumiki.Common.Helper
         /// <param name="referenceObject">Used to pass over the DLLs to track exception value.</param>
         /// <param name="errorMessage">Error message from Exception base class</param>
         /// <param name="innerException">Inner exception from Exception base class</param>
-        public AdvanceException(ExceptionCode exCode, object referenceObject ,string errorMessage, Exception innerException) : base(errorMessage, innerException)
+        public YumikiException(ExceptionCode exCode, object referenceObject ,string errorMessage, Exception innerException) : base(errorMessage, innerException)
         {
             this.ExCode = exCode;
             this.ReferenceObject = referenceObject;

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Mvc.Filters;
-using Yumiki.Common.Dictionary;
-using Yumiki.Common.Helper;
+using Yumiki.Commons.Configurations;
+using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
 {
@@ -25,8 +21,8 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private DependencyHelper service;
-        private DependencyHelper Service
+        private Dependency service;
+        private Dependency Service
         {
             get
             {
@@ -34,7 +30,7 @@ namespace Yumiki.Web.Base
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
                     string containerName = this.GetType().FullName.Split('.')[2];
-                    service = DependencyHelper.GetService(containerName);
+                    service = Dependency.GetService(containerName);
                 }
                 return service;
             }
@@ -73,11 +69,11 @@ namespace Yumiki.Web.Base
         {
             if (hasQueryString)
             {
-                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login, HttpConstants.QueryStrings.Path, Request.Url));
+                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
             }
             else
             {
-                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, HttpConstants.Pages.Login));
+                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage));
             }
         }
     }

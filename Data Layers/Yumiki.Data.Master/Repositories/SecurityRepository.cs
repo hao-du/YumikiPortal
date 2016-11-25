@@ -20,5 +20,14 @@ namespace Yumiki.Data.Master.Repositories
         {
             return Context.TB_User.Where(c => c.UserLoginName.Equals(userName) && c.CurrentPassword.Equals(password)).SingleOrDefault();
         }
+
+        /// <summary>
+        /// This is only used for mock up
+        /// </summary>
+        /// <param name="userName">User Login Name.</param>
+        public TB_User Login(string userName)
+        {
+            return Context.TB_User.Where(c => c.UserLoginName.Equals(userName)).SingleOrDefault();
+        }
     }
 }

@@ -58,9 +58,9 @@
       <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
       <Name>Yumiki.Entity.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
-      <Project>{7bdcbfbd-82de-4a9b-97d2-d9c2ffb97821}</Project>
-      <Name>Yumiki.Common.Dictionary</Name>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

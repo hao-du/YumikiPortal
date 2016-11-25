@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Common.Dictionary
+namespace Yumiki.Commons.Dictionaries
 {
     public class CommonValues
     {

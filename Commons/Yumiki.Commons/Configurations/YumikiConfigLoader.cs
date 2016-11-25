@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Web;
-using System.Web.Configuration;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Yumiki.Web.Master.App_Config
+namespace Yumiki.Commons.Configurations
 {
     /// <summary>
     /// Configuration under web.config.
     /// </summary>
-    public class YumikiConfiguration : ConfigurationSection
+    public class YumikiConfigLoader : ConfigurationSection
     {
         [ConfigurationProperty("", IsRequired = true, IsDefaultCollection = true)]
         public YumikiCollection Instances
@@ -19,12 +20,27 @@ namespace Yumiki.Web.Master.App_Config
             set { this[""] = value; }
         }
 
-        ////Sample Code
-        //YumikiConfiguration yumiki = ConfigurationManager.GetSection("yumiki") as YumikiConfiguration;
-        //foreach (YumikiElement node in yumiki.Instances)
-        //{
-
-        //}
+        private static YumikiConfigLoader configuration;
+        public static YumikiConfigLoader GetInstance()
+        {
+            if (configuration == null)
+            {
+                configuration = ConfigurationManager.GetSection("yumiki") as YumikiConfigLoader;
+                foreach (YumikiElement node in configuration.Instances)
+                {
+                    try
+                    {
+                        PropertyInfo property = typeof(CustomConfigurations).GetProperty(node.Name);
+                        property.SetValue(null, node.Value);
+                    }
+                    catch
+                    {
+                        //To Do: Log
+                    }
+                }
+            }
+            return configuration;
+        }
     }
 
     public class YumikiCollection : ConfigurationElementCollection
@@ -50,10 +66,10 @@ namespace Yumiki.Web.Master.App_Config
         }
 
         [ConfigurationProperty("value", IsRequired = true)]
-        public string Type
+        public string Value
         {
-            get { return (string)base["type"]; }
-            set { base["type"] = value; }
+            get { return (string)base["value"]; }
+            set { base["value"] = value; }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using Yumiki.Business.Master.Interfaces;
-using Yumiki.Common.Dictionary;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master

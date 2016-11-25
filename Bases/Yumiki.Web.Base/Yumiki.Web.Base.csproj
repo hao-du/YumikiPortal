@@ -60,22 +60,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
-      <Project>{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}</Project>
-      <Name>Yumiki.Common.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
-      <Project>{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}</Project>
-      <Name>Yumiki.Common.Dictionary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

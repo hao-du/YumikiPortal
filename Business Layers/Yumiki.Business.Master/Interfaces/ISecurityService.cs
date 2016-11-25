@@ -16,5 +16,11 @@ namespace Yumiki.Business.Master.Interfaces
         /// <param name="password">Password of user.</param>
         /// <returns></returns>
         TB_User Login(string userName, string password);
+
+        /// <summary>
+        /// This is only used for mock up
+        /// </summary>
+        /// <param name="userName">User Login Name.</param>
+        TB_User Login(string userName);
     }
 }

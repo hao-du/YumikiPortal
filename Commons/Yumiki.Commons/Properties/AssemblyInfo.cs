@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Yumiki.Common.Dictionary")]
+[assembly: AssemblyTitle("Yumiki.Commons")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Yumiki.Common.Dictionary")]
+[assembly: AssemblyProduct("Yumiki.Commons")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7bdcbfbd-82de-4a9b-97d2-d9c2ffb97821")]
+[assembly: Guid("7c58deb3-e136-4086-b9a5-44c5cb28b269")]
 
 // Version information for an assembly consists of the following four values:
 //

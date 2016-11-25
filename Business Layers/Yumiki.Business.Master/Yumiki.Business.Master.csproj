@@ -52,13 +52,9 @@
       <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>
       <Name>Yumiki.Business.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
-      <Project>{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}</Project>
-      <Name>Yumiki.Common.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
-      <Project>{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}</Project>
-      <Name>Yumiki.Common.Dictionary</Name>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data Layers\Yumiki.Data.Master\Yumiki.Data.Master.csproj">
       <Project>{B0383B21-9CFD-41D1-B361-45B75E5D5E67}</Project>

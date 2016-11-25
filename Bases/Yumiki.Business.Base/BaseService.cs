@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yumiki.Common.Helper;
+﻿using Yumiki.Commons.Unity;
 
 namespace Yumiki.Business.Base
 {
@@ -25,11 +20,11 @@ namespace Yumiki.Business.Base
             }
         }
 
-        private DependencyHelper service;
+        private Dependency service;
         /// <summary>
         /// Get Dependency Injection Service
         /// </summary>
-        protected DependencyHelper Service
+        protected Dependency Service
         {
             get
             {
@@ -37,7 +32,7 @@ namespace Yumiki.Business.Base
                 {
                     //Get domain name such as "SampleService" in "Yumiki.Business.SampleService" (index = 2)
                     string containerName = this.GetType().FullName.Split('.')[2];
-                    service = DependencyHelper.GetService(containerName);
+                    service = Dependency.GetService(containerName);
                 }
                 return service;
             }

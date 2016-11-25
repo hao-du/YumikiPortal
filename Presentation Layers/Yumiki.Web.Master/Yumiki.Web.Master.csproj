@@ -128,11 +128,11 @@
     <Content Include="client\scripts\bootstrap.min.js" />
     <Content Include="client\contents\site.less" />
     <Content Include="client\scripts\jquery.min.js" />
+    <Content Include="Pages\Security\TestLogin.aspx" />
     <Content Include="Pages\Security\Login.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Config\YumikiConfiguration.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\SampleArea\Controllers\SampleController.cs" />
@@ -147,6 +147,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Security\TestLogin.aspx.cs">
+      <DependentUpon>TestLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Security\TestLogin.aspx.designer.cs">
+      <DependentUpon>TestLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Security\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -203,13 +210,9 @@
       <Project>{BBC7119C-551F-4C2B-9614-05397F87550E}</Project>
       <Name>Yumiki.Business.Master</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
-      <Project>{1236C601-2B5A-47DE-A6B3-8B81D56E56DE}</Project>
-      <Name>Yumiki.Common.Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.Dictionary\Yumiki.Common.Dictionary.csproj">
-      <Project>{7BDCBFBD-82DE-4A9B-97D2-D9C2FFB97821}</Project>
-      <Name>Yumiki.Common.Dictionary</Name>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Entities\Yumiki.Entity.Master\Yumiki.Entity.Master.csproj">
       <Project>{944A77FE-9AF3-460C-B2AF-54ABF5E68F84}</Project>

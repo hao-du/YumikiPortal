@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Business.Base;
-using Yumiki.Common.Helper;
+using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Security;
 using Yumiki.Data.Administration.Interfaces;
-using Yumiki.Data.Administration.Repositories;
 using Yumiki.Entity.Administration;
 
 namespace Yumiki.Business.Administration.Services
@@ -48,25 +45,25 @@ namespace Yumiki.Business.Administration.Services
         {
             if (!user.UserLoginName.All(char.IsLetterOrDigit))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User Login Name only allows alphanumeric.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Login Name only allows alphanumeric.", null);
             }
 
             if (string.IsNullOrEmpty(user.UserLoginName))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User Name is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Name is required.", null);
             }
 
             if (string.IsNullOrEmpty(user.CurrentPassword) && user.ID.Equals(Guid.Empty))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Password is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Password is required.", null);
             }
 
             if (!Repository.CheckValidUserName(user.UserLoginName, user.ID))
             {
-                throw new AdvanceException(ExceptionCode.E_DUPLICATED, "User Login Name was used.", null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, "User Login Name was used.", null);
             }
 
-            user.CurrentPassword = SecurityHelper.Encrypt(user.CurrentPassword, user.UserLoginName);
+            user.CurrentPassword = Crypto.Encrypt(user.CurrentPassword, user.UserLoginName);
 
             Repository.SaveUser(user);
         }
@@ -80,18 +77,18 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(newPassword))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "New Password cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "New Password cannot be empty.", null);
             }
 
             Guid convertedID = CheckandConvertUserID(userID);
 
-            newPassword = SecurityHelper.Encrypt(newPassword, userLogInName);
+            newPassword = Crypto.Encrypt(newPassword, userLogInName);
 
             int maxRecord = 5;
             List<string> passwords = Repository.GetPasswords(maxRecord, convertedID);
             if (passwords.Contains(newPassword))
             {
-                throw new AdvanceException(ExceptionCode.E_DUPLICATED, string.Format("New password cannot be the same value with {0} previous password.", maxRecord), null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, string.Format("New password cannot be the same value with {0} previous password.", maxRecord), null);
             }
 
             Repository.ResetPassword(convertedID, newPassword);
@@ -150,12 +147,12 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(userAddress.UserAddress))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Contact Details is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Details is required.", null);
             }
 
             if (userAddress.UserContactTypeID.Equals(Guid.Empty))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "Contact Type is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type is required.", null);
             }
 
             Repository.SaveUserAddress(userAddress);
@@ -170,14 +167,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(userID))
             {
-                throw new AdvanceException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
             }
 
             Guid convertedID = Guid.Empty;
             Guid.TryParse(userID, out convertedID);
             if (convertedID == Guid.Empty)
             {
-                throw new AdvanceException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
             }
 
             return convertedID;

@@ -3,10 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Http;
-using System.Configuration;
-using Yumiki.Web.Master.App_Config;
-using System.Reflection;
-using Yumiki.Common.Helper;
+using Yumiki.Commons.Configurations;
 
 namespace Yumiki.Web.Master
 {
@@ -14,6 +11,9 @@ namespace Yumiki.Web.Master
     {
         void Application_Start(object sender, EventArgs e)
         {
+            //Custom Configuration
+            YumikiConfigLoader.GetInstance();
+
             RouteConfig.RegisterWebFormRoutes(RouteTable.Routes);
 
             //Code that runs on application startup

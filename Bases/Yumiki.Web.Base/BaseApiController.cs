@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Yumiki.Common.Helper;
+﻿using System.Web.Http;
+using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
 {
@@ -23,8 +18,8 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private DependencyHelper service;
-        private DependencyHelper Service
+        private Dependency service;
+        private Dependency Service
         {
             get
             {
@@ -32,7 +27,7 @@ namespace Yumiki.Web.Base
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
                     string containerName = this.GetType().FullName.Split('.')[2];
-                    service = DependencyHelper.GetService(containerName);
+                    service = Dependency.GetService(containerName);
                 }
                 return service;
             }

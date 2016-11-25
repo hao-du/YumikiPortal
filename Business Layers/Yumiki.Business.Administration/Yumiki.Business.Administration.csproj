@@ -55,9 +55,9 @@
       <Project>{a2595517-2380-4fca-8c7f-41ebbcade68b}</Project>
       <Name>Yumiki.Business.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Commons\Yumiki.Common.ClassHelper\Yumiki.Common.Helper.csproj">
-      <Project>{1236c601-2b5a-47de-a6b3-8b81d56e56de}</Project>
-      <Name>Yumiki.Common.Helper</Name>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data Layers\Yumiki.Data.Administration\Yumiki.Data.Administration.csproj">
       <Project>{79010fe1-2086-452b-8cd0-265d7353fd60}</Project>

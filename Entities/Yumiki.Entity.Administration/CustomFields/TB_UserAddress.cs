@@ -1,7 +1,7 @@
 namespace Yumiki.Entity.Administration
 {
     using Base;
-    using Common.Dictionary;
+    using Commons.Dictionaries;
     using System;
     using System.Collections.Generic;
 

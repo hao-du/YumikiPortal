@@ -7,21 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Common.Helper
+namespace Yumiki.Commons.Unity
 {
-    public class DependencyHelper
+    public class Dependency
     {
-        private static DependencyHelper service;
+        private static Dependency service;
         /// <summary>
         /// Get all Register Type through config file (App.config or Web.config)
         /// </summary>
         /// <param name="containerName">Specific container name which defined in config file</param>
         /// <returns>Return DependencyHelper object in Singleton mode</returns>
-        public static DependencyHelper GetService(string containerName)
+        public static Dependency GetService(string containerName)
         {
             if (service == null)
             {
-                service = new DependencyHelper();
+                service = new Dependency();
             }
 
             if (!string.IsNullOrEmpty(containerName))
@@ -40,7 +40,7 @@ namespace Yumiki.Common.Helper
         /// Get all Register Type through config file (App.config or Web.config)
         /// </summary>
         /// <returns>Return DependencyHelper object in Singleton mode</returns>
-        public static DependencyHelper GetService()
+        public static Dependency GetService()
         {
             return GetService(string.Empty);
         }
@@ -50,7 +50,7 @@ namespace Yumiki.Common.Helper
         /// <summary>
         /// Constuctor for Helper to init UnityContainer and ServiceLocator of Unity IOC
         /// </summary>
-        public DependencyHelper()
+        public Dependency()
         {
             container = new UnityContainer();
             locator = new UnityServiceLocator(container);

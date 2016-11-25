@@ -8,7 +8,7 @@
         var app = angular.module('moneyTrace', []);
         app.controller('currencyController', function ($scope, $http) {
             $scope.inActiveButtonName = 'Show Inactive Currency';
-            $http.get('@Url.RouteUrl(RouteNames.CurrencyGet)')
+            $http.get('@{Url.RouteUrl(RouteNames.CurrencyGet)}')
                 .then(function mySucces(response) {
                     $scope.currencyList = response.data;
                 }, function myError(response) {
