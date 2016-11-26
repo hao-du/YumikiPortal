@@ -15,10 +15,10 @@ namespace Yumiki.Web.MoneyTrace.Controllers
     {
         // GET api/values
         [Route("api/currency/get", Name = RouteNames.CurrencyGet)]
-        [HttpGet]
-        public IHttpActionResult Get()
+        [HttpGet()]
+        public IHttpActionResult Get(bool showInactive)
         {
-            List<TB_Currency> currencyList = BusinessService.GetAllCurrency(true);
+            List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
 
             return Ok(currencyList);
         }

@@ -6,23 +6,45 @@
 @section HeaderContainer{
     <script type="text/javascript">
         var app = angular.module('moneyTrace', []);
-        app.controller('currencyController', function ($scope, $http) {
-            $scope.inActiveButtonName = 'Show Inactive Currency';
-            $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGet, null)')
-                .then(function mySucces(response) {
+
+        app.service('DataService', function ($http) {
+            this.getCurrencyList = function (showInactive) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGet, null)', { params: { 'showInactive': showInactive } });
+            };
+        });
+
+        app.controller('currencyController', function ($scope, $http, DataService) {
+            $scope.showInactive = false;
+
+            //Display Dialog and pass data to Dialog
+            $scope.showDialog = function (currencyID) {
+                $('#dlgCurrency').modal({ backdrop: 'static' });
+            }
+
+            $scope.loadData = function () {
+                DataService.getCurrencyList($scope.showInactive).then(function mySucces(response) {
                     $scope.currencyList = response.data;
+
+                    if ($scope.showInactive) {
+                        $scope.inActiveButtonName = 'Show Active Currency';
+                    } else {
+                        $scope.inActiveButtonName = 'Show Inactive Currency';
+                    }
+
+                    $scope.showInactive = !$scope.showInactive;
                 }, function myError(response) {
 
                 });
+            };
         });
     </script>
 }
-<div class="container" ng-app="moneyTrace" ng-controller="currencyController">
+<div class="container" ng-app="moneyTrace" ng-controller="currencyController" ng-init="loadData();">
     <h2>Currency</h2>
     <div class="well well-sm">
         <div class="btn-group">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dlgCurrency">Add</button>
-            <button type="button" class="btn btn-primary">{{inActiveButtonName}}</button>
+            <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+            <button type="button" class="btn btn-primary" ng-click="loadData();">{{inActiveButtonName}}</button>
         </div>
     </div>
     <div class="row">
@@ -46,12 +68,30 @@
                             <td>{{ currency.Descriptions }}</td>
                             <td>{{ currency.IsActive }}</td>
                             <td>{{ currency.CreateDate }}</td>
-                            <td></td>
+                            <td><a href="#" id="btnEdit" ng-click="showDialog(currency.ID);">Edit</a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="dlgCurrency" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
