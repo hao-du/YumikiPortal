@@ -7,18 +7,28 @@
     <script type="text/javascript">
         var app = angular.module('moneyTrace', []);
 
+        //Service to transfer data between controllers.
+        app.factory('DataTransfer', function () {
+            return { currencyID : '' };
+        });
+
+        //Service to communicate with Server.
         app.service('DataService', function ($http) {
             this.getCurrencyList = function (showInactive) {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGet, null)', { params: { 'showInactive': showInactive } });
             };
         });
 
-        app.controller('currencyController', function ($scope, $http, DataService) {
+        app.controller('currencyController', function ($scope, $http, DataService, DataTransfer) {
             $scope.showInactive = false;
 
-            //Display Dialog and pass data to Dialog
+            //Display Dialog and pass data to Dialog.
             $scope.showDialog = function (currencyID) {
                 $('#dlgCurrency').modal({ backdrop: 'static' });
+
+                if (currencyID != undefined || currencyID != null) {
+                    DataTransfer.currencyID = currencyID;
+                }
             }
 
             $scope.loadData = function () {
