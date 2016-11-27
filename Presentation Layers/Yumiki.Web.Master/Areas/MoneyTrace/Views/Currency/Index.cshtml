@@ -22,7 +22,11 @@
 
             this.getCurrencyByID = function (currencyID) {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetByID, null)', { params: { 'currencyID': currencyID } });
-            }
+            };
+
+            this.save = function (currency) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.CurrencyGetSave, null)', currency);
+            };
         });
 
         //Controller to display items' list
@@ -88,7 +92,12 @@
             }
 
             $scope.save = function () {
-                alert('saved!');
+                DataService.save($scope.currency)
+                    .then(function mySucces(response) {
+                        alert('ok');
+                    }, function myError(response) {
+                        alert('fail');
+                    });
             };
         });
     </script>
@@ -123,7 +132,7 @@
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>
                                 <td>{{ currency.@CommonProperties.IsActive }}</td>
                                 <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
-                                <td><a href="#" id="btnEdit" ng-click="showDialog({{ currency.@CommonProperties.ID }});">Edit</a></td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);">Edit</a></td>
                             </tr>
                         </tbody>
                     </table>

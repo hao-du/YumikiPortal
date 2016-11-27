@@ -11,9 +11,10 @@ using Yumiki.Web.MoneyTrace.Constants;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
+    [RoutePrefix("api/currency")]
     public class ApiCurrencyController : ApiBaseController<ICurrencyService>
     {
-        [Route("api/currency/getall", Name = RouteNames.CurrencyGetAll)]
+        [Route("getall", Name = RouteNames.CurrencyGetAll)]
         [HttpGet()]
         public IHttpActionResult Get(bool showInactive)
         {
@@ -22,7 +23,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             return Ok(currencyList);
         }
 
-        [Route("api/currency/get", Name = RouteNames.CurrencyGetByID)]
+        [Route("get", Name = RouteNames.CurrencyGetByID)]
         [HttpGet()]
         public IHttpActionResult GetById(string currencyID)
         {
@@ -31,16 +32,19 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             return Ok(currency);
         }
 
+        [Route("save", Name = RouteNames.CurrencyGetSave)]
         [HttpPost]
-        public IEnumerable<TB_Category> Create([FromBody] TB_Category item)
+        public IHttpActionResult Create([FromBody] TB_Currency item)
         {
+
+
             //item.IsActive = true;
             //item.UserID = 1;
             //_context.Tbl_Category.Add(item);
             //_context.SaveChanges();
 
             //List<TB_Category> categoryList = _context.Tbl_Category.Where(c => c.IsActive).OrderBy(c => c.CategoryName).ToList();
-            return null;
+            return Ok();
         }
 
         //[HttpPut("{id}")]
