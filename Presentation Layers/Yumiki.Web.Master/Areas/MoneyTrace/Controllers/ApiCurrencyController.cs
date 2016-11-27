@@ -13,8 +13,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
 {
     public class ApiCurrencyController : ApiBaseController<ICurrencyService>
     {
-        // GET api/values
-        [Route("api/currency/get", Name = RouteNames.CurrencyGet)]
+        [Route("api/currency/getall", Name = RouteNames.CurrencyGetAll)]
         [HttpGet()]
         public IHttpActionResult Get(bool showInactive)
         {
@@ -23,13 +22,13 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             return Ok(currencyList);
         }
 
-        // GET api/values/1
-        //[HttpGet("{id}")]
-        public TB_Category GetById(int id)
+        [Route("api/currency/get", Name = RouteNames.CurrencyGetByID)]
+        [HttpGet()]
+        public IHttpActionResult GetById(string currencyID)
         {
-            //TB_Category category = _context.Tbl_Category.Where(c => c.Id == id).FirstOrDefault();
+            TB_Currency currency = BusinessService.GetCurrency(currencyID);
 
-            return null;
+            return Ok(currency);
         }
 
         [HttpPost]

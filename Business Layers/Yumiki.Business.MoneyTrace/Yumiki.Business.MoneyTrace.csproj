@@ -51,6 +51,10 @@
       <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>
       <Name>Yumiki.Business.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Data Layers\Yumiki.Data.MoneyTrace\Yumiki.Data.MoneyTrace.csproj">
       <Project>{FA1822A4-3440-4D05-9808-536E5F83B6CC}</Project>
       <Name>Yumiki.Data.MoneyTrace</Name>

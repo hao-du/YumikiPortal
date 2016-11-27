@@ -19,5 +19,15 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         {
             return Context.TB_Currency.Where(c => c.IsActive == !showInactive).ToList();
         }
+
+        /// <summary>
+        /// Get a specific currency.
+        /// </summary>
+        /// <param name="currencyID">Specify id for currency need to be retrieved.</param>
+        /// <returns>Currency Object</returns>
+        public TB_Currency GetCurrency(Guid currencyID)
+        {
+            return Context.TB_Currency.Where(c => c.ID == currencyID).SingleOrDefault();
+        }
     }
 }

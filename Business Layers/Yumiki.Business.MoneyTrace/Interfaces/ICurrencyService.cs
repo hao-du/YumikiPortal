@@ -15,5 +15,12 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// <param name="showInactive">Show list of inactive Currency or active Currency.</param>
         /// <returns>List of all active Currency.</returns>
         List<TB_Currency> GetAllCurrency(bool showInactive);
+
+        /// <summary>
+        /// Get a specific currency.
+        /// </summary>
+        /// <param name="currencyID">Specify id for currency need to be retrieved.</param>
+        /// <returns>Currency Object</returns>
+        TB_Currency GetCurrency(string currencyID);
     }
 }
