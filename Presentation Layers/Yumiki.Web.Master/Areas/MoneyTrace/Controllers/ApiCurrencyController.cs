@@ -33,30 +33,11 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         }
 
         [Route("save", Name = RouteNames.CurrencyGetSave)]
-        [HttpPost]
+        [HttpPost()]
         public IHttpActionResult Create([FromBody] TB_Currency item)
         {
-
-
-            //item.IsActive = true;
-            //item.UserID = 1;
-            //_context.Tbl_Category.Add(item);
-            //_context.SaveChanges();
-
-            //List<TB_Category> categoryList = _context.Tbl_Category.Where(c => c.IsActive).OrderBy(c => c.CategoryName).ToList();
+            BusinessService.SaveCurrency(item);
             return Ok();
-        }
-
-        //[HttpPut("{id}")]
-        public IEnumerable<TB_Category> Update(int id, [FromBody] TB_Category item)
-        {
-            //TB_Category dbItem = _context.Tbl_Category.Where(c => c.Id == id).FirstOrDefault();
-            //dbItem.CategoryName = item.CategoryName;
-            //dbItem.Description = item.Description;
-            //_context.SaveChanges();
-
-            //List<TB_Category> categoryList = _context.Tbl_Category.Where(c => c.IsActive).OrderBy(c => c.CategoryName).ToList();
-            return null;
         }
     }
 }

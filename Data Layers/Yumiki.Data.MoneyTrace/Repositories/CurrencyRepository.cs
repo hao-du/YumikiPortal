@@ -29,5 +29,27 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         {
             return Context.TB_Currency.Where(c => c.ID == currencyID).SingleOrDefault();
         }
+
+        /// <summary>
+        /// Create/Update a currency
+        /// </summary>
+        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        public void SaveCurrency(TB_Currency currency)
+        {
+            if (currency.ID == Guid.Empty)
+            {
+                Context.TB_Currency.Add(currency);
+            }
+            else
+            {
+                TB_Currency dbCurrency = Context.TB_Currency.Where(c => c.ID == currency.ID).Single();
+                dbCurrency.CurrencyName = currency.CurrencyName;
+                dbCurrency.CurrencyShortName = currency.CurrencyShortName;
+                dbCurrency.Descriptions = currency.Descriptions;
+                dbCurrency.IsActive = currency.IsActive;
+            }
+
+            Save();
+        }
     }
 }

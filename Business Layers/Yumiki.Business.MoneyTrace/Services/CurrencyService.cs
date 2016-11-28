@@ -44,5 +44,24 @@ namespace Yumiki.Business.MoneyTrace.Services
 
             return Repository.GetCurrency(convertedCurrencyID);
         }
+
+        /// <summary>
+        /// Create/Update a currency
+        /// </summary>
+        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        public void SaveCurrency(TB_Currency currency)
+        {
+            if (string.IsNullOrEmpty(currency.CurrencyName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Name is required.", null);
+            }
+
+            if (string.IsNullOrEmpty(currency.CurrencyShortName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Short Name is required.", null);
+            }
+
+            Repository.SaveCurrency(currency);
+        }
     }
 }

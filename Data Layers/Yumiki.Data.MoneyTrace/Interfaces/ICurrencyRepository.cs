@@ -22,5 +22,11 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <param name="currencyID">Specify id for currency need to be retrieved.</param>
         /// <returns>Currency Object</returns>
         TB_Currency GetCurrency(Guid currencyID);
+
+        /// <summary>
+        /// Create/Update a currency
+        /// </summary>
+        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        void SaveCurrency(TB_Currency currency);
     }
 }

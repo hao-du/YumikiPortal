@@ -39,6 +39,10 @@
                 $rootScope.$broadcast("OnLoad", currencyID);
             }
 
+            $rootScope.$on('OnReloadData', function (event) {
+                $scope.loadData();
+            });
+
             $scope.loadData = function () {
                 DataService.getCurrencyList($scope.showInactive).then(function mySucces(response) {
                     $scope.currencyList = response.data;
@@ -49,11 +53,16 @@
                         $scope.inActiveButtonName = 'Show Inactive Currency';
                     }
 
-                    $scope.showInactive = !$scope.showInactive;
+                    
                 }, function myError(response) {
 
                 });
             };
+
+            $scope.loadDataWithStatus = function () {
+                $scope.loadData();
+                $scope.showInactive = !$scope.showInactive;
+            }
         });
 
         //Controller to display dialog
@@ -94,10 +103,17 @@
             $scope.save = function () {
                 DataService.save($scope.currency)
                     .then(function mySucces(response) {
-                        alert('ok');
+                        $scope.currencyID = undefined;
+                        $('#dlgCurrency').modal('hide');
+
+                        $scope.ReloadData();
                     }, function myError(response) {
                         alert('fail');
                     });
+            };
+
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
             };
         });
     </script>
