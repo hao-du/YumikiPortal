@@ -12,6 +12,7 @@ namespace Yumiki.Commons.Exceptions
         E_WRONG_TYPE,
         E_HTTP_ERROR,
         E_DUPLICATED,
+        E_INVALID_LENGTH,
         E_SECURITY_ERROR
     }
 
@@ -24,6 +25,22 @@ namespace Yumiki.Commons.Exceptions
         /// </summary>
         public object ReferenceObject { get; set; }
 
+        /// <summary>
+        /// Constructor of Advance Exception class.
+        /// </summary>
+        /// <param name="exCode">ExceptionCode enum type</param>
+        /// <param name="errorMessage">Error message from Exception base class</param>
+        public YumikiException(ExceptionCode exCode, string errorMessage) : base(errorMessage)
+        {
+            this.ExCode = exCode;
+        }
+
+        /// <summary>
+        /// Constructor of Advance Exception class.
+        /// </summary>
+        /// <param name="exCode">ExceptionCode enum type</param>
+        /// <param name="errorMessage">Error message from Exception base class</param>
+        /// <param name="innerException">Inner exception from Exception base class</param>
         public YumikiException(ExceptionCode exCode, string errorMessage, Exception innerException) : base(errorMessage, innerException)
         {
             this.ExCode = exCode;

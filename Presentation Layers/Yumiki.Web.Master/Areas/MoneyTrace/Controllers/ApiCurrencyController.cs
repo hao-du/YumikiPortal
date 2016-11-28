@@ -18,26 +18,46 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         [HttpGet()]
         public IHttpActionResult Get(bool showInactive)
         {
-            List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
+            try
+            {
+                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
 
-            return Ok(currencyList);
+                return Ok(currencyList);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         [Route("get", Name = RouteNames.CurrencyGetByID)]
         [HttpGet()]
         public IHttpActionResult GetById(string currencyID)
         {
-            TB_Currency currency = BusinessService.GetCurrency(currencyID);
-
-            return Ok(currency);
+            try
+            {
+                TB_Currency currency = BusinessService.GetCurrency(currencyID);
+                return Ok(currency);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         [Route("save", Name = RouteNames.CurrencyGetSave)]
         [HttpPost()]
         public IHttpActionResult Create([FromBody] TB_Currency item)
         {
-            BusinessService.SaveCurrency(item);
-            return Ok();
+            try
+            {
+                BusinessService.SaveCurrency(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }
