@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ITransactionTypeService.cs" />
     <Compile Include="Interfaces\ICurrencyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TransactionTypeService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -105,11 +105,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Views\TransactionType\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiTransactionTypeController.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
+    <Compile Include="Controllers\TransactionTypeController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MoneyTraceAreaRegistration.cs" />

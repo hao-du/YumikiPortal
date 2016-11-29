@@ -5,7 +5,7 @@ namespace Yumiki.Entity.MoneyTrace
     using System.Collections.Generic;
     using Commons.Dictionaries;
 
-    public partial class TB_Currency
+    public partial class TB_TransactionType
     {
         public string LastUpdateDateUI
         {
@@ -17,9 +17,10 @@ namespace Yumiki.Entity.MoneyTrace
 
         public class FieldName
         {
-            public const string TB_Currency = "TB_Currency";
-            public const string CurrencyName = "CurrencyName";
-            public const string CurrencyShortName = "CurrencyShortName";
+            public const string TB_TransactionType = "TB_TransactionType";
+            public const string TransactionTypeName = "TransactionTypeName";
+            public const string IsIncome = "IsIncome";
+            public const string IsTransfer = "IsTransfer";
         }
     }
 }
