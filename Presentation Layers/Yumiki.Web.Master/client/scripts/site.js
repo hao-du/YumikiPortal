@@ -1,7 +1,13 @@
 ﻿//Startup method to set all global settings to all all modules.
-$(document).ready(function () {
-    $.fn.wrapOverflowX = function (id) {
-        var newDiv = $('<div/>').addClass('table-responsive');
-        this.wrapAll(newDiv);
-    };
-});
+$.fn.wrapOverflowX = function (id) {
+    var newDiv = $('<div/>').addClass('table-responsive');
+    this.wrapAll(newDiv);
+};
+
+$.fn.showLoadingBar = function () {
+    $('#dlgLoadingBar').modal({ backdrop: 'static' });
+};
+
+$.fn.hideLoadingBar = function () {
+    $('#dlgLoadingBar').modal('hide');
+};

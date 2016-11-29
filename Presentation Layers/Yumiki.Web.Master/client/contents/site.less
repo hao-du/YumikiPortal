@@ -22,7 +22,7 @@ body {
         padding-top: @footerHeight / 2 - 10px;
     }
 
-    z-index: 1023;
+    z-index: 1051;
 }
 
 .table-overflow {
@@ -45,14 +45,14 @@ table {
 }
 
 .form-area {
-    min-height:100px;
+    min-height: 100px;
 }
 
 .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
     margin-left: 0 !important;
 }
 
-.paragraph-padding{
+.paragraph-padding {
     padding: 10px 10px 10px 10px;
 }
 
@@ -84,13 +84,70 @@ table {
     margin-top: 0px;
 }
 
-.modal-backdrop
-{
-    opacity:0.5 !important;
+.modal-backdrop {
+    opacity: 0.5 !important;
 }
 
-//---------------------Tool tip---------------------//
+//---------------------For Loading Progress Bar only---------------------//
+#dlgLoadingBar {
+    .modal-dialog {
+        width: 120px;
+        height: 30px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
+
+.gly-spin {
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+
+    100% {
+        -o-transform: rotate(359deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+//---------------------Tool tip---------------------//
 .tooltip {
     position: relative;
     display: inline-block;
@@ -110,7 +167,6 @@ table {
     bottom: 100%;
     left: 50%;
     margin-left: -60px;
-    
     /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
     opacity: 0;
     transition: opacity 1s;
@@ -121,7 +177,5 @@ table {
     opacity: 1;
 }
 
-.glyphicon-validation{
-   
+.glyphicon-validation {
 }
-

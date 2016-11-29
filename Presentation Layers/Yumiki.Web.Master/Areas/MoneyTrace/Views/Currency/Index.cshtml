@@ -5,7 +5,7 @@
     ViewBag.Title = "Currency";
 }
 
-@section HeaderContainer{
+@section Script{
     <script type="text/javascript">
         //Declare constant variables.
         var showActiveCurrencyString = 'Show Active Currency';
@@ -62,6 +62,7 @@
                     showInactive = !showInactive;
                 }
 
+                $(this).showLoadingBar();
                 DataService.getCurrencyList(showInactive).then(function mySucces(response) {
                     $scope.currencyList = response.data;
 
@@ -73,9 +74,11 @@
                         }
                         $scope.isStatusChanged = false;
                     }
+                    $(this).hideLoadingBar();
                 }, function myError(response) {
                     $scope.isStatusChanged = false;
                     alert(response.data);
+                    $(this).hideLoadingBar();
                 });
             };
 
@@ -97,12 +100,14 @@
                 if (currencyID != undefined && currencyID != null) {
                     $scope.currencyID = currencyID;
                     $scope.dialogTitle = "Edit Currency";
-
+                    $(this).showLoadingBar();
                     DataService.getCurrencyByID($scope.currencyID)
                         .then(function mySucces(response) {
                             $scope.currency = response.data;
+                            $(this).hideLoadingBar();
                         }, function myError(response) {
                             alert(response.data);
+                            $(this).hideLoadingBar();
                         });
 
                 } else {
@@ -125,6 +130,7 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
+                    $(this).showLoadingBar();
                     DataService.save($scope.currency)
                         .then(function mySucces(response) {
                             $scope.currencyID = undefined;
@@ -133,6 +139,7 @@
                             $scope.ReloadData();
                         }, function myError(response) {
                             alert('fail');
+                            $(this).hideLoadingBar();
                         });
                 }
             };
@@ -195,12 +202,12 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyName.$invalid }">
                             <label>Currency Name</label>
-                            <input type="text" name="currencyName" ng-model="currency.CurrencyName" class="form-control" ng-required="true"/>
+                            <input type="text" name="currencyName" ng-model="currency.CurrencyName" class="form-control" ng-required="true" />
                             <p ng-show="currencyForm.currencyName.$error.required && currencyForm.currencyName.$dirty" class="help-block">Currency Name is required.</p>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyShortName.$invalid }">
                             <label>Currency Short Name</label>
-                            <input type="text" name="currencyShortName" ng-model="currency.CurrencyShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4"/>
+                            <input type="text" name="currencyShortName" ng-model="currency.CurrencyShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4" />
                             <p ng-show="currencyForm.currencyShortName.$error.required && currencyForm.currencyShortName.$dirty" class="help-block">Currency Short Name is required.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.minlength" class="help-block">Currency Short Name needs at least 3 characters.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.maxlength" class="help-block">Currency Short Name exceeds maximum 4 characters.</p>

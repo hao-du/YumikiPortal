@@ -21,7 +21,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             try
             {
                 List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
-
+                System.Threading.Thread.Sleep(5000);
                 return Ok(currencyList);
             }
             catch (Exception ex)

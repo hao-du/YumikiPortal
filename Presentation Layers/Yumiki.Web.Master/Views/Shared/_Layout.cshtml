@@ -14,8 +14,6 @@
     <!--Global Libraries-->
     <link href="~/client/contents/site.less" rel="stylesheet" />
     <script src="../../../client/scripts/site.js"></script>
-
-    @RenderSection("HeaderContainer", required: false)
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -42,7 +40,7 @@
                     @if (!string.IsNullOrEmpty(@ViewBag.UserName))
                     {
                         <li>
-                            @Html.ActionLink("Log out", "Logout", "Home", new { area= "" }, null)
+                            @Html.ActionLink("Log out", "Logout", "Home", new { area = "" }, null)
                         </li>
                     }
                 </ul>
@@ -57,5 +55,17 @@
             <p>Yumiki 2016 - Status bar</p>
         </div>
     </footer>
+    <!--Loading Progress Bar-->
+    <div id="dlgLoadingBar" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                        Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("Script", required: false)
 </body>
 </html>
