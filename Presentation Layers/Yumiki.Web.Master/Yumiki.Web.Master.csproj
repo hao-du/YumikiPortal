@@ -189,6 +189,7 @@
     <Content Include="Views\Home\GetMenu.cshtml" />
     <Content Include="App_Config\Unity.config" />
     <Content Include="App_Config\Yumiki.config" />
+    <Content Include="App_Config\Log4Net.config" />
     <None Include="client\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\ConnectionString.config" />
     <None Include="Web.Debug.config">

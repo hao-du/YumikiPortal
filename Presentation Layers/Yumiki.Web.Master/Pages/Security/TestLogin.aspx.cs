@@ -33,11 +33,12 @@ namespace Yumiki.Web.Master.Pages.Security
                     path = string.Format("{0}://{1}:{2}", Request.Url.Scheme, Request.Url.Host, Request.Url.Port.ToString());
                 }
                 Response.Redirect(path);
-                
+                Logger.Infomation("Log OK!");
             }
             catch (Exception ex)
             {
                 SendClientMessage(ex.Message);
+                Logger.Infomation("Log Error!", ex);
             }
         }
     }
