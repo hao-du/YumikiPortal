@@ -91,6 +91,20 @@
         </div>
         <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
         </asp:ContentPlaceHolder>
+        <asp:UpdateProgress runat="server" ID="UpdateProgress1">
+            <ProgressTemplate>
+                <div class="modal-backdrop"></div>
+                <div id="dlgLoadingBar" class="modal show">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
     </form>
     <footer class="footer">
         <div class="container-fluid">
