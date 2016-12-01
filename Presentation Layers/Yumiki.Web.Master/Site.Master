@@ -46,6 +46,23 @@
                 return true;
             }
         }
+
+        //Show message dialog in client side.
+        var clientMessage = function (message, details) {
+            $("#txtExceptionDetails").empty();
+            if (details == null || details == undefined || details == ""){
+                $("#btnExceptionDetails").hide();
+            }
+            else {
+                $("#btnExceptionDetails").show();
+                $("#txtExceptionDetails").append("<p>" + message + "</p>");
+            }
+
+            $("#txtErrorMessage").empty();
+            $("#txtErrorMessage").append("<p>" + message + "</p>");
+
+            $("#dlgErrorDialog").modal({ backdrop: 'static' });
+        }
     </script>
 
     <!--Custom Javascript for each modules-->
@@ -105,6 +122,25 @@
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress>
+
+        <div id="dlgErrorDialog" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Opps! Something went wrong...
+                    </div>
+                    <div class="modal-body">
+                        <div id="txtErrorMessage"></div>
+                        <div id="txtExceptionDetails" class="collapse">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnExceptionDetails" data-toggle="collapse" data-target="#txtExceptionDetails">Details</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
     <footer class="footer">
         <div class="container-fluid">
