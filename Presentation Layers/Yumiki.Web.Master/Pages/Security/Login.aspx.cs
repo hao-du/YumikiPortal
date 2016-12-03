@@ -37,7 +37,7 @@ namespace Yumiki.Web.Master.Pages.Security
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
 
@@ -45,11 +45,11 @@ namespace Yumiki.Web.Master.Pages.Security
         {
             try
             {
-                SendClientMessage("To do...");
+                SendInformation("To do...");
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
     }

@@ -48,20 +48,35 @@
         }
 
         //Show message dialog in client side.
-        var clientMessage = function (message, details) {
-            $("#txtExceptionDetails").empty();
+        var clientMessage = function (message, details, logType) {
+            switch (logType) {
+                case '<%= Yumiki.Commons.Logging.LogLevel.ERROR %>':
+                    $("#txtDialogTitle").append(const_Error);
+                    break;
+                case '<%= Yumiki.Commons.Logging.LogLevel.INFO %>':
+                    $("#txtDialogTitle").append(const_Info);
+                    break;
+                case '<%= Yumiki.Commons.Logging.LogLevel.WARN %>':
+                    $("#txtDialogTitle").append(const_Warn);
+                    break;
+                default:
+                    $("#txtDialogTitle").append('Message from System...');
+                    break;
+            }
+
+            $("#txtMessageDetails").empty();
             if (details == null || details == undefined || details == "") {
-                $("#btnExceptionDetails").hide();
+                $("#btnMessageDetails").hide();
             }
             else {
-                $("#btnExceptionDetails").show();
-                $("#txtExceptionDetails").append("<p>" + message + "</p>");
+                $("#btnMessageDetails").show();
+                $("#txtMessageDetails").append("<p>" + details + "</p>");
             }
 
-            $("#txtErrorMessage").empty();
-            $("#txtErrorMessage").append("<p>" + message + "</p>");
+            $("#txtMessage").empty();
+            $("#txtMessage").append("<p>" + message + "</p>");
 
-            $("#dlgErrorDialog").modal({ backdrop: 'static' });
+            $("#dlgMessageDialog").modal({ backdrop: 'static' });
         }
     </script>
 
@@ -123,19 +138,22 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
 
-        <div id="dlgErrorDialog" class="modal fade" role="dialog">
+        <div id="dlgMessageDialog" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        Opps! Something went wrong...
+                        <h4 class="modal-title" id="txtDialogTitle"></h4>
                     </div>
                     <div class="modal-body">
-                        <div id="txtErrorMessage"></div>
-                        <div id="txtExceptionDetails" class="collapse">
+                        <div id="txtMessage"></div>
+                        <div id="txtDetails" class="panel panel-default collapse">
+                            <div class="panel-heading">Details...</div>
+                            <div id="txtMessageDetails" class="panel-body">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="btnExceptionDetails" data-toggle="collapse" data-target="#txtExceptionDetails">Details</button>
+                        <button type="button" id="btnMessageDetails" class="btn btn-default" data-toggle="collapse" data-target="#txtDetails">Details...</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

@@ -93,7 +93,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
 
@@ -203,7 +203,7 @@ namespace Yumiki.Web.Administration
             }
             catch(Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
 
@@ -286,7 +286,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
 

@@ -94,7 +94,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
         #endregion
@@ -106,8 +106,11 @@ namespace Yumiki.Web.Administration
             {
                 if (!string.Equals(txtPassword.Text, txtConfirmPassword.Text))
                 {
-                    SendClientMessage("Confirm Password must be the same password.");
+                    SendWarning("Confirm Password must be the same password.");
                 }
+
+                TB_User a = null;
+                var b = a.CreateDate;
 
                 TB_User user = new TB_User();
                 if (!IsNewMode)
@@ -123,7 +126,7 @@ namespace Yumiki.Web.Administration
 
                 BusinessService.SaveUser(user);
                 LoadUsers();
-                SendClientMessage("Save successfully!");
+                SendInformation("Save successfully!");
 
                 if (IsNewMode)
                 {
@@ -134,7 +137,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
         #endregion
@@ -150,16 +153,16 @@ namespace Yumiki.Web.Administration
 
                 if (!string.Equals(password, confirmPassword))
                 {
-                    SendClientMessage("Confirm Password must be the same password.");
+                    SendWarning("Confirm Password must be the same password.");
                 }
 
                 BusinessService.ResetPassword(userID, txtUserLoginName.Text, password);
 
-                SendClientMessage("Password was reset successfully!");
+                SendInformation("Password was reset successfully!");
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
         }
         #endregion
@@ -198,7 +201,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
             finally
             {
@@ -234,7 +237,7 @@ namespace Yumiki.Web.Administration
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
+                SendError(ex);
             }
             finally
             {

@@ -36,8 +36,7 @@ namespace Yumiki.Web.Master.Pages.Security
             }
             catch (Exception ex)
             {
-                SendClientMessage(ex.Message);
-                Logger.Error("Error duing logging on.", ex);
+                RegisterScripts(string.Format("alert('{0}');", ex.Message));
             }
         }
     }

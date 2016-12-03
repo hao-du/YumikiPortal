@@ -6,6 +6,7 @@ using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
+using Yumiki.Commons.Exceptions;
 
 namespace Yumiki.Web.Base
 {
@@ -108,15 +109,53 @@ namespace Yumiki.Web.Base
             ScriptManager.RegisterStartupScript(this, this.GetType(), "RegisterScripts", builder.ToString(), true);
         }
 
+        protected void SendInformation(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.INFO);
+        }
+
+        protected void SendWarning(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.WARN);
+        }
+
+        protected void SendError(Exception ex)
+        {
+            SendClientMessage(ex.Message, ex, LogLevel.ERROR);
+        }
+
         /// <summary>
-        /// Send a message to client side.
+        /// Send exception message to client side
         /// </summary>
-        /// <param name="message">A message from server side.</param>
-        protected void SendClientMessage(string message)
+        /// <param name="message">Exception Message</param>
+        /// <param name="ex">Exception Error</param>
+        /// <param name="logType">To show exception type to client side</param>
+        protected void SendClientMessage(string message, string details, LogLevel logType)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            //stringBuilder.AppendFormat("alert('{0}');", message);
-            stringBuilder.AppendFormat("clientMessage('{0}', '{1}');", message, string.Empty);
+
+            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message, details, logType.ToString());
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
+        }
+
+        /// <summary>
+        /// Send exception message to client side
+        /// </summary>
+        /// <param name="message">Exception Message</param>
+        /// <param name="ex">Exception Error</param>
+        /// <param name="logType">To show exception type to client side</param>
+        protected void SendClientMessage(string message, Exception ex, LogLevel logType)
+        {
+            if (ex != null && !(ex is YumikiException))
+            {
+                Logger.Append(logType, message, ex);
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            string exMessage = Logger.GetExceptionDetails(ex);
+
+            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message, exMessage, logType.ToString());
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }

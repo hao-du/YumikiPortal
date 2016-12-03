@@ -109,5 +109,35 @@ namespace Yumiki.Commons.Logging
         {
             Append(logLevel, message, null);
         }
+
+        public string GetExceptionDetails(Exception ex)
+        {
+            if(ex == null)
+            {
+                return string.Empty;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("Exception Message: {0}", ex.Message);
+            sb.Append("<br />");
+            if (!string.IsNullOrEmpty(ex.StackTrace))
+            {
+                sb.AppendFormat("Stack Trace: {0}", ex.StackTrace);
+                sb.Append("<br />");
+            }
+
+            if (ex.InnerException != null)
+            {
+                sb.AppendFormat("Inner Exception: {0}", ex.InnerException.Message);
+                sb.Append("<br />");
+                if (!string.IsNullOrEmpty(ex.StackTrace))
+                {
+                    sb.AppendFormat("Inner Exception Trace: {0}", ex.InnerException.StackTrace);
+                    sb.Append("<br />");
+                }
+            }
+            sb.Replace("\r\n", "<br />");
+            return sb.ToString();
+        }
     }
 }
