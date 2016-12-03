@@ -8,8 +8,8 @@
 @section Script{
     <script type="text/javascript">
         //Declare constant variables.
-        var showActiveTransactionTypeString = 'Show Active Transaction Type';
-        var showInactiveTransactionTypeString = 'Show Inactive Transaction Type';
+        var showActiveTransactionTypeString = 'Show Active List';
+        var showInactiveTransactionTypeString = 'Show Inactive List';
 
         var app = angular.module('moneyTrace', []);
 
@@ -63,23 +63,25 @@
                 }
 
                 $(this).showLoadingBar();
-                DataService.getTransactionTypeList(showInactive).then(function mySucces(response) {
-                    $scope.transactionTypeList = response.data;
+                DataService.getTransactionTypeList(showInactive).then(
+                    function mySucces(response) {
+                        $scope.transactionTypeList = response.data;
 
-                    if ($scope.isStatusChanged) {
-                        if ($scope.inactiveButtonName == showInactiveTransactionTypeString) {
-                            $scope.inactiveButtonName = showActiveTransactionTypeString;
-                        } else {
-                            $scope.inactiveButtonName = showInactiveTransactionTypeString;
+                        if ($scope.isStatusChanged) {
+                            if ($scope.inactiveButtonName == showInactiveTransactionTypeString) {
+                                $scope.inactiveButtonName = showActiveTransactionTypeString;
+                            } else {
+                                $scope.inactiveButtonName = showInactiveTransactionTypeString;
+                            }
+                            $scope.isStatusChanged = false;
                         }
+                        $(this).hideLoadingBar();
+                    }, function myError(response) {
                         $scope.isStatusChanged = false;
-                    }
-                    $(this).hideLoadingBar();
-                }, function myError(response) {
-                    $scope.isStatusChanged = false;
-                    alert(response.data);
-                    $(this).hideLoadingBar();
-                });
+                        $(this).hideLoadingBar();
+
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
             };
 
             //When click on "ShowInActiveButton", reload data with active status.
@@ -92,6 +94,7 @@
         //Controller to display dialog
         app.controller('transactionTypeDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
             $scope.transactionTypeID = undefined;
+            $scope.isActiveDisabled = false;
 
             //Used to be called by other controllers.
             $rootScope.$on('OnLoad', function (event, transactionTypeID) {
@@ -99,19 +102,24 @@
 
                 if (transactionTypeID != undefined && transactionTypeID != null) {
                     $scope.transactionTypeID = transactionTypeID;
+                    $scope.isActiveDisabled = false;
                     $scope.dialogTitle = "Edit Transaction Type";
+
                     $(this).showLoadingBar();
+
                     DataService.getTransactionTypeByID($scope.transactionTypeID)
                         .then(function mySucces(response) {
                             $scope.transactionType = response.data;
                             $(this).hideLoadingBar();
                         }, function myError(response) {
-                            alert(response.data);
                             $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
                     $scope.dialogTitle = "New Transaction Type";
+                    $scope.isActiveDisabled = true;
 
                     $scope.transactionType = $scope.resetTransactionType();
                 }
@@ -119,11 +127,13 @@
 
             //Reset object in new mode.
             $scope.resetTransactionType = function () {
+                $scope.transactionTypeForm.$setPristine();
                 return {
                     '@CommonProperties.ID': undefined,
                     '@TB_TransactionType.FieldName.TransactionTypeName': '',
                     '@TB_TransactionType.FieldName.IsIncome': false,
                     '@TB_TransactionType.FieldName.IsTransfer': false,
+                    '@CommonProperties.Descriptions': '',
                     '@CommonProperties.IsActive': true
                 };
             }
@@ -139,8 +149,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            alert('fail');
                             $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -179,10 +190,10 @@
                         <tbody>
                             <tr ng-repeat="transactionType in transactionTypeList">
                                 <td>{{ transactionType.@TB_TransactionType.FieldName.TransactionTypeName }}</td>
-                                <td>{{ transactionType.@TB_TransactionType.FieldName.IsIncome }}</td>
-                                <td>{{ transactionType.@TB_TransactionType.FieldName.IsTransfer }}</td>
+                                <td><input type="checkbox" ng-checked="{{ transactionType.@TB_TransactionType.FieldName.IsIncome }}" disabled="disabled" /></td>
+                                <td><input type="checkbox" ng-checked="{{ transactionType.@TB_TransactionType.FieldName.IsTransfer }}" disabled="disabled" /></td>
                                 <td>{{ transactionType.@CommonProperties.Descriptions }}</td>
-                                <td>{{ transactionType.@CommonProperties.IsActive }}</td>
+                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ transactionType.@CommonProperties.LastUpdateDateUI }}</td>
                                 <td><a href="#" id="btnEdit" ng-click="showDialog(transactionType.@CommonProperties.ID);">Edit</a></td>
                             </tr>
@@ -205,12 +216,30 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : transactionTypeForm.transactionTypeName.$invalid }">
                             <label>Transaction Type Name</label>
-                            <input type="text" name="transactionTypeName" ng-model="transactionType.TransactionTypeName" class="form-control" ng-required="true" />
+                            <input type="text" name="transactionTypeName" ng-model="transactionType.@TB_TransactionType.FieldName.TransactionTypeName" class="form-control" ng-required="true" />
                             <p ng-show="transactionTypeForm.transactionTypeName.$error.required && transactionTypeForm.transactionTypeName.$dirty" class="help-block">Transaction Type Name is required.</p>
                         </div>
                         <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="transactionType.@TB_TransactionType.FieldName.IsIncome" ng-checked="transactionType.@TB_TransactionType.FieldName.IsIncome" />
+                                <label>Is Income Type</label>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="transactionType.@TB_TransactionType.FieldName.IsTransfer" ng-checked="transactionType.@TB_TransactionType.FieldName.IsTransfer" />
+                                <label>Is Transfer Type</label>
+                            </span>
+                        </div>
+                        <div class="form-group">
                             <label>Descriptions</label>
-                            <textarea ng-model="transactionType.Descriptions" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="transactionType.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="transactionType.@CommonProperties.IsActive" ng-checked="transactionType.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
+                                <label>Is Active</label>
+                            </span>
                         </div>
                     </div>
                     <div class="modal-footer">

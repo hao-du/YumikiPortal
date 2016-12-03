@@ -78,8 +78,9 @@
                         $(this).hideLoadingBar();
                     }, function myError(response) {
                         $scope.isStatusChanged = false;
-                        alert(response.data);
                         $(this).hideLoadingBar();
+
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             };
 
@@ -93,6 +94,7 @@
         //Controller to display dialog
         app.controller('currencyDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
             $scope.currencyID = undefined;
+            $scope.isActiveDisabled = false;
 
             //Used to be called by other controllers.
             $rootScope.$on('OnLoad', function (event, currencyID) {
@@ -100,20 +102,25 @@
 
                 if (currencyID != undefined && currencyID != null) {
                     $scope.currencyID = currencyID;
+                    $scope.isActiveDisabled = false;
                     $scope.dialogTitle = "Edit Currency";
+
                     $(this).showLoadingBar();
+
                     DataService.getCurrencyByID($scope.currencyID)
                         .then(function mySucces(response) {
                             $scope.currency = response.data;
                             $(this).hideLoadingBar();
-                            clientMessage('AAAAA', 'BBBBBB', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+
                         }, function myError(response) {
-                            alert(response.data);
                             $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
                     $scope.dialogTitle = "New Currency";
+                    $scope.isActiveDisabled = true;
 
                     $scope.currency = $scope.resetCurrency();
                 }
@@ -121,6 +128,7 @@
 
             //Reset object in new mode.
             $scope.resetCurrency = function () {
+                $scope.currencyForm.$setPristine();
                 return {
                     '@CommonProperties.ID': undefined,
                     '@TB_Currency.FieldName.CurrencyName': '',
@@ -140,8 +148,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            alert('fail');
                             $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -181,7 +190,7 @@
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>
-                                <td>{{ currency.@CommonProperties.IsActive }}</td>
+                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
                                 <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);">Edit</a></td>
                             </tr>
@@ -191,8 +200,8 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
 
+    <!-- Modal -->
     <div id="dlgCurrency" class="modal fade" role="dialog" ng-controller="currencyDialogController">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -204,19 +213,25 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyName.$invalid }">
                             <label>Currency Name</label>
-                            <input type="text" name="currencyName" ng-model="currency.CurrencyName" class="form-control" ng-required="true" />
+                            <input type="text" name="currencyName" ng-model="currency.@TB_Currency.FieldName.CurrencyName" class="form-control" ng-required="true" />
                             <p ng-show="currencyForm.currencyName.$error.required && currencyForm.currencyName.$dirty" class="help-block">Currency Name is required.</p>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyShortName.$invalid }">
                             <label>Currency Short Name</label>
-                            <input type="text" name="currencyShortName" ng-model="currency.CurrencyShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4" />
+                            <input type="text" name="currencyShortName" ng-model="currency.@TB_Currency.FieldName.CurrencyShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4" />
                             <p ng-show="currencyForm.currencyShortName.$error.required && currencyForm.currencyShortName.$dirty" class="help-block">Currency Short Name is required.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.minlength" class="help-block">Currency Short Name needs at least 3 characters.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.maxlength" class="help-block">Currency Short Name exceeds maximum 4 characters.</p>
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>
-                            <textarea ng-model="currency.Descriptions" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="currency.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="transactionType.@CommonProperties.IsActive" ng-checked="transactionType.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
+                                <label>Is Active</label>
+                            </span>
                         </div>
                     </div>
                     <div class="modal-footer">
