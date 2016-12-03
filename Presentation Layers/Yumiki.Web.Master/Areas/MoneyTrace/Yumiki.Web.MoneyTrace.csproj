@@ -107,12 +107,15 @@
     <Content Include="packages.config" />
     <Content Include="Views\TransactionType\Index.cshtml" />
     <None Include="Properties\PublishProfiles\MoneyTrace.pubxml" />
+    <Content Include="Views\Category\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiCategoryController.cs" />
     <Compile Include="Controllers\ApiTransactionTypeController.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\TransactionTypeController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

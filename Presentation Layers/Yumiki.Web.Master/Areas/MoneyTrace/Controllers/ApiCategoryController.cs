@@ -11,17 +11,17 @@ using Yumiki.Web.MoneyTrace.Constants;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
-    [RoutePrefix("api/currency")]
-    public class ApiCurrencyController : ApiBaseController<ICurrencyService>
+    [RoutePrefix("api/category")]
+    public class ApiCategoryController : ApiBaseController<ICategoryService>
     {
-        [Route("getall", Name = RouteNames.CurrencyGetAll)]
+        [Route("getall", Name = RouteNames.CategoryGetAll)]
         [HttpGet()]
         public IHttpActionResult Get(bool showInactive)
         {
             try
             {
-                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
-                return Ok(currencyList);
+                List<TB_Category> categoryList = BusinessService.GetAllCategory(showInactive);
+                return Ok(categoryList);
             }
             catch (Exception ex)
             {
@@ -29,14 +29,14 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("get", Name = RouteNames.CurrencyGetByID)]
+        [Route("get", Name = RouteNames.CategoryGetByID)]
         [HttpGet()]
-        public IHttpActionResult GetById(string currencyID)
+        public IHttpActionResult GetById(string categoryID)
         {
             try
             {
-                TB_Currency currency = BusinessService.GetCurrency(currencyID);
-                return Ok(currency);
+                TB_Category category = BusinessService.GetCategory(categoryID);
+                return Ok(category);
             }
             catch (Exception ex)
             {
@@ -44,13 +44,13 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("save", Name = RouteNames.CurrencyGetSave)]
+        [Route("save", Name = RouteNames.CategoryGetSave)]
         [HttpPost()]
-        public IHttpActionResult Create([FromBody] TB_Currency item)
+        public IHttpActionResult Create([FromBody] TB_Category item)
         {
             try
             {
-                BusinessService.SaveCurrency(item);
+                BusinessService.SaveCategory(item);
                 return Ok();
             }
             catch (Exception ex)

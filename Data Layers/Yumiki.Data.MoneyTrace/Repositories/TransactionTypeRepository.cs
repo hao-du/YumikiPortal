@@ -17,7 +17,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of all active Transaction Type.</returns>
         public List<TB_TransactionType> GetAllTransactionTypes(bool showInactive)
         {
-            return Context.TB_TransactionType.Where(c => c.IsActive == !showInactive).ToList();
+            return Context.TB_TransactionType.Where(c => c.IsActive == !showInactive).OrderBy(c=>c.TransactionTypeName).ToList();
         }
 
         /// <summary>
