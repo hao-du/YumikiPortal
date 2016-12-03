@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.Results;
+using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
 
@@ -51,7 +52,10 @@ namespace Yumiki.Web.Base
 
         protected override ExceptionResult InternalServerError(Exception exception)
         {
-            this.Logger.Error("Error during performning http method.", exception);
+            if (!(exception is YumikiException))
+            {
+                this.Logger.Error("Error during performning http method.", exception);
+            }
             return base.InternalServerError(exception);
         }
     }

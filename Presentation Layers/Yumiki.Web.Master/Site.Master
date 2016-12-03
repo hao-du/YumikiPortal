@@ -46,38 +46,6 @@
                 return true;
             }
         }
-
-        //Show message dialog in client side.
-        var clientMessage = function (message, details, logType) {
-            switch (logType) {
-                case '<%= Yumiki.Commons.Logging.LogLevel.ERROR %>':
-                    $("#txtDialogTitle").append(const_Error);
-                    break;
-                case '<%= Yumiki.Commons.Logging.LogLevel.INFO %>':
-                    $("#txtDialogTitle").append(const_Info);
-                    break;
-                case '<%= Yumiki.Commons.Logging.LogLevel.WARN %>':
-                    $("#txtDialogTitle").append(const_Warn);
-                    break;
-                default:
-                    $("#txtDialogTitle").append('Message from System...');
-                    break;
-            }
-
-            $("#txtMessageDetails").empty();
-            if (details == null || details == undefined || details == "") {
-                $("#btnMessageDetails").hide();
-            }
-            else {
-                $("#btnMessageDetails").show();
-                $("#txtMessageDetails").append("<p>" + details + "</p>");
-            }
-
-            $("#txtMessage").empty();
-            $("#txtMessage").append("<p>" + message + "</p>");
-
-            $("#dlgMessageDialog").modal({ backdrop: 'static' });
-        }
     </script>
 
     <!--Custom Javascript for each modules-->
@@ -123,6 +91,16 @@
         </div>
         <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
         </asp:ContentPlaceHolder>
+        <div class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container-fluid">
+                <p class="navbar-text pull-left">
+                    © <% DateTime.Now.Year.ToString(); %> - Yumiki Portal.
+                <a href="http://tinyurl.com/tbvalid" target="_blank">HTML 5 Validation</a>
+                </p>
+                <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
+                    <span class="glyphicon glyphicon-star"></span>Subscribe on YouTube</a>
+            </div>
+        </div>
         <asp:UpdateProgress runat="server" ID="UpdateProgress1">
             <ProgressTemplate>
                 <div class="modal-backdrop"></div>
@@ -160,15 +138,5 @@
             </div>
         </div>
     </form>
-    <div class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container-fluid">
-            <p class="navbar-text pull-left">
-                © <% DateTime.Now.Year.ToString(); %> - Yumiki Portal.
-                <a href="http://tinyurl.com/tbvalid" target="_blank">HTML 5 Validation</a>
-            </p>
-            <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
-                <span class="glyphicon glyphicon-star"></span>Subscribe on YouTube</a>
-        </div>
-    </div>
 </body>
 </html>

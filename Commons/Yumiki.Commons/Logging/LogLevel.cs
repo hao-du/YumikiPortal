@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Yumiki.Commons.Logging
 {
+    /// <summary>
+    /// NOTE: Remember to change value in 'site.js' if any enum items changed.
+    /// </summary>
     public enum LogLevel
     {
         //Turn off logging.

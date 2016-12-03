@@ -63,23 +63,24 @@
                 }
 
                 $(this).showLoadingBar();
-                DataService.getCurrencyList(showInactive).then(function mySucces(response) {
-                    $scope.currencyList = response.data;
+                DataService.getCurrencyList(showInactive).then(
+                    function mySucces(response) {
+                        $scope.currencyList = response.data;
 
-                    if ($scope.isStatusChanged) {
-                        if ($scope.inactiveButtonName == showInactiveCurrencyString) {
-                            $scope.inactiveButtonName = showActiveCurrencyString;
-                        } else {
-                            $scope.inactiveButtonName = showInactiveCurrencyString;
+                        if ($scope.isStatusChanged) {
+                            if ($scope.inactiveButtonName == showInactiveCurrencyString) {
+                                $scope.inactiveButtonName = showActiveCurrencyString;
+                            } else {
+                                $scope.inactiveButtonName = showInactiveCurrencyString;
+                            }
+                            $scope.isStatusChanged = false;
                         }
+                        $(this).hideLoadingBar();
+                    }, function myError(response) {
                         $scope.isStatusChanged = false;
-                    }
-                    $(this).hideLoadingBar();
-                }, function myError(response) {
-                    $scope.isStatusChanged = false;
-                    alert(response.data);
-                    $(this).hideLoadingBar();
-                });
+                        alert(response.data);
+                        $(this).hideLoadingBar();
+                    });
             };
 
             //When click on "ShowInActiveButton", reload data with active status.
@@ -105,6 +106,7 @@
                         .then(function mySucces(response) {
                             $scope.currency = response.data;
                             $(this).hideLoadingBar();
+                            clientMessage('AAAAA', 'BBBBBB', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         }, function myError(response) {
                             alert(response.data);
                             $(this).hideLoadingBar();

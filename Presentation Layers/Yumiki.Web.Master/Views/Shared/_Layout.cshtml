@@ -72,6 +72,27 @@
             </div>
         </div>
     </div>
+    <div id="dlgMessageDialog" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="txtDialogTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="txtMessage"></div>
+                    <div id="txtDetails" class="panel panel-default collapse">
+                        <div class="panel-heading">Details...</div>
+                        <div id="txtMessageDetails" class="panel-body">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnMessageDetails" class="btn btn-default" data-toggle="collapse" data-target="#txtDetails">Details...</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @RenderSection("Script", required: false)
 </body>
 </html>
