@@ -115,7 +115,8 @@ namespace Yumiki.Web.Base
         protected void SendClientMessage(string message)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("alert('{0}');", message);
+            //stringBuilder.AppendFormat("alert('{0}');", message);
+            stringBuilder.AppendFormat("clientMessage('{0}', '{1}');", message, string.Empty);
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }

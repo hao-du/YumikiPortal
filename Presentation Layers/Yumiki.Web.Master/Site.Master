@@ -46,6 +46,23 @@
                 return true;
             }
         }
+
+        //Show message dialog in client side.
+        var clientMessage = function (message, details) {
+            $("#txtExceptionDetails").empty();
+            if (details == null || details == undefined || details == "") {
+                $("#btnExceptionDetails").hide();
+            }
+            else {
+                $("#btnExceptionDetails").show();
+                $("#txtExceptionDetails").append("<p>" + message + "</p>");
+            }
+
+            $("#txtErrorMessage").empty();
+            $("#txtErrorMessage").append("<p>" + message + "</p>");
+
+            $("#dlgErrorDialog").modal({ backdrop: 'static' });
+        }
     </script>
 
     <!--Custom Javascript for each modules-->
@@ -91,11 +108,49 @@
         </div>
         <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
         </asp:ContentPlaceHolder>
-    </form>
-    <footer class="footer">
-        <div class="container-fluid">
-            <p>Yumiki 2016 - Status bar</p>
+        <asp:UpdateProgress runat="server" ID="UpdateProgress1">
+            <ProgressTemplate>
+                <div class="modal-backdrop"></div>
+                <div id="dlgLoadingBar" class="modal show">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+
+        <div id="dlgErrorDialog" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Opps! Something went wrong...
+                    </div>
+                    <div class="modal-body">
+                        <div id="txtErrorMessage"></div>
+                        <div id="txtExceptionDetails" class="collapse">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnExceptionDetails" data-toggle="collapse" data-target="#txtExceptionDetails">Details</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </form>
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container-fluid">
+            <p class="navbar-text pull-left">
+                © <% DateTime.Now.Year.ToString(); %> - Yumiki Portal.
+                <a href="http://tinyurl.com/tbvalid" target="_blank">HTML 5 Validation</a>
+            </p>
+            <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
+                <span class="glyphicon glyphicon-star"></span>Subscribe on YouTube</a>
+        </div>
+    </div>
 </body>
 </html>
