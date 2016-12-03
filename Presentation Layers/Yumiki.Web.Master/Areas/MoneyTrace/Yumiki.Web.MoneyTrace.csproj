@@ -106,6 +106,7 @@
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="packages.config" />
     <Content Include="Views\TransactionType\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\MoneyTrace.pubxml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
