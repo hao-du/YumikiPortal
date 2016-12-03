@@ -32,14 +32,14 @@ namespace Yumiki.Business.MoneyTrace.Services
         {
             if (string.IsNullOrEmpty(currencyID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency ID cannot be empty.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency ID cannot be empty.", Logger);
             }
 
             Guid convertedCurrencyID = Guid.Empty;
             Guid.TryParse(currencyID, out convertedCurrencyID);
             if (convertedCurrencyID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Currency ID must be GUID type.");
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Currency ID must be GUID type.", Logger);
             }
 
             return Repository.GetCurrency(convertedCurrencyID);
@@ -53,17 +53,17 @@ namespace Yumiki.Business.MoneyTrace.Services
         {
             if (string.IsNullOrEmpty(currency.CurrencyName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Name is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Name is required.", Logger);
             }
 
             if (string.IsNullOrEmpty(currency.CurrencyShortName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Short Name is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Short Name is required.", Logger);
             }
 
             if (currency.CurrencyShortName.Length < 3 || currency.CurrencyShortName.Length > 4)
             {
-                throw new YumikiException(ExceptionCode.E_INVALID_LENGTH, "Currency Short Name allows 3 to 4 characters.");
+                throw new YumikiException(ExceptionCode.E_INVALID_LENGTH, "Currency Short Name allows 3 to 4 characters.", Logger);
             }
 
             currency.CurrencyShortName = currency.CurrencyShortName.ToUpper();

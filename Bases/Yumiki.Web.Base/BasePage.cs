@@ -129,7 +129,8 @@ namespace Yumiki.Web.Base
             base.OnPreInit(e);
             if (Session[HttpConstants.Session.UserLoginName] == null)
             {
-                Response.Redirect(string.Format("{0}?{1}={2}", CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
+                this.Logger.Infomation(string.Format("Session End from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
+                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
             }
         }
     }

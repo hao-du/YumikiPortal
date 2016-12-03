@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Commons.Logging;
 using Yumiki.Entity.Base;
 
 namespace Yumiki.Data.Base
@@ -17,6 +18,19 @@ namespace Yumiki.Data.Base
     public class BaseRepository<T> where T : DbContext
     {
         protected T context;
+
+        private Logger logger;
+        public Logger Logger
+        {
+            get
+            {
+                if (logger == null)
+                {
+                    logger = new Logger(GetType());
+                }
+                return logger;
+            }
+        }
 
         /// <summary>
         /// To cross context among repositories to avoid open SQL Connection many times.

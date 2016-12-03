@@ -19,21 +19,21 @@ namespace Yumiki.Business.Master.Services
         {
             if (string.IsNullOrEmpty(userName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Name cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Name cannot be empty.", Logger);
             }
             if (string.IsNullOrEmpty(password))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Password cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Password cannot be empty.", Logger);
             }
 
             TB_User user = Repository.Login(userName, Crypto.Encrypt(password, userName));
             if(user == null)
             {
-                throw new YumikiException(ExceptionCode.E_SECURITY_ERROR, "Invalid User Name or Password.", null);
+                throw new YumikiException(ExceptionCode.E_SECURITY_ERROR, "Invalid User Name or Password.", Logger);
             }
             if (!user.IsActive)
             {
-                throw new YumikiException(ExceptionCode.E_SECURITY_ERROR, "This user is no longer active. Please contact Administrator to re-activate it.", null);
+                throw new YumikiException(ExceptionCode.E_SECURITY_ERROR, "This user is no longer active. Please contact Administrator to re-activate it.", Logger);
             }
 
             return user;

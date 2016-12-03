@@ -1,5 +1,6 @@
 ﻿using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
@@ -9,6 +10,19 @@ namespace Yumiki.Web.Base
     /// </summary>
     public class MasterBasePage<T> : System.Web.UI.MasterPage
     {
+        private Logger logger;
+        public Logger Logger
+        {
+            get
+            {
+                if (logger == null)
+                {
+                    logger = new Logger(GetType());
+                }
+                return logger;
+            }
+        }
+
         private T businessService;
         protected T BusinessService
         {

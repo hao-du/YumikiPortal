@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +9,15 @@ namespace Yumiki.Commons.Logging
 {
     public class Logger
     {
-        ILog logger;
+        NLog.Logger logger;
         public Logger()
         {
-            logger = LogManager.GetLogger(typeof(Logger));
+            logger = LogManager.GetCurrentClassLogger();
         }
 
         public Logger(Type type)
         {
-            logger = LogManager.GetLogger(type);
+            logger = LogManager.GetLogger(type.FullName, type);
         }
 
         public void Fatal(string message, Exception ex)
@@ -70,55 +70,44 @@ namespace Yumiki.Commons.Logging
             Debug(message, null);
         }
 
+        public void Trace(string message, Exception ex)
+        {
+            Append(LogLevel.TRACE, message, ex);
+        }
+
+        public void Trace(string message)
+        {
+            Trace(message, null);
+        }
+
         public void Append(LogLevel logLevel, string message, Exception ex)
         {
-            if (ex == null)
+            switch (logLevel)
             {
-                Append(logLevel, message);
-            }
-            else
-            {
-                switch (logLevel)
-                {
-                    case LogLevel.FATAL:
-                        logger.Fatal(message, ex);
-                        break;
-                    case LogLevel.ERROR:
-                        logger.Error(message, ex);
-                        break;
-                    case LogLevel.WARN:
-                        logger.Warn(message, ex);
-                        break;
-                    case LogLevel.INFO:
-                        logger.Info(message, ex);
-                        break;
-                    case LogLevel.DEBUG:
-                        logger.Debug(message, ex);
-                        break;
-                }
+                case LogLevel.FATAL:
+                    logger.Fatal(ex, message);
+                    break;
+                case LogLevel.ERROR:
+                    logger.Error(ex, message);
+                    break;
+                case LogLevel.WARN:
+                    logger.Warn(ex, message);
+                    break;
+                case LogLevel.INFO:
+                    logger.Info(ex, message);
+                    break;
+                case LogLevel.DEBUG:
+                    logger.Debug(ex, message);
+                    break;
+                case LogLevel.TRACE:
+                    logger.Trace(ex, message);
+                    break;
             }
         }
 
         public void Append(LogLevel logLevel, string message)
         {
-            switch (logLevel)
-            {
-                case LogLevel.FATAL:
-                    logger.Fatal(message);
-                    break;
-                case LogLevel.ERROR:
-                    logger.Error(message);
-                    break;
-                case LogLevel.WARN:
-                    logger.Warn(message);
-                    break;
-                case LogLevel.INFO:
-                    logger.Info(message);
-                    break;
-                case LogLevel.DEBUG:
-                    logger.Debug(message);
-                    break;
-            }
+            Append(logLevel, message, null);
         }
     }
 }

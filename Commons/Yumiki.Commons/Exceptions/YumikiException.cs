@@ -30,9 +30,11 @@ namespace Yumiki.Commons.Exceptions
         /// </summary>
         /// <param name="exCode">ExceptionCode enum type</param>
         /// <param name="errorMessage">Error message from Exception base class</param>
-        public YumikiException(ExceptionCode exCode, string errorMessage) : base(errorMessage)
+        /// <param name="logger">Log exception to log file.</param>
+        public YumikiException(ExceptionCode exCode, string errorMessage, Logging.Logger logger = null) : base(errorMessage)
         {
             this.ExCode = exCode;
+            AppendLog(logger);
         }
 
         /// <summary>
@@ -41,9 +43,11 @@ namespace Yumiki.Commons.Exceptions
         /// <param name="exCode">ExceptionCode enum type</param>
         /// <param name="errorMessage">Error message from Exception base class</param>
         /// <param name="innerException">Inner exception from Exception base class</param>
-        public YumikiException(ExceptionCode exCode, string errorMessage, Exception innerException) : base(errorMessage, innerException)
+        /// <param name="logger">Log exception to log file.</param>
+        public YumikiException(ExceptionCode exCode, string errorMessage, Exception innerException, Logging.Logger logger = null) : base(errorMessage, innerException)
         {
             this.ExCode = exCode;
+            AppendLog(logger);
         }
 
         /// <summary>
@@ -53,10 +57,25 @@ namespace Yumiki.Commons.Exceptions
         /// <param name="referenceObject">Used to pass over the DLLs to track exception value.</param>
         /// <param name="errorMessage">Error message from Exception base class</param>
         /// <param name="innerException">Inner exception from Exception base class</param>
-        public YumikiException(ExceptionCode exCode, object referenceObject ,string errorMessage, Exception innerException) : base(errorMessage, innerException)
+        /// <param name="logger">Log exception to log file.</param>
+        public YumikiException(ExceptionCode exCode, object referenceObject ,string errorMessage, Exception innerException, Logging.Logger logger = null) : base(errorMessage, innerException)
         {
             this.ExCode = exCode;
             this.ReferenceObject = referenceObject;
+            AppendLog(logger);
+        }
+
+        /// <summary>
+        /// Append exception detail to log file.
+        /// </summary>
+        /// <param name="logger">Only log if logger is not null.</param>
+        private void AppendLog(Logging.Logger logger)
+        {
+            if(logger != null)
+            {
+                string message = string.Format("Error Code: {0}", this.ExCode.ToString());
+                logger.Error(message, this);
+            }
         }
     }
 }

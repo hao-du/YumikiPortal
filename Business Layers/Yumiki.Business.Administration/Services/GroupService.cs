@@ -32,14 +32,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid groupID = Guid.Empty;
             Guid.TryParse(id, out groupID);
             if (groupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             return Repository.GetGroup(groupID);
@@ -53,12 +53,12 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(group.GroupName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group Name is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group Name is required.", Logger);
             }
 
             if (!Repository.CheckValidGroupName(group.GroupName, group.ID))
             {
-                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Group Name was used.", null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Group Name was used.", Logger);
             }
 
             Repository.SaveGroup(group);
@@ -74,14 +74,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             return Repository.GetUsersFromGroup(convertedGroupID, showAssginedUser);
@@ -96,14 +96,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             List<Guid> convertedUserIds = new List<Guid>();
@@ -111,14 +111,14 @@ namespace Yumiki.Business.Administration.Services
             {
                 if (string.IsNullOrEmpty(userID))
                 {
-                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
                 }
 
                 Guid convertedUserID = Guid.Empty;
                 Guid.TryParse(userID, out convertedUserID);
                 if (convertedUserID == Guid.Empty)
                 {
-                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
                 }
 
                 convertedUserIds.Add(convertedUserID);
@@ -136,14 +136,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             List<Guid> convertedUserIds = new List<Guid>();
@@ -151,14 +151,14 @@ namespace Yumiki.Business.Administration.Services
             {
                 if (string.IsNullOrEmpty(userID))
                 {
-                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
                 }
 
                 Guid convertedUserID = Guid.Empty;
                 Guid.TryParse(userID, out convertedUserID);
                 if (convertedUserID == Guid.Empty)
                 {
-                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
                 }
 
                 convertedUserIds.Add(convertedUserID);
@@ -177,14 +177,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             return Repository.GetPrivilegesFromGroup(convertedGroupID, showAssginedPrivilege);
@@ -199,14 +199,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             List<Guid> convertedPrivilegeIds = new List<Guid>();
@@ -214,14 +214,14 @@ namespace Yumiki.Business.Administration.Services
             {
                 if (string.IsNullOrEmpty(privilegeID))
                 {
-                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", null);
+                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
                 }
 
                 Guid convertedPrivilegeID = Guid.Empty;
                 Guid.TryParse(privilegeID, out convertedPrivilegeID);
                 if (convertedPrivilegeID == Guid.Empty)
                 {
-                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", null);
+                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", Logger);
                 }
 
                 convertedPrivilegeIds.Add(convertedPrivilegeID);
@@ -239,14 +239,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(groupID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
 
             Guid convertedGroupID = Guid.Empty;
             Guid.TryParse(groupID, out convertedGroupID);
             if (convertedGroupID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Group ID must be GUID type.", Logger);
             }
 
             List<Guid> convertedPrivilegeIds = new List<Guid>();
@@ -254,14 +254,14 @@ namespace Yumiki.Business.Administration.Services
             {
                 if (string.IsNullOrEmpty(privilegeID))
                 {
-                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", null);
+                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
                 }
 
                 Guid convertedPrivilegeID = Guid.Empty;
                 Guid.TryParse(privilegeID, out convertedPrivilegeID);
                 if (convertedPrivilegeID == Guid.Empty)
                 {
-                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", null);
+                    throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", Logger);
                 }
 
                 convertedPrivilegeIds.Add(convertedPrivilegeID);

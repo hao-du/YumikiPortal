@@ -124,6 +124,7 @@
     <Content Include="client\scripts\dataTables.bootstrap.js" />
     <Content Include="client\scripts\jquery.dataTables.js" />
     <Content Include="client\scripts\site.js" />
+    <Content Include="deployment-tool.js" />
     <Content Include="Global.asax" />
     <Content Include="client\scripts\bootstrap.min.js" />
     <Content Include="client\contents\site.less" />
@@ -189,7 +190,7 @@
     <Content Include="Views\Home\GetMenu.cshtml" />
     <Content Include="App_Config\Unity.config" />
     <Content Include="App_Config\Yumiki.config" />
-    <Content Include="App_Config\Log4Net.config" />
+    <Content Include="App_Config\NLog.config" />
     <None Include="client\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\ConnectionString.config" />
     <None Include="Web.Debug.config">

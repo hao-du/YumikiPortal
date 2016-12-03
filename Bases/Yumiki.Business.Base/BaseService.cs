@@ -1,4 +1,5 @@
-﻿using Yumiki.Commons.Unity;
+﻿using Yumiki.Commons.Logging;
+using Yumiki.Commons.Unity;
 
 namespace Yumiki.Business.Base
 {
@@ -7,6 +8,19 @@ namespace Yumiki.Business.Base
     /// </summary>
     public class BaseService<T>
     {
+        private Logger logger;
+        public Logger Logger
+        {
+            get
+            {
+                if (logger == null)
+                {
+                    logger = new Logger(GetType());
+                }
+                return logger;
+            }
+        }
+
         private T repository;
         protected T Repository
         {

@@ -96,14 +96,14 @@ namespace Yumiki.Business.Master.Services
         {
             if (string.IsNullOrEmpty(userID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
             }
 
             Guid convertedID = Guid.Empty;
             Guid.TryParse(userID, out convertedID);
             if (convertedID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
             }
 
             return convertedID;

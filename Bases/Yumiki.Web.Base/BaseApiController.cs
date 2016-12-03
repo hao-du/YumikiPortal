@@ -1,10 +1,26 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
+using System.Web.Http.Results;
+using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
 {
     public class ApiBaseController<T> : ApiController
     {
+        private Logger logger;
+        public Logger Logger
+        {
+            get
+            {
+                if (logger == null)
+                {
+                    logger = new Logger(GetType());
+                }
+                return logger;
+            }
+        }
+
         private T businessService;
         protected T BusinessService
         {
@@ -31,6 +47,12 @@ namespace Yumiki.Web.Base
                 }
                 return service;
             }
+        }
+
+        protected override ExceptionResult InternalServerError(Exception exception)
+        {
+            this.Logger.Error("Error during performning http method.", exception);
+            return base.InternalServerError(exception);
         }
     }
 }

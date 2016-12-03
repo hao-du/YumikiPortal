@@ -2,12 +2,26 @@
 using System.Web.Mvc.Filters;
 using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
 {
     public class BaseController<T> : Controller
     {
+        private Logger logger;
+        public Logger Logger
+        {
+            get
+            {
+                if (logger == null)
+                {
+                    logger = new Logger(GetType());
+                }
+                return logger;
+            }
+        }
+
         private T businessService;
         protected T BusinessService
         {
@@ -41,6 +55,7 @@ namespace Yumiki.Web.Base
             base.OnActionExecuting(filterContext);
             if (Session[HttpConstants.Session.UserLoginName] == null)
             {
+                this.Logger.Infomation(string.Format("Session End from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
                 filterContext.Result = RedirectToLoginPage();
             }
         }

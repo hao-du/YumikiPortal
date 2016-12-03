@@ -41,14 +41,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
             }
 
             Guid privilegeID = Guid.Empty;
             Guid.TryParse(id, out privilegeID);
             if (privilegeID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Privilege ID must be GUID type.", Logger);
             }
 
             return Repository.GetPrivilege(privilegeID);
@@ -62,16 +62,16 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(privilege.PrivilegeName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege Name cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege Name cannot be empty.", Logger);
             }
             if (string.IsNullOrEmpty(privilege.PagePath))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Page Path cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Page Path cannot be empty.", Logger);
             }
 
             if (!Repository.CheckValidPrivilegeName(privilege.PrivilegeName, privilege.PagePath, privilege.ID))
             {
-                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Privilege Name or Page Path was used.", null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Privilege Name or Page Path was used.", Logger);
             }
 
             //If parent id is Guild.Empty,it means this is the root node, so need to assign NULL value.

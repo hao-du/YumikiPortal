@@ -34,14 +34,14 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type ID cannot be empty.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type ID cannot be empty.", Logger);
             }
 
             Guid contactTypeID = Guid.Empty;
             Guid.TryParse(id, out contactTypeID);
             if (contactTypeID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Contact Type ID must be GUID type.", null);
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Contact Type ID must be GUID type.", Logger);
             }
 
             return Repository.GetContactType(contactTypeID);
@@ -55,12 +55,12 @@ namespace Yumiki.Business.Administration.Services
         {
             if (string.IsNullOrEmpty(contactType.ContactTypeName))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type Name is required.", null);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type Name is required.", Logger);
             }
 
             if (!Repository.CheckValidContactTypeName(contactType.ContactTypeName, contactType.ID))
             {
-                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Contact Type Name was used.", null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Contact Type Name was used.", Logger);
             }
 
             Repository.SaveContactType(contactType);
