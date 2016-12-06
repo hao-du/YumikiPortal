@@ -8,9 +8,9 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
-    public class TransactionTypeController : BaseController<ITransactionTypeService>
+    public class TraceController : BaseController<ITraceService>
     {
-        // GET: Transaction Type
+        // GET: Trace
         public ActionResult Index()
         {
             return View();

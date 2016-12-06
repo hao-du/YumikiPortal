@@ -17,5 +17,8 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string CategoryGetAll = "CategoryGetAll";
         public const string CategoryGetByID = "CategoryGetByID";
         public const string CategoryGetSave = "CategoryGetSave";
+        public const string TraceGetAll = "TraceGetAll";
+        public const string TraceGetByID = "TraceGetByID";
+        public const string TraceGetSave = "TraceGetSave";
     }
 }

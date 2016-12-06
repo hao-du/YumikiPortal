@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Entity.MoneyTrace;
+using Yumiki.Web.Base;
+using Yumiki.Web.MoneyTrace.Constants;
+
+namespace Yumiki.Web.MoneyTrace.Controllers
+{
+    [RoutePrefix("api/trace")]
+    public class ApiTraceController : ApiBaseController<ITraceService>
+    {
+        [Route("getall", Name = RouteNames.TraceGetAll)]
+        [HttpGet()]
+        public IHttpActionResult Get(bool showInactive)
+        {
+            try
+            {
+                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive);
+                return Ok(traces);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("get", Name = RouteNames.TraceGetByID)]
+        [HttpGet()]
+        public IHttpActionResult GetById(string traceID)
+        {
+            try
+            {
+                TB_Trace trace = BusinessService.GetTrace(traceID);
+                return Ok(trace);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("save", Name = RouteNames.TraceGetSave)]
+        [HttpPost()]
+        public IHttpActionResult Create([FromBody] TB_Trace item)
+        {
+            try
+            {
+                BusinessService.SaveTrace(item);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+    }
+}

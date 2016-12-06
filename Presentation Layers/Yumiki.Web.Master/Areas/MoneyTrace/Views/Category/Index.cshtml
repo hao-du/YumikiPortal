@@ -230,7 +230,6 @@
                             <input type="text" name="categoryName" ng-model="category.@TB_Category.FieldName.CategoryName" class="form-control" ng-required="true" />
                             <p ng-show="categoryForm.categoryName.$error.required && categoryForm.categoryName.$dirty" class="help-block">Category Name is required.</p>
                         </div>
-
                         <div class="form-group" ng-class="{ 'has-error' : categoryForm.transactionType.$invalid }">
                             <label>Transaction Type</label>
                             <select class="form-control selectpicker" name="transactionType" ng-required="true"
@@ -240,14 +239,6 @@
                             </select>
                             <p ng-show="categoryForm.transactionType.$error.required && categoryForm.transactionType.$dirty" class="help-block">Transaction Type is required.</p>
                         </div>
-
-                        @*<div class="form-group" ng-class="{ 'has-error' : categoryForm.categoryShortName.$invalid }">
-                                <label>Category Short Name</label>
-                                <input type="text" name="categoryShortName" ng-model="category.@TB_Category.FieldName.CategoryShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4" />
-                                <p ng-show="categoryForm.categoryShortName.$error.required && categoryForm.categoryShortName.$dirty" class="help-block">Category Short Name is required.</p>
-                                <p ng-show="categoryForm.categoryShortName.$error.minlength" class="help-block">Category Short Name needs at least 3 characters.</p>
-                                <p ng-show="categoryForm.categoryShortName.$error.maxlength" class="help-block">Category Short Name exceeds maximum 4 characters.</p>
-                            </div>*@
                         <div class="form-group">
                             <label>Descriptions</label>
                             <textarea ng-model="category.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>

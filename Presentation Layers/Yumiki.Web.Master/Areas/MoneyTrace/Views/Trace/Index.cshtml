@@ -1,0 +1,291 @@
+﻿@using Yumiki.Web.MoneyTrace.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.MoneyTrace;
+@{
+    ViewBag.Title = "Trace";
+}
+
+@section Script{
+    <script type="text/javascript">
+        //Declare constant variables.
+        var showActiveTraceString = 'Show Active Trace';
+        var showInactiveTraceString = 'Show Inactive Trace';
+
+        var app = angular.module('moneyTrace', []);
+
+        //Service to communicate with Server.
+        app.service('DataService', function ($http) {
+            this.getCategoryList = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.CategoryGetAll, null)', { params: { 'showInactive': false } });
+            };
+
+            this.getCurrencyList = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAll, null)', { params: { 'showInactive': false } });
+            };
+
+            this.getTraceList = function (showInactive) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive } });
+            };
+
+            this.getTraceByID = function (traceID) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetByID, null)', { params: { 'traceID': traceID } });
+            };
+
+            this.save = function (trace) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.TraceGetSave, null)', trace);
+            };
+        });
+
+        //Controller to display items' list
+        app.controller('traceController', function ($scope, $rootScope, $http, DataService) {
+            $scope.inactiveButtonName = showInactiveTraceString;
+
+            //To determine when load active or inactive list.
+            $scope.isStatusChanged = false;
+
+            //Display Dialog and pass data to Dialog.
+            $scope.showDialog = function (traceID) {
+                //Call DialogController
+                $rootScope.$broadcast("OnLoad", traceID);
+            }
+
+            //Event for other controllers to reload data.
+            $rootScope.$on('OnReloadData', function (event) {
+                $scope.loadData();
+            });
+
+            //Load active or inactive list.
+            $scope.loadData = function () {
+                var showInactive = true;
+                if ($scope.inactiveButtonName == showInactiveTraceString) {
+                    showInactive = false;
+                }
+
+                if ($scope.isStatusChanged) {
+                    showInactive = !showInactive;
+                }
+
+                $(this).showLoadingBar();
+                DataService.getTraceList(showInactive).then(
+                    function mySucces(response) {
+                        $scope.traceList = response.data;
+
+                        if ($scope.isStatusChanged) {
+                            if ($scope.inactiveButtonName == showInactiveTraceString) {
+                                $scope.inactiveButtonName = showActiveTraceString;
+                            } else {
+                                $scope.inactiveButtonName = showInactiveTraceString;
+                            }
+                            $scope.isStatusChanged = false;
+                        }
+                        $(this).hideLoadingBar();
+                    }, function myError(response) {
+                        $scope.isStatusChanged = false;
+                        $(this).hideLoadingBar();
+
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            };
+
+            //When click on "ShowInActiveButton", reload data with active status.
+            $scope.loadDataWithStatus = function () {
+                $scope.isStatusChanged = true;
+                $scope.loadData();
+            }
+        });
+
+        //Controller to display dialog
+        app.controller('traceDialogController', function ($scope, $rootScope, $http, DataService) {
+            $scope.traceID = undefined;
+            $scope.isActiveDisabled = false;
+
+            //Used to be called by other controllers.
+            $rootScope.$on('OnLoad', function (event, traceID) {
+                $('#dlgTrace').modal({ backdrop: 'static' });
+
+                if (traceID != undefined && traceID != null) {
+                    $scope.traceID = traceID;
+                    $scope.isActiveDisabled = false;
+                    $scope.dialogTitle = "Edit Trace";
+
+                    $(this).showLoadingBar();
+
+                    DataService.getTraceByID($scope.traceID)
+                        .then(function mySucces(response) {
+                            $scope.trace = response.data;
+                            $(this).hideLoadingBar();
+
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+
+                } else {
+                    $scope.dialogTitle = "New Trace";
+                    $scope.isActiveDisabled = true;
+
+                    $scope.trace = $scope.resetTrace();
+                }
+            });
+
+            //Reset object in new mode.
+            $scope.resetTrace = function () {
+                $scope.traceForm.$setPristine();
+                return {
+                    '@CommonProperties.ID': undefined,
+                    '@TB_Trace.FieldName.Amount': 0,
+                    '@TB_Trace.FieldName.CategoryID': '',
+                    '@TB_Trace.FieldName.CurrencyID': '',
+                    '@TB_Trace.FieldName.TraceDate': Date.now(),
+                    '@CommonProperties.IsActive': true
+                };
+            }
+
+            //Save new or update object
+            $scope.save = function (isValid) {
+                if (isValid) {
+                    $(this).showLoadingBar();
+                    DataService.save($scope.trace)
+                        .then(function mySucces(response) {
+                            $scope.traceID = undefined;
+                            $('#dlgTrace').modal('hide');
+
+                            $scope.ReloadData();
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+                }
+            };
+
+            //After saving, reload list.
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
+            };
+
+            // Bind datasource to controls such as Dropdownlist
+            $scope.bindControls = function () {
+                DataService.getCategoryList().then(
+                    function mySucces(response) {
+                        $scope.categoryList = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+
+                DataService.getCurrencyList().then(
+                    function mySucces(response) {
+                        $scope.currencyList = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            }
+        });
+    </script>
+}
+<div ng-app="moneyTrace">
+    <div class="container" ng-controller="traceController" ng-init="loadData();">
+        <h2>Trace</h2>
+        <div class="well well-sm">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table id="tblTrace" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                                <th>Category</th>
+                                <th>Descriptions</th>
+                                <th>Active Status</th>
+                                <th>Modify Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="trace in traceList">
+                                <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
+                                <td>{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
+                                <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
+                                <td>{{ trace.@TB_Trace.FieldName.CategoryName }}</td>
+                                <td>{{ trace.@CommonProperties.Descriptions }}</td>
+                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                                <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(trace.@CommonProperties.ID);">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgTrace" class="modal fade" role="dialog" ng-controller="traceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
+                            <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.category.$invalid }">
+                            <label>Category</label>
+                            <select class="form-control selectpicker" name="category" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CategoryID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Category.FieldName.CategoryName for item in categoryList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="traceForm.category.$error.required && traceForm.category.$dirty" class="help-block">Category is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
