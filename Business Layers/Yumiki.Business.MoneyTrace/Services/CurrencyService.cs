@@ -48,7 +48,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <summary>
         /// Create/Update a currency
         /// </summary>
-        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        /// <param name="currency">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
         public void SaveCurrency(TB_Currency currency)
         {
             if (string.IsNullOrEmpty(currency.CurrencyName))

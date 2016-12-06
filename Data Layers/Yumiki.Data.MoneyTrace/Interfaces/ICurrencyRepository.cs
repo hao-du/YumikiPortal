@@ -26,7 +26,7 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <summary>
         /// Create/Update a currency
         /// </summary>
-        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        /// <param name="currency">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
         void SaveCurrency(TB_Currency currency);
     }
 }

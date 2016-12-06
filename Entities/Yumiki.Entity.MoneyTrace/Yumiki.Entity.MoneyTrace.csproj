@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomFields\TB_Category.cs" />
+    <Compile Include="CustomFields\TB_Trace.cs" />
     <Compile Include="CustomFields\TB_TransactionType.cs" />
     <Compile Include="CustomFields\TB_Currency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

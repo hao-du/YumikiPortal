@@ -15,7 +15,7 @@
 
         //Service to transfer data between controllers.
         app.factory('DataTransfer', function () {
-            return { transactionTypeID: '' };
+            return { traceID: '' };
         });
 
         //Service to communicate with Server.
@@ -24,26 +24,26 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.TransactionTypeGetAll, null)', { params: { 'showInactive': showInactive } });
             };
 
-            this.getTransactionTypeByID = function (transactionTypeID) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.TransactionTypeGetByID, null)', { params: { 'transactionTypeID': transactionTypeID } });
+            this.getTransactionTypeByID = function (traceID) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.TransactionTypeGetByID, null)', { params: { 'traceID': traceID } });
             };
 
-            this.save = function (transactionType) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.TransactionTypeGetSave, null)', transactionType);
+            this.save = function (trace) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.TransactionTypeGetSave, null)', trace);
             };
         });
 
         //Controller to display items' list
-        app.controller('transactionTypeController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+        app.controller('traceController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
             $scope.inactiveButtonName = showInactiveTransactionTypeString;
 
             //To determine when load active or inactive list.
             $scope.isStatusChanged = false;
 
             //Display Dialog and pass data to Dialog.
-            $scope.showDialog = function (transactionTypeID) {
+            $scope.showDialog = function (traceID) {
                 //Call DialogController
-                $rootScope.$broadcast("OnLoad", transactionTypeID);
+                $rootScope.$broadcast("OnLoad", traceID);
             }
 
             //Event for other controllers to reload data.
@@ -65,7 +65,7 @@
                 $(this).showLoadingBar();
                 DataService.getTransactionTypeList(showInactive).then(
                     function mySucces(response) {
-                        $scope.transactionTypeList = response.data;
+                        $scope.traceList = response.data;
 
                         if ($scope.isStatusChanged) {
                             if ($scope.inactiveButtonName == showInactiveTransactionTypeString) {
@@ -92,24 +92,24 @@
         });
 
         //Controller to display dialog
-        app.controller('transactionTypeDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.transactionTypeID = undefined;
+        app.controller('traceDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            $scope.traceID = undefined;
             $scope.isActiveDisabled = false;
 
             //Used to be called by other controllers.
-            $rootScope.$on('OnLoad', function (event, transactionTypeID) {
+            $rootScope.$on('OnLoad', function (event, traceID) {
                 $('#dlgTransactionType').modal({ backdrop: 'static' });
 
-                if (transactionTypeID != undefined && transactionTypeID != null) {
-                    $scope.transactionTypeID = transactionTypeID;
+                if (traceID != undefined && traceID != null) {
+                    $scope.traceID = traceID;
                     $scope.isActiveDisabled = false;
                     $scope.dialogTitle = "Edit Transaction Type";
 
                     $(this).showLoadingBar();
 
-                    DataService.getTransactionTypeByID($scope.transactionTypeID)
+                    DataService.getTransactionTypeByID($scope.traceID)
                         .then(function mySucces(response) {
-                            $scope.transactionType = response.data;
+                            $scope.trace = response.data;
                             $(this).hideLoadingBar();
                         }, function myError(response) {
                             $(this).hideLoadingBar();
@@ -121,13 +121,13 @@
                     $scope.dialogTitle = "New Transaction Type";
                     $scope.isActiveDisabled = true;
 
-                    $scope.transactionType = $scope.resetTransactionType();
+                    $scope.trace = $scope.resetTransactionType();
                 }
             });
 
             //Reset object in new mode.
             $scope.resetTransactionType = function () {
-                $scope.transactionTypeForm.$setPristine();
+                $scope.traceForm.$setPristine();
                 return {
                     '@CommonProperties.ID': undefined,
                     '@TB_TransactionType.FieldName.TransactionTypeName': '',
@@ -142,9 +142,9 @@
             $scope.save = function (isValid) {
                 if (isValid) {
                     $(this).showLoadingBar();
-                    DataService.save($scope.transactionType)
+                    DataService.save($scope.trace)
                         .then(function mySucces(response) {
-                            $scope.transactionTypeID = undefined;
+                            $scope.traceID = undefined;
                             $('#dlgTransactionType').modal('hide');
 
                             $scope.ReloadData();
@@ -164,7 +164,7 @@
     </script>
 }
 <div ng-app="moneyTrace">
-    <div class="container" ng-controller="transactionTypeController" ng-init="loadData();">
+    <div class="container" ng-controller="traceController" ng-init="loadData();">
         <h2>Transaction Type</h2>
         <div class="well well-sm">
             <div class="btn-group">
@@ -188,14 +188,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="transactionType in transactionTypeList">
-                                <td>{{ transactionType.@TB_TransactionType.FieldName.TransactionTypeName }}</td>
-                                <td><input type="checkbox" ng-checked="{{ transactionType.@TB_TransactionType.FieldName.IsIncome }}" disabled="disabled" /></td>
-                                <td><input type="checkbox" ng-checked="{{ transactionType.@TB_TransactionType.FieldName.IsTransfer }}" disabled="disabled" /></td>
-                                <td>{{ transactionType.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
-                                <td>{{ transactionType.@CommonProperties.LastUpdateDateUI }}</td>
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(transactionType.@CommonProperties.ID);">Edit</a></td>
+                            <tr ng-repeat="trace in traceList">
+                                <td>{{ trace.@TB_TransactionType.FieldName.TransactionTypeName }}</td>
+                                <td><input type="checkbox" ng-checked="{{ trace.@TB_TransactionType.FieldName.IsIncome }}" disabled="disabled" /></td>
+                                <td><input type="checkbox" ng-checked="{{ trace.@TB_TransactionType.FieldName.IsTransfer }}" disabled="disabled" /></td>
+                                <td>{{ trace.@CommonProperties.Descriptions }}</td>
+                                <td><input type="checkbox" ng-checked="{{ trace.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                                <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(trace.@CommonProperties.ID);">Edit</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -205,45 +205,45 @@
     </div>
     <!-- Modal -->
 
-    <div id="dlgTransactionType" class="modal fade" role="dialog" ng-controller="transactionTypeDialogController">
+    <div id="dlgTransactionType" class="modal fade" role="dialog" ng-controller="traceDialogController">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
-                <form name="transactionTypeForm" ng-submit="save(transactionTypeForm.$valid)" novalidate>
+                <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
                     <div class="modal-header">
                         <h4 class="modal-title">{{ dialogTitle }}</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : transactionTypeForm.transactionTypeName.$invalid }">
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.traceName.$invalid }">
                             <label>Transaction Type Name</label>
-                            <input type="text" name="transactionTypeName" ng-model="transactionType.@TB_TransactionType.FieldName.TransactionTypeName" class="form-control" ng-required="true" />
-                            <p ng-show="transactionTypeForm.transactionTypeName.$error.required && transactionTypeForm.transactionTypeName.$dirty" class="help-block">Transaction Type Name is required.</p>
+                            <input type="text" name="traceName" ng-model="trace.@TB_TransactionType.FieldName.TransactionTypeName" class="form-control" ng-required="true" />
+                            <p ng-show="traceForm.traceName.$error.required && traceForm.traceName.$dirty" class="help-block">Transaction Type Name is required.</p>
                         </div>
                         <div class="form-group">
                             <span class="checkbox">
-                                <input type="checkbox" ng-model="transactionType.@TB_TransactionType.FieldName.IsIncome" ng-checked="transactionType.@TB_TransactionType.FieldName.IsIncome" />
+                                <input type="checkbox" ng-model="trace.@TB_TransactionType.FieldName.IsIncome" ng-checked="trace.@TB_TransactionType.FieldName.IsIncome" />
                                 <label>Is Income Type</label>
                             </span>
                         </div>
                         <div class="form-group">
                             <span class="checkbox">
-                                <input type="checkbox" ng-model="transactionType.@TB_TransactionType.FieldName.IsTransfer" ng-checked="transactionType.@TB_TransactionType.FieldName.IsTransfer" />
+                                <input type="checkbox" ng-model="trace.@TB_TransactionType.FieldName.IsTransfer" ng-checked="trace.@TB_TransactionType.FieldName.IsTransfer" />
                                 <label>Is Transfer Type</label>
                             </span>
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>
-                            <textarea ng-model="transactionType.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="form-group">
                             <span class="checkbox">
-                                <input type="checkbox" ng-model="transactionType.@CommonProperties.IsActive" ng-checked="transactionType.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
                                 <label>Is Active</label>
                             </span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="transactionTypeForm.$invalid">Save</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>

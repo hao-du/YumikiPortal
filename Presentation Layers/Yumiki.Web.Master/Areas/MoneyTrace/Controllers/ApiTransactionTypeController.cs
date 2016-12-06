@@ -20,8 +20,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_TransactionType> transactionTypes = BusinessService.GetAllTransactionTypes(showInactive);
-                return Ok(transactionTypes);
+                List<TB_TransactionType> traces = BusinessService.GetAllTransactionTypes(showInactive);
+                return Ok(traces);
             }
             catch (Exception ex)
             {
@@ -31,12 +31,12 @@ namespace Yumiki.Web.MoneyTrace.Controllers
 
         [Route("get", Name = RouteNames.TransactionTypeGetByID)]
         [HttpGet()]
-        public IHttpActionResult GetById(string transactionTypeID)
+        public IHttpActionResult GetById(string traceID)
         {
             try
             {
-                TB_TransactionType transactionType = BusinessService.GetTransactionType(transactionTypeID);
-                return Ok(transactionType);
+                TB_TransactionType trace = BusinessService.GetTransactionType(traceID);
+                return Ok(trace);
             }
             catch (Exception ex)
             {

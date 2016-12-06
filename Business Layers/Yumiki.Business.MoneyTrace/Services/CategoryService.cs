@@ -48,7 +48,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <summary>
         /// Create/Update a category
         /// </summary>
-        /// <param name="user">If category id is empty, then this is new category. Otherwise, this needs to be updated</param>
+        /// <param name="category">If category id is empty, then this is new category. Otherwise, this needs to be updated</param>
         public void SaveCategory(TB_Category category)
         {
             if (string.IsNullOrEmpty(category.CategoryName))

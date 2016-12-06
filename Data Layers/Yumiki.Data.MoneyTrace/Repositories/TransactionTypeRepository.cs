@@ -23,7 +23,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <summary>
         /// Get a specific Transaction Type.
         /// </summary>
-        /// <param name="currencyID">Specify id for Transaction Type need to be retrieved.</param>
+        /// <param name="transactionTypeID">Specify id for Transaction Type need to be retrieved.</param>
         /// <returns>Transaction Type Object</returns>
         public TB_TransactionType GetTransactionType(Guid transactionTypeID)
         {
@@ -33,7 +33,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <summary>
         /// Create/Update a Transaction Type
         /// </summary>
-        /// <param name="user">If Transaction Type id is empty, then this is new Transaction Type. Otherwise, this needs to be updated</param>
+        /// <param name="transactionType">If Transaction Type id is empty, then this is new Transaction Type. Otherwise, this needs to be updated</param>
         public void SaveTransactionType(TB_TransactionType transactionType)
         {
             if (transactionType.ID == Guid.Empty)
