@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Logging;
 using Yumiki.Entity.Base;
 
@@ -51,12 +52,12 @@ namespace Yumiki.Data.Base
             if (entity.ID == Guid.Empty)
             {
                 entity.ID = Guid.NewGuid();
-                entity.CreateDate = DateTime.Now;
+                entity.CreateDate = DateTimeHelper.GetSystemDatetime;
                 entity.IsActive = true;
             }
             else
             {
-                entity.LastUpdateDate = DateTime.Now;
+                entity.LastUpdateDate = DateTimeHelper.GetSystemDatetime;
             }
         }
 

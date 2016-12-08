@@ -8,8 +8,8 @@
 @section Script{
     <script type="text/javascript">
         //Declare constant variables.
-        var showActiveTraceString = 'Show Active Trace';
-        var showInactiveTraceString = 'Show Inactive Trace';
+        var showActiveTraceString = 'Show Active Traces';
+        var showInactiveTraceString = 'Show Inactive Traces';
 
         var app = angular.module('moneyTrace', []);
 
@@ -137,7 +137,7 @@
                     '@TB_Trace.FieldName.Amount': 0,
                     '@TB_Trace.FieldName.CategoryID': '',
                     '@TB_Trace.FieldName.CurrencyID': '',
-                    '@TB_Trace.FieldName.TraceDate': Date.now(),
+                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
                     '@CommonProperties.IsActive': true
                 };
             }

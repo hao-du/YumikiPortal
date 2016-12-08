@@ -1,6 +1,7 @@
 namespace Yumiki.Entity.MoneyTrace
 {
     using Commons.Dictionaries;
+    using Commons.Helpers;
 
     public partial class TB_Trace
     {
@@ -8,7 +9,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeFormat.ShortDateTime) : CreateDate.ToString(DateTimeFormat.ShortDateTime);
+                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToString(DateTimeHelper.ShortDateTime);
             }
         }
 
@@ -16,7 +17,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return TraceDate.ToString(DateTimeFormat.ShortDateTime);
+                return TraceDate.ToString(DateTimeHelper.ShortDateTime);
             }
         }
 

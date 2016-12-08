@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Helpers;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
@@ -13,6 +14,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         // GET: Trace
         public ActionResult Index()
         {
+            ViewBag.CurrentDate = DateTimeHelper.GetSystemDatetime.ToString(DateTimeHelper.LongDate);
+
             return View();
         }
     }

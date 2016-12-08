@@ -1,6 +1,7 @@
 ﻿using System;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Helpers;
 using Yumiki.Entity.Master;
 using Yumiki.Web.Base;
 
@@ -25,7 +26,7 @@ namespace Yumiki.Web.Master.Pages.Security
 
                 Session[HttpConstants.Session.UserID] = user.ID.ToString();
                 Session[HttpConstants.Session.UserLoginName] = user.UserLoginName.ToString();
-                Session[HttpConstants.Session.LastLoginTime] = DateTime.Now;
+                Session[HttpConstants.Session.LastLoginTime] = DateTimeHelper.GetSystemDatetime;
 
                 string path = Request.QueryString[HttpConstants.QueryStrings.Path];
                 if (string.IsNullOrEmpty(path))
