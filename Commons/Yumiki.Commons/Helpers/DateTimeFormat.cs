@@ -12,6 +12,7 @@ namespace Yumiki.Commons.Helpers
         public const string LongDate = "dd MMM yyyy";
         public const string ShortDateTime = "MM/dd/yyyy HH:mm:ss";
         public const string LongDateTime = "dd MMM yyyy HH:mm:ss";
+        public const string ClientMomentLongDate = "DD MMM YYYY";
 
         public static DateTime GetSystemDatetime
         {

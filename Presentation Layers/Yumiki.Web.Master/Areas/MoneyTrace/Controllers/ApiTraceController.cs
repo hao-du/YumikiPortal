@@ -50,6 +50,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
+                item.UserID = Guid.Parse(Session[Commons.Dictionaries.HttpConstants.Session.UserID].ToString());
+
                 BusinessService.SaveTrace(item);
                 return Ok();
             }

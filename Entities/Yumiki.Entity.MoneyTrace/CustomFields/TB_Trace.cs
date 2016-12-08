@@ -17,7 +17,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return TraceDate.ToString(DateTimeHelper.ShortDateTime);
+                return TraceDate.ToString(DateTimeHelper.ShortDate);
             }
         }
 

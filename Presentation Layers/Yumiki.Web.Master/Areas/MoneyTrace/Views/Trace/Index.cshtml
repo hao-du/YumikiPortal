@@ -1,5 +1,6 @@
-﻿@using Yumiki.Web.MoneyTrace.Constants
+﻿@using Yumiki.Web.MoneyTrace.Constants;
 @using Yumiki.Commons.Dictionaries;
+@using Yumiki.Commons.Helpers;
 @using Yumiki.Entity.MoneyTrace;
 @{
     ViewBag.Title = "Trace";
@@ -12,6 +13,13 @@
         var showInactiveTraceString = 'Show Inactive Traces';
 
         var app = angular.module('moneyTrace', []);
+
+        $(document).ready(function () {
+            $('.date').datetimepicker({
+                format: '@DateTimeHelper.ClientMomentLongDate',
+                ignoreReadonly: true,
+            });
+        });
 
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
@@ -113,6 +121,10 @@
                     DataService.getTraceByID($scope.traceID)
                         .then(function mySucces(response) {
                             $scope.trace = response.data;
+
+                            //Format date to display on TraceDate input
+                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+
                             $(this).hideLoadingBar();
 
                         }, function myError(response) {
@@ -145,6 +157,9 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
+                    //datetimepicker does not work with ng-model, bind data manually.
+                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
+
                     $(this).showLoadingBar();
                     DataService.save($scope.trace)
                         .then(function mySucces(response) {
@@ -216,7 +231,7 @@
                                 <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
                                 <td>{{ trace.@TB_Trace.FieldName.CategoryName }}</td>
                                 <td>{{ trace.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                                <td><input type="checkbox" ng-checked="{{ trace.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
                                 <td><a href="#" id="btnEdit" ng-click="showDialog(trace.@CommonProperties.ID);">Edit</a></td>
                             </tr>
@@ -239,7 +254,13 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
                             <label>Trace Date</label>
-                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <div class='input-group date'>
+                                <input id='dtpTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            {{ trace.TraceDate }}
                             <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
