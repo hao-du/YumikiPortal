@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
@@ -50,6 +51,10 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
+                if(item != null && Session[HttpConstants.Session.UserID] != null)
+                {
+                    item.UserID = Guid.Parse(Session[HttpConstants.Session.UserID].ToString());
+                }
                 BusinessService.SaveCategory(item);
                 return Ok();
             }

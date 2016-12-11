@@ -3,6 +3,9 @@ var const_Error = 'Error';
 var const_Warn = 'Warning';
 var const_Info = 'Information';
 
+//Global variables - May be modified in somewhere esle
+var noSession = "E_NO_SESSION";
+
 //Show message dialog in client side.
 var clientMessage = function (message, details, logType) {
     switch (logType) {
@@ -33,6 +36,10 @@ var clientMessage = function (message, details, logType) {
     $("#txtMessage").append("<p>" + message + "</p>");
 
     $("#dlgMessageDialog").modal({ backdrop: 'static' });
+
+    if (message.includes(noSession)) {
+        location.href = location.href;
+    }
 }
 
 //Startup method to set all global settings to all all modules.

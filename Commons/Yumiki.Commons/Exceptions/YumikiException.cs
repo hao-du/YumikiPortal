@@ -13,7 +13,8 @@ namespace Yumiki.Commons.Exceptions
         E_HTTP_ERROR,
         E_DUPLICATED,
         E_INVALID_LENGTH,
-        E_SECURITY_ERROR
+        E_SECURITY_ERROR,
+        E_NO_SESSION
     }
 
     public class YumikiException : Exception
