@@ -6,3 +6,23 @@ SELECT [ID], [UserLoginName], [FirstName], [LastName], [Descriptions], [IsActive
 FROM [DB_Administration].[dbo].[TB_User]
 
 -------------------------------------------------------------------------------------------------------------------------------------
+
+--Run these scripts in DB_Administrator when deploy
+--DECLARE @MonneyTraceID UNIQUEIDENTIFIER = NEWID()
+
+--INSERT INTO TB_Privilege
+--VALUES(@MonneyTraceID, 'Money Trace', '/MoneyTrace/', 0, NULL, 'Root of Money Trace Module', 1, GETDATE(), NULL)
+
+--INSERT INTO TB_Privilege
+--VALUES(NEWID(), 'Category', '/MoneyTrace/Category', 1, @MonneyTraceID, 'Category Page', 1, GETDATE(), NULL)
+
+--INSERT INTO TB_Privilege
+--VALUES(NEWID(), 'Currency', '/MoneyTrace/Currency', 1, @MonneyTraceID, 'Currency Page', 1, GETDATE(), NULL)
+
+--INSERT INTO TB_Privilege
+--VALUES(NEWID(), 'Trace', '/MoneyTrace/Trace', 1, @MonneyTraceID, 'Trace Page', 1, GETDATE(), NULL)
+
+--INSERT INTO TB_Privilege
+--VALUES(NEWID(), 'Transaction Type', '/MoneyTrace/TransactionType', 1, @MonneyTraceID, 'Transaction Type Page', 1, GETDATE(), NULL)
+
+-------------------------------------------------------------------------------------------------------------------------------------
