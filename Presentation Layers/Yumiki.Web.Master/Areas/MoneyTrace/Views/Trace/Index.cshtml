@@ -23,10 +23,6 @@
 
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
-            this.getCategoryList = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CategoryGetAll, null)', { params: { 'showInactive': false } });
-            };
-
             this.getCurrencyList = function () {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAll, null)', { params: { 'showInactive': false } });
             };
@@ -147,7 +143,7 @@
                 return {
                     '@CommonProperties.ID': undefined,
                     '@TB_Trace.FieldName.Amount': 0,
-                    '@TB_Trace.FieldName.CategoryID': '',
+                    '@TB_Trace.FieldName.Tags': '',
                     '@TB_Trace.FieldName.CurrencyID': '',
                     '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
                     '@CommonProperties.IsActive': true
@@ -182,13 +178,6 @@
 
             // Bind datasource to controls such as Dropdownlist
             $scope.bindControls = function () {
-                DataService.getCategoryList().then(
-                    function mySucces(response) {
-                        $scope.categoryList = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-
                 DataService.getCurrencyList().then(
                     function mySucces(response) {
                         $scope.currencyList = response.data;
@@ -217,7 +206,6 @@
                                 <th>Date</th>
                                 <th>Amount</th>
                                 <th>Currency</th>
-                                <th>Category</th>
                                 <th>Descriptions</th>
                                 <th>Active Status</th>
                                 <th>Modify Date</th>
@@ -229,7 +217,6 @@
                                 <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
                                 <td>{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
                                 <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
-                                <td>{{ trace.@TB_Trace.FieldName.CategoryName }}</td>
                                 <td>{{ trace.@CommonProperties.Descriptions }}</td>
                                 <td><input type="checkbox" ng-checked="{{ trace.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
@@ -277,16 +264,6 @@
                                 <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                             </select>
                             <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : traceForm.category.$invalid }">
-                            <label>Category</label>
-                            <select class="form-control selectpicker" name="category" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.CategoryID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Category.FieldName.CategoryName for item in categoryList">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="traceForm.category.$error.required && traceForm.category.$dirty" class="help-block">Category is required.</p>
                         </div>
 
                         <div class="form-group">

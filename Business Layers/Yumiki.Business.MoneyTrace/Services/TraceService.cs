@@ -55,14 +55,12 @@ namespace Yumiki.Business.MoneyTrace.Services
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Amount cannot be zero.");
             }
-            if (trace.CategoryID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Category is required.");
-            }
+
             if (trace.CurrencyID == Guid.Empty)
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
             }
+
             if (trace.TraceDate == DateTime.MinValue)
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace Date is required.");

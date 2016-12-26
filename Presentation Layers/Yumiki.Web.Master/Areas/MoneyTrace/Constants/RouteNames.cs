@@ -11,12 +11,6 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string CurrencyGetAll = "CurrencyGetAll";
         public const string CurrencyGetByID = "CurrencyGetByID";
         public const string CurrencyGetSave = "CurrencyGetSave";
-        public const string TransactionTypeGetAll = "TransactionTypeGetAll";
-        public const string TransactionTypeGetByID = "TransactionTypeGetByID";
-        public const string TransactionTypeGetSave = "TransactionTypeGetSave";
-        public const string CategoryGetAll = "CategoryGetAll";
-        public const string CategoryGetByID = "CategoryGetByID";
-        public const string CategoryGetSave = "CategoryGetSave";
         public const string TraceGetAll = "TraceGetAll";
         public const string TraceGetByID = "TraceGetByID";
         public const string TraceGetSave = "TraceGetSave";

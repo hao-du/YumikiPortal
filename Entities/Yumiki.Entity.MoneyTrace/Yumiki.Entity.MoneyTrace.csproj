@@ -41,15 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomFields\TB_Category.cs" />
+    <Compile Include="CustomFields\TB_Tag.cs" />
     <Compile Include="CustomFields\TB_Trace.cs" />
-    <Compile Include="CustomFields\TB_TransactionType.cs" />
     <Compile Include="CustomFields\TB_Currency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TB_Category.cs" />
+    <Compile Include="TB_Tag.cs" />
     <Compile Include="TB_Currency.cs" />
     <Compile Include="TB_Trace.cs" />
-    <Compile Include="TB_TransactionType.cs" />
+    <Compile Include="EN_TransactionType.cs" />
     <Compile Include="TB_User.cs" />
   </ItemGroup>
   <ItemGroup>

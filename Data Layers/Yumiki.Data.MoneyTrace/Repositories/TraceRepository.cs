@@ -17,7 +17,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of all active Traces.</returns>
         public List<TB_Trace> GetAllTraces(bool showInactive)
         {
-            return Context.TB_Trace.Include(TB_Category.FieldName.TB_Category).Include(TB_Currency.FieldName.TB_Currency).Where(c => c.IsActive == !showInactive).OrderByDescending(c=>c.TraceDate).ToList();
+            return Context.TB_Trace.Include(TB_Tag.FieldName.TB_Tag).Include(TB_Currency.FieldName.TB_Currency).Where(c => c.IsActive == !showInactive).OrderByDescending(c=>c.TraceDate).ToList();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             {
                 TB_Trace dbTrace = Context.TB_Trace.Where(c => c.ID == trace.ID).Single();
                 dbTrace.Amount = trace.Amount;
-                dbTrace.CategoryID = trace.CategoryID;
+                dbTrace.Tags = trace.Tags;
                 dbTrace.CurrencyID = trace.CurrencyID;
                 dbTrace.TraceDate = trace.TraceDate;
                 dbTrace.Descriptions = trace.Descriptions;

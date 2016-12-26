@@ -190,7 +190,7 @@
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ transactionType.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                                <td><input type="checkbox" ng-checked="{{ currency.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
                                 <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);">Edit</a></td>
                             </tr>

@@ -14,19 +14,21 @@ namespace Yumiki.Entity.MoneyTrace
 
         public Guid UserID { get; set; }
 
-        public Guid CategoryID { get; set; }
+        public string Tags { get; set; }
 
         public Guid CurrencyID { get; set; }
 
+        public EN_TransactionType TransactionType { get; set; }
+
         public string Descriptions { get; set; }
+
+        public Guid? GroupTokenID { get; set; }
 
         public bool IsActive { get; set; }
 
         public DateTime CreateDate { get; set; }
 
         public DateTime? LastUpdateDate { get; set; }
-
-        public virtual TB_Category TB_Category { get; set; }
 
         public virtual TB_Currency TB_Currency { get; set; }
 

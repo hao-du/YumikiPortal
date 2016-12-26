@@ -17,9 +17,11 @@ namespace Yumiki.Entity.MoneyTrace
 
         public string CurrencyShortName { get; set; }
 
-        public Guid? UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public string Descriptions { get; set; }
+
+        public bool IsShareable { get; set; }
 
         public bool IsActive { get; set; }
 

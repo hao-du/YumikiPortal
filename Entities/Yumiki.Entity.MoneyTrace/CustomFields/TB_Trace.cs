@@ -33,28 +33,15 @@ namespace Yumiki.Entity.MoneyTrace
             }
         }
 
-        public string CategoryName
-        {
-            get
-            {
-                if (TB_Category != null)
-                {
-                    return TB_Category.CategoryName;
-                }
-                return CommonValues.EmptyValue;
-            }
-        }
-
         public class FieldName
         {
             public const string TB_Trace = "TB_Trace";
             public const string Amount = "Amount";
             public const string TraceDate = "TraceDate";
             public const string TraceDateUI = "TraceDateUI";
-            public const string CategoryID = "CategoryID";
+            public const string Tags = "Tags";
             public const string CurrencyID = "CurrencyID";
             public const string CurrencyName = "CurrencyName";
-            public const string CategoryName = "CategoryName";
         }
     }
 }
