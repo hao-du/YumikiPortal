@@ -27,7 +27,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns>User object</returns>
         public TB_User GetUser(Guid id)
         {
-            return Context.TB_User.Where(c => c.ID == id).SingleOrDefault();
+            return Context.TB_User.SingleOrDefault(c => c.ID == id);
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public bool CheckValidUserName(string userLoginName, Guid excludedUserID)
         {
-            int countUserName = Context.TB_User.Where(c => c.ID != excludedUserID
+            int countUserName = Context.TB_User.Count(c => c.ID != excludedUserID
                                                         && c.UserLoginName.ToLower() == userLoginName.ToLower()
-                                                        && c.IsActive).Count();
+                                                        && c.IsActive);
             if (countUserName > 0)
             {
                 return false;
@@ -143,7 +143,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns>User Address object</returns>
         public TB_UserAddress GetUserAddress(Guid id)
         {
-            return Context.TB_UserAddress.Where(c => c.ID == id).SingleOrDefault();
+            return Context.TB_UserAddress.SingleOrDefault(c => c.ID == id);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Yumiki.Data.Administration.Repositories
             }
             else
             {
-                TB_UserAddress dbUserAddress = Context.TB_UserAddress.Where(c => c.ID == userAddress.ID).Single();
+                TB_UserAddress dbUserAddress = Context.TB_UserAddress.Single(c => c.ID == userAddress.ID);
                 dbUserAddress.UserAddress = userAddress.UserAddress;
                 dbUserAddress.UserContactTypeID = userAddress.UserContactTypeID;
                 dbUserAddress.IsPrimary = userAddress.IsPrimary;

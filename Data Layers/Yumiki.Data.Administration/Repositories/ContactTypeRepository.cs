@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
 
@@ -27,7 +25,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns>ContactType object</returns>
         public TB_ContactType GetContactType(Guid id)
         {
-            return Context.TB_ContactType.Where(c => c.ID == id).SingleOrDefault();
+            return Context.TB_ContactType.SingleOrDefault(c => c.ID == id);
         }
 
         /// <summary>
@@ -38,9 +36,9 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public bool CheckValidContactTypeName(string contactTypeName, Guid excludedContactTypeID)
         {
-            int countContactTypeName = Context.TB_ContactType.Where(c => c.ID != excludedContactTypeID
+            int countContactTypeName = Context.TB_ContactType.Count(c => c.ID != excludedContactTypeID
                                                         && c.ContactTypeName.ToLower() == contactTypeName.ToLower()
-                                                        && c.IsActive).Count();
+                                                        && c.IsActive);
             if (countContactTypeName > 0)
             {
                 return false;
@@ -63,7 +61,7 @@ namespace Yumiki.Data.Administration.Repositories
             }
             else
             {
-                TB_ContactType dbContactType = Context.TB_ContactType.Where(c => c.ID == contactType.ID).Single();
+                TB_ContactType dbContactType = Context.TB_ContactType.Single(c => c.ID == contactType.ID);
                 dbContactType.ContactTypeName = contactType.ContactTypeName;
                 dbContactType.Descriptions = contactType.Descriptions;
                 dbContactType.IsActive = contactType.IsActive;

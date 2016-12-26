@@ -38,7 +38,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <param name="traceID">Specify id is excluded from results.</param>
         /// /// <param name="groupTokenID">Specify groupTokenID for Trace need to be retrieved.</param>
         /// <returns>Trace Object</returns>
-        public TB_Trace GetTrace(Guid traceID, Guid groupTokenID)
+        public TB_Trace GetLogTrace(Guid traceID, Guid groupTokenID)
         {
             return Context.TB_Trace.SingleOrDefault(c => c.ID != traceID && c.GroupTokenID == groupTokenID);
         }

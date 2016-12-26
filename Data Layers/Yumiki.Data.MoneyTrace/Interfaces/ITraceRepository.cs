@@ -30,7 +30,7 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <param name="traceID">Specify id is excluded from results.</param>
         /// /// <param name="groupTokenID">Specify groupTokenID for Trace need to be retrieved.</param>
         /// <returns>Trace Object</returns>
-        TB_Trace GetTrace(Guid traceID, Guid groupTokenID);
+        TB_Trace GetLogTrace(Guid traceID, Guid groupTokenID);
 
         /// <summary>
         /// Create/Update a Trace

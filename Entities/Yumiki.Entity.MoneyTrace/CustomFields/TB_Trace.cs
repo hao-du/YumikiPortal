@@ -2,6 +2,7 @@ namespace Yumiki.Entity.MoneyTrace
 {
     using Commons.Dictionaries;
     using Commons.Helpers;
+    using System;
 
     public partial class TB_Trace
     {
@@ -33,6 +34,10 @@ namespace Yumiki.Entity.MoneyTrace
             }
         }
 
+        public decimal ExchangeAmount { get; set; }
+
+        public Guid? ExchangeCurrencyID { get; set; }
+
         public class FieldName
         {
             public const string TB_Trace = "TB_Trace";
@@ -42,6 +47,8 @@ namespace Yumiki.Entity.MoneyTrace
             public const string Tags = "Tags";
             public const string CurrencyID = "CurrencyID";
             public const string CurrencyName = "CurrencyName";
+            public const string ExchangeAmount = "ExchangeAmount";
+            public const string ExchangeCurrencyID = "ExchangeCurrencyID";
         }
     }
 }
