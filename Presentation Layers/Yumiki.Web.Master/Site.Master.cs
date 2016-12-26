@@ -29,10 +29,9 @@ namespace Yumiki.Web.Master
         /// </summary>
         private void LoadMenu()
         {
-            string userID = HttpSession.UserID.ToString();
-            if (!string.IsNullOrEmpty(userID))
+            if (HttpSession.IsAuthenticated)
             {
-                lblMenu.Text = BusinessService.GetPrivilege(userID);
+                lblMenu.Text = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
             }
             else
             {
