@@ -66,7 +66,59 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace Date is required.");
             }
 
-            Repository.SaveTrace(trace);
+            switch (trace.TransactionType)
+            {
+                //If trace is income (monthly salary) or outcome (shopping) (one way transaction), only save a trace record to db.
+                case EN_TransactionType.E_INCOME:
+                    if (trace.Amount < 0)
+                    {
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.");
+                    }
+                    Repository.SaveTrace(trace);
+                    break;
+                case EN_TransactionType.E_OUTCOME:
+                    if (trace.Amount > 0)
+                    {
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Outcome type.");
+                    }
+                    Repository.SaveTrace(trace);
+                    break;
+                //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
+                case EN_TransactionType.E_BANKING:
+                    if (trace.Amount < 0)
+                    {
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.");
+                    }
+
+                    if (!trace.GroupTokenID.HasValue)
+                    {
+                        trace.GroupTokenID = Guid.NewGuid();
+                    }
+
+                    Repository.SaveTrace(trace);
+
+                    //Save the backLog record.
+                    TB_Trace logTrace = Repository.GetTrace(trace.ID, trace.GroupTokenID.Value);
+                    if (logTrace == null)
+                    {
+                        logTrace = new TB_Trace();
+                    }
+                    logTrace.Amount = -trace.Amount;
+                    logTrace.Tags = trace.Tags;
+                    logTrace.CurrencyID = trace.CurrencyID;
+                    logTrace.TraceDate = trace.TraceDate;
+                    logTrace.TransactionType = EN_TransactionType.E_OUTCOME;
+                    logTrace.GroupTokenID = trace.GroupTokenID;
+                    logTrace.UserID = trace.UserID;
+                    logTrace.Descriptions = trace.Descriptions;
+
+                    Repository.SaveTrace(logTrace);
+                    break;
+                case EN_TransactionType.E_EXCHANGE:
+                    break;
+                case EN_TransactionType.E_TRANSFER:
+                    break;
+            }
         }
     }
 }

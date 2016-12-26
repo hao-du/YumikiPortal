@@ -27,7 +27,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Currency Object</returns>
         public TB_Currency GetCurrency(Guid currencyID)
         {
-            return Context.TB_Currency.Where(c => c.ID == currencyID).SingleOrDefault();
+            return Context.TB_Currency.SingleOrDefault(c => c.ID == currencyID);
         }
 
         /// <summary>
@@ -42,9 +42,11 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             }
             else
             {
-                TB_Currency dbCurrency = Context.TB_Currency.Where(c => c.ID == currency.ID).Single();
+                TB_Currency dbCurrency = Context.TB_Currency.Single(c => c.ID == currency.ID);
                 dbCurrency.CurrencyName = currency.CurrencyName;
                 dbCurrency.CurrencyShortName = currency.CurrencyShortName;
+                dbCurrency.UserID = currency.UserID;
+                dbCurrency.IsShareable = currency.IsShareable;
                 dbCurrency.Descriptions = currency.Descriptions;
                 dbCurrency.IsActive = currency.IsActive;
             }

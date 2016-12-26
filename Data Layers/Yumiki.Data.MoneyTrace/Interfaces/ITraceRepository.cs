@@ -25,9 +25,17 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         TB_Trace GetTrace(Guid traceID);
 
         /// <summary>
+        /// Get a related log Trace base on GroupTokenID.
+        /// </summary>
+        /// <param name="traceID">Specify id is excluded from results.</param>
+        /// /// <param name="groupTokenID">Specify groupTokenID for Trace need to be retrieved.</param>
+        /// <returns>Trace Object</returns>
+        TB_Trace GetTrace(Guid traceID, Guid groupTokenID);
+
+        /// <summary>
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>
-        void SaveTrace(TB_Trace trace);
+        void SaveTrace(TB_Trace trace, bool saveTags = true);
     }
 }

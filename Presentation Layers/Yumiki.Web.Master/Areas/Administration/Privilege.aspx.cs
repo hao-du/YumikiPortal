@@ -36,8 +36,8 @@ namespace Yumiki.Web.Administration
                     //In case of posting back page.
                     else
                     {
-                        string[] ids = hdnNavigationIDs.Value.Split(CommonValues.SeparateChar);
-                        string[] names = hdnNavigationNames.Value.Split(CommonValues.SeparateChar);
+                        string[] ids = hdnNavigationIDs.Value.Split(CommonValues.SeparateCharUnique);
+                        string[] names = hdnNavigationNames.Value.Split(CommonValues.SeparateCharUnique);
                         for (int i = 0; i < ids.Count(); i++)
                         {
                             navigations.Add(new Navigation { NavigationID = ids[i], NavigationName = names[i] });
@@ -61,8 +61,8 @@ namespace Yumiki.Web.Administration
                     }
                     else
                     {
-                        hdnNavigationIDs.Value = string.Format("{0}{1}{2}", hdnNavigationIDs.Value, CommonValues.SeparateChar, navigation.NavigationID);
-                        hdnNavigationNames.Value = string.Format("{0}{1}{2}", hdnNavigationNames.Value, CommonValues.SeparateChar, navigation.NavigationName);
+                        hdnNavigationIDs.Value = string.Format("{0}{1}{2}", hdnNavigationIDs.Value, CommonValues.SeparateCharUnique, navigation.NavigationID);
+                        hdnNavigationNames.Value = string.Format("{0}{1}{2}", hdnNavigationNames.Value, CommonValues.SeparateCharUnique, navigation.NavigationName);
                     }
                 }
             }
@@ -86,8 +86,8 @@ namespace Yumiki.Web.Administration
                 if (value != null && !value.NavigationID.Equals(ClosestNavigation.NavigationID))
                 {
                     Navigations.Add(value);
-                    hdnNavigationIDs.Value = string.Format("{0}{1}{2}", hdnNavigationIDs.Value, CommonValues.SeparateChar, value.NavigationID);
-                    hdnNavigationNames.Value = string.Format("{0}{1}{2}", hdnNavigationNames.Value, CommonValues.SeparateChar, value.NavigationName);
+                    hdnNavigationIDs.Value = string.Format("{0}{1}{2}", hdnNavigationIDs.Value, CommonValues.SeparateCharUnique, value.NavigationID);
+                    hdnNavigationNames.Value = string.Format("{0}{1}{2}", hdnNavigationNames.Value, CommonValues.SeparateCharUnique, value.NavigationName);
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace Yumiki.Web.Administration
         {
             try
             {
-                string[] navigation = ((LinkButton)sender).CommandArgument.Split(CommonValues.SeparateChar);
+                string[] navigation = ((LinkButton)sender).CommandArgument.Split(CommonValues.SeparateCharUnique);
 
                 ClosestNavigation = new Navigation {  NavigationID = navigation[0], NavigationName = navigation[1] };
 

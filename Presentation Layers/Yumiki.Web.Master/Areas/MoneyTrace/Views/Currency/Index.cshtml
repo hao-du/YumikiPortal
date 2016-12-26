@@ -133,6 +133,7 @@
                     '@CommonProperties.ID': undefined,
                     '@TB_Currency.FieldName.CurrencyName': '',
                     '@TB_Currency.FieldName.CurrencyShortName': '',
+                    '@TB_Currency.FieldName.IsShareable': true,
                     '@CommonProperties.IsActive': true
                 };
             }
@@ -180,6 +181,7 @@
                                 <th>Currency Name</th>
                                 <th>Short Name</th>
                                 <th>Descriptions</th>
+                                <th>Shareable</th>
                                 <th>Active Status</th>
                                 <th>Modify Date</th>
                                 <th></th>
@@ -190,6 +192,7 @@
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>
+                                <td><input type="checkbox" ng-checked="{{ currency.@TB_Currency.FieldName.IsShareable }}" disabled="disabled" /></td>
                                 <td><input type="checkbox" ng-checked="{{ currency.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
                                 <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);">Edit</a></td>
@@ -222,6 +225,12 @@
                             <p ng-show="currencyForm.currencyShortName.$error.required && currencyForm.currencyShortName.$dirty" class="help-block">Currency Short Name is required.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.minlength" class="help-block">Currency Short Name needs at least 3 characters.</p>
                             <p ng-show="currencyForm.currencyShortName.$error.maxlength" class="help-block">Currency Short Name exceeds maximum 4 characters.</p>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="currency.@TB_Currency.FieldName.IsShareable" ng-checked="currency.@TB_Currency.FieldName.IsShareable" />
+                                <label>Is Shareable</label>
+                            </span>
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>

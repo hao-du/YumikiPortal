@@ -21,6 +21,7 @@ namespace Yumiki.Entity.MoneyTrace
             public const string TB_Currency = "TB_Currency";
             public const string CurrencyName = "CurrencyName";
             public const string CurrencyShortName = "CurrencyShortName";
+            public const string IsShareable = "IsShareable";
         }
     }
 }
