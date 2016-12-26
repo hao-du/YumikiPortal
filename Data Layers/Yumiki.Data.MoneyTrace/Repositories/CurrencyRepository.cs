@@ -15,9 +15,20 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// </summary>
         /// <param name="showInactive">Show list of inactive Currency or active Currency.</param>
         /// <returns>List of all active Currency.</returns>
-        public List<TB_Currency> GetAllCurrency(bool showInactive)
+        public List<TB_Currency> GetAllCurrency(bool showInactive, Guid userID, bool getShareable)
         {
-            return Context.TB_Currency.Where(c => c.IsActive == !showInactive).ToList();
+            IQueryable<TB_Currency> queryable = Context.TB_Currency.Where(c => c.IsActive == !showInactive);
+
+            if (getShareable)
+            {
+                queryable = queryable.Where(c => c.UserID == userID || c.IsShareable == true);
+            }
+            else
+            {
+                queryable = queryable.Where(c => c.UserID == userID);
+            }
+
+            return queryable.ToList();
         }
 
         /// <summary>

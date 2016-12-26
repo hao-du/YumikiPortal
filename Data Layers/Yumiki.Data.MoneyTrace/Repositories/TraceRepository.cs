@@ -19,7 +19,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of all active Traces.</returns>
         public List<TB_Trace> GetAllTraces(bool showInactive)
         {
-            return Context.TB_Trace.Include(TB_Tag.FieldName.TB_Tag).Include(TB_Currency.FieldName.TB_Currency).Where(c => c.IsActive == !showInactive).OrderByDescending(c=>c.TraceDate).ToList();
+            return Context.TB_Trace.Include(TB_Currency.FieldName.TB_Currency).Where(c => c.IsActive == !showInactive).OrderByDescending(c=>c.TraceDate).ToList();
         }
 
         /// <summary>

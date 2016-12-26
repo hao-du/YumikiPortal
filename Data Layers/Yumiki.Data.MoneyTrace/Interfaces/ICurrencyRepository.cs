@@ -14,7 +14,7 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// </summary>
         /// <param name="showInactive">Show list of inactive Currency or active Currency.</param>
         /// <returns>List of all active Currency.</returns>
-        List<TB_Currency> GetAllCurrency(bool showInactive);
+        List<TB_Currency> GetAllCurrency(bool showInactive, Guid userID, bool getShareable);
 
         /// <summary>
         /// Get a specific currency.

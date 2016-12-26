@@ -18,9 +18,9 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// </summary>
         /// <param name="showInactive">Show list of inactive Currency or active Currency.</param>
         /// <returns>List of all active Currency.</returns>
-        public List<TB_Currency> GetAllCurrency(bool showInactive)
+        public List<TB_Currency> GetAllCurrency(bool showInactive, Guid userID, bool getShareable = false)
         {
-            return Repository.GetAllCurrency(showInactive);
+            return Repository.GetAllCurrency(showInactive, userID, getShareable);
         }
 
         /// <summary>

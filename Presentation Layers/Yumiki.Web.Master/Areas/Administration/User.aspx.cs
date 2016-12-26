@@ -109,9 +109,6 @@ namespace Yumiki.Web.Administration
                     SendWarning("Confirm Password must be the same password.");
                 }
 
-                TB_User a = null;
-                var b = a.CreateDate;
-
                 TB_User user = new TB_User();
                 if (!IsNewMode)
                 {

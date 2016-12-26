@@ -1,4 +1,21 @@
-﻿CREATE TABLE [dbo].[TB_Tag](
+﻿CREATE TABLE [dbo].[TB_User](
+	[ID] [uniqueidentifier] NOT NULL,
+	[UserLoginName] [varchar](20) NOT NULL,
+	[FirstName] [nvarchar](15) NULL,
+	[LastName] [nvarchar](15) NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_User] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE [dbo].[TB_Tag](
 	[ID] [uniqueidentifier] NOT NULL,
 	[TagName] [nvarchar](50) NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
@@ -74,22 +91,5 @@ ALTER TABLE [dbo].[TB_Trace] CHECK CONSTRAINT [FK_TB_Trace_TB_User]
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Store keywords such as "Shopping, Deposit ABC Bank, Buy stuff" for filter purpose. Keywords are splitted by '','' and save in TB_Tag' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_Trace', @level2type=N'COLUMN',@level2name=N'Tags'
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'In case of Banking, generating 2 records: Deposite to bank account and withdraw from personal amount.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_Trace', @level2type=N'COLUMN',@level2name=N'GroupTokenID'
-
--------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE [dbo].[TB_User](
-	[ID] [uniqueidentifier] NOT NULL,
-	[UserLoginName] [varchar](20) NOT NULL,
-	[FirstName] [nvarchar](15) NULL,
-	[LastName] [nvarchar](15) NULL,
-	[Descriptions] [nvarchar](255) NULL,
-	[IsActive] [bit] NOT NULL,
-	[CreateDate] [datetime] NOT NULL,
-	[LastUpdateDate] [datetime] NULL,
- CONSTRAINT [PK_TB_User] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
 
 -------------------------------------------------------------------------------------------------------------------------------------

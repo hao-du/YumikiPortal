@@ -20,7 +20,22 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive);
+                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, HttpSession.UserID);
+                return Ok(currencyList);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("getwithshareableitems", Name = RouteNames.CurrencyGetAllWithShareableItems)]
+        [HttpGet()]
+        public IHttpActionResult GetWithShareableItems(bool showInactive)
+        {
+            try
+            {
+                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, HttpSession.UserID, true);
                 return Ok(currencyList);
             }
             catch (Exception ex)
@@ -50,6 +65,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
+                item.UserID = HttpSession.UserID;
+
                 BusinessService.SaveCurrency(item);
                 return Ok();
             }

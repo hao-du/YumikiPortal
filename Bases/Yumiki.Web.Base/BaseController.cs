@@ -3,6 +3,7 @@ using System.Web.Mvc.Filters;
 using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
+using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
@@ -50,12 +51,25 @@ namespace Yumiki.Web.Base
             }
         }
 
+        private HttpSession httpSession;
+        public HttpSession HttpSession
+        {
+            get
+            {
+                if (httpSession == null)
+                {
+                    httpSession = new HttpSession(Session);
+                }
+                return httpSession;
+            }
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            if (Session[HttpConstants.Session.UserLoginName] == null)
+            if (!HttpSession.IsAuthenticated)
             {
-                this.Logger.Infomation(string.Format("Session End from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
+                this.Logger.Infomation(string.Format("No Session from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
                 filterContext.Result = RedirectToLoginPage();
             }
         }
@@ -68,11 +82,11 @@ namespace Yumiki.Web.Base
             ViewBag.UserID = string.Empty;
             ViewBag.LastLoginTime = string.Empty;
 
-            if (Session[HttpConstants.Session.UserLoginName] != null)
+            if (HttpSession.IsAuthenticated)
             {
-                ViewBag.UserName = Session[HttpConstants.Session.UserLoginName].ToString();
-                ViewBag.UserID = Session[HttpConstants.Session.UserID].ToString();
-                ViewBag.LastLoginTime = Session[HttpConstants.Session.LastLoginTime].ToString();
+                ViewBag.UserName = HttpSession.UserLoginName;
+                ViewBag.UserID = HttpSession.UserID;
+                ViewBag.LastLoginTime = HttpSession.LastLoginTime;
             }
         }
 

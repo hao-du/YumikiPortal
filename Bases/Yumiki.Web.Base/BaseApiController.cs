@@ -11,6 +11,7 @@ using System.Web.SessionState;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Logging;
+using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
@@ -58,11 +59,16 @@ namespace Yumiki.Web.Base
             }
         }
 
-        public HttpSessionState Session
+        private HttpSession httpSession;
+        public HttpSession HttpSession
         {
             get
             {
-                return HttpContext.Current.Session;
+                if(httpSession == null)
+                {
+                    httpSession = new HttpSession(HttpContext.Current.Session);
+                }
+                return httpSession;
             }
         }
 
@@ -80,11 +86,11 @@ namespace Yumiki.Web.Base
         {
             base.Initialize(controllerContext);
 
-            if (Session[HttpConstants.Session.UserID] == null)
+            if (!HttpSession.IsAuthenticated)
             {
                 HttpResponseException exception = new HttpResponseException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout)
                 {
-                    Content = new StringContent(string.Format("{0} - {1}", ExceptionCode.E_NO_SESSION.ToString(), "Session has not been initialized")),
+                    Content = new StringContent(string.Format("{0} - {1}", ExceptionCode.E_NO_SESSION.ToString(), "Session has not been initialized or expired.")),
                     ReasonPhrase = ExceptionCode.E_NO_SESSION.ToString()
                 });
                 this.Logger.Error(ExceptionCode.E_NO_SESSION.ToString(), exception);

@@ -22,7 +22,7 @@ namespace Yumiki.Web.Master.Controllers
         [ChildActionOnly]
         public PartialViewResult GetMenu()
         {
-            string userID = Session[HttpConstants.Session.UserID]?.ToString();
+            string userID = HttpSession.UserID.ToString();
             string menu = string.Empty;
 
             if (!string.IsNullOrEmpty(userID))

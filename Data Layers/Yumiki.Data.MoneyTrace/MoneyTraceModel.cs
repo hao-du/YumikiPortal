@@ -47,6 +47,11 @@ namespace Yumiki.Data.MoneyTrace
                 .WithRequired(e => e.TB_User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
+
+            //Ignore fields which not mapped to Database
+            modelBuilder.Entity<TB_Trace>()
+                .Ignore(e => e.ExchangeAmount)
+                .Ignore(e => e.ExchangeCurrencyID);
         }
     }
 }

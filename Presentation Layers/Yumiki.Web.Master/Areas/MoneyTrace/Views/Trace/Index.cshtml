@@ -24,7 +24,7 @@
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
             this.getCurrencyList = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAll, null)', { params: { 'showInactive': false } });
+                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
             };
 
             this.getTraceList = function (showInactive) {
@@ -247,7 +247,6 @@
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
-                            {{ trace.TraceDate }}
                             <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">

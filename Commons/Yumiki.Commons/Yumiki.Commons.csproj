@@ -53,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,13 +67,14 @@
     <Compile Include="Configurations\YumikiConfigLoader.cs" />
     <Compile Include="Dictionaries\CommonProperties.cs" />
     <Compile Include="Dictionaries\CommonValues.cs" />
-    <Compile Include="Helpers\DateTimeFormat.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Dictionaries\HttpConstants.cs" />
     <Compile Include="Exceptions\YumikiException.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Crypto.cs" />
+    <Compile Include="Settings\HttpSession.cs" />
     <Compile Include="Unity\Dependency.cs" />
   </ItemGroup>
   <ItemGroup>
