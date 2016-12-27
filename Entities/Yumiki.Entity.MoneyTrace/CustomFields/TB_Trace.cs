@@ -46,6 +46,7 @@ namespace Yumiki.Entity.MoneyTrace
             public const string TraceDateUI = "TraceDateUI";
             public const string Tags = "Tags";
             public const string CurrencyID = "CurrencyID";
+            public const string TransactionType = "TransactionType";
             public const string CurrencyName = "CurrencyName";
             public const string ExchangeAmount = "ExchangeAmount";
             public const string ExchangeCurrencyID = "ExchangeCurrencyID";

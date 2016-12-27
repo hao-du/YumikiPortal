@@ -24,7 +24,7 @@ namespace Yumiki.Commons.Unity
                 service = new Dependency();
             }
 
-            if (!string.IsNullOrEmpty(containerName))
+            if (!string.IsNullOrWhiteSpace(containerName))
             {
                 service.container.LoadConfiguration(containerName);
             }

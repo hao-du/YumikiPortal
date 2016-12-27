@@ -120,7 +120,7 @@ namespace Yumiki.Commons.Logging
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Exception Message: {0}", ex.Message);
             sb.Append("<br />");
-            if (!string.IsNullOrEmpty(ex.StackTrace))
+            if (!string.IsNullOrWhiteSpace(ex.StackTrace))
             {
                 sb.AppendFormat("Stack Trace: {0}", ex.StackTrace);
                 sb.Append("<br />");
@@ -130,7 +130,7 @@ namespace Yumiki.Commons.Logging
             {
                 sb.AppendFormat("Inner Exception: {0}", ex.InnerException.Message);
                 sb.Append("<br />");
-                if (!string.IsNullOrEmpty(ex.StackTrace))
+                if (!string.IsNullOrWhiteSpace(ex.StackTrace))
                 {
                     sb.AppendFormat("Inner Exception Trace: {0}", ex.InnerException.StackTrace);
                     sb.Append("<br />");

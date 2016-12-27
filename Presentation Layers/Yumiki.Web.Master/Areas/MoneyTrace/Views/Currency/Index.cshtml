@@ -29,7 +29,7 @@
             };
 
             this.save = function (currency) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.CurrencyGetSave, null)', currency);
+                return $http.post('@Url.HttpRouteUrl(RouteNames.CurrencySave, null)', currency);
             };
         });
 

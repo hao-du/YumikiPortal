@@ -84,7 +84,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             string[] tagList = tags.Split(new char[] { CommonValues.SeparateCharComma }, StringSplitOptions.RemoveEmptyEntries);
 
             //From existed tags to get the new tags which are not in db.
-            IEnumerable<TB_Tag> existedTags = Context.TB_Tag.Where(c => tagList.Contains(c.TagName, new LowerCaseStringComparer())).AsEnumerable();
+            IEnumerable<TB_Tag> existedTags = Context.TB_Tag.Where(c => tagList.Any(d => d.ToLower() == c.TagName.ToLower())).AsEnumerable();
             IEnumerable<string> newTags = tagList.Where(c => !existedTags.Any(d => d.TagName.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
 
             foreach (string tag in newTags)

@@ -30,7 +30,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <returns>Currency Object</returns>
         public TB_Currency GetCurrency(string currencyID)
         {
-            if (string.IsNullOrEmpty(currencyID))
+            if (string.IsNullOrWhiteSpace(currencyID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency ID cannot be empty.", Logger);
             }
@@ -51,12 +51,12 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <param name="currency">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
         public void SaveCurrency(TB_Currency currency)
         {
-            if (string.IsNullOrEmpty(currency.CurrencyName))
+            if (string.IsNullOrWhiteSpace(currency.CurrencyName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Name is required.", Logger);
             }
 
-            if (string.IsNullOrEmpty(currency.CurrencyShortName))
+            if (string.IsNullOrWhiteSpace(currency.CurrencyShortName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency Short Name is required.", Logger);
             }

@@ -95,7 +95,7 @@ namespace Yumiki.Business.Master.Services
         /// <returns>A converted GUID User ID.</returns>
         private Guid CheckandConvertUserID(string userID)
         {
-            if (string.IsNullOrEmpty(userID))
+            if (string.IsNullOrWhiteSpace(userID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
             }

@@ -7,7 +7,8 @@
 }
 
 @section Script{
-    <script type="text/javascript">
+    <!--Load Trace List-->
+    <script type="text/javascript" title="Load Trace List">
         //Declare constant variables.
         var showActiveTraceString = 'Show Active Traces';
         var showInactiveTraceString = 'Show Inactive Traces';
@@ -36,7 +37,7 @@
             };
 
             this.save = function (trace) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.TraceGetSave, null)', trace);
+                return $http.post('@Url.HttpRouteUrl(RouteNames.TraceSave, null)', trace);
             };
         });
 
@@ -48,9 +49,9 @@
             $scope.isStatusChanged = false;
 
             //Display Dialog and pass data to Dialog.
-            $scope.showDialog = function (traceID) {
+            $scope.showNormalTraceDialog = function (traceID) {
                 //Call DialogController
-                $rootScope.$broadcast("OnLoad", traceID);
+                $rootScope.$broadcast("OnNormalTraceLoad", traceID);
             }
 
             //Event for other controllers to reload data.
@@ -97,19 +98,22 @@
                 $scope.loadData();
             }
         });
+    </script>
 
+    <!--Normal Trace Dialog-->
+    <script  type="text/javascript" title="Normal Trace Dialog">
         //Controller to display dialog
-        app.controller('traceDialogController', function ($scope, $rootScope, $http, DataService) {
+        app.controller('normalTraceDialogController', function ($scope, $rootScope, $http, DataService) {
             $scope.traceID = undefined;
-            $scope.isActiveDisabled = false;
+            $scope.isActiveCheckboxDisabled = false;
 
             //Used to be called by other controllers.
-            $rootScope.$on('OnLoad', function (event, traceID) {
-                $('#dlgTrace').modal({ backdrop: 'static' });
+            $rootScope.$on('OnNormalTraceLoad', function (event, traceID) {
+                $('#dlgNormalTrace').modal({ backdrop: 'static' });
 
                 if (traceID != undefined && traceID != null) {
                     $scope.traceID = traceID;
-                    $scope.isActiveDisabled = false;
+                    $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Trace";
 
                     $(this).showLoadingBar();
@@ -131,7 +135,7 @@
 
                 } else {
                     $scope.dialogTitle = "New Trace";
-                    $scope.isActiveDisabled = true;
+                    $scope.isActiveCheckboxDisabled = true;
 
                     $scope.trace = $scope.resetTrace();
                 }
@@ -145,6 +149,7 @@
                     '@TB_Trace.FieldName.Amount': 0,
                     '@TB_Trace.FieldName.Tags': '',
                     '@TB_Trace.FieldName.CurrencyID': '',
+                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_INCOME),
                     '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
                     '@CommonProperties.IsActive': true
                 };
@@ -156,11 +161,19 @@
                     //datetimepicker does not work with ng-model, bind data manually.
                     $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
 
+                    //If amount < 0, it is outcome. Otherwise, it is income trace.
+                    if($scope.trace.@TB_Trace.FieldName.Amount >= 0){
+                        $scope.trace.@TB_Trace.FieldName.TransactionType = @((int)EN_TransactionType.E_INCOME);
+                    }
+                    else{
+                        $scope.trace.@TB_Trace.FieldName.TransactionType = @((int)EN_TransactionType.E_OUTCOME);
+                    }
+
                     $(this).showLoadingBar();
                     DataService.save($scope.trace)
                         .then(function mySucces(response) {
                             $scope.traceID = undefined;
-                            $('#dlgTrace').modal('hide');
+                            $('#dlgNormalTrace').modal('hide');
 
                             $scope.ReloadData();
                         }, function myError(response) {
@@ -188,12 +201,13 @@
         });
     </script>
 }
+
 <div ng-app="moneyTrace">
     <div class="container" ng-controller="traceController" ng-init="loadData();">
         <h2>Trace</h2>
         <div class="well well-sm">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                <button type="button" class="btn btn-primary" ng-click="showNormalTraceDialog();">Normal Trace</button>
                 <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
             </div>
         </div>
@@ -220,7 +234,7 @@
                                 <td>{{ trace.@CommonProperties.Descriptions }}</td>
                                 <td><input type="checkbox" ng-checked="{{ trace.@CommonProperties.IsActive }}" disabled="disabled" /></td>
                                 <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(trace.@CommonProperties.ID);">Edit</a></td>
+                                <td><a href="#" id="btnEdit" ng-click="showNormalTraceDialog(trace.@CommonProperties.ID);">Edit</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -229,8 +243,8 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="dlgTrace" class="modal fade" role="dialog" ng-controller="traceDialogController" ng-init="bindControls();">
+    <!-- Normal Trace Modal -->
+    <div id="dlgNormalTrace" class="modal fade" role="dialog" ng-controller="normalTraceDialogController" ng-init="bindControls();">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -249,6 +263,7 @@
                             </div>
                             <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
                         </div>
+
                         <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
                             <label>Amount</label>
                             <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
@@ -269,9 +284,15 @@
                             <label>Descriptions</label>
                             <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
                         <div class="form-group">
                             <span class="checkbox">
-                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
                                 <label>Is Active</label>
                             </span>
                         </div>
@@ -285,4 +306,3 @@
         </div>
     </div>
 </div>
-

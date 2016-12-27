@@ -44,9 +44,9 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("save", Name = RouteNames.TraceGetSave)]
+        [Route("save", Name = RouteNames.TraceSave)]
         [HttpPost()]
-        public IHttpActionResult Create([FromBody] TB_Trace item)
+        public IHttpActionResult Save([FromBody] TB_Trace item)
         {
             try
             {

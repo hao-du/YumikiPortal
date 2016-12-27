@@ -15,7 +15,7 @@ namespace Yumiki.Commons.Security
 
         public static string Encrypt(string value, string key)
         {
-            if (string.IsNullOrEmpty(key))
+            if (string.IsNullOrWhiteSpace(key))
             {
                 key = Key;
             }

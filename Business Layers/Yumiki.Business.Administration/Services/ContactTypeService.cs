@@ -32,7 +32,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns>ContactType object</returns>
         public TB_ContactType GetContactType(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type ID cannot be empty.", Logger);
             }
@@ -53,7 +53,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="contactType">If contactType id is empty, then this is new contactType. Otherwise, this needs to be updated</param>
         public void SaveContactType(TB_ContactType contactType)
         {
-            if (string.IsNullOrEmpty(contactType.ContactTypeName))
+            if (string.IsNullOrWhiteSpace(contactType.ContactTypeName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Type Name is required.", Logger);
             }

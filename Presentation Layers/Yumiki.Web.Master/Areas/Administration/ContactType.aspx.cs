@@ -76,7 +76,7 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_ContactType contactType = new TB_ContactType();
-                if (!string.IsNullOrEmpty(hdnID.Value))
+                if (!string.IsNullOrWhiteSpace(hdnID.Value))
                 {
                     contactType.ID = Guid.Parse(hdnID.Value);
                 }

@@ -25,7 +25,7 @@ namespace Yumiki.Web.Administration
         {
             get
             {
-                return string.IsNullOrEmpty(hdnID.Value) ? true : false;
+                return string.IsNullOrWhiteSpace(hdnID.Value) ? true : false;
             }
         }
 
@@ -217,7 +217,7 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_UserAddress userAddress = new TB_UserAddress();
-                if (!string.IsNullOrEmpty(hdnUserAddressID.Value))
+                if (!string.IsNullOrWhiteSpace(hdnUserAddressID.Value))
                 {
                     userAddress.ID = Guid.Parse(hdnUserAddressID.Value);
                 }

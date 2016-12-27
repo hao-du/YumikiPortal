@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
@@ -30,7 +31,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <returns>Trace Object</returns>
         public TB_Trace GetTrace(string traceID)
         {
-            if (string.IsNullOrEmpty(traceID))
+            if (string.IsNullOrWhiteSpace(traceID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace cannot be empty.");
             }
@@ -85,14 +86,14 @@ namespace Yumiki.Business.MoneyTrace.Services
                     {
                         throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.");
                     }
-                    Repository.SaveTrace(trace);
+                    SaveTrace(trace, true);
                     break;
                 case EN_TransactionType.E_OUTCOME:
                     if (trace.Amount > decimal.Zero)
                     {
                         throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Outcome type.");
                     }
-                    Repository.SaveTrace(trace);
+                    SaveTrace(trace, true);
                     break;
                 //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
                 case EN_TransactionType.E_BANKING:
@@ -101,7 +102,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                         trace.GroupTokenID = Guid.NewGuid();
                     }
 
-                    Repository.SaveTrace(trace);
+                    SaveTrace(trace, true);
 
                     //Save the backLog record.
                     TB_Trace logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value);
@@ -118,7 +119,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                     logTrace.UserID = trace.UserID;
                     logTrace.Descriptions = trace.Descriptions;
 
-                    Repository.SaveTrace(logTrace, false);
+                    SaveTrace(logTrace, false);
                     break;
                 case EN_TransactionType.E_EXCHANGE:
                     if (trace.Amount > decimal.Zero)
@@ -141,7 +142,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                         trace.GroupTokenID = Guid.NewGuid();
                     }
 
-                    Repository.SaveTrace(trace);
+                    SaveTrace(trace, true);
 
                     //Save the backLog record.
                     logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value);
@@ -158,9 +159,37 @@ namespace Yumiki.Business.MoneyTrace.Services
                     logTrace.UserID = trace.UserID;
                     logTrace.Descriptions = trace.Descriptions;
 
-                    Repository.SaveTrace(logTrace, false);
+                    SaveTrace(logTrace, false);
                     break;
             }
+        }
+
+        private void SaveTrace(TB_Trace trace, bool saveTags = true)
+        {
+            if (saveTags && !string.IsNullOrWhiteSpace(trace.Tags))
+            {
+                //Decorate tags string by trim all whitespace and remove empty/duplicated tags
+                IEnumerable<string> tags = trace.Tags
+                    .Split(new char[] { CommonValues.SeparateCharComma, CommonValues.SeparateCharPeriodComma }, StringSplitOptions.RemoveEmptyEntries)
+                    .Where(c=> !string.IsNullOrWhiteSpace(c))
+                    .Select(c=>c.Trim())
+                    .Distinct();
+
+                if(tags.Count() > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < tags.Count(); i++)
+                    {
+                        sb.Append(tags.ElementAt(i).Trim());
+                        if (i < tags.Count() - 1)
+                        {
+                            sb.Append(CommonValues.SeparateCharComma);
+                        }
+                    }
+                    trace.Tags = sb.ToString();
+                }
+            }
+            Repository.SaveTrace(trace, saveTags);
         }
     }
 }

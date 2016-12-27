@@ -48,7 +48,7 @@
                             @ViewBag.UserName
                         </p>
                     </li>
-                    @if (!string.IsNullOrEmpty(@ViewBag.UserName))
+                    @if (!string.IsNullOrWhiteSpace(@ViewBag.UserName))
                     {
                         <li>
                             @Html.ActionLink("Log out", "Logout", "Home", new { area = "" }, null)

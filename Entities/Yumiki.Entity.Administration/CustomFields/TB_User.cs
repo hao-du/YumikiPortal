@@ -22,9 +22,9 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                string lastName = string.IsNullOrEmpty(LastName) ? string.Empty : LastName;
+                string lastName = string.IsNullOrWhiteSpace(LastName) ? string.Empty : LastName;
 
-                return string.IsNullOrEmpty(FirstName) ? lastName : FirstName + " " + LastName;
+                return string.IsNullOrWhiteSpace(FirstName) ? lastName : FirstName + " " + LastName;
             }
         }
 

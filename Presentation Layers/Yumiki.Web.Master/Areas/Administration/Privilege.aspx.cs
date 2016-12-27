@@ -27,7 +27,7 @@ namespace Yumiki.Web.Administration
                 {
                     navigations = new List<Navigation>();
                     //In case of initializing the page.
-                    if (string.IsNullOrEmpty(hdnNavigationIDs.Value))
+                    if (string.IsNullOrWhiteSpace(hdnNavigationIDs.Value))
                     {
                         navigations.Add(new Navigation { NavigationID = Guid.Empty.ToString(), NavigationName = "Home" });
                         hdnNavigationIDs.Value = navigations[0].NavigationID;
@@ -193,7 +193,7 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_Privilege privilege = new TB_Privilege();
-                if (!string.IsNullOrEmpty(hdnID.Value))
+                if (!string.IsNullOrWhiteSpace(hdnID.Value))
                 {
                     privilege.ID = Guid.Parse(hdnID.Value);
                 }

@@ -59,7 +59,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("save", Name = RouteNames.CurrencyGetSave)]
+        [Route("save", Name = RouteNames.CurrencySave)]
         [HttpPost()]
         public IHttpActionResult Create([FromBody] TB_Currency item)
         {

@@ -32,7 +32,7 @@ namespace Yumiki.Web.Administration
         {
             get
             {
-                return string.IsNullOrEmpty(hdnGlobalGroupID.Value) ? true : false;
+                return string.IsNullOrWhiteSpace(hdnGlobalGroupID.Value) ? true : false;
             }
         }
 
@@ -108,7 +108,7 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_Group group = new TB_Group();
-                if (!string.IsNullOrEmpty(hdnDialogGroupID.Value))
+                if (!string.IsNullOrWhiteSpace(hdnDialogGroupID.Value))
                 {
                     group.ID = Guid.Parse(hdnDialogGroupID.Value);
                 }
