@@ -19,7 +19,7 @@ namespace Yumiki.Entity.Administration
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
-        public virtual TB_User TB_User { get; set; }
-        public virtual TB_ContactType TB_ContactType { get; set; }
+        public virtual TB_User User { get; set; }
+        public virtual TB_ContactType ContactType { get; set; }
     }
 }

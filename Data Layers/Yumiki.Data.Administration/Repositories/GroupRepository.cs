@@ -82,7 +82,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_User.FieldName.TB_User)
                                                         .Where(c => c.ID == groupID)
-                                                        .SelectMany(c => c.TB_User).Where(c => c.IsActive).AsEnumerable();
+                                                        .SelectMany(c => c.Users).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedUser)
             {
                 return assginedUsers.ToList();
@@ -105,7 +105,7 @@ namespace Yumiki.Data.Administration.Repositories
 
             foreach (TB_User user in unassignedUsers)
             {
-                group.TB_User.Add(user);
+                group.Users.Add(user);
             }
 
             Save();
@@ -119,11 +119,11 @@ namespace Yumiki.Data.Administration.Repositories
         public void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs)
         {
             TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
-            List<TB_User> assginedUsers = group.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
+            List<TB_User> assginedUsers = group.Users.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in assginedUsers)
             {
-                group.TB_User.Remove(user);
+                group.Users.Remove(user);
             }
 
             Save();
@@ -139,7 +139,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege)
                                                         .Where(c => c.ID == groupID)
-                                                        .SelectMany(c => c.TB_Privilege).Where(c => c.IsActive).AsEnumerable();
+                                                        .SelectMany(c => c.Privileges).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedPrivilege)
             {
                 return assginedPrivileges.ToList();
@@ -162,7 +162,7 @@ namespace Yumiki.Data.Administration.Repositories
 
             foreach (TB_Privilege privilege in unassignedPrivileges)
             {
-                group.TB_Privilege.Add(privilege);
+                group.Privileges.Add(privilege);
             }
 
             Save();
@@ -176,11 +176,11 @@ namespace Yumiki.Data.Administration.Repositories
         public void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs)
         {
             TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
-            List<TB_Privilege> assginedPrivileges = group.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
+            List<TB_Privilege> assginedPrivileges = group.Privileges.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in assginedPrivileges)
             {
-                group.TB_Privilege.Remove(privilege);
+                group.Privileges.Remove(privilege);
             }
 
             Save();

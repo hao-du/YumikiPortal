@@ -59,7 +59,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             if (user.ID == Guid.Empty)
             {
-                user.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword, Descriptions = string.Format("Initial Password: \"{0}\"", user.CurrentPassword) });
+                user.PasswordHistories.Add(new TB_PasswordHistory { Password = user.CurrentPassword, Descriptions = string.Format("Initial Password: \"{0}\"", user.CurrentPassword) });
                 Context.TB_User.Add(user);
             }
             else
@@ -83,7 +83,7 @@ namespace Yumiki.Data.Administration.Repositories
         public void ResetPassword(Guid userID, string newPassword)
         {
             TB_User dbUser = Context.TB_User.Where(c => c.ID == userID).Single();
-            dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = newPassword, Descriptions = string.Format("Password has changed from \"{0}\" to \"{1}\"", dbUser.CurrentPassword, newPassword) });
+            dbUser.PasswordHistories.Add(new TB_PasswordHistory { Password = newPassword, Descriptions = string.Format("Password has changed from \"{0}\" to \"{1}\"", dbUser.CurrentPassword, newPassword) });
             dbUser.CurrentPassword = newPassword;
 
             Save();
@@ -119,7 +119,7 @@ namespace Yumiki.Data.Administration.Repositories
         public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
         {
             return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress)
-                            .Where(c => c.TB_UserAddress.Any(e => e.UserID == userID && e.IsActive != showInactive))
+                            .Where(c => c.UserAddresses.Any(e => e.UserID == userID && e.IsActive != showInactive))
                             .ToList();
         }
 

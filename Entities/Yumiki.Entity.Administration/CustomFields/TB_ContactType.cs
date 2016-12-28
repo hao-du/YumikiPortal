@@ -19,7 +19,7 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                return this.TB_UserAddress.OrderByDescending(c=>c.IsPrimary).ThenBy(c=>c.UserAddress);
+                return this.UserAddresses.OrderByDescending(c=>c.IsPrimary).ThenBy(c=>c.UserAddress);
             }
         }
 
