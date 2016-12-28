@@ -29,6 +29,7 @@ namespace Yumiki.Entity.Administration
             public const string ID = "ID";
             public const string ContactTypeName = "ContactTypeName";
             public const string SortUserAddresses = "SortUserAddresses";
+            public const string UserAddresses = "UserAddresses";
         }
     }
 }

@@ -118,7 +118,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
         {
-            return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress)
+            return context.TB_ContactType.Include(TB_ContactType.FieldName.UserAddresses)
                             .Where(c => c.UserAddresses.Any(e => e.UserID == userID && e.IsActive != showInactive))
                             .ToList();
         }

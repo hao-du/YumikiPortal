@@ -80,7 +80,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_User> GetUsersFromGroup(Guid groupID, bool showAssginedUser)
         {
-            IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_User.FieldName.TB_User)
+            IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_Group.FieldName.Users)
                                                         .Where(c => c.ID == groupID)
                                                         .SelectMany(c => c.Users).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedUser)
@@ -100,7 +100,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be assigned to group.</param>
         public void AddUsersToGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Users).Single(c => c.ID == groupID);
             List<TB_User> unassignedUsers = Context.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in unassignedUsers)
@@ -118,7 +118,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be unassigned to group.</param>
         public void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Users).Single(c => c.ID == groupID);
             List<TB_User> assginedUsers = group.Users.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in assginedUsers)

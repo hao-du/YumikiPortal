@@ -21,6 +21,7 @@ namespace Yumiki.Entity.Administration
         public class FieldName
         {
             public const string GroupName = "GroupName";
+            public const string Users = "Users";
         }
     }
 }
