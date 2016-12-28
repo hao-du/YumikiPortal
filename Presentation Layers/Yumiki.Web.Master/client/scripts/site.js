@@ -44,7 +44,7 @@ var clientMessage = function (message, details, logType) {
 
     $("#dlgMessageDialog").modal({ backdrop: 'static' });
 
-    if (message.includes(noSession)) {
+    if (message.indexOf(noSession) > 0) {
         location.href = location.href;
     }
 }

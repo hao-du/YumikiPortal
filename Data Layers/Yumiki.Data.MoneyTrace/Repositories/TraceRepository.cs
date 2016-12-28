@@ -17,9 +17,9 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// </summary>
         /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
         /// <returns>List of all active Traces.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive)
+        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID)
         {
-            return Context.TB_Trace.Include(TB_Trace.FieldName.Currency).Where(c => c.IsActive == !showInactive).OrderByDescending(c=>c.TraceDate).ToList();
+            return Context.TB_Trace.Include(TB_Trace.FieldName.Currency).Where(c => c.IsActive == !showInactive && c.UserID == userID).OrderBy(c=>c.TraceDate).ThenBy(c=>c.LastUpdateDate).ToList();
         }
 
         /// <summary>

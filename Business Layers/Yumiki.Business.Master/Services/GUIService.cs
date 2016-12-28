@@ -44,7 +44,7 @@ namespace Yumiki.Business.Master.Services
         {
             StringBuilder menu = new StringBuilder();
 
-            string path = CommonValues.HashTag;
+            string path = CommonValues.HashTag.ToString();
             //If the page is Displayable, add a URL to path. Otherwise, user cannot navigate to actual page.
             if (parent.IsDisplayable)
             {

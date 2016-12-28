@@ -22,6 +22,7 @@ namespace Yumiki.Entity.Administration
         {
             public const string GroupName = "GroupName";
             public const string Users = "Users";
+            public const string Privileges = "Privileges";
         }
     }
 }

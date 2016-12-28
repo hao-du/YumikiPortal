@@ -3,6 +3,9 @@
 @mainColor: #f8f8f8;
 @mainBorderColor: #e7e7e7;
 @tableHeaderColor: #eeeeee;
+@backgroundColor: #ffffff;
+@inactiveRowColor: #ffefdb;
+@inactiveRowTextColor: #bab8b8;
 
 body {
     padding-top: @headerHeight + 10px;
@@ -44,6 +47,11 @@ table {
     }
 }
 
+.table-alternative-row {
+    background-color:@inactiveRowColor !important;
+    color:@inactiveRowTextColor !important;
+}
+
 .form-area {
     min-height: 100px;
 }
@@ -54,6 +62,10 @@ table {
 
 .paragraph-padding {
     padding: 10px 10px 10px 10px;
+}
+
+.text-align-right {
+    text-align:right !important;
 }
 
 //---------------------Overwrite bootstrap elements---------------------//
@@ -189,23 +201,11 @@ table {
     z-index: 1052;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: @backgroundColor;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
-}
-
-.sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
-}
-
-.sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
+    box-shadow: 10px 0px 30px @mainBorderColor;
 }
 
 .sidenav .closebtn {

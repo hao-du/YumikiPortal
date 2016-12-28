@@ -13,6 +13,6 @@ namespace Yumiki.Commons.Dictionaries
         public const char SeparateCharUnique = '±';
         public const char SeparateCharComma = ',';
         public const char SeparateCharPeriodComma = ';';
-        public const string HashTag = "#";
+        public const char HashTag = '#';
     }
 }

@@ -169,7 +169,7 @@ namespace Yumiki.Web.Base
             StringBuilder stringBuilder = new StringBuilder();
             string exMessage = Logger.GetExceptionDetails(ex);
 
-            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message, exMessage, logType.ToString());
+            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message.Replace('\'', CommonValues.HashTag), exMessage.Replace('\'', CommonValues.HashTag), logType.ToString());
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }

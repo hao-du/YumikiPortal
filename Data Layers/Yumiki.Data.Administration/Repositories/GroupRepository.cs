@@ -137,7 +137,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_Privilege> GetPrivilegesFromGroup(Guid groupID, bool showAssginedPrivilege)
         {
-            IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege)
+            IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Group.FieldName.Privileges)
                                                         .Where(c => c.ID == groupID)
                                                         .SelectMany(c => c.Privileges).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedPrivilege)
@@ -157,7 +157,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
         public void AddPrivilegesToGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Privileges).Single(c => c.ID == groupID);
             List<TB_Privilege> unassignedPrivileges = Context.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in unassignedPrivileges)
@@ -175,7 +175,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
         public void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Privileges).Single(c => c.ID == groupID);
             List<TB_Privilege> assginedPrivileges = group.Privileges.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in assginedPrivileges)

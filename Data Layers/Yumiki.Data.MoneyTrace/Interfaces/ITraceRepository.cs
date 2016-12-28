@@ -15,7 +15,7 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// </summary>
         /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
         /// <returns>List of all active Traces.</returns>
-        List<TB_Trace> GetAllTraces(bool showInactive);
+        List<TB_Trace> GetAllTraces(bool showInactive, Guid userID);
 
         /// <summary>
         /// Get a specific Trace.

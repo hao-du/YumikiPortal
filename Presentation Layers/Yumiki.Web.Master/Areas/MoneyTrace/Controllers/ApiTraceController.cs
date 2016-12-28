@@ -20,7 +20,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive);
+                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive, HttpSession.UserID);
                 return Ok(traces);
             }
             catch (Exception ex)

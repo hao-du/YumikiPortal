@@ -2,6 +2,7 @@ namespace Yumiki.Entity.MoneyTrace
 {
     using Commons.Dictionaries;
     using Commons.Helpers;
+    using Resources;
     using System;
 
     public partial class TB_Trace
@@ -46,6 +47,38 @@ namespace Yumiki.Entity.MoneyTrace
             }
         }
 
+        public bool IsLogTrace
+        {
+            get
+            {
+                return GroupTokenID.HasValue && (TransactionType == EN_TransactionType.E_INCOME || TransactionType == EN_TransactionType.E_OUTCOME);
+            }
+        }
+
+        public string TransactionTypeName
+        {
+            get
+            {
+                string transactionName = string.Empty;
+                switch (TransactionType)
+                {
+                    case EN_TransactionType.E_INCOME:
+                        transactionName = FieldNames.E_INCOME;
+                        break;
+                    case EN_TransactionType.E_OUTCOME:
+                        transactionName = FieldNames.E_OUTCOME;
+                        break;
+                    case EN_TransactionType.E_BANKING:
+                        transactionName = FieldNames.E_BANKING;
+                        break;
+                    case EN_TransactionType.E_EXCHANGE:
+                        transactionName = FieldNames.E_EXCHANGE;
+                        break;
+                }
+                return transactionName;
+            }
+        }
+
         public decimal ExchangeAmount { get; set; }
 
         public Guid? ExchangeCurrencyID { get; set; }
@@ -57,6 +90,7 @@ namespace Yumiki.Entity.MoneyTrace
             public const string TraceDate = "TraceDate";
             public const string TraceDateUI = "TraceDateUI";
             public const string Tags = "Tags";
+            public const string IsLogTrace = "IsLogTrace";
 
             public const string BankID = "BankID";
             public const string BankName = "BankName";
@@ -66,7 +100,8 @@ namespace Yumiki.Entity.MoneyTrace
             public const string CurrencyName = "CurrencyName";
 
             public const string TransactionType = "TransactionType";
-            
+            public const string TransactionTypeName = "TransactionTypeName";
+
             public const string ExchangeAmount = "ExchangeAmount";
             public const string ExchangeCurrencyID = "ExchangeCurrencyID";
         }

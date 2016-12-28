@@ -19,9 +19,9 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// </summary>
         /// <param name="showInactive">Show list of inactive Trace or active Trace.</param>
         /// <returns>List of all active Trace.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive)
+        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID)
         {
-            return Repository.GetAllTraces(showInactive);
+            return Repository.GetAllTraces(showInactive, userID);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Yumiki.Business.MoneyTrace.Services
             {
                 if (trace.TransactionType == EN_TransactionType.E_EXCHANGE)
                 {
-                    TB_Trace logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value);
+                    TB_Trace logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value, EN_TransactionType.E_INCOME);
 
                     trace.ExchangeAmount = logTrace.Amount;
                     trace.ExchangeCurrencyID = logTrace.CurrencyID;
@@ -173,9 +173,9 @@ namespace Yumiki.Business.MoneyTrace.Services
                     {
                         logTrace = new TB_Trace();
                     }
-                    logTrace.Amount = trace.ExchangeAmount;
+                    logTrace.Amount = trace.Amount;
                     logTrace.Tags = trace.Tags;
-                    logTrace.CurrencyID = trace.ExchangeCurrencyID.Value;
+                    logTrace.CurrencyID = trace.CurrencyID;
                     logTrace.TraceDate = trace.TraceDate;
                     logTrace.TransactionType = EN_TransactionType.E_OUTCOME;
                     logTrace.GroupTokenID = trace.GroupTokenID;

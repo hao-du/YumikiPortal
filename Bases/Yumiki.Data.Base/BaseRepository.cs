@@ -52,7 +52,7 @@ namespace Yumiki.Data.Base
             if (entity.ID == Guid.Empty)
             {
                 entity.ID = Guid.NewGuid();
-                entity.CreateDate = DateTimeHelper.GetSystemDatetime;
+                entity.LastUpdateDate = entity.CreateDate = DateTimeHelper.GetSystemDatetime;
                 entity.IsActive = true;
             }
             else
