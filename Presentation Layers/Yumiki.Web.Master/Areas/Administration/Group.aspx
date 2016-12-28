@@ -10,7 +10,7 @@
                 <!--hdnGlobalGroupID: To keep group id for User Assignment tab-->
                 <asp:HiddenField ID="hdnGlobalGroupID" runat="server" Value="" />
                 <ul class="nav nav-tabs">
-                    <li class="active" runat="server" id="liGroupList">
+                    <li runat="server" id="liGroupList">
                         <asp:LinkButton runat="server" ID="btnGroupListTab" Text="Group List" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserAssignment" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserAssignmentTab" Text="User Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
