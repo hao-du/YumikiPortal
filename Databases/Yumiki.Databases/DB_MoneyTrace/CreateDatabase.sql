@@ -93,3 +93,30 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Store keywords
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'In case of Banking, generating 2 records: Deposite to bank account and withdraw from personal amount.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_Trace', @level2type=N'COLUMN',@level2name=N'GroupTokenID'
 
 -------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE [dbo].[TB_Bank](
+	[ID] [uniqueidentifier] NOT NULL,
+	[BankName] [nvarchar](50) NOT NULL,
+	[UserID] [uniqueidentifier] NOT NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsShareable] [bit] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_Bank] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE [dbo].[TB_Trace]
+ADD BankID UniqueIdentifier NOT NULL
+
+ALTER TABLE [dbo].[TB_Trace]  WITH CHECK ADD  CONSTRAINT [FK_TB_Trace_TB_Bank] FOREIGN KEY([BankID])
+REFERENCES [dbo].[TB_Bank] ([ID])
+
+ALTER TABLE [dbo].[TB_Trace] CHECK CONSTRAINT [FK_TB_Trace_TB_Bank]
+
+-------------------------------------------------------------------------------------------------------------------------------------

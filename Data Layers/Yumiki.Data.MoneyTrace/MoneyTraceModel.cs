@@ -14,6 +14,7 @@ namespace Yumiki.Data.MoneyTrace
             this.Configuration.LazyLoadingEnabled = false;
         }
 
+        public virtual DbSet<TB_Bank> TB_Bank { get; set; }
         public virtual DbSet<TB_Currency> TB_Currency { get; set; }
         public virtual DbSet<TB_Tag> TB_Tag { get; set; }
         public virtual DbSet<TB_Trace> TB_Trace { get; set; }
@@ -21,6 +22,12 @@ namespace Yumiki.Data.MoneyTrace
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TB_Bank>()
+                .HasMany(e => e.TB_Trace)
+                .WithRequired(e => e.TB_Bank)
+                .HasForeignKey(e => e.BankID)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<TB_Currency>()
                 .HasMany(e => e.TB_Trace)
                 .WithRequired(e => e.TB_Currency)

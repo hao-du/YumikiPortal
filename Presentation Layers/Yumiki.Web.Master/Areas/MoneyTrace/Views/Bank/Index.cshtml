@@ -1,0 +1,245 @@
+﻿@using Yumiki.Web.MoneyTrace.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.MoneyTrace;
+@{
+    ViewBag.Title = "Bank";
+}
+
+@section Script{
+    <script type="text/javascript">
+        //Declare constant variables.
+        var showActiveBankString = 'Show Active Bank';
+        var showInactiveBankString = 'Show Inactive Bank';
+
+        var app = angular.module('moneyTrace', []);
+
+        //Service to transfer data between controllers.
+        app.factory('DataTransfer', function () {
+            return { bankID: '' };
+        });
+
+        //Service to communicate with Server.
+        app.service('DataService', function ($http) {
+            this.getBanks = function (showInactive) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAll, null)', { params: { 'showInactive': showInactive } });
+            };
+
+            this.getBankByID = function (bankID) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetByID, null)', { params: { 'bankID': bankID } });
+            };
+
+            this.save = function (bank) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.BankSave, null)', bank);
+            };
+        });
+
+        //Controller to display items' list
+        app.controller('bankController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            $scope.inactiveButtonName = showInactiveBankString;
+
+            //To determine when load active or inactive list.
+            $scope.isStatusChanged = false;
+
+            //Display Dialog and pass data to Dialog.
+            $scope.showDialog = function (bankID) {
+                //Call DialogController
+                $rootScope.$broadcast("OnLoad", bankID);
+            }
+
+            //Event for other controllers to reload data.
+            $rootScope.$on('OnReloadData', function (event) {
+                $scope.loadData();
+            });
+
+            //Load active or inactive list.
+            $scope.loadData = function () {
+                var showInactive = true;
+                if ($scope.inactiveButtonName == showInactiveBankString) {
+                    showInactive = false;
+                }
+
+                if ($scope.isStatusChanged) {
+                    showInactive = !showInactive;
+                }
+
+                $(this).showLoadingBar();
+                DataService.getBanks(showInactive).then(
+                    function mySucces(response) {
+                        $scope.banks = response.data;
+
+                        if ($scope.isStatusChanged) {
+                            if ($scope.inactiveButtonName == showInactiveBankString) {
+                                $scope.inactiveButtonName = showActiveBankString;
+                            } else {
+                                $scope.inactiveButtonName = showInactiveBankString;
+                            }
+                            $scope.isStatusChanged = false;
+                        }
+                        $(this).hideLoadingBar();
+                    }, function myError(response) {
+                        $scope.isStatusChanged = false;
+                        $(this).hideLoadingBar();
+
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            };
+
+            //When click on "ShowInActiveButton", reload data with active status.
+            $scope.loadDataWithStatus = function () {
+                $scope.isStatusChanged = true;
+                $scope.loadData();
+            }
+        });
+
+        //Controller to display dialog
+        app.controller('bankDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            $scope.bankID = undefined;
+            $scope.isActiveCheckboxDisabled = false;
+
+            //Used to be called by other controllers.
+            $rootScope.$on('OnLoad', function (event, bankID) {
+                $('#dlgBank').modal({ backdrop: 'static' });
+
+                if (bankID != undefined && bankID != null) {
+                    $scope.bankID = bankID;
+                    $scope.isActiveCheckboxDisabled = false;
+                    $scope.dialogTitle = "Edit Bank";
+
+                    $(this).showLoadingBar();
+
+                    DataService.getBankByID($scope.bankID)
+                        .then(function mySucces(response) {
+                            $scope.bank = response.data;
+                            $(this).hideLoadingBar();
+
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+
+                } else {
+                    $scope.dialogTitle = "New Bank";
+                    $scope.isActiveCheckboxDisabled = true;
+
+                    $scope.bank = $scope.resetBank();
+                }
+            });
+
+            //Reset object in new mode.
+            $scope.resetBank = function () {
+                $scope.bankForm.$setPristine();
+                return {
+                    '@CommonProperties.ID': undefined,
+                    '@TB_Bank.FieldName.BankName': '',
+                    '@TB_Bank.FieldName.IsShareable': false,
+                    '@CommonProperties.IsActive': true
+                };
+            }
+
+            //Save new or update object
+            $scope.save = function (isValid) {
+                if (isValid) {
+                    $(this).showLoadingBar();
+                    DataService.save($scope.bank)
+                        .then(function mySucces(response) {
+                            $scope.bankID = undefined;
+                            $('#dlgBank').modal('hide');
+
+                            $scope.ReloadData();
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+                }
+            };
+
+            //After saving, reload list.
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
+            };
+        });
+    </script>
+}
+<div ng-app="moneyTrace">
+    <div class="container" ng-controller="bankController" ng-init="loadData();">
+        <h2>Bank</h2>
+        <div class="well well-sm">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table id="tblBank" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Bank Name</th>
+                                <th>Descriptions</th>
+                                <th>Shareable</th>
+                                <th>Active Status</th>
+                                <th>Modify Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="bank in banks">
+                                <td>{{ bank.@TB_Bank.FieldName.BankName }}</td>
+                                <td>{{ bank.@CommonProperties.Descriptions }}</td>
+                                <td><input type="checkbox" ng-checked="{{ bank.@TB_Bank.FieldName.IsShareable }}" disabled="disabled" /></td>
+                                <td><input type="checkbox" ng-checked="{{ bank.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                                <td>{{ bank.@CommonProperties.LastUpdateDateUI }}</td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(bank.@CommonProperties.ID);">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgBank" class="modal fade" role="dialog" ng-controller="bankDialogController">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="bankForm" ng-submit="save(bankForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : bankForm.bankName.$invalid }">
+                            <label>Bank Name</label>
+                            <input type="text" name="bankName" ng-model="bank.@TB_Bank.FieldName.BankName" class="form-control" ng-required="true" />
+                            <p ng-show="bankForm.bankName.$error.required && bankForm.bankName.$dirty" class="help-block">Bank Name is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="bank.@TB_Bank.FieldName.IsShareable" ng-checked="bank.@TB_Bank.FieldName.IsShareable" />
+                                <label>Is Shareable</label>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="bank.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="bank.@CommonProperties.IsActive" ng-checked="bank.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="bankForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
