@@ -30,12 +30,12 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public Guid BankID { get; set; }
+        public Guid? BankID { get; set; }
 
-        public virtual TB_Bank TB_Bank { get; set; }
+        public virtual TB_Bank Bank { get; set; }
 
-        public virtual TB_Currency TB_Currency { get; set; }
+        public virtual TB_Currency Currency { get; set; }
 
-        public virtual TB_User TB_User { get; set; }
+        public virtual TB_User User { get; set; }
     }
 }

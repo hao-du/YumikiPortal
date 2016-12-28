@@ -97,6 +97,11 @@ namespace Yumiki.Business.MoneyTrace.Services
                     break;
                 //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
                 case EN_TransactionType.E_BANKING:
+                    if (!trace.BankID.HasValue || trace.BankID.Value == Guid.Empty)
+                    {
+                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank is required.");
+                    }
+
                     if (!trace.GroupTokenID.HasValue)
                     {
                         trace.GroupTokenID = Guid.NewGuid();
@@ -113,8 +118,9 @@ namespace Yumiki.Business.MoneyTrace.Services
                     logTrace.Amount = -trace.Amount;
                     logTrace.Tags = trace.Tags;
                     logTrace.CurrencyID = trace.CurrencyID;
+                    logTrace.BankID = trace.BankID;
                     logTrace.TraceDate = trace.TraceDate;
-                    logTrace.TransactionType = trace.TransactionType;
+                    logTrace.TransactionType = logTrace.Amount < decimal.Zero ? EN_TransactionType.E_OUTCOME : EN_TransactionType.E_INCOME;
                     logTrace.GroupTokenID = trace.GroupTokenID;
                     logTrace.UserID = trace.UserID;
                     logTrace.Descriptions = trace.Descriptions;
@@ -144,8 +150,8 @@ namespace Yumiki.Business.MoneyTrace.Services
 
                     SaveTrace(trace, true);
 
-                    //Save the backLog record.
-                    logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value);
+                    //Save income backLog record.
+                    logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value, EN_TransactionType.E_INCOME);
                     if (logTrace == null)
                     {
                         logTrace = new TB_Trace();
@@ -154,7 +160,24 @@ namespace Yumiki.Business.MoneyTrace.Services
                     logTrace.Tags = trace.Tags;
                     logTrace.CurrencyID = trace.ExchangeCurrencyID.Value;
                     logTrace.TraceDate = trace.TraceDate;
-                    logTrace.TransactionType = trace.TransactionType;
+                    logTrace.TransactionType = EN_TransactionType.E_INCOME;
+                    logTrace.GroupTokenID = trace.GroupTokenID;
+                    logTrace.UserID = trace.UserID;
+                    logTrace.Descriptions = trace.Descriptions;
+
+                    SaveTrace(logTrace, false);
+
+                    //Save outcome backLog record.
+                    logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value, EN_TransactionType.E_OUTCOME);
+                    if (logTrace == null)
+                    {
+                        logTrace = new TB_Trace();
+                    }
+                    logTrace.Amount = trace.ExchangeAmount;
+                    logTrace.Tags = trace.Tags;
+                    logTrace.CurrencyID = trace.ExchangeCurrencyID.Value;
+                    logTrace.TraceDate = trace.TraceDate;
+                    logTrace.TransactionType = EN_TransactionType.E_OUTCOME;
                     logTrace.GroupTokenID = trace.GroupTokenID;
                     logTrace.UserID = trace.UserID;
                     logTrace.Descriptions = trace.Descriptions;

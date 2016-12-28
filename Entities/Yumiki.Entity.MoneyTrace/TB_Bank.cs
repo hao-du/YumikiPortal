@@ -8,7 +8,7 @@ namespace Yumiki.Entity.MoneyTrace
     {
         public TB_Bank()
         {
-            TB_Trace = new HashSet<TB_Trace>();
+            Traces = new HashSet<TB_Trace>();
         }
 
         public Guid ID { get; set; }
@@ -27,6 +27,6 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual ICollection<TB_Trace> TB_Trace { get; set; }
+        public virtual ICollection<TB_Trace> Traces { get; set; }
     }
 }

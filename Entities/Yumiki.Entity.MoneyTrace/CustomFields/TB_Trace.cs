@@ -26,9 +26,21 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                if(TB_Currency != null)
+                if(Currency != null)
                 {
-                    return string.Format("{0}-{1}", TB_Currency.CurrencyShortName, TB_Currency.CurrencyName);
+                    return string.Format("{0}-{1}", Currency.CurrencyShortName, Currency.CurrencyName);
+                }
+                return CommonValues.EmptyValue;
+            }
+        }
+
+        public string BankName
+        {
+            get
+            {
+                if (Bank != null)
+                {
+                    return Bank.BankName;
                 }
                 return CommonValues.EmptyValue;
             }
@@ -45,9 +57,15 @@ namespace Yumiki.Entity.MoneyTrace
             public const string TraceDate = "TraceDate";
             public const string TraceDateUI = "TraceDateUI";
             public const string Tags = "Tags";
+
+            public const string BankID = "BankID";
+            public const string BankName = "BankName";
+
             public const string CurrencyID = "CurrencyID";
-            public const string TransactionType = "TransactionType";
             public const string CurrencyName = "CurrencyName";
+
+            public const string TransactionType = "TransactionType";
+            
             public const string ExchangeAmount = "ExchangeAmount";
             public const string ExchangeCurrencyID = "ExchangeCurrencyID";
         }

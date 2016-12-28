@@ -23,14 +23,14 @@ namespace Yumiki.Data.MoneyTrace
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TB_Bank>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_Bank)
+                .HasMany(e => e.Traces)
+                .WithOptional(e => e.Bank)
                 .HasForeignKey(e => e.BankID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Currency>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_Currency)
+                .HasMany(e => e.Traces)
+                .WithRequired(e => e.Currency)
                 .HasForeignKey(e => e.CurrencyID)
                 .WillCascadeOnDelete(false);
 
@@ -39,19 +39,19 @@ namespace Yumiki.Data.MoneyTrace
                 .IsUnicode(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Currency)
-                .WithRequired(e => e.TB_User)
+                .HasMany(e => e.Currency)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Tag)
-                .WithOptional(e => e.TB_User)
+                .HasMany(e => e.Tags)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_User)
+                .HasMany(e => e.Traces)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
 

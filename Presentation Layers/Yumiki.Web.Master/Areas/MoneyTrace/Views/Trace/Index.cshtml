@@ -28,6 +28,10 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
             };
 
+            this.getBanks = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
+            };
+
             this.getTraceList = function (showInactive) {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive } });
             };
@@ -83,9 +87,13 @@
                             }
                             $scope.isStatusChanged = false;
                         }
+
                         $(this).hideLoadingBar();
-                    }, function myError(response) {
+
+                    },
+                    function myError(response) {
                         $scope.isStatusChanged = false;
+
                         $(this).hideLoadingBar();
 
                         clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
@@ -101,7 +109,7 @@
     </script>
 
     <!--Normal Trace Dialog-->
-    <script  type="text/javascript" title="Normal Trace Dialog">
+    <script type="text/javascript" title="Normal Trace Dialog">
         //Controller to display dialog
         app.controller('normalTraceDialogController', function ($scope, $rootScope, $http, DataService) {
             $scope.traceID = undefined;
@@ -194,6 +202,110 @@
                 DataService.getCurrencyList().then(
                     function mySucces(response) {
                         $scope.currencyList = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            }
+        });
+    </script>
+
+    <!--Banking Trace Dialog-->
+    <script type="text/javascript" title="Banking Trace Dialog">
+        //Controller to display dialog
+        app.controller('bankingTraceDialogController', function ($scope, $rootScope, $http, DataService) {
+            $scope.traceID = undefined;
+            $scope.isActiveCheckboxDisabled = false;
+
+            //Used to be called by other controllers.
+            $rootScope.$on('OnBankingTraceLoad', function (event, traceID) {
+                $('#dlgBankingTrace').modal({ backdrop: 'static' });
+
+                if (traceID != undefined && traceID != null) {
+                    $scope.traceID = traceID;
+                    $scope.isActiveCheckboxDisabled = false;
+                    $scope.dialogTitle = "Edit Banking Trace";
+
+                    $(this).showLoadingBar();
+
+                    DataService.getTraceByID($scope.traceID)
+                        .then(
+                            function mySucces(response) {
+                                $scope.trace = response.data;
+
+                                //Format date to display on TraceDate input
+                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+
+                                $(this).hideLoadingBar();
+
+                            },
+                            function myError(response) {
+                                $(this).hideLoadingBar();
+
+                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            });
+
+                } else {
+                    $scope.dialogTitle = "New Banking Trace";
+                    $scope.isActiveCheckboxDisabled = true;
+
+                    $scope.trace = $scope.resetTrace();
+                }
+            });
+
+            //Reset object in new mode.
+            $scope.resetTrace = function () {
+                $scope.traceForm.$setPristine();
+                return {
+                    '@CommonProperties.ID': undefined,
+                    '@TB_Trace.FieldName.Amount': 0,
+                    '@TB_Trace.FieldName.Tags': '',
+                    '@TB_Trace.FieldName.CurrencyID': '',
+                    '@TB_Trace.FieldName.BankName': '',
+                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_BANKING),
+                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                    '@CommonProperties.IsActive': true
+                };
+            }
+
+            //Save new or update object
+            $scope.save = function (isValid) {
+                if (isValid) {
+                    //datetimepicker does not work with ng-model, bind data manually.
+                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
+
+                    $(this).showLoadingBar();
+
+                    DataService.save($scope.trace)
+                        .then(function mySucces(response) {
+                            $scope.traceID = undefined;
+                            $('#dlgBankingTrace').modal('hide');
+
+                            $scope.ReloadData();
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+                }
+            };
+
+            //After saving, reload list.
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
+            };
+
+            // Bind datasource to controls such as Dropdownlist
+            $scope.bindControls = function () {
+                DataService.getCurrencyList().then(
+                    function mySucces(response) {
+                        $scope.currencyList = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+
+                DataService.getBanks().then(
+                    function mySucces(response) {
+                        $scope.banks = response.data;
                     }, function myError(response) {
                         clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
@@ -299,6 +411,79 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banking Trace Modal -->
+    <div id="dlgBankingTrace" class="modal fade" role="dialog" ng-controller="bankingTraceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="bankingTraceForm" ng-submit="save(bankingTraceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <div class='input-group date'>
+                                <input id='dtpTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.amount.$invalid }">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
+                            <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.currency.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.bank.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="bank" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.BankID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="help-block">Bank is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>

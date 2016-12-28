@@ -12,7 +12,7 @@ namespace Yumiki.Entity.MoneyTrace
 
         public string Descriptions { get; set; }
 
-        public Guid? UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -20,6 +20,6 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual TB_User TB_User { get; set; }
+        public virtual TB_User User { get; set; }
     }
 }

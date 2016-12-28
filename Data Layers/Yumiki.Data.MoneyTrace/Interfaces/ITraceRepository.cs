@@ -33,6 +33,18 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         TB_Trace GetLogTrace(Guid traceID, Guid groupTokenID);
 
         /// <summary>
+        /// This is to get the back log with GroupTokenID and Transaction Type.
+        /// </summary>
+        /// <param name="traceID">Specify id is excluded from results.</param>
+        /// <param name="groupTokenID">Specify groupTokenID for Trace need to be retrieved.</param>
+        /// <param name="transactionType">
+        ///     In case of a trace has more than one back log, filter back logs also with transaction type to get expected back log.
+        ///     Each back log should have a different trans type.
+        /// </param>
+        /// <returns>Trace Object</returns>
+        TB_Trace GetLogTrace(Guid traceID, Guid groupTokenID, EN_TransactionType transactionType);
+
+        /// <summary>
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>

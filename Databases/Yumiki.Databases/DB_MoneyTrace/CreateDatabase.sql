@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[TB_Tag](
 	[ID] [uniqueidentifier] NOT NULL,
 	[TagName] [nvarchar](50) NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
-	[UserID] [uniqueidentifier] NULL,
+	[UserID] [uniqueidentifier] NOT NULL,
 	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
 	[LastUpdateDate] [datetime] NULL,
@@ -112,7 +112,7 @@ CREATE TABLE [dbo].[TB_Bank](
 -------------------------------------------------------------------------------------------------------------------------------------
 
 ALTER TABLE [dbo].[TB_Trace]
-ADD BankID UniqueIdentifier NOT NULL
+ADD BankID UniqueIdentifier  NULL
 
 ALTER TABLE [dbo].[TB_Trace]  WITH CHECK ADD  CONSTRAINT [FK_TB_Trace_TB_Bank] FOREIGN KEY([BankID])
 REFERENCES [dbo].[TB_Bank] ([ID])
