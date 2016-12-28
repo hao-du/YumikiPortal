@@ -25,7 +25,7 @@ namespace Yumiki.Web.Administration
         {
             get
             {
-                return string.IsNullOrEmpty(hdnID.Value) ? true : false;
+                return string.IsNullOrWhiteSpace(hdnID.Value) ? true : false;
             }
         }
 
@@ -108,9 +108,6 @@ namespace Yumiki.Web.Administration
                 {
                     SendWarning("Confirm Password must be the same password.");
                 }
-
-                TB_User a = null;
-                var b = a.CreateDate;
 
                 TB_User user = new TB_User();
                 if (!IsNewMode)
@@ -220,7 +217,7 @@ namespace Yumiki.Web.Administration
             try
             {
                 TB_UserAddress userAddress = new TB_UserAddress();
-                if (!string.IsNullOrEmpty(hdnUserAddressID.Value))
+                if (!string.IsNullOrWhiteSpace(hdnUserAddressID.Value))
                 {
                     userAddress.ID = Guid.Parse(hdnUserAddressID.Value);
                 }

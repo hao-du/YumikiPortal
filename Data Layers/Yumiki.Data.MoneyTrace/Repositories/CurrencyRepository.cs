@@ -15,9 +15,20 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// </summary>
         /// <param name="showInactive">Show list of inactive Currency or active Currency.</param>
         /// <returns>List of all active Currency.</returns>
-        public List<TB_Currency> GetAllCurrency(bool showInactive)
+        public List<TB_Currency> GetAllCurrency(bool showInactive, Guid userID, bool getShareable)
         {
-            return Context.TB_Currency.Where(c => c.IsActive == !showInactive).ToList();
+            IQueryable<TB_Currency> queryable = Context.TB_Currency.Where(c => c.IsActive == !showInactive);
+
+            if (getShareable)
+            {
+                queryable = queryable.Where(c => c.UserID == userID || c.IsShareable == true);
+            }
+            else
+            {
+                queryable = queryable.Where(c => c.UserID == userID);
+            }
+
+            return queryable.ToList();
         }
 
         /// <summary>
@@ -27,13 +38,13 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Currency Object</returns>
         public TB_Currency GetCurrency(Guid currencyID)
         {
-            return Context.TB_Currency.Where(c => c.ID == currencyID).SingleOrDefault();
+            return Context.TB_Currency.SingleOrDefault(c => c.ID == currencyID);
         }
 
         /// <summary>
         /// Create/Update a currency
         /// </summary>
-        /// <param name="user">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
+        /// <param name="currency">If currency id is empty, then this is new currency. Otherwise, this needs to be updated</param>
         public void SaveCurrency(TB_Currency currency)
         {
             if (currency.ID == Guid.Empty)
@@ -42,9 +53,11 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             }
             else
             {
-                TB_Currency dbCurrency = Context.TB_Currency.Where(c => c.ID == currency.ID).Single();
+                TB_Currency dbCurrency = Context.TB_Currency.Single(c => c.ID == currency.ID);
                 dbCurrency.CurrencyName = currency.CurrencyName;
                 dbCurrency.CurrencyShortName = currency.CurrencyShortName;
+                dbCurrency.UserID = currency.UserID;
+                dbCurrency.IsShareable = currency.IsShareable;
                 dbCurrency.Descriptions = currency.Descriptions;
                 dbCurrency.IsActive = currency.IsActive;
             }

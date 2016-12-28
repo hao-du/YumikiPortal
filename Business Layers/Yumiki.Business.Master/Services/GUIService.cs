@@ -45,16 +45,17 @@ namespace Yumiki.Business.Master.Services
             StringBuilder menu = new StringBuilder();
 
             string path = CommonValues.HashTag;
+            //If the page is Displayable, add a URL to path. Otherwise, user cannot navigate to actual page.
             if (parent.IsDisplayable)
             {
                 path = parent.PagePath;
 
-                //URL Path must be "/Application/PageName/[Action]", has 'slash' char at the first of path.
+                //URL Path must be "/ApplicationName/PageName/[Action]", has 'slash' char at the first of path.
                 if (!path.Equals(CommonValues.HashTag) && !parent.PagePath.First().Equals('/'))
                 {
                     path = string.Format("/{0}", path);
                 }
-                //Append URL Prefix such as "/Apps/Application/PageName/[Action]", prefix is mandatory for URL Routing.
+                //Append URL Prefix such as "/Apps/ApplicationName/PageName/[Action]", prefix is mandatory for URL Routing.
                 string urlPrefix = string.Format("/{0}", HttpConstants.Pages.WebFormAreaPrefix);
                 if (!path.ToLowerInvariant().StartsWith(urlPrefix.ToLowerInvariant()))
                 {
@@ -94,7 +95,7 @@ namespace Yumiki.Business.Master.Services
         /// <returns>A converted GUID User ID.</returns>
         private Guid CheckandConvertUserID(string userID)
         {
-            if (string.IsNullOrEmpty(userID))
+            if (string.IsNullOrWhiteSpace(userID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
             }

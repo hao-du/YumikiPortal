@@ -4,13 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Commons.Dictionaries
+namespace Yumiki.Commons.Helpers
 {
-    public class DateTimeFormat
+    public class DateTimeHelper
     {
         public const string ShortDate = "MM/dd/yyyy";
         public const string LongDate = "dd MMM yyyy";
         public const string ShortDateTime = "MM/dd/yyyy HH:mm:ss";
         public const string LongDateTime = "dd MMM yyyy HH:mm:ss";
+        public const string ClientMomentLongDate = "DD MMM YYYY";
+
+        public static DateTime GetSystemDatetime
+        {
+            get
+            {
+                return DateTime.Now;
+            }
+        }
     }
 }

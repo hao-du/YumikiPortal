@@ -44,7 +44,7 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString() + Yumiki.Commons.Dictionaries.CommonValues.SeparateChar +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>
+                                            <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString() + Yumiki.Commons.Dictionaries.CommonValues.SeparateCharUnique +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="Literal1" Text='<%# Eval("PagePath") %>'></asp:Literal>

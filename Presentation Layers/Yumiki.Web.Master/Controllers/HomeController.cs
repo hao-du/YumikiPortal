@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Web.Base;
@@ -22,12 +23,11 @@ namespace Yumiki.Web.Master.Controllers
         [ChildActionOnly]
         public PartialViewResult GetMenu()
         {
-            string userID = Session[HttpConstants.Session.UserID]?.ToString();
             string menu = string.Empty;
 
-            if (!string.IsNullOrEmpty(userID))
+            if (HttpSession.IsAuthenticated)
             {
-                menu = BusinessService.GetPrivilege(userID);
+                menu = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
             }
 
             return PartialView("GetMenu", menu);

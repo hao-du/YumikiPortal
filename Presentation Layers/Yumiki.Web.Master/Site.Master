@@ -94,8 +94,7 @@
         <div class="navbar navbar-default navbar-fixed-bottom">
             <div class="container-fluid">
                 <p class="navbar-text pull-left">
-                    © <% DateTime.Now.Year.ToString(); %> - Yumiki Portal.
-                <a href="http://tinyurl.com/tbvalid" target="_blank">HTML 5 Validation</a>
+                    © <% Yumiki.Commons.Helpers.DateTimeHelper.GetSystemDatetime.Year.ToString(); %> - Yumiki Portal.
                 </p>
                 <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
                     <span class="glyphicon glyphicon-star"></span>Subscribe on YouTube</a>

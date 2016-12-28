@@ -1,6 +1,7 @@
 ﻿using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
+using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
 
 namespace Yumiki.Web.Base
@@ -51,6 +52,19 @@ namespace Yumiki.Web.Base
                     service = Dependency.GetService(containerName);
                 }
                 return service;
+            }
+        }
+
+        private HttpSession httpSession;
+        public HttpSession HttpSession
+        {
+            get
+            {
+                if (httpSession == null)
+                {
+                    httpSession = new HttpSession(Session);
+                }
+                return httpSession;
             }
         }
 

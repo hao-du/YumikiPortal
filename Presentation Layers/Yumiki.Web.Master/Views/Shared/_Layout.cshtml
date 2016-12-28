@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Yumiki.Commons.Helpers
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,9 +13,18 @@
     <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />
     <script src="../../../client/scripts/bootstrap.min.js"></script>
 
+    <link href="~/client/contents/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/client/scripts/moment.min.js"></script>
+    <script src="../../../client/scripts/bootstrap-datetimepicker.min.js"></script>
+
     <!--Global Libraries-->
     <link href="~/client/contents/site.less" rel="stylesheet" />
     <script src="../../../client/scripts/site.js"></script>
+
+    <script type="text/javascript">
+        //Overide NoSession variable in site.js.
+        noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
+    </script>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -37,7 +48,7 @@
                             @ViewBag.UserName
                         </p>
                     </li>
-                    @if (!string.IsNullOrEmpty(@ViewBag.UserName))
+                    @if (!string.IsNullOrWhiteSpace(@ViewBag.UserName))
                     {
                         <li>
                             @Html.ActionLink("Log out", "Logout", "Home", new { area = "" }, null)
@@ -52,9 +63,11 @@
     </div>
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container-fluid">
-            <p class="navbar-text pull-left">
-                © @DateTime.Now.Year.ToString() - Yumiki Portal.
-                <a href="http://tinyurl.com/tbvalid" target="_blank">HTML 5 Validation</a>
+            <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
+                <span class="glyphicon glyphicon-th-large"></span>
+            </a>
+            <p class="navbar-text">
+                &nbsp;© @DateTimeHelper.GetSystemDatetime.Year.ToString() - Yumiki Portal.
             </p>
             <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
                 <span class="glyphicon glyphicon-star"></span> Subscribe on YouTube
@@ -67,11 +80,12 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                        Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
+                    Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
                 </div>
             </div>
         </div>
     </div>
+    <!--Message Dialog-->
     <div id="dlgMessageDialog" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -92,6 +106,14 @@
                 </div>
             </div>
         </div>
+    </div>
+    <!--Side Bar Navigation-->
+    <div id="sbnSideBarNav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#">Contact</a>
     </div>
     @RenderSection("Script", required: false)
 </body>

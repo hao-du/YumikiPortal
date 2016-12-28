@@ -27,7 +27,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns>Group object</returns>
         public TB_Group GetGroup(Guid id)
         {
-            return Context.TB_Group.Where(c => c.ID == id).SingleOrDefault();
+            return Context.TB_Group.SingleOrDefault(c => c.ID == id);
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public bool CheckValidGroupName(string groupName, Guid excludedGroupID)
         {
-            int countGroupName = Context.TB_Group.Where(c => c.ID != excludedGroupID
+            int countGroupName = Context.TB_Group.Count(c => c.ID != excludedGroupID
                                                         && c.GroupName.ToLower() == groupName.ToLower()
-                                                        && c.IsActive).Count();
+                                                        && c.IsActive);
             if (countGroupName > 0)
             {
                 return false;
@@ -63,7 +63,7 @@ namespace Yumiki.Data.Administration.Repositories
             }
             else
             {
-                TB_Group dbGroup = Context.TB_Group.Where(c => c.ID == group.ID).Single();
+                TB_Group dbGroup = Context.TB_Group.Single(c => c.ID == group.ID);
                 dbGroup.GroupName = group.GroupName;
                 dbGroup.Descriptions = group.Descriptions;
                 dbGroup.IsActive = group.IsActive;
@@ -100,7 +100,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be assigned to group.</param>
         public void AddUsersToGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Where(c => c.ID == groupID).Single();
+            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
             List<TB_User> unassignedUsers = Context.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in unassignedUsers)
@@ -118,7 +118,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be unassigned to group.</param>
         public void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Where(c => c.ID == groupID).Single();
+            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
             List<TB_User> assginedUsers = group.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in assginedUsers)
@@ -157,7 +157,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
         public void AddPrivilegesToGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Where(c => c.ID == groupID).Single();
+            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
             List<TB_Privilege> unassignedPrivileges = Context.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in unassignedPrivileges)
@@ -175,7 +175,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
         public void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Where(c => c.ID == groupID).Single();
+            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
             List<TB_Privilege> assginedPrivileges = group.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in assginedPrivileges)

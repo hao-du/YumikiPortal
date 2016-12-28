@@ -48,12 +48,12 @@ namespace Yumiki.Business.Administration.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Login Name only allows alphanumeric.", Logger);
             }
 
-            if (string.IsNullOrEmpty(user.UserLoginName))
+            if (string.IsNullOrWhiteSpace(user.UserLoginName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Name is required.", Logger);
             }
 
-            if (string.IsNullOrEmpty(user.CurrentPassword) && user.ID.Equals(Guid.Empty))
+            if (string.IsNullOrWhiteSpace(user.CurrentPassword) && user.ID.Equals(Guid.Empty))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Password is required.", Logger);
             }
@@ -75,7 +75,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="newPassword">New password for user.</param>
         public void ResetPassword(string userID, string userLogInName, string newPassword)
         {
-            if (string.IsNullOrEmpty(newPassword))
+            if (string.IsNullOrWhiteSpace(newPassword))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "New Password cannot be empty.", Logger);
             }
@@ -145,7 +145,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="userAddress">If user address id is empty, then this is new user address. Otherwise, this needs to be updated</param>
         public void SaveUserAddress(TB_UserAddress userAddress)
         {
-            if (string.IsNullOrEmpty(userAddress.UserAddress))
+            if (string.IsNullOrWhiteSpace(userAddress.UserAddress))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Contact Details is required.", Logger);
             }
@@ -165,7 +165,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns>A converted GUID User ID.</returns>
         private Guid CheckandConvertUserID(string userID)
         {
-            if (string.IsNullOrEmpty(userID))
+            if (string.IsNullOrWhiteSpace(userID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
             }

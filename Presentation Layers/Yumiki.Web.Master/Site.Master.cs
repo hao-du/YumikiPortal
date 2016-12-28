@@ -16,9 +16,9 @@ namespace Yumiki.Web.Master
                 liLogoutSection.Visible = false;
                 lblUserName.Text = string.Empty;
 
-                if (Session[HttpConstants.Session.UserLoginName] != null)
+                if (HttpSession.IsAuthenticated)
                 {
-                    lblUserName.Text = Session[HttpConstants.Session.UserLoginName].ToString();
+                    lblUserName.Text = HttpSession.UserLoginName;
                     liLogoutSection.Visible = true;
                 }
             }
@@ -29,10 +29,9 @@ namespace Yumiki.Web.Master
         /// </summary>
         private void LoadMenu()
         {
-            string userID = Session[HttpConstants.Session.UserID]?.ToString();
-            if (!string.IsNullOrEmpty(userID))
+            if (HttpSession.IsAuthenticated)
             {
-                lblMenu.Text = BusinessService.GetPrivilege(userID);
+                lblMenu.Text = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
             }
             else
             {

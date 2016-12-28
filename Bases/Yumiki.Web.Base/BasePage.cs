@@ -7,6 +7,7 @@ using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Settings;
 
 namespace Yumiki.Web.Base
 {
@@ -56,6 +57,19 @@ namespace Yumiki.Web.Base
                     service = Dependency.GetService(containerName);
                 }
                 return service;
+            }
+        }
+
+        private HttpSession httpSession;
+        public HttpSession HttpSession
+        {
+            get
+            {
+                if (httpSession == null)
+                {
+                    httpSession = new HttpSession(Session);
+                }
+                return httpSession;
             }
         }
 
@@ -167,9 +181,9 @@ namespace Yumiki.Web.Base
         protected override void OnPreInit(EventArgs e)
         {
             base.OnPreInit(e);
-            if (Session[HttpConstants.Session.UserLoginName] == null)
+            if (!HttpSession.IsAuthenticated)   
             {
-                this.Logger.Infomation(string.Format("Session End from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
+                this.Logger.Infomation(string.Format("No Session from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
                 Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
             }
         }

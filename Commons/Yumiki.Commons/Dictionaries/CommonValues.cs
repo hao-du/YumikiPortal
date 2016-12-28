@@ -10,7 +10,9 @@ namespace Yumiki.Commons.Dictionaries
     {
         public const string EmptyValue = "";
         public const string SelectOneForDropDown = "-- Select one --";
-        public const char SeparateChar = '±';
+        public const char SeparateCharUnique = '±';
+        public const char SeparateCharComma = ',';
+        public const char SeparateCharPeriodComma = ';';
         public const string HashTag = "#";
     }
 }

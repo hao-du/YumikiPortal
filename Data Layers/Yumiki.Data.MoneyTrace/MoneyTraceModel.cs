@@ -14,30 +14,24 @@ namespace Yumiki.Data.MoneyTrace
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public virtual DbSet<TB_Category> TB_Category { get; set; }
+        public virtual DbSet<TB_Bank> TB_Bank { get; set; }
         public virtual DbSet<TB_Currency> TB_Currency { get; set; }
+        public virtual DbSet<TB_Tag> TB_Tag { get; set; }
         public virtual DbSet<TB_Trace> TB_Trace { get; set; }
-        public virtual DbSet<TB_TransactionType> TB_TransactionType { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TB_Category>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_Category)
-                .HasForeignKey(e => e.CategoryID)
+            modelBuilder.Entity<TB_Bank>()
+                .HasMany(e => e.Traces)
+                .WithOptional(e => e.Bank)
+                .HasForeignKey(e => e.BankID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Currency>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_Currency)
+                .HasMany(e => e.Traces)
+                .WithRequired(e => e.Currency)
                 .HasForeignKey(e => e.CurrencyID)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<TB_TransactionType>()
-                .HasMany(e => e.TB_Category)
-                .WithRequired(e => e.TB_TransactionType)
-                .HasForeignKey(e => e.TransactionTypeID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_User>()
@@ -45,25 +39,26 @@ namespace Yumiki.Data.MoneyTrace
                 .IsUnicode(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Category)
-                .WithOptional(e => e.TB_User)
-                .HasForeignKey(e => e.UserID);
-
-            modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Currency)
-                .WithOptional(e => e.TB_User)
-                .HasForeignKey(e => e.UserID);
-
-            modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_Trace)
-                .WithRequired(e => e.TB_User)
+                .HasMany(e => e.Currency)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_TransactionType)
-                .WithOptional(e => e.TB_User)
+                .HasMany(e => e.Tags)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.Traces)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
+            //Ignore fields which not mapped to Database
+            modelBuilder.Entity<TB_Trace>()
+                .Ignore(e => e.ExchangeAmount)
+                .Ignore(e => e.ExchangeCurrencyID);
         }
     }
 }

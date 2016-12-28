@@ -2,6 +2,7 @@ namespace Yumiki.Entity.Administration
 {
     using Base;
     using Commons.Dictionaries;
+    using Commons.Helpers;
     using System;
     using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeFormat.ShortDateTime) : CreateDate.ToString(DateTimeFormat.ShortDateTime);
+                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToString(DateTimeHelper.ShortDateTime);
             }
         }
 

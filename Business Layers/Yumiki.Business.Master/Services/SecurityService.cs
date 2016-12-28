@@ -17,11 +17,11 @@ namespace Yumiki.Business.Master.Services
         /// <returns></returns>
         public TB_User Login(string userName, string password)
         {
-            if (string.IsNullOrEmpty(userName))
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User Name cannot be empty.", Logger);
             }
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Password cannot be empty.", Logger);
             }

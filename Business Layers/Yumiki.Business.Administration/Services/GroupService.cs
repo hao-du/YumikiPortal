@@ -30,7 +30,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns>Group object</returns>
         public TB_Group GetGroup(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -51,7 +51,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="group">If group id is empty, then this is new group. Otherwise, this needs to be updated</param>
         public void SaveGroup(TB_Group group)
         {
-            if (string.IsNullOrEmpty(group.GroupName))
+            if (string.IsNullOrWhiteSpace(group.GroupName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group Name is required.", Logger);
             }
@@ -72,7 +72,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns></returns>
         public List<TB_User> GetUsersFromGroup(string groupID, bool showAssginedUser)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -94,7 +94,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="userIDs">List of Users will be assigned to group.</param>
         public void AddUsersToGroup(string groupID, List<string> userIDs)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -109,7 +109,7 @@ namespace Yumiki.Business.Administration.Services
             List<Guid> convertedUserIds = new List<Guid>();
             foreach (string userID in userIDs)
             {
-                if (string.IsNullOrEmpty(userID))
+                if (string.IsNullOrWhiteSpace(userID))
                 {
                     throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
                 }
@@ -134,7 +134,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="userIDs">List of Users will be unassigned to group.</param>
         public void RemoveUsersFromGroup(string groupID, List<string> userIDs)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -149,7 +149,7 @@ namespace Yumiki.Business.Administration.Services
             List<Guid> convertedUserIds = new List<Guid>();
             foreach (string userID in userIDs)
             {
-                if (string.IsNullOrEmpty(userID))
+                if (string.IsNullOrWhiteSpace(userID))
                 {
                     throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
                 }
@@ -175,7 +175,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns></returns>
         public List<TB_Privilege> GetPrivilegesFromGroup(string groupID, bool showAssginedPrivilege)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -197,7 +197,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
         public void AddPrivilegesToGroup(string groupID, List<string> privilegeIDs)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -212,7 +212,7 @@ namespace Yumiki.Business.Administration.Services
             List<Guid> convertedPrivilegeIds = new List<Guid>();
             foreach (string privilegeID in privilegeIDs)
             {
-                if (string.IsNullOrEmpty(privilegeID))
+                if (string.IsNullOrWhiteSpace(privilegeID))
                 {
                     throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
                 }
@@ -237,7 +237,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
         public void RemovePrivilegesFromGroup(string groupID, List<string> privilegeIDs)
         {
-            if (string.IsNullOrEmpty(groupID))
+            if (string.IsNullOrWhiteSpace(groupID))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Group ID cannot be empty.", Logger);
             }
@@ -252,7 +252,7 @@ namespace Yumiki.Business.Administration.Services
             List<Guid> convertedPrivilegeIds = new List<Guid>();
             foreach (string privilegeID in privilegeIDs)
             {
-                if (string.IsNullOrEmpty(privilegeID))
+                if (string.IsNullOrWhiteSpace(privilegeID))
                 {
                     throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
                 }

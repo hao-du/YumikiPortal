@@ -11,17 +11,17 @@ using Yumiki.Web.MoneyTrace.Constants;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
-    [RoutePrefix("api/transactiontype")]
-    public class ApiTransactionTypeController : ApiBaseController<ITransactionTypeService>
+    [RoutePrefix("api/trace")]
+    public class ApiTraceController : ApiBaseController<ITraceService>
     {
-        [Route("getall", Name = RouteNames.TransactionTypeGetAll)]
+        [Route("getall", Name = RouteNames.TraceGetAll)]
         [HttpGet()]
         public IHttpActionResult Get(bool showInactive)
         {
             try
             {
-                List<TB_TransactionType> transactionTypes = BusinessService.GetAllTransactionTypes(showInactive);
-                return Ok(transactionTypes);
+                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive);
+                return Ok(traces);
             }
             catch (Exception ex)
             {
@@ -29,14 +29,14 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("get", Name = RouteNames.TransactionTypeGetByID)]
+        [Route("get", Name = RouteNames.TraceGetByID)]
         [HttpGet()]
-        public IHttpActionResult GetById(string transactionTypeID)
+        public IHttpActionResult GetById(string traceID)
         {
             try
             {
-                TB_TransactionType transactionType = BusinessService.GetTransactionType(transactionTypeID);
-                return Ok(transactionType);
+                TB_Trace trace = BusinessService.GetTrace(traceID);
+                return Ok(trace);
             }
             catch (Exception ex)
             {
@@ -44,13 +44,15 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("save", Name = RouteNames.TransactionTypeGetSave)]
+        [Route("save", Name = RouteNames.TraceSave)]
         [HttpPost()]
-        public IHttpActionResult Create([FromBody] TB_TransactionType item)
+        public IHttpActionResult Save([FromBody] TB_Trace item)
         {
             try
             {
-                BusinessService.SaveTransactionType(item);
+                item.UserID = HttpSession.UserID;
+
+                BusinessService.SaveTrace(item);
                 return Ok();
             }
             catch (Exception ex)

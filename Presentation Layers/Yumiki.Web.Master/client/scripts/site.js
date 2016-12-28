@@ -3,8 +3,12 @@ var const_Error = 'Error';
 var const_Warn = 'Warning';
 var const_Info = 'Information';
 
+//Global variables - May be modified in somewhere esle
+var noSession = "E_NO_SESSION";
+
 //Show message dialog in client side.
 var clientMessage = function (message, details, logType) {
+    $("#txtDialogTitle").empty();
     switch (logType) {
         case 'ERROR':
             $("#txtDialogTitle").append(const_Error);
@@ -30,9 +34,19 @@ var clientMessage = function (message, details, logType) {
     }
 
     $("#txtMessage").empty();
-    $("#txtMessage").append("<p>" + message + "</p>");
+    if (typeof message == 'string') {
+        $("#txtMessage").append("<p>" + message + "</p>");
+    }
+    else {
+        $("#txtMessage").append("<p>" + message.ExceptionMessage + "</p>");
+    }
+    
 
     $("#dlgMessageDialog").modal({ backdrop: 'static' });
+
+    if (message.includes(noSession)) {
+        location.href = location.href;
+    }
 }
 
 //Startup method to set all global settings to all all modules.
@@ -48,3 +62,11 @@ $.fn.showLoadingBar = function () {
 $.fn.hideLoadingBar = function () {
     $('#dlgLoadingBar').modal('hide');
 };
+
+function openNav() {
+    document.getElementById("sbnSideBarNav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("sbnSideBarNav").style.width = "0";
+}

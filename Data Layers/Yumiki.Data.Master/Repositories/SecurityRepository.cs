@@ -18,7 +18,7 @@ namespace Yumiki.Data.Master.Repositories
         /// <returns></returns>
         public TB_User Login(string userName, string password)
         {
-            return Context.TB_User.Where(c => c.UserLoginName.Equals(userName) && c.CurrentPassword.Equals(password)).SingleOrDefault();
+            return Context.TB_User.SingleOrDefault(c => c.UserLoginName.Equals(userName) && c.CurrentPassword.Equals(password));
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Yumiki.Data.Master.Repositories
         /// <param name="userName">User Login Name.</param>
         public TB_User Login(string userName)
         {
-            return Context.TB_User.Where(c => c.UserLoginName.Equals(userName)).SingleOrDefault();
+            return Context.TB_User.SingleOrDefault(c => c.UserLoginName.Equals(userName));
         }
     }
 }

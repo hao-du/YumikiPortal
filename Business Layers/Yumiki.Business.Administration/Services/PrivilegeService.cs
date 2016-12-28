@@ -24,7 +24,7 @@ namespace Yumiki.Business.Administration.Services
         {
             Guid? parentGUID = null;
 
-            if (!string.IsNullOrEmpty(parentID))
+            if (!string.IsNullOrWhiteSpace(parentID))
             {
                 parentGUID = Guid.Parse(parentID);
             }
@@ -39,7 +39,7 @@ namespace Yumiki.Business.Administration.Services
         /// <returns>Privilege object</returns>
         public TB_Privilege GetPrivilege(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege ID cannot be empty.", Logger);
             }
@@ -60,11 +60,11 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="privilege">If privilege id is empty, then this is new privilege. Otherwise, this needs to be updated</param>
         public void SavePrivilege(TB_Privilege privilege)
         {
-            if (string.IsNullOrEmpty(privilege.PrivilegeName))
+            if (string.IsNullOrWhiteSpace(privilege.PrivilegeName))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Privilege Name cannot be empty.", Logger);
             }
-            if (string.IsNullOrEmpty(privilege.PagePath))
+            if (string.IsNullOrWhiteSpace(privilege.PagePath))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Page Path cannot be empty.", Logger);
             }

@@ -8,10 +8,9 @@ namespace Yumiki.Entity.MoneyTrace
     {
         public TB_User()
         {
-            TB_Category = new HashSet<TB_Category>();
-            TB_Currency = new HashSet<TB_Currency>();
-            TB_Trace = new HashSet<TB_Trace>();
-            TB_TransactionType = new HashSet<TB_TransactionType>();
+            Currency = new HashSet<TB_Currency>();
+            Tags = new HashSet<TB_Tag>();
+            Traces = new HashSet<TB_Trace>();
         }
 
         public Guid ID { get; set; }
@@ -30,12 +29,10 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual ICollection<TB_Category> TB_Category { get; set; }
+        public virtual ICollection<TB_Currency> Currency { get; set; }
 
-        public virtual ICollection<TB_Currency> TB_Currency { get; set; }
+        public virtual ICollection<TB_Tag> Tags { get; set; }
 
-        public virtual ICollection<TB_Trace> TB_Trace { get; set; }
-
-        public virtual ICollection<TB_TransactionType> TB_TransactionType { get; set; }
+        public virtual ICollection<TB_Trace> Traces { get; set; }
     }
 }

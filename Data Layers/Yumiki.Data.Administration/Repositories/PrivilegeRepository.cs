@@ -43,7 +43,7 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns>Privilege object</returns>
         public TB_Privilege GetPrivilege(Guid id)
         {
-            return Context.TB_Privilege.Where(c => c.ID == id).SingleOrDefault();
+            return Context.TB_Privilege.SingleOrDefault(c => c.ID == id);
         }
 
         /// <summary>
@@ -55,12 +55,12 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public bool CheckValidPrivilegeName(string privilegeName, string pagePath, Guid excludedPrivilegeID)
         {
-            int countPrivilegeName = Context.TB_Privilege.Where(c => c.ID != excludedPrivilegeID
+            int countPrivilegeName = Context.TB_Privilege.Count(c => c.ID != excludedPrivilegeID
                                                         && (
                                                             c.PrivilegeName.ToLower() == privilegeName.ToLower()
                                                             || c.PagePath.ToLower() == pagePath.ToLower()
                                                             )
-                                                        && c.IsActive).Count();
+                                                        && c.IsActive);
             if (countPrivilegeName > 0)
             {
                 return false;
@@ -83,7 +83,7 @@ namespace Yumiki.Data.Administration.Repositories
             }
             else
             {
-                TB_Privilege dbPrivilege = Context.TB_Privilege.Where(c => c.ID == privilege.ID).Single();
+                TB_Privilege dbPrivilege = Context.TB_Privilege.Single(c => c.ID == privilege.ID);
                 dbPrivilege.PrivilegeName = privilege.PrivilegeName;
                 dbPrivilege.PagePath = privilege.PagePath;
                 dbPrivilege.ParentPrivilegeID = privilege.ParentPrivilegeID;

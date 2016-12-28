@@ -8,7 +8,7 @@ namespace Yumiki.Entity.MoneyTrace
     {
         public TB_Currency()
         {
-            TB_Trace = new HashSet<TB_Trace>();
+            Traces = new HashSet<TB_Trace>();
         }
 
         public Guid ID { get; set; }
@@ -17,9 +17,11 @@ namespace Yumiki.Entity.MoneyTrace
 
         public string CurrencyShortName { get; set; }
 
-        public Guid? UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public string Descriptions { get; set; }
+
+        public bool IsShareable { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -27,8 +29,8 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual TB_User TB_User { get; set; }
+        public virtual TB_User User { get; set; }
 
-        public virtual ICollection<TB_Trace> TB_Trace { get; set; }
+        public virtual ICollection<TB_Trace> Traces { get; set; }
     }
 }

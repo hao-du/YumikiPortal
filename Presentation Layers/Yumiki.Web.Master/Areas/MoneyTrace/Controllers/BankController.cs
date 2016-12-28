@@ -8,7 +8,7 @@ using Yumiki.Web.Base;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
-    public class TransactionTypeController : BaseController<ITransactionTypeService>
+    public class BankController : BaseController<IBankService>
     {
         // GET: Currency
         public ActionResult Index()
