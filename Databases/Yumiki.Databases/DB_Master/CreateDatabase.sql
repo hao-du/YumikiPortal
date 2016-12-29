@@ -4,6 +4,7 @@
 	[CurrentPassword] [varchar](255) NOT NULL,
 	[FirstName] [nvarchar](15) NULL,
 	[LastName] [nvarchar](15) NULL,
+	[TimeZone] [varchar](100) NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,

@@ -26,7 +26,8 @@ namespace Yumiki.Web.Master.Pages.Security
 
                 HttpSession.UserID = user.ID;
                 HttpSession.UserLoginName = user.UserLoginName;
-                HttpSession.LastLoginTime = DateTimeHelper.GetSystemDatetime;
+                HttpSession.LastLoginTime = DateTimeHelper.GetSystemDatetime();
+                HttpSession.TimeZone = DateTimeHelper.GetTimeZoneById(user.TimeZone);
 
                 string path = Request.QueryString[HttpConstants.QueryStrings.Path];
                 if (string.IsNullOrWhiteSpace(path))

@@ -68,6 +68,7 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUser.UserLoginName = user.UserLoginName;
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
+                dbUser.TimeZone = user.TimeZone;
                 dbUser.Descriptions = user.Descriptions;
                 dbUser.IsActive = user.IsActive;
             }

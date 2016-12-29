@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
@@ -21,6 +18,21 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             try
             {
                 List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive, HttpSession.UserID);
+                return Ok(traces);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("getsummary", Name = RouteNames.TraceGetSummary)]
+        [HttpGet()]
+        public IHttpActionResult GetSummary()
+        {
+            try
+            {
+                List<TraceSummary> traces = BusinessService.GetTotalAmount(HttpSession.UserID);
                 return Ok(traces);
             }
             catch (Exception ex)

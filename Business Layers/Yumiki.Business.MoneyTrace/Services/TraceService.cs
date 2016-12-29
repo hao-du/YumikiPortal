@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Dictionaries;
@@ -25,7 +24,18 @@ namespace Yumiki.Business.MoneyTrace.Services
         }
 
         /// <summary>
+        /// Summary the trace to get total amount for each currency, 
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        public List<TraceSummary> GetTotalAmount(Guid userID)
+        {
+            return Repository.GetTotalAmount(userID);
+        }
+
+        /// <summary>
         /// Get a specific Trace.
+        /// NOTE: Cannot retrieve the back log trace.
         /// </summary>
         /// <param name="traceID">Specify id for Trace need to be retrieved.</param>
         /// <returns>Trace Object</returns>
@@ -46,6 +56,12 @@ namespace Yumiki.Business.MoneyTrace.Services
             TB_Trace trace = Repository.GetTrace(convertedTraceID);
             if (trace != null)
             {
+                //Cannot get the back log traces.
+                if(trace.GroupTokenID.HasValue && (trace.TransactionType == EN_TransactionType.E_INCOME || trace.TransactionType == EN_TransactionType.E_OUTCOME))
+                {
+                    throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Cannot get the back log trace.");
+                }
+
                 if (trace.TransactionType == EN_TransactionType.E_EXCHANGE)
                 {
                     TB_Trace logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value, EN_TransactionType.E_INCOME);

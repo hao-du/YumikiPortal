@@ -38,6 +38,10 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive } });
             };
 
+            this.getSummaryTraces = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetSummary, null)');
+            };
+
             this.getTraceByID = function (traceID) {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetByID, null)', { params: { 'traceID': traceID } });
             };
@@ -85,6 +89,17 @@
                 }
 
                 $(this).showLoadingBar();
+
+                //Get summary trace on left side.
+                DataService.getSummaryTraces().then(
+                    function mySucces(response) {
+                        $scope.traceSummaryList = response.data;
+                    },
+                    function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+
+                //Get all records on right side.
                 DataService.getTraceList(showInactive).then(
                     function mySucces(response) {
                         $scope.traceList = response.data;
@@ -429,12 +444,10 @@
     <div class="container-fruid" ng-controller="traceController" ng-init="loadData();">
         <h2>Trace</h2>
         <div class="well well-sm">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
-                <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
-            </div>
+            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
+            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
+            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
+            <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -445,14 +458,14 @@
                             <table id="tblSummary" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
+                                        <th class="text-align-right">Total</th>
                                         <th>Currency</th>
-                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="trace in traceSummaryList">
-                                        <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
-                                        <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
+                                        <td class="text-align-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
+                                        <td>{{ trace.@TraceSummary.FieldName.CurrencyShortName }}</td>
                                     </tr>
                                 </tbody>
                             </table>

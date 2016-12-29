@@ -21,6 +21,8 @@ namespace Yumiki.Entity.MoneyTrace
 
         public string LastName { get; set; }
 
+        public string TimeZone { get; set; }
+
         public string Descriptions { get; set; }
 
         public bool IsActive { get; set; }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Entities;
 using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
 
@@ -35,6 +37,7 @@ namespace Yumiki.Web.Administration
             {
                 LoadUsers();
                 LoadContactTypes();
+                LoadTimeZones();
                 btnDisplayInactiveUsers.Text = showInactiveString;
             }
 
@@ -83,6 +86,7 @@ namespace Yumiki.Web.Administration
                 txtPassword.Text = txtConfirmPassword.Text = user.CurrentPassword;
                 txtDescription.Text = user.Descriptions;
                 ckbIsActive.Checked = user.IsActive;
+                ddlSystemTimeZone.SelectedValue = user.TimeZone;
 
                 LoadUserAddresses();
 
@@ -120,7 +124,7 @@ namespace Yumiki.Web.Administration
                 user.CurrentPassword = txtPassword.Text;
                 user.Descriptions = txtDescription.Text;
                 user.IsActive = ckbIsActive.Checked;
-
+                user.TimeZone = ddlSystemTimeZone.SelectedValue;
                 BusinessService.SaveUser(user);
                 LoadUsers();
                 SendInformation("Save successfully!");
@@ -260,7 +264,7 @@ namespace Yumiki.Web.Administration
         /// </summary>
         private void ResetControls()
         {
-            txtUserLoginName.Text = txtPassword.Text = txtConfirmPassword.Text = txtFirstName.Text = txtLastName.Text = txtDescription.Text = hdnID.Value = string.Empty;
+            ddlSystemTimeZone.SelectedValue = txtUserLoginName.Text = txtPassword.Text = txtConfirmPassword.Text = txtFirstName.Text = txtLastName.Text = txtDescription.Text = hdnID.Value = CommonValues.EmptyValue;
             ckbIsActive.Checked = true;
             txtUserLoginName.Enabled = true;
             pnlPasswordSection.Visible = true;
@@ -315,6 +319,20 @@ namespace Yumiki.Web.Administration
             ddlContactType.Items.Insert(0, new ListItem { Selected = true, Text = CommonValues.SelectOneForDropDown, Value = CommonValues.EmptyValue });
         }
 
+        /// <summary>
+        /// Load all Time Zone and bind to dropdownlist
+        /// </summary>
+        private void LoadTimeZones()
+        {
+            IEnumerable<SystemTimeZone> timezones = DateTimeHelper.GetAllTimeZone();
+
+            ddlSystemTimeZone.DataTextField = SystemTimeZone.FieldName.DisplayName;
+            ddlSystemTimeZone.DataValueField = SystemTimeZone.FieldName.ID;
+            ddlSystemTimeZone.DataSource = timezones;
+            ddlSystemTimeZone.DataBind();
+
+            ddlSystemTimeZone.Items.Insert(0, new ListItem { Selected = true, Text = CommonValues.SelectOneForDropDown, Value = CommonValues.EmptyValue });
+        }
 
         /// <summary>
         /// Switch panel on UI by setting style and visibility of tabs and views

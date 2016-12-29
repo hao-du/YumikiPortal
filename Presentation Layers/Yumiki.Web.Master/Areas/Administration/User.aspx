@@ -29,7 +29,7 @@
         }
 
         var initPicker = function () {
-            $('.selectpicker').selectpicker({
+            $('.select-picker').selectpicker({
                 style: 'btn-default'
             });
         }
@@ -121,6 +121,12 @@
                                     <label>Login Name</label>
                                     <asp:TextBox runat="server" ID="txtUserLoginName" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserLoginName" Display="None" ErrorMessage="User Name is required." />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Time Zone</label>
+                                    <asp:DropDownList runat="server" ID="ddlSystemTimeZone" CssClass="form-control select-picker"></asp:DropDownList>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlSystemTimeZone" Display="None" ErrorMessage="Time Zone is required." />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -271,7 +277,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Type</label>
-                                    <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control selectpicker"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control select-picker"></asp:DropDownList>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlContactType" Display="None" ErrorMessage="Contact Type is required." />
                                 </div>
                                 <div class="form-group">

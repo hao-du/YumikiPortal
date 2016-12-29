@@ -15,7 +15,8 @@ namespace Yumiki.Commons.Exceptions
         E_INVALID_LENGTH,
         E_SECURITY_ERROR,
         E_NO_SESSION,
-        E_WRONG_VALUE
+        E_WRONG_VALUE,
+        E_INVALID_VALUE,
     }
 
     public class YumikiException : Exception

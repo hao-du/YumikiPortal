@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 
 namespace Yumiki.Data.MoneyTrace.Interfaces
@@ -18,11 +14,18 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         List<TB_Trace> GetAllTraces(bool showInactive, Guid userID);
 
         /// <summary>
-        /// Get a specific Trace.
+        /// Summary the trace to get total amount for each currency, 
         /// </summary>
-        /// <param name="currencyID">Specify id for Trace need to be retrieved.</param>
-        /// <returns>Trace Object</returns>
-        TB_Trace GetTrace(Guid traceID);
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        List<TraceSummary> GetTotalAmount(Guid userID);
+
+            /// <summary>
+            /// Get a specific Trace.
+            /// </summary>
+            /// <param name="currencyID">Specify id for Trace need to be retrieved.</param>
+            /// <returns>Trace Object</returns>
+            TB_Trace GetTrace(Guid traceID);
 
         /// <summary>
         /// Get a related log Trace base on GroupTokenID.

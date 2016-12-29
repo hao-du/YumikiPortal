@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.SessionState;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Entities;
+using Yumiki.Commons.Helpers;
 
 namespace Yumiki.Commons.Settings
 {
@@ -88,6 +90,22 @@ namespace Yumiki.Commons.Settings
             set
             {
                 session[HttpConstants.Session.LastLoginTime] = value;
+            }
+        }
+
+        public SystemTimeZone TimeZone
+        {
+            get
+            {
+                if (session == null && session[HttpConstants.Session.TimeZone] == null)
+                {
+                    return DateTimeHelper.GetDefaultTimeZone();
+                }
+                return (SystemTimeZone)session[HttpConstants.Session.TimeZone];
+            }
+            set
+            {
+                session[HttpConstants.Session.TimeZone] = value;
             }
         }
     }

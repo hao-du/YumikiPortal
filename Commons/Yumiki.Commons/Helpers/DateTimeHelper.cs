@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Yumiki.Commons.Entities;
 
 namespace Yumiki.Commons.Helpers
 {
@@ -14,12 +13,29 @@ namespace Yumiki.Commons.Helpers
         public const string LongDateTime = "dd MMM yyyy HH:mm:ss";
         public const string ClientMomentLongDate = "DD MMM YYYY";
 
-        public static DateTime GetSystemDatetime
+        public static DateTime GetSystemDatetime()
         {
-            get
+            return DateTime.UtcNow;
+        }
+
+        public static IEnumerable<SystemTimeZone> GetAllTimeZone()
+        {
+            return TimeZoneInfo.GetSystemTimeZones().Select(c => new SystemTimeZone { ID = c.Id, DisplayName = c.DisplayName });
+        }
+
+        public static SystemTimeZone GetDefaultTimeZone()
+        {
+            return new SystemTimeZone { ID = TimeZoneInfo.Local.Id, DisplayName = TimeZoneInfo.Local.DisplayName };
+        }
+
+        public static SystemTimeZone GetTimeZoneById(string id)
+        {
+            TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(id);
+            if (timezone != null)
             {
-                return DateTime.Now;
+                return new SystemTimeZone { ID = timezone.Id, DisplayName = timezone.DisplayName };
             }
+            return GetDefaultTimeZone();
         }
     }
 }

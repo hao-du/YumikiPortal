@@ -67,9 +67,10 @@
     <Compile Include="Configurations\YumikiConfigLoader.cs" />
     <Compile Include="Dictionaries\CommonProperties.cs" />
     <Compile Include="Dictionaries\CommonValues.cs" />
+    <Compile Include="Entities\TimeZone.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Dictionaries\HttpConstants.cs" />
-    <Compile Include="Exceptions\YumikiException.cs" />
+    <Compile Include="Dictionaries\Exceptions\YumikiException.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

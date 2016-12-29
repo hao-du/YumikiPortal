@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yumiki.Commons.Comparers;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
@@ -20,6 +17,26 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID)
         {
             return Context.TB_Trace.Include(TB_Trace.FieldName.Currency).Where(c => c.IsActive == !showInactive && c.UserID == userID).OrderBy(c=>c.TraceDate).ThenBy(c=>c.LastUpdateDate).ToList();
+        }
+
+        /// <summary>
+        /// Summary the trace to get total amount for each currency, 
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        public List<TraceSummary> GetTotalAmount(Guid userID)
+        {
+            List<TraceSummary> traces = Context.TB_Trace
+                                        .Include(TB_Trace.FieldName.Currency)
+                                        .Where(c =>
+                                                c.IsActive
+                                                && c.UserID == userID
+                                                && (c.TransactionType == EN_TransactionType.E_INCOME || c.TransactionType == EN_TransactionType.E_OUTCOME))
+                                        .GroupBy(g => g.Currency)
+                                        .Select(s => new TraceSummary { CurrencyShortName = s.Key.CurrencyShortName,  TotalAmount = s.Sum(d => d.Amount) })
+                                        .ToList();
+
+            return traces;
         }
 
         /// <summary>

@@ -87,6 +87,7 @@ namespace Yumiki.Web.Base
                 ViewBag.UserName = HttpSession.UserLoginName;
                 ViewBag.UserID = HttpSession.UserID;
                 ViewBag.LastLoginTime = HttpSession.LastLoginTime;
+                ViewBag.TimeZone = HttpSession.TimeZone;
             }
         }
 
