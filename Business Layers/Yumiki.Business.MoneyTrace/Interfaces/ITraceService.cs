@@ -11,7 +11,7 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// </summary>
         /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
         /// <returns>List of all active Traces.</returns>
-        List<TB_Trace> GetAllTraces(bool showInactive, Guid userID);
+        List<TB_Trace> GetAllTraces(bool showInactive, Guid userID, DateTime month, bool isDisplayedAll);
 
         /// <summary>
         /// Summary the trace to get total amount for each currency, 
@@ -19,6 +19,13 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// <param name="userID">User need to retrieved the records.</param>
         /// <returns></returns>
         List<TraceSummary> GetTotalAmount(Guid userID);
+
+        /// <summary>
+        /// Get summary of expense trace for each bank.
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        List<TraceSummary> GetBankingSummary(Guid userID);
 
         /// <summary>
         /// Get a specific Trace.

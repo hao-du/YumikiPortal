@@ -93,12 +93,38 @@
         </asp:ContentPlaceHolder>
         <div class="navbar navbar-default navbar-fixed-bottom">
             <div class="container-fluid">
-                <p class="navbar-text pull-left">
-                    © <% Yumiki.Commons.Helpers.DateTimeHelper.GetSystemDatetime.Year.ToString(); %> - Yumiki Portal.
-                </p>
-                <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
-                    <span class="glyphicon glyphicon-star"></span>Subscribe on YouTube</a>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-btn btn navbar-toggle navbar-toggle-override collapsed" data-toggle="collapse" data-target="#navbarFooter" aria-expanded="false" aria-controls="navbar">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </button>
+                    <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
+                        <span class="glyphicon glyphicon-th-large"></span>
+                    </a>
+                    <p class="navbar-text">
+                        &nbsp;©
+                        <asp:Literal runat="server" ID="lblReleaseYear"></asp:Literal>
+                        - Yumiki Portal.
+                    </p>
+                </div>
+                <div id="navbarFooter" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <p class="navbar-text">
+                                <b>System TimeZone</b>:
+                                <asp:Literal runat="server" ID="lblTimeZoneInfo"></asp:Literal>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </div>
+        <!--Side Bar Navigation-->
+        <div id="sbnSideBarNav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Clients</a>
+            <a href="#">Contact</a>
         </div>
         <asp:UpdateProgress runat="server" ID="UpdateProgress1">
             <ProgressTemplate>

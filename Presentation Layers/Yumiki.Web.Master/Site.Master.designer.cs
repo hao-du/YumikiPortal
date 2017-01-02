@@ -85,6 +85,24 @@ namespace Yumiki.Web.Master {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder SubContentContainer;
         
         /// <summary>
+        /// lblReleaseYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblReleaseYear;
+        
+        /// <summary>
+        /// lblTimeZoneInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblTimeZoneInfo;
+        
+        /// <summary>
         /// UpdateProgress1 control.
         /// </summary>
         /// <remarks>

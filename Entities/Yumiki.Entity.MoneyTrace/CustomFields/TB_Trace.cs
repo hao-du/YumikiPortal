@@ -11,7 +11,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToString(DateTimeHelper.ShortDateTime);
+                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToLocalTime().ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToLocalTime().ToString(DateTimeHelper.ShortDateTime);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Yumiki.Entity.MoneyTrace
             {
                 if(Currency != null)
                 {
-                    return string.Format("{0}-{1}", Currency.CurrencyShortName, Currency.CurrencyName);
+                    return Currency.CurrencyShortName;
                 }
                 return CommonValues.EmptyValue;
             }
@@ -92,6 +92,7 @@ namespace Yumiki.Entity.MoneyTrace
             public const string Tags = "Tags";
             public const string IsLogTrace = "IsLogTrace";
 
+            public const string Bank = "Bank";
             public const string BankID = "BankID";
             public const string BankName = "BankName";
 

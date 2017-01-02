@@ -18,9 +18,9 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// </summary>
         /// <param name="showInactive">Show list of inactive Trace or active Trace.</param>
         /// <returns>List of all active Trace.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID)
+        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID, DateTime month, bool isDisplayedAll)
         {
-            return Repository.GetAllTraces(showInactive, userID);
+            return Repository.GetAllTraces(showInactive, userID, month, isDisplayedAll);
         }
 
         /// <summary>
@@ -31,6 +31,16 @@ namespace Yumiki.Business.MoneyTrace.Services
         public List<TraceSummary> GetTotalAmount(Guid userID)
         {
             return Repository.GetTotalAmount(userID);
+        }
+
+        /// <summary>
+        /// Get summary of expense trace for each bank.
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        public List<TraceSummary> GetBankingSummary(Guid userID)
+        {
+            return Repository.GetBankingSummary(userID);
         }
 
         /// <summary>

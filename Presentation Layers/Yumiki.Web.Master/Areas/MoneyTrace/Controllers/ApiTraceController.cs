@@ -13,11 +13,16 @@ namespace Yumiki.Web.MoneyTrace.Controllers
     {
         [Route("getall", Name = RouteNames.TraceGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive)
+        public IHttpActionResult Get(bool showInactive, string month, bool isDisplayedAll)
         {
             try
             {
-                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive, HttpSession.UserID);
+                string[] monthArray = month.Split('-');
+
+                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive, 
+                                                                    HttpSession.UserID,
+                                                                    new DateTime(int.Parse(monthArray[1].Trim()), int.Parse(monthArray[0].Trim()), 1),
+                                                                    isDisplayedAll);
                 return Ok(traces);
             }
             catch (Exception ex)
@@ -26,13 +31,28 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("getsummary", Name = RouteNames.TraceGetSummary)]
+        [Route("gettotalsummary", Name = RouteNames.TraceGetTotalSummary)]
         [HttpGet()]
-        public IHttpActionResult GetSummary()
+        public IHttpActionResult GetTotalSummary()
         {
             try
             {
                 List<TraceSummary> traces = BusinessService.GetTotalAmount(HttpSession.UserID);
+                return Ok(traces);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("getbankingsummary", Name = RouteNames.TraceGetBankingSummary)]
+        [HttpGet()]
+        public IHttpActionResult GetBankingSummary()
+        {
+            try
+            {
+                List<TraceSummary> traces = BusinessService.GetBankingSummary(HttpSession.UserID);
                 return Ok(traces);
             }
             catch (Exception ex)

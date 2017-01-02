@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Helpers;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 
@@ -14,9 +15,24 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// </summary>
         /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
         /// <returns>List of all active Traces.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID)
+        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID, DateTime month, bool isDisplayedAll)
         {
-            return Context.TB_Trace.Include(TB_Trace.FieldName.Currency).Where(c => c.IsActive == !showInactive && c.UserID == userID).OrderBy(c=>c.TraceDate).ThenBy(c=>c.LastUpdateDate).ToList();
+            DateTime startDate = DateTimeHelper.GetStartDateOfMonth(month);
+            DateTime endDate = DateTimeHelper.GetEndDateOfMonth(month);
+
+            IQueryable<TB_Trace> query = Context.TB_Trace
+                    .Include(TB_Trace.FieldName.Currency)
+                    .Where(
+                            c => c.IsActive == !showInactive
+                            && c.UserID == userID
+                        );
+
+            if (!isDisplayedAll)
+            {
+                query = query.Where(c=> startDate <= c.TraceDate && c.TraceDate <= endDate);
+            }
+
+            return query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).ToList();
         }
 
         /// <summary>
@@ -33,7 +49,29 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                                 && c.UserID == userID
                                                 && (c.TransactionType == EN_TransactionType.E_INCOME || c.TransactionType == EN_TransactionType.E_OUTCOME))
                                         .GroupBy(g => g.Currency)
-                                        .Select(s => new TraceSummary { CurrencyShortName = s.Key.CurrencyShortName,  TotalAmount = s.Sum(d => d.Amount) })
+                                        .Select(s => new TraceSummary { CurrencyShortName = s.Key.CurrencyShortName, TotalAmount = s.Sum(d => d.Amount) })
+                                        .ToList();
+
+            return traces;
+        }
+
+        /// <summary>
+        /// Get summary of expense trace for each bank
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        public List<TraceSummary> GetBankingSummary(Guid userID)
+        {
+            List<TraceSummary> traces = Context.TB_Trace
+                                        .Include(TB_Trace.FieldName.Currency)
+                                        .Include(TB_Trace.FieldName.Bank)
+                                        .Where(c =>
+                                                c.IsActive
+                                                && c.UserID == userID
+                                                && c.TransactionType == EN_TransactionType.E_BANKING)
+                                        .GroupBy(g => new { g.Bank, g.Currency })
+                                        .Where(g => g.Sum(d=>d.Amount) != 0)
+                                        .Select(s => new TraceSummary { BankName = s.Key.Bank.BankName, CurrencyShortName = s.Key.Currency.CurrencyShortName, TotalAmount = s.Sum(d => d.Amount) })
                                         .ToList();
 
             return traces;
@@ -91,6 +129,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbTrace.Amount = trace.Amount;
                 dbTrace.Tags = trace.Tags;
                 dbTrace.CurrencyID = trace.CurrencyID;
+                //No need to store as UTC
                 dbTrace.TraceDate = trace.TraceDate;
                 dbTrace.TransactionType = trace.TransactionType;
                 dbTrace.GroupTokenID = trace.GroupTokenID;

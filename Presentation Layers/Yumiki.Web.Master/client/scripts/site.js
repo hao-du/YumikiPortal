@@ -64,9 +64,9 @@ $.fn.hideLoadingBar = function () {
 };
 
 function openNav() {
-    document.getElementById("sbnSideBarNav").style.width = "250px";
+    $("#sbnSideBarNav").width("250px");
 }
 
 function closeNav() {
-    document.getElementById("sbnSideBarNav").style.width = "0";
+    $("#sbnSideBarNav").width("0px");
 }

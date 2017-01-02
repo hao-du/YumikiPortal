@@ -42,7 +42,7 @@
                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
                 <h2>User Management</h2>
                 <ul class="nav nav-tabs">
-                    <li class="active" runat="server" id="liUserList">
+                    <li runat="server" id="liUserList">
                         <asp:LinkButton runat="server" ID="btnUserListTab" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserProcess" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserProcessTab" Text="Add/Edit User" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>

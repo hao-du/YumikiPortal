@@ -12,6 +12,7 @@ namespace Yumiki.Commons.Helpers
         public const string ShortDateTime = "MM/dd/yyyy HH:mm:ss";
         public const string LongDateTime = "dd MMM yyyy HH:mm:ss";
         public const string ClientMomentLongDate = "DD MMM YYYY";
+        public const string MonthYear = "MM-YYYY";
 
         public static DateTime GetSystemDatetime()
         {
@@ -30,12 +31,25 @@ namespace Yumiki.Commons.Helpers
 
         public static SystemTimeZone GetTimeZoneById(string id)
         {
-            TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(id);
-            if (timezone != null)
+            if (!string.IsNullOrWhiteSpace(id))
             {
-                return new SystemTimeZone { ID = timezone.Id, DisplayName = timezone.DisplayName };
+                TimeZoneInfo timezone = TimeZoneInfo.FindSystemTimeZoneById(id);
+                if (timezone != null)
+                {
+                    return new SystemTimeZone { ID = timezone.Id, DisplayName = timezone.DisplayName };
+                }
             }
             return GetDefaultTimeZone();
+        }
+
+        public static DateTime GetStartDateOfMonth(DateTime value)
+        {
+            return new DateTime(value.Year, value.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        }
+
+        public static DateTime GetEndDateOfMonth(DateTime value)
+        {
+            return GetStartDateOfMonth(value).AddMonths(1).AddMilliseconds(-1);
         }
     }
 }

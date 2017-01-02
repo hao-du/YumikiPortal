@@ -17,6 +17,7 @@
     <script src="~/client/scripts/moment.min.js"></script>
     <script src="../../../client/scripts/bootstrap-datetimepicker.min.js"></script>
 
+
     <!--Global Libraries-->
     <link href="~/client/contents/site.less" rel="stylesheet" />
     <script src="../../../client/scripts/site.js"></script>
@@ -63,15 +64,26 @@
     </div>
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container-fluid">
-            <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
-                <span class="glyphicon glyphicon-th-large"></span>
-            </a>
-            <p class="navbar-text">
-                &nbsp;© @DateTimeHelper.GetSystemDatetime.Year.ToString() - Yumiki Portal.
-            </p>
-            <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
-                <span class="glyphicon glyphicon-star"></span> Subscribe on YouTube
-            </a>
+            <div class="navbar-header">
+                <button type="button" class="navbar-btn btn navbar-toggle navbar-toggle-override collapsed" data-toggle="collapse" data-target="#navbarFooter" aria-expanded="false" aria-controls="navbar">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </button>
+                <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
+                    <span class="glyphicon glyphicon-th-large"></span>
+                </a>
+                <p class="navbar-text">
+                    &nbsp;© @DateTimeHelper.GetSystemDatetime().Year.ToString() - Yumiki Portal.
+                </p>
+            </div>
+            <div id="navbarFooter" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p class="navbar-text">
+                            <b>System TimeZone</b>: @Session[Yumiki.Commons.Dictionaries.HttpConstants.Session.TimeZone].ToString()
+                        </p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <!--Loading Progress Bar-->

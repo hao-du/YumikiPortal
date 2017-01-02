@@ -16,5 +16,14 @@ namespace Yumiki.Commons.Entities
             public const string ID = "ID";
             public const string DisplayName = "DisplayName";
         }
+
+        public override string ToString()
+        {
+            if (!string.IsNullOrWhiteSpace(DisplayName))
+            {
+                return DisplayName;
+            }
+            return base.ToString();
+        }
     }
 }

@@ -288,6 +288,8 @@ namespace Yumiki.Web.Administration
             List<TB_User> users = BusinessService.GetAllUsers(showInactive);
             rptUser.DataSource = users;
             rptUser.DataBind();
+
+            SwitchPanel(null);
         }
 
         /// <summary>
@@ -340,6 +342,11 @@ namespace Yumiki.Web.Administration
         /// <param name="sender">Link Button from tab headers</param>
         private void SwitchPanel(object sender)
         {
+            if(sender == null)
+            {
+                sender = btnUserListTab;
+            }
+
             mtvUserTabs.ActiveViewIndex = listTabIndex;
             liUserList.Attributes.Remove("class");
             liUserProcess.Attributes.Remove("class");
