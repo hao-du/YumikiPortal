@@ -73,6 +73,13 @@
     <Compile Include="ContactType.aspx.designer.cs">
       <DependentUpon>ContactType.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Maintenance.aspx.cs">
+      <DependentUpon>Maintenance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Maintenance.aspx.designer.cs">
+      <DependentUpon>Maintenance.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Privilege.aspx.cs">
       <DependentUpon>Privilege.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -116,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ContactType.aspx" />
+    <Content Include="Maintenance.aspx" />
     <Content Include="Privilege.aspx" />
     <Content Include="Group.aspx" />
     <Content Include="User.aspx" />
