@@ -5,19 +5,16 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Yumiki.Business.Administration.Interfaces;
+using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class Maintenance : System.Web.UI.Page
+    public partial class Maintenance : BasePage<IUserService>
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected void btnShutdownServer_Click(object sender, EventArgs e)
         {
-
-        }
-
-        protected void btnClientShutdownServer_Click(object sender, EventArgs e)
-        {
-            var psi = new ProcessStartInfo("shutdown", "/s /t 0");
+            var psi = new ProcessStartInfo("shutdown", "/s /f /t 0");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             Process.Start(psi);

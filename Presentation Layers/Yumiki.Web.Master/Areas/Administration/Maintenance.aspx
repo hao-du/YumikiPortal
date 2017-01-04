@@ -4,21 +4,22 @@
     <script type="text/javascript">
         var confirmation = function () {
             $('#dlgConfirmationDialog').modal({ backdrop: 'static' });
+            return false;
         }
 
         var sendShutdownRequest = function () {
-            $('<%=btnShutdownServer.ClientID%>').click();
+            $('#<%=btnShutdownServer.ClientID%>').click();
             $('#dlgConfirmationDialog').modal('hide');
         }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <div class="container">
-        <h2>Group Management</h2>
+        <h2>Maintenance</h2>
         <div class="row">
             <div class="col-md-12">
-                <asp:LinkButton runat="server" ID="btnShowConfirmation" Text="Shutdown Server..." CausesValidation="false" OnClientClick="confirmation()"></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="btnShutdownServer" OnClick="btnShutdownServer_Click" CssClass="hidden"></asp:LinkButton>
+                <button type="button" onclick="confirmation()" class="btn btn-danger">Shutdown Server...</button>
+                <asp:Button runat="server" ID="btnShutdownServer" OnClick="btnShutdownServer_Click" CssClass="hidden" />
             </div>
         </div>
     </div>

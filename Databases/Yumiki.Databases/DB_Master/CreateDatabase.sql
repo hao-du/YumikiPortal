@@ -18,7 +18,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------
 --RUN THIS WHEN DEPLOYING
 --CREATE VIEW VW_Privilege AS
---SELECT P.ID, P.PrivilegeName, P.PagePath, P.IsDisplayable, P.ParentPrivilegeID, U.ID AS UserID
+--SELECT DISTINCT P.ID, P.PrivilegeName, P.PagePath, P.IsDisplayable, P.ParentPrivilegeID, U.ID AS UserID
 --FROM [DB_Administration].[dbo].[TB_Privilege] P
 --	INNER JOIN [DB_Administration].[dbo].[TB_GroupPrivilege] GP ON P.ID = GP.PrivilegeID
 --	INNER JOIN [DB_Administration].[dbo].[TB_Group] G ON GP.GroupID = G.ID

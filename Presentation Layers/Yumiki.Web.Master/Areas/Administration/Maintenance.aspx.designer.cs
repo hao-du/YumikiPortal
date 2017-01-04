@@ -13,21 +13,12 @@ namespace Yumiki.Web.Administration {
     public partial class Maintenance {
         
         /// <summary>
-        /// btnShowConfirmation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnShowConfirmation;
-        
-        /// <summary>
         /// btnShutdownServer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnShutdownServer;
+        protected global::System.Web.UI.WebControls.Button btnShutdownServer;
     }
 }
