@@ -11,33 +11,21 @@ using Yumiki.Commons.Helpers;
 
 namespace Yumiki.Commons.Settings
 {
-    public class HttpSession
+    public static class HttpSession
     {
-        private HttpSessionStateBase session;
-
-        /// <summary>
-        /// ApiController, WebForm page, Master page use HttpSessionState to handle session
-        /// </summary>
-        /// <param name="session">Session from Web Context.</param>
-        public HttpSession(HttpSessionState session)
-        {
-            this.session = new HttpSessionStateWrapper(session);
-        }
-
-        /// <summary>
-        /// MVC Controller uses HttpSessionStateBase to manage session.
-        /// </summary>
-        /// <param name="session">Session from Web Context.</param>
-        public HttpSession(HttpSessionStateBase session)
-        {
-            this.session = session;
-        }
-
-        public bool IsAuthenticated
+        private static HttpSessionState Session
         {
             get
             {
-                if(session == null || session[HttpConstants.Session.UserID] == null)
+                return HttpContext.Current.Session;
+            }
+        }
+
+        public static bool IsAuthenticated
+        {
+            get
+            {
+                if (Session == null || Session[HttpConstants.Session.UserID] == null)
                 {
                     return false;
                 }
@@ -45,67 +33,67 @@ namespace Yumiki.Commons.Settings
             }
         }
 
-        public Guid UserID
+        public static Guid UserID
         {
             get
             {
-                if (session == null || session[HttpConstants.Session.UserID] == null)
+                if (Session == null || Session[HttpConstants.Session.UserID] == null)
                 {
                     return Guid.Empty;
                 }
-                return Guid.Parse(session[HttpConstants.Session.UserID].ToString());
+                return Guid.Parse(Session[HttpConstants.Session.UserID].ToString());
             }
             set
             {
-                session[HttpConstants.Session.UserID] = value;
+                Session[HttpConstants.Session.UserID] = value;
             }
         }
 
-        public string UserLoginName
+        public static string UserLoginName
         {
             get
             {
-                if (session == null && session[HttpConstants.Session.UserLoginName] == null)
+                if (Session == null && Session[HttpConstants.Session.UserLoginName] == null)
                 {
                     return null;
                 }
-                return session[HttpConstants.Session.UserLoginName].ToString();
+                return Session[HttpConstants.Session.UserLoginName].ToString();
             }
             set
             {
-                session[HttpConstants.Session.UserLoginName] = value;
+                Session[HttpConstants.Session.UserLoginName] = value;
             }
         }
 
-        public DateTime LastLoginTime
+        public static DateTime LastLoginTime
         {
             get
             {
-                if (session == null && session[HttpConstants.Session.LastLoginTime] == null)
+                if (Session == null && Session[HttpConstants.Session.LastLoginTime] == null)
                 {
                     return DateTime.MinValue;
                 }
-                return DateTime.Parse(session[HttpConstants.Session.LastLoginTime].ToString());
+                return DateTime.Parse(Session[HttpConstants.Session.LastLoginTime].ToString());
             }
             set
             {
-                session[HttpConstants.Session.LastLoginTime] = value;
+                Session[HttpConstants.Session.LastLoginTime] = value;
             }
         }
 
-        public SystemTimeZone TimeZone
+        public static SystemTimeZone TimeZone
         {
             get
             {
-                if (session == null && session[HttpConstants.Session.TimeZone] == null)
+                if (Session == null && Session[HttpConstants.Session.TimeZone] == null)
                 {
                     return DateTimeHelper.GetDefaultTimeZone();
                 }
-                return (SystemTimeZone)session[HttpConstants.Session.TimeZone];
+                return (SystemTimeZone)Session[HttpConstants.Session.TimeZone];
             }
             set
             {
-                session[HttpConstants.Session.TimeZone] = value;
+                Session[HttpConstants.Session.TimeZone] = value;
             }
         }
     }

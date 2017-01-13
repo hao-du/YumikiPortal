@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Settings;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;

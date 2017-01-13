@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Settings;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;

@@ -55,19 +55,6 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if (httpSession == null)
-                {
-                    httpSession = new HttpSession(Session);
-                }
-                return httpSession;
-            }
-        }
-
         /// <summary>
         /// Redirect to login page
         /// </summary>

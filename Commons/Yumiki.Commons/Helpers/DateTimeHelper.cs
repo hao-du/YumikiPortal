@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Yumiki.Commons.Entities;
+using Yumiki.Commons.Settings;
 
 namespace Yumiki.Commons.Helpers
 {
@@ -40,6 +41,26 @@ namespace Yumiki.Commons.Helpers
                 }
             }
             return GetDefaultTimeZone();
+        }
+
+        /// <summary>
+        /// Return datetime from UTC to a specific time zone.
+        /// </summary>
+        /// <param name="value">Datetime need to be converted.</param>
+        /// <param name="timeZone">Destination time zone.</param>
+        /// <returns></returns>
+        public static DateTime GetUserTimeZoneFromUTC(DateTime value, TimeZoneInfo timeZone)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(value, timeZone);
+        }
+
+        /// <summary>
+        /// Return datetime from UTC to a user http session time zone.
+        /// </summary>
+        /// <param name="value">Datetime need to be converted.</param>
+        public static DateTime GetUserTimeZoneFromUTC(DateTime value)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.FindSystemTimeZoneById(HttpSession.TimeZone.ID);
         }
 
         public static DateTime GetStartDateOfMonth(DateTime value)

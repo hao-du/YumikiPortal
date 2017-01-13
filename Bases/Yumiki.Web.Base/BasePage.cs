@@ -60,19 +60,6 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if (httpSession == null)
-                {
-                    httpSession = new HttpSession(Session);
-                }
-                return httpSession;
-            }
-        }
-
         /// <summary>
         /// Only for Postback/Partial Postback to call Javascript functions.
         /// This property is to contain all default methods must be executed for multiple code behind's methods.

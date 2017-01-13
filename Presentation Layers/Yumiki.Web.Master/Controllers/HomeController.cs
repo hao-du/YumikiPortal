@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Settings;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master.Controllers

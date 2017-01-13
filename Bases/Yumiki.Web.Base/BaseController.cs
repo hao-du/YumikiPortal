@@ -51,19 +51,6 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if (httpSession == null)
-                {
-                    httpSession = new HttpSession(Session);
-                }
-                return httpSession;
-            }
-        }
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -78,9 +65,7 @@ namespace Yumiki.Web.Base
         {
             base.OnAuthentication(filterContext);
 
-            ViewBag.UserName = string.Empty;
-            ViewBag.UserID = string.Empty;
-            ViewBag.LastLoginTime = string.Empty;
+            ViewBag.UserName = ViewBag.UserID = ViewBag.LastLoginTime = ViewBag.TimeZone = string.Empty;
 
             if (HttpSession.IsAuthenticated)
             {

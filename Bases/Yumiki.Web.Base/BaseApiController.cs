@@ -59,19 +59,6 @@ namespace Yumiki.Web.Base
             }
         }
 
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if(httpSession == null)
-                {
-                    httpSession = new HttpSession(HttpContext.Current.Session);
-                }
-                return httpSession;
-            }
-        }
-
         protected override ExceptionResult InternalServerError(Exception exception)
         {
             
