@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using System.Web.Mvc.Filters;
-using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;

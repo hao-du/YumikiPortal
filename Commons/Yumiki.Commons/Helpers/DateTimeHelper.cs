@@ -20,6 +20,11 @@ namespace Yumiki.Commons.Helpers
             return DateTime.UtcNow;
         }
 
+        public static DateTime GetLocalSystemDatetime()
+        {
+            return DateTime.Now;
+        }
+
         public static IEnumerable<SystemTimeZone> GetAllTimeZone()
         {
             return TimeZoneInfo.GetSystemTimeZones().Select(c => new SystemTimeZone { ID = c.Id, DisplayName = c.DisplayName });
@@ -60,7 +65,7 @@ namespace Yumiki.Commons.Helpers
         /// <param name="value">Datetime need to be converted.</param>
         public static DateTime GetUserTimeZoneFromUTC(DateTime value)
         {
-            return TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.FindSystemTimeZoneById(HttpSession.TimeZone.ID);
+            return TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.FindSystemTimeZoneById(HttpSession.TimeZone.ID));
         }
 
         public static DateTime GetStartDateOfMonth(DateTime value)

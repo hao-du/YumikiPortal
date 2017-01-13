@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Commons.Configurations
+namespace Yumiki.Commons.Settings
 {
     /// <summary>
     /// Configuration under web.config.

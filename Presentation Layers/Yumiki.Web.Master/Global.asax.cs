@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Http;
-using Yumiki.Commons.Configurations;
+using Yumiki.Commons.Settings;
 
 namespace Yumiki.Web.Master
 {

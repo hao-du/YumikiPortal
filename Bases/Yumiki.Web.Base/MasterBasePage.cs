@@ -1,5 +1,4 @@
-﻿using Yumiki.Commons.Configurations;
-using Yumiki.Commons.Dictionaries;
+﻿using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;

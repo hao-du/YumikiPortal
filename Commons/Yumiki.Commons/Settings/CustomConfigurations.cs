@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yumiki.Commons.Configurations
+namespace Yumiki.Commons.Settings
 {
     public class CustomConfigurations
     {

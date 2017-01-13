@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Text;
 using System.Web.UI;
-using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Unity;

@@ -53,6 +53,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Commons", "Commons\Y
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Resources", "Commons\Yumiki.Resources\Yumiki.Resources.csproj", "{FDB29123-A3F0-4ED0-9D67-EC25734877AB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{112A417A-FE5C-4934-B28B-B6F3544E2AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.SyncService", "Services\Yumiki.Service.SyncService\Yumiki.Service.SyncService.csproj", "{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.QueueService", "Services\Yumiki.Service.QueueService\Yumiki.Service.QueueService.csproj", "{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +141,13 @@ Global
 		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,5 +172,7 @@ Global
 		{F1AA35D6-B0C3-4DE9-86BD-C6BE6EE8E5E4} = {4BA228E8-8A45-4780-B99B-590D4AC96377}
 		{7C58DEB3-E136-4086-B9A5-44C5CB28B269} = {5CF9EC9C-A660-4177-99A8-374DE3E55C4E}
 		{FDB29123-A3F0-4ED0-9D67-EC25734877AB} = {5CF9EC9C-A660-4177-99A8-374DE3E55C4E}
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
 	EndGlobalSection
 EndGlobal
