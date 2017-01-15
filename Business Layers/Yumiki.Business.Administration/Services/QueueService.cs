@@ -46,7 +46,7 @@ namespace Yumiki.Business.Administration.Services
                         var psi = new ProcessStartInfo("shutdown", "/s /f /t 0");
                         psi.CreateNoWindow = true;
                         psi.UseShellExecute = false;
-                        //Process.Start(psi);
+                        Process.Start(psi);
                         break;
                 }
 
