@@ -1,14 +1,18 @@
-﻿using Yumiki.Commons.Dictionaries;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text;
+using System.Threading.Tasks;
 using Yumiki.Commons.Logging;
-using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
 
-namespace Yumiki.Web.Base
+namespace Yumiki.Service.Base
 {
-    /// <summary>
-    /// Parent class for all ASP.NET Webform master pages.
-    /// </summary>
-    public class MasterBasePage<T> : System.Web.UI.MasterPage
+    public partial class BaseService<T> : ServiceBase
     {
         private Logger _logger;
         public Logger Logger
@@ -47,25 +51,10 @@ namespace Yumiki.Web.Base
                 if (_service == null)
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
-                    string containerName = this.GetType().BaseType.FullName.Split('.')[2];
+                    string containerName = this.GetType().FullName.Split('.')[2];
                     _service = Dependency.GetService(containerName);
                 }
                 return _service;
-            }
-        }
-
-        /// <summary>
-        /// Redirect to login page
-        /// </summary>
-        protected void RedirectToLoginPage(bool hasQueryString = true)
-        {
-            if (hasQueryString)
-            {
-                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
-            }
-            else
-            {
-                Response.Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage));
             }
         }
     }

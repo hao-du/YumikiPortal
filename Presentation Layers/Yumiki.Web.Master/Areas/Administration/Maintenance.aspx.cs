@@ -6,18 +6,23 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration.Interfaces;
+using Yumiki.Commons.Settings;
+using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Administration
 {
-    public partial class Maintenance : BasePage<IUserService>
+    public partial class Maintenance : BasePage<IQueueService>
     {
         protected void btnShutdownServer_Click(object sender, EventArgs e)
         {
-            var psi = new ProcessStartInfo("shutdown", "/s /f /t 0");
-            psi.CreateNoWindow = true;
-            psi.UseShellExecute = false;
-            Process.Start(psi);
+            TB_Queue queue = new TB_Queue();
+            queue.QueueType = EN_QueueType.E_SHUTDOWN_SERVER;
+            queue.UserID = HttpSession.UserID;
+
+            BusinessService.SaveQueue(queue);
+
+            SendInformation("Shutdown job has been queued.");
         }
     }
 }

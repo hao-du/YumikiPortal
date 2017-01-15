@@ -20,6 +20,7 @@ namespace Yumiki.Data.Administration
         public virtual DbSet<TB_UserAddress> TB_UserAddress { get; set; }
         public virtual DbSet<TB_ContactType> TB_ContactType { get; set; }
         public virtual DbSet<TB_PasswordHistory> TB_PasswordHistory { get; set; }
+        public virtual DbSet<TB_Queue> TB_Queue { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

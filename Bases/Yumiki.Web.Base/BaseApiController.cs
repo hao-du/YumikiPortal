@@ -18,44 +18,44 @@ namespace Yumiki.Web.Base
 {
     public class ApiBaseController<T> : ApiController
     {
-        private Logger logger;
+        private Logger _logger;
         public Logger Logger
         {
             get
             {
-                if (logger == null)
+                if (_logger == null)
                 {
-                    logger = new Logger(GetType());
+                    _logger = new Logger(GetType());
                 }
-                return logger;
+                return _logger;
             }
         }
 
-        private T businessService;
+        private T _businessService;
         protected T BusinessService
         {
             get
             {
-                if (businessService == null)
+                if (_businessService == null)
                 {
-                    businessService = Service.GetInstance<T>();
+                    _businessService = Service.GetInstance<T>();
                 }
-                return businessService;
+                return _businessService;
             }
         }
 
-        private Dependency service;
+        private Dependency _service;
         private Dependency Service
         {
             get
             {
-                if (service == null)
+                if (_service == null)
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
                     string containerName = this.GetType().FullName.Split('.')[2];
-                    service = Dependency.GetService(containerName);
+                    _service = Dependency.GetService(containerName);
                 }
-                return service;
+                return _service;
             }
         }
 

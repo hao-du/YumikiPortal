@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.SyncService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.QueueService", "Services\Yumiki.Service.QueueService\Yumiki.Service.QueueService.csproj", "{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.Base", "Bases\Yumiki.Service.Base\Yumiki.Service.Base.csproj", "{76218200-AE05-4A06-9C41-35674B98DC81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,9 +147,11 @@ Global
 		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,5 +178,6 @@ Global
 		{FDB29123-A3F0-4ED0-9D67-EC25734877AB} = {5CF9EC9C-A660-4177-99A8-374DE3E55C4E}
 		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
 		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
+		{76218200-AE05-4A06-9C41-35674B98DC81} = {98CBC24E-7226-440D-91EA-AC893F61218E}
 	EndGlobalSection
 EndGlobal

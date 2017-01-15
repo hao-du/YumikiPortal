@@ -33,7 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -63,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ProjectInstaller.resx">
@@ -70,10 +80,21 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Service.Base\Yumiki.Service.Base.csproj">
+      <Project>{76218200-AE05-4A06-9C41-35674B98DC81}</Project>
+      <Name>Yumiki.Service.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Business Layers\Yumiki.Business.Administration\Yumiki.Business.Administration.csproj">
+      <Project>{AD55E86C-84AE-40D3-B44C-3E71013DBEB2}</Project>
+      <Name>Yumiki.Business.Administration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
       <Name>Yumiki.Commons</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HowToRun.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

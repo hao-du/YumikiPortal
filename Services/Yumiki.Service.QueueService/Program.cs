@@ -17,7 +17,7 @@ namespace Yumiki.Service.QueueService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new QueueService()
             };
             ServiceBase.Run(ServicesToRun);
         }

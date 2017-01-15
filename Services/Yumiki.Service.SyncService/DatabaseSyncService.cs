@@ -23,8 +23,8 @@ namespace Yumiki.Service.SyncService
         protected override void OnStart(string[] args)
         {
             _logger = new Logger(this.GetType());
-            _logger.Infomation("Start DatabaseSyncService Service");
-            _logger.Infomation(string.Format("App.Config located at : {0}", AppSettings.FilePath));
+            _logger.Infomation("Start DatabaseSyncService Service.");
+            _logger.Infomation(string.Format("App.Config located at : {0}.", AppSettings.FilePath));
 
             _finishCurrentTask = true;
 
@@ -38,13 +38,13 @@ namespace Yumiki.Service.SyncService
         {
             if (_finishCurrentTask)
             {
-                _logger.Infomation(string.Format("Process Sync start at {0}", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync start at {0}.", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                _logger.Infomation(string.Format("Process Sync end at {0}", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync end at {0}.", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
             }
         }
 
@@ -93,6 +93,7 @@ namespace Yumiki.Service.SyncService
 
         protected override void OnStop()
         {
+            _logger.Infomation("Stop QueueService Service.");
             _timer.Enabled = false;
         }
     }

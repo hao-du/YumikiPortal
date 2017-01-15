@@ -3,22 +3,18 @@ using System.Data;
 using System.Data.SqlClient;
 using System.ServiceProcess;
 using System.Timers;
+using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
+using Yumiki.Service.Base;
 
 namespace Yumiki.Service.QueueService
 {
-    public enum QueueType
-    {
-        E_SHUTDOWN_SYSTEM
-    }
-
-    public partial class QueueService : ServiceBase
+    public partial class QueueService : BaseService<IQueueService>
     {
         private Timer _timer;
         private bool _finishCurrentTask = false;
-        private Logger _logger;
 
         public QueueService()
         {
@@ -27,9 +23,8 @@ namespace Yumiki.Service.QueueService
 
         protected override void OnStart(string[] args)
         {
-            _logger = new Logger(this.GetType());
-            _logger.Infomation("Start QueueService Service");
-            _logger.Infomation(string.Format("App.Config located at : {0}", AppSettings.FilePath));
+            Logger.Infomation("Start QueueService Service.");
+            Logger.Infomation(string.Format("App.Config located at : {0}.", AppSettings.FilePath));
 
             _finishCurrentTask = true;
 
@@ -43,61 +38,31 @@ namespace Yumiki.Service.QueueService
         {
             if (_finishCurrentTask)
             {
-                _logger.Infomation(string.Format("Process Queue start at {0}", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue start at {0}.", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                _logger.Infomation(string.Format("Process Queue end at {0}", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue end at {0}.", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
             }
         }
 
         private void OnProcess()
         {
-            if (string.IsNullOrWhiteSpace(AppSettings.ConnectionString))
+            try
             {
-                _logger.Warning("No connection string setting in app.config. Process ended.");
+                BusinessService.ExecuteQueue();
             }
-            else
+            catch(Exception ex)
             {
-                SqlConnection sqlConnection = null;
-                try
-                {
-                    string[] lines = System.IO.File.ReadAllLines(AppSettings.ExecutionListPath);
-                    _logger.Warning(string.Format("Total Commands need to be executed: {0}.", lines.Length));
-
-                    sqlConnection = new SqlConnection(AppSettings.ConnectionString);
-                    sqlConnection.Open();
-                    _logger.Warning("Opened SQL Connection.");
-
-                    foreach (string line in lines)
-                    {
-                        SqlCommand sqlCommand = new SqlCommand(line, sqlConnection);
-                        sqlCommand.CommandType = CommandType.StoredProcedure;
-                        sqlCommand.ExecuteNonQuery();
-                        _logger.Warning(string.Format("Executed Line: '{0}'.", line));
-                    }
-
-                    _logger.Warning("Executed all lines.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("Error duing process...", ex);
-                }
-                finally
-                {
-                    if (sqlConnection != null)
-                    {
-                        sqlConnection.Close();
-                        _logger.Warning("Closed SQL Connection.");
-                    }
-                }
+                Logger.Error("Error duing process...", ex);
             }
         }
 
         protected override void OnStop()
         {
+            Logger.Infomation("Stop QueueService Service.");
             _timer.Enabled = false;
         }
     }

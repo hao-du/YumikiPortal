@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9D97C77F-B1DD-435A-B9AB-CC56115E061A}</ProjectGuid>
+    <ProjectGuid>{76218200-AE05-4A06-9C41-35674B98DC81}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yumiki.Entity.Administration</RootNamespace>
-    <AssemblyName>Yumiki.Entity.Administration</AssemblyName>
+    <RootNamespace>Yumiki.Service.Base</RootNamespace>
+    <AssemblyName>Yumiki.Service.Base</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,12 +24,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,29 +43,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomFields\TB_ContactType.cs" />
-    <Compile Include="CustomFields\TB_Group.cs" />
-    <Compile Include="CustomFields\TB_Privilege.cs" />
-    <Compile Include="CustomFields\TB_User.cs" />
-    <Compile Include="CustomFields\TB_UserAddress.cs" />
-    <Compile Include="EN_QueueType.cs" />
-    <Compile Include="TB_ContactType.cs" />
-    <Compile Include="TB_Queue.cs" />
-    <Compile Include="TB_Group.cs" />
-    <Compile Include="TB_PasswordHistory.cs" />
-    <Compile Include="TB_Privilege.cs" />
-    <Compile Include="TB_User.cs" />
+    <Compile Include="BaseService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BaseService.Designer.cs">
+      <DependentUpon>BaseService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TB_UserAddress.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
-      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
-      <Name>Yumiki.Entity.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
       <Name>Yumiki.Commons</Name>
