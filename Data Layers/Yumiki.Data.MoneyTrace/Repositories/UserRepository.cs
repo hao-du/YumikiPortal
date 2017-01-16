@@ -18,7 +18,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns></returns>
         public List<TB_User> GetAllUsers(bool showInactive, Guid loggedOnUserID)
         {
-            return Context.TB_User.Where(c => c.IsActive == showInactive && c.ID != loggedOnUserID).OrderBy(c=>c.LastName).ThenBy(c=>c.FirstName).ToList();
+            return Context.TB_User.Where(c => c.IsActive == !showInactive && c.ID != loggedOnUserID).OrderBy(c=>c.LastName).ThenBy(c=>c.FirstName).ToList();
         }
     }
 }

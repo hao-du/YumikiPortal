@@ -487,7 +487,7 @@
                 if (traceID != undefined && traceID != null) {
                     $scope.traceID = traceID;
                     $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Trace";
+                    $scope.dialogTitle = "Edit Transfer Trace";
 
                     $(this).showLoadingBar();
 
@@ -507,7 +507,7 @@
                         });
 
                 } else {
-                    $scope.dialogTitle = "New Trace";
+                    $scope.dialogTitle = "New Transfer Trace";
                     $scope.isActiveCheckboxDisabled = true;
 
                     $scope.trace = $scope.resetTrace();
@@ -516,7 +516,7 @@
 
             //Reset object in new mode.
             $scope.resetTrace = function () {
-                $scope.traceForm.$setPristine();
+                $scope.transferTraceForm.$setPristine();
                 return {
                     '@CommonProperties.ID': undefined,
                     '@TB_Trace.FieldName.Amount': 0,

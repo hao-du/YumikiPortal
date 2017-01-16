@@ -74,6 +74,9 @@ namespace Yumiki.Entity.MoneyTrace
                     case EN_TransactionType.E_EXCHANGE:
                         transactionName = FieldNames.E_EXCHANGE;
                         break;
+                    case EN_TransactionType.E_TRANSFER:
+                        transactionName = FieldNames.E_TRANSFER;
+                        break;
                 }
                 return transactionName;
             }
