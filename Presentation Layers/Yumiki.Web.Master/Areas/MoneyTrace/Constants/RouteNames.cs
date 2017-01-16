@@ -25,6 +25,7 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string TraceGetTotalSummary = "TraceGetTotalSummary";
         public const string TraceGetBankingSummary = "TraceGetBankingSummary";
         public const string TraceGetByID = "TraceGetByID";
+        public const string TraceGetTags = "TraceGetTags";
         public const string TraceSave = "TraceSave";
     }
 }

@@ -39,5 +39,12 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>
         void SaveTrace(TB_Trace trace);
+
+        /// <summary>
+        /// Get tags from keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword to filter tag results.</param>
+        /// <returns>List of tags after filter.</returns>
+        List<string> GetTags(string keyword);
     }
 }

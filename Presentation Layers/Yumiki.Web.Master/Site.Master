@@ -10,6 +10,7 @@
 
     <!--3rd Libraries-->
     <script src="../../client/scripts/jquery.min.js"></script>
+    <script src="../../client/scripts/jquery-ui.min.js"></script>
     <script src="../../client/scripts/angular.min.js"></script>
 
     <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />

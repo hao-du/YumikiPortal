@@ -84,6 +84,21 @@ namespace Yumiki.Business.MoneyTrace.Services
         }
 
         /// <summary>
+        /// Get tags from keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword to filter tag results.</param>
+        /// <returns>List of tags after filter.</returns>
+        public List<string> GetTags(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                return new List<string>();
+            }
+
+            return Repository.GetTags(keyword);
+        }
+
+        /// <summary>
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>

@@ -77,6 +77,21 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
+        [Route("gettags", Name = RouteNames.TraceGetTags)]
+        [HttpGet()]
+        public IHttpActionResult GetTags(string keyword)
+        {
+            try
+            {
+                List<string> tags = BusinessService.GetTags(keyword);
+                return Ok(tags);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("save", Name = RouteNames.TraceSave)]
         [HttpPost()]
         public IHttpActionResult Save([FromBody] TB_Trace item)

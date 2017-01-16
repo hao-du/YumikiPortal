@@ -169,5 +169,16 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 Context.TB_Tag.Add(dbTag);
             }
         }
+
+
+        /// <summary>
+        /// Get tags from keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword to filter tag results.</param>
+        /// <returns>List of tags after filter.</returns>
+        public List<string> GetTags(string keyword)
+        {
+            return Context.TB_Tag.Where(c => c.TagName.Contains(keyword)).Select(c=>c.TagName).ToList();
+        }
     }
 }
