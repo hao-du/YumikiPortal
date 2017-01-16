@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IBankService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\ITraceService.cs" />
     <Compile Include="Interfaces\ICurrencyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BankService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\TraceService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
   </ItemGroup>

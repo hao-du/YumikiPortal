@@ -11,6 +11,7 @@ namespace Yumiki.Entity.MoneyTrace
             Currency = new HashSet<TB_Currency>();
             Tags = new HashSet<TB_Tag>();
             Traces = new HashSet<TB_Trace>();
+            TransferredTraces = new HashSet<TB_Trace>();
         }
 
         public Guid ID { get; set; }
@@ -36,5 +37,7 @@ namespace Yumiki.Entity.MoneyTrace
         public virtual ICollection<TB_Tag> Tags { get; set; }
 
         public virtual ICollection<TB_Trace> Traces { get; set; }
+
+        public virtual ICollection<TB_Trace> TransferredTraces { get; set; }
     }
 }

@@ -92,6 +92,8 @@ namespace Yumiki.Entity.MoneyTrace
             public const string Tags = "Tags";
             public const string IsLogTrace = "IsLogTrace";
 
+            public const string TransferredUserID = "TransferredUserID";
+
             public const string Bank = "Bank";
             public const string BankID = "BankID";
             public const string BankName = "BankName";

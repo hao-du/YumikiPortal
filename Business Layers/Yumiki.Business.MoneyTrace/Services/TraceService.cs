@@ -210,6 +210,14 @@ namespace Yumiki.Business.MoneyTrace.Services
 
                     SaveTrace(logTrace, false);
                     break;
+                case EN_TransactionType.E_TRANSFER:
+                    if(!trace.TransferredUserID.HasValue)
+                    {
+                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Transferred User is required.");
+                    }
+
+                    SaveTrace(trace, true);
+                    break;
             }
         }
 

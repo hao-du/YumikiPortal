@@ -135,6 +135,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbTrace.GroupTokenID = trace.GroupTokenID;
                 dbTrace.BankID = trace.BankID;
                 dbTrace.UserID = trace.UserID;
+                dbTrace.TransferredUserID = trace.TransferredUserID;
                 dbTrace.Descriptions = trace.Descriptions;
                 dbTrace.IsActive = trace.IsActive;
             }

@@ -39,6 +39,10 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
             };
 
+            this.getUsers = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.UserGetAll, null)', { params: { 'showInactive': false } });
+            };
+
             this.getTraceList = function (showInactive, isDisplayedAll) {
                 var datetime = $('#dtpMonth').val();
                 //In case of dtpMonth does not have value, add the default value to it.
@@ -86,6 +90,9 @@
                 }
                 else if(transactionType == '@((int)EN_TransactionType.E_EXCHANGE)'){
                     $rootScope.$broadcast("OnExchangeTraceLoad", traceID);
+                }
+                else if(transactionType == '@((int)EN_TransactionType.E_TRANSFER)'){
+                    $rootScope.$broadcast("OnTransferTraceLoad", traceID);
                 }
             }
 
@@ -465,6 +472,108 @@
             }
         });
     </script>
+
+    <!--Transfer Trace Dialog-->
+    <script type="text/javascript" title="Transfer Trace Dialog">
+        //Controller to display dialog
+        app.controller('transferTraceDialogController', function ($scope, $rootScope, $http, DataService) {
+            $scope.traceID = undefined;
+            $scope.isActiveCheckboxDisabled = false;
+
+            //Used to be called by other controllers.
+            $rootScope.$on('OnTransferTraceLoad', function (event, traceID) {
+                $('#dlgTransferTrace').modal({ backdrop: 'static' });
+
+                if (traceID != undefined && traceID != null) {
+                    $scope.traceID = traceID;
+                    $scope.isActiveCheckboxDisabled = false;
+                    $scope.dialogTitle = "Edit Trace";
+
+                    $(this).showLoadingBar();
+
+                    DataService.getTraceByID($scope.traceID)
+                        .then(function mySucces(response) {
+                            $scope.trace = response.data;
+
+                            //Format date to display on TraceDate input
+                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+
+                            $(this).hideLoadingBar();
+
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+
+                } else {
+                    $scope.dialogTitle = "New Trace";
+                    $scope.isActiveCheckboxDisabled = true;
+
+                    $scope.trace = $scope.resetTrace();
+                }
+            });
+
+            //Reset object in new mode.
+            $scope.resetTrace = function () {
+                $scope.traceForm.$setPristine();
+                return {
+                    '@CommonProperties.ID': undefined,
+                    '@TB_Trace.FieldName.Amount': 0,
+                    '@TB_Trace.FieldName.Tags': '',
+                    '@TB_Trace.FieldName.CurrencyID': '',
+                    '@TB_Trace.FieldName.TransferredUserID': '',
+                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_TRANSFER),
+                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                    '@CommonProperties.IsActive': true
+                };
+            }
+
+            //Save new or update object
+            $scope.save = function (isValid) {
+                if (isValid) {
+                    //datetimepicker does not work with ng-model, bind data manually.
+                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTransferTraceDate').val();
+
+                    $(this).showLoadingBar();
+
+                    DataService.save($scope.trace)
+                        .then(function mySucces(response) {
+                            $scope.traceID = undefined;
+                            $('#dlgTransferTrace').modal('hide');
+
+                            $scope.ReloadData();
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+                }
+            };
+
+            //After saving, reload list.
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
+            };
+
+            // Bind datasource to controls such as Dropdownlist
+            $scope.bindControls = function () {
+                DataService.getCurrencyList().then(
+                    function mySucces(response) {
+                        $scope.currencyList = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+
+                DataService.getUsers().then(
+                   function mySucces(response) {
+                       $scope.userList = response.data;
+                   }, function myError(response) {
+                       clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                   });
+            }
+        });
+    </script>
 }
 
 <div ng-app="moneyTrace">
@@ -475,6 +584,7 @@
                 <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
                 <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
                 <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
+                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_TRANSFER)');">Transfer</button>
                 <!--<button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>-->
             </div>
         </div>
@@ -516,283 +626,357 @@
                                 <tbody>
                                     <tr ng-repeat="trace in traceBankingSummaryList">
                                         <td>{{ trace.@TraceSummary.FieldName.BankName }}</td>
-                                            <td class="text-align-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
-                                            <td>{{ trace.@TraceSummary.FieldName.CurrencyShortName }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        <td class="text-align-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
+                                        <td>{{ trace.@TraceSummary.FieldName.CurrencyShortName }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="isDisplayedAll" ng-checked="isDisplayedAll" ng-change="loadData();" />
-                                <label>Show All Records</label>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="checkbox">
+                            <input type="checkbox" ng-model="isDisplayedAll" ng-checked="isDisplayedAll" ng-change="loadData();" />
+                            <label>Show All Records</label>
+                        </span>
+                    </div>
+                    <div class="col-md-4 col-md-offset-5">
+                        <div class="input-group date" id="divMonth" ng-show="!isDisplayedAll">
+                            <input id='dtpMonth' type="text" name="traceDate" ng-model="monthFilter" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </span>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" ng-click="loadData();">Go</button>
                             </span>
                         </div>
-                        <div class="col-md-4 col-md-offset-5">
-                            <div class="input-group date" id="divMonth" ng-show="!isDisplayedAll">
-                                <input id='dtpMonth' type="text" name="traceDate" ng-model="monthFilter" class="form-control" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-list-alt"></span>
-                                </span>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-primary" ng-click="loadData();">Go</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table id="tblTrace" class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Transaction</th>
-                                            <th class="text-align-right">Amount</th>
-                                            <th>Currency</th>
-                                            <th>Descriptions</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="trace in traceList" ng-class="{'table-alternative-row' : trace.@TB_Trace.FieldName.IsLogTrace}">
-                                            <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
-                                            <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
-                                            <td class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
-                                            <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
-                                            <td>{{ trace.@CommonProperties.Descriptions }}</td>
-                                            <td><a href="#" id="btnEdit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace">Edit</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Normal Trace Modal -->
-        <div id="dlgNormalTrace" class="modal fade" role="dialog" ng-controller="normalTraceDialogController" ng-init="bindControls();">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
-                        <div class="modal-header">
-                            <h4 class="modal-title">{{ dialogTitle }}</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table id="tblTrace" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Transaction</th>
+                                        <th class="text-align-right">Amount</th>
+                                        <th>Currency</th>
+                                        <th>Descriptions</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="trace in traceList" ng-class="{'table-alternative-row' : trace.@TB_Trace.FieldName.IsLogTrace}">
+                                        <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
+                                        <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
+                                        <td class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
+                                        <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
+                                        <td>{{ trace.@CommonProperties.Descriptions }}</td>
+                                        <td><a href="#" id="btnEdit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace">Edit</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
-                                <label>Trace Date</label>
-                                <div class='input-group date input-datepicker'>
-                                    <input id='dtpNormalTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                                <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
-                                <label>Amount</label>
-                                <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                                <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                                <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
-                                <label>Currency</label>
-                                <select class="form-control selectpicker" name="currency" ng-required="true"
-                                        ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                        ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                    <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                                </select>
-                                <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Descriptions</label>
-                                <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Tags (with ',' separator)</label>
-                                <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <span class="checkbox">
-                                    <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                    <label>Is Active</label>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Banking Trace Modal -->
-        <div id="dlgBankingTrace" class="modal fade" role="dialog" ng-controller="bankingTraceDialogController" ng-init="bindControls();">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <form name="bankingTraceForm" ng-submit="save(bankingTraceForm.$valid)" novalidate>
-                        <div class="modal-header">
-                            <h4 class="modal-title">{{ dialogTitle }}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
-                                <label>Trace Date</label>
-                                <div class='input-group date input-datepicker'>
-                                    <input id='dtpBankingTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                                <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.amount.$invalid }">
-                                <label>Amount</label>
-                                <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                                <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                                <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.currency.$invalid }">
-                                <label>Currency</label>
-                                <select class="form-control selectpicker" name="currency" ng-required="true"
-                                        ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                        ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                    <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                                </select>
-                                <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="help-block">Currency is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.bank.$invalid }">
-                                <label>Bank</label>
-                                <select class="form-control selectpicker" name="bank" ng-required="true"
-                                        ng-model="trace.@TB_Trace.FieldName.BankID"
-                                        ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
-                                    <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                                </select>
-                                <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="help-block">Bank is required.</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Descriptions</label>
-                                <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Tags (with ',' separator)</label>
-                                <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <span class="checkbox">
-                                    <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                    <label>Is Active</label>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Exchange Trace Modal -->
-        <div id="dlgExchangeTrace" class="modal fade" role="dialog" ng-controller="exchangeTraceDialogController" ng-init="bindControls();">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <form name="exchangeTraceForm" ng-submit="save(exchangeTraceForm.$valid)" novalidate>
-                        <div class="modal-header">
-                            <h4 class="modal-title">{{ dialogTitle }}</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.traceDate.$invalid }">
-                                <label>Trace Date</label>
-                                <div class='input-group date input-datepicker'>
-                                    <input id='dtpExchangeTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                                <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceAmount.$invalid }">
-                                <label>Source Amount</label>
-                                <input type="text" name="sourceAmount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                                <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                                <p ng-show="exchangeTraceForm.sourceAmount.$error.required && exchangeTraceForm.sourceAmount.$dirty" class="help-block">Source Amount is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceCurrency.$invalid }">
-                                <label>Source Currency</label>
-                                <select class="form-control selectpicker" name="sourceCurrency" ng-required="true"
-                                        ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                        ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                    <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                                </select>
-                                <p ng-show="exchangeTraceForm.sourceCurrency.$error.required && exchangeTraceForm.sourceCurrency.$dirty" class="help-block">Source Currency is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destAmount.$invalid }">
-                                <label>Destination Amount</label>
-                                <input type="text" name="destAmount" ng-model="trace.@TB_Trace.FieldName.ExchangeAmount" class="form-control text-align-right" ng-required="true" />
-                                <div class="text-align-right">{{ trace.@TB_Trace.FieldName.ExchangeAmount | number:2 }}</div>
-                                <p ng-show="exchangeTraceForm.destAmount.$error.required && exchangeTraceForm.destAmount.$dirty" class="help-block">Destination Amount is required.</p>
-                            </div>
-
-                            <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destCurrency.$invalid }">
-                                <label>Destination Currency</label>
-                                <select class="form-control selectpicker" name="destCurrency" ng-required="true"
-                                        ng-model="trace.@TB_Trace.FieldName.ExchangeCurrencyID"
-                                        ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                    <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                                </select>
-                                <p ng-show="exchangeTraceForm.destCurrency.$error.required && exchangeTraceForm.destCurrency.$dirty" class="help-block">Destination Currency is required.</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Descriptions</label>
-                                <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Tags (with ',' separator)</label>
-                                <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <span class="checkbox">
-                                    <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                    <label>Is Active</label>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Normal Trace Modal -->
+    <div id="dlgNormalTrace" class="modal fade" role="dialog" ng-controller="normalTraceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <div class='input-group date input-datepicker'>
+                                <input id='dtpNormalTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
+                            <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banking Trace Modal -->
+    <div id="dlgBankingTrace" class="modal fade" role="dialog" ng-controller="bankingTraceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="bankingTraceForm" ng-submit="save(bankingTraceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <div class='input-group date input-datepicker'>
+                                <input id='dtpBankingTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.amount.$invalid }">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
+                            <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.currency.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.bank.$invalid }">
+                            <label>Bank</label>
+                            <select class="form-control selectpicker" name="bank" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.BankID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="help-block">Bank is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exchange Trace Modal -->
+    <div id="dlgExchangeTrace" class="modal fade" role="dialog" ng-controller="exchangeTraceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="exchangeTraceForm" ng-submit="save(exchangeTraceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <div class='input-group date input-datepicker'>
+                                <input id='dtpExchangeTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceAmount.$invalid }">
+                            <label>Source Amount</label>
+                            <input type="text" name="sourceAmount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
+                            <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="exchangeTraceForm.sourceAmount.$error.required && exchangeTraceForm.sourceAmount.$dirty" class="help-block">Source Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceCurrency.$invalid }">
+                            <label>Source Currency</label>
+                            <select class="form-control selectpicker" name="sourceCurrency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="exchangeTraceForm.sourceCurrency.$error.required && exchangeTraceForm.sourceCurrency.$dirty" class="help-block">Source Currency is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destAmount.$invalid }">
+                            <label>Destination Amount</label>
+                            <input type="text" name="destAmount" ng-model="trace.@TB_Trace.FieldName.ExchangeAmount" class="form-control text-align-right" ng-required="true" />
+                            <div class="text-align-right">{{ trace.@TB_Trace.FieldName.ExchangeAmount | number:2 }}</div>
+                            <p ng-show="exchangeTraceForm.destAmount.$error.required && exchangeTraceForm.destAmount.$dirty" class="help-block">Destination Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destCurrency.$invalid }">
+                            <label>Destination Currency</label>
+                            <select class="form-control selectpicker" name="destCurrency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.ExchangeCurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="exchangeTraceForm.destCurrency.$error.required && exchangeTraceForm.destCurrency.$dirty" class="help-block">Destination Currency is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Trace Modal -->
+    <div id="dlgTransferTrace" class="modal fade" role="dialog" ng-controller="transferTraceDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="transferTraceForm" ng-submit="save(transferTraceForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : transferTraceForm.traceDate.$invalid }">
+                            <label>Trace Date</label>
+                            <div class='input-group date input-datepicker'>
+                                <input id='dtpTransferTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <p ng-show="transferTraceForm.traceDate.$error.required && transferTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
+                            <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="transferTraceForm.amount.$error.required && transferTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : transferTraceForm.transferredUser.$invalid }">
+                            <label>Transferred User</label>
+                            <select class="form-control selectpicker" name="transferredUser" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.TransferredUserID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_User.FieldName.FullName for item in userList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="transferTraceForm.transferredUser.$error.required && transferTraceForm.transferredUser.$dirty" class="help-block">Transferred User is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="transferTraceForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

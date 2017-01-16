@@ -9,6 +9,8 @@ namespace Yumiki.Web.MoneyTrace.Constants
     {
         public const string DefaultMVCRoute = "MoneyTrace_default";
 
+        public const string UserGetAll = "UserGetAll";
+
         public const string CurrencyGetAll = "CurrencyGetAll";
         public const string CurrencyGetAllWithShareableItems = "CurrencyGetAllWithShareableItems";
         public const string CurrencyGetByID = "CurrencyGetByID";
