@@ -179,12 +179,12 @@
                                     <div class="panel panel-info">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>'><%# Eval("ContactTypeName") %></a>
+                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>'><%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.ContactTypeName) %></a>
                                             </h4>
                                         </div>
                                         <div id='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' class="panel-collapse collapse in">
                                             <div class="panel-body">
-                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.TB_ContactType.FieldName.SortUserAddresses) %>'>
+                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
                                                     <HeaderTemplate>
                                                         <div class="table-responsive">
                                                             <table class="table table-striped table-bordered">

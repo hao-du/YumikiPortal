@@ -45,6 +45,7 @@
     <Compile Include="CustomFields\TB_Privilege.cs" />
     <Compile Include="CustomFields\TB_User.cs" />
     <Compile Include="CustomFields\TB_UserAddress.cs" />
+    <Compile Include="CustomObjects\ContactTypeWithUserAddress.cs" />
     <Compile Include="EN_QueueType.cs" />
     <Compile Include="TB_ContactType.cs" />
     <Compile Include="TB_Queue.cs" />

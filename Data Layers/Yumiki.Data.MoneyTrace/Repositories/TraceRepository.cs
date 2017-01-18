@@ -45,9 +45,14 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             List<TraceSummary> traces = Context.TB_Trace
                                         .Include(TB_Trace.FieldName.Currency)
                                         .Where(c =>
-                                                c.IsActive
-                                                && c.UserID == userID
-                                                && (c.TransactionType == EN_TransactionType.E_INCOME || c.TransactionType == EN_TransactionType.E_OUTCOME))
+                                                    c.IsActive
+                                                    && c.UserID == userID
+                                                    && (
+                                                            c.TransactionType == EN_TransactionType.E_INCOME
+                                                            || c.TransactionType == EN_TransactionType.E_OUTCOME
+                                                            || c.TransactionType == EN_TransactionType.E_TRANSFER
+                                                        )
+                                                )
                                         .GroupBy(g => g.Currency)
                                         .Select(s => new TraceSummary { CurrencyShortName = s.Key.CurrencyShortName, TotalAmount = s.Sum(d => d.Amount) })
                                         .ToList();

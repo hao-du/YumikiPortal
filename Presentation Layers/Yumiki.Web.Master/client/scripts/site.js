@@ -88,3 +88,11 @@ function openNav() {
 function closeNav() {
     $("#sbnSideBarNav").width("0px");
 }
+
+//For jquery ui autocomplete
+function split(val) {
+    return val.split(/,\s*/);
+}
+function extractLast(term) {
+    return split(term).pop();
+}

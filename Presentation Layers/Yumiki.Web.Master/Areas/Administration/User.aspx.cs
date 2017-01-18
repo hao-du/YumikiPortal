@@ -7,6 +7,7 @@ using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Entities;
 using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Web.Administration
 {
@@ -228,7 +229,7 @@ namespace Yumiki.Web.Administration
                 userAddress.UserAddress = txtUserAddress.Text;
                 userAddress.UserContactTypeID = ddlContactType.SelectedValue == CommonValues.EmptyValue? Guid.Empty: Guid.Parse(ddlContactType.SelectedValue);
                 userAddress.IsPrimary = ckbIsPrimary.Checked;
-                userAddress.Descriptions = txtDescription.Text;
+                userAddress.Descriptions = txtUserAddressDescriptions.Text;
                 userAddress.UserID = Guid.Parse(hdnID.Value);
                 userAddress.IsActive = ckbUserAddressIsActive.Checked;
 
@@ -299,7 +300,7 @@ namespace Yumiki.Web.Administration
         {
             if (!IsNewMode)
             {
-                List<TB_ContactType> contactTypes = BusinessService.GetAllContacts(hdnID.Value, false);
+                List<ContactTypeWithUserAddress> contactTypes = BusinessService.GetAllContacts(hdnID.Value, false);
 
                 rptContactType.DataSource = contactTypes;
                 rptContactType.DataBind();

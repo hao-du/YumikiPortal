@@ -28,6 +28,7 @@
 
             $("input:text").focus(function() { $(this).select(); } );
 
+            //Reference Link: http://jqueryui.com/autocomplete/#multiple
             $('.auto-complete').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -35,13 +36,33 @@
                         url: '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)',
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
-                        data: { keyword: request.term },
+                        data: { keyword: extractLast( request.term ) },
                         success: function (data) {
                             response(data);
                         }
                     });
                 },
-                minLength: 3
+                search: function() {
+                    // custom minLength
+                    var term = extractLast( this.value );
+                    if ( term.length < 2 ) {
+                        return false;
+                    }
+                },
+                focus: function() {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
             });
         });
 
@@ -718,7 +739,7 @@
                             <div class='input-group date input-datepicker'>
                                 <input id='dtpNormalTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
                             </div>
                             <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
@@ -748,7 +769,7 @@
 
                         <div class="form-group">
                             <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -782,7 +803,7 @@
                             <div class='input-group date input-datepicker'>
                                 <input id='dtpBankingTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
                             </div>
                             <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
@@ -822,7 +843,7 @@
 
                         <div class="form-group">
                             <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -856,7 +877,7 @@
                             <div class='input-group date input-datepicker'>
                                 <input id='dtpExchangeTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
                             </div>
                             <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
@@ -903,7 +924,7 @@
 
                         <div class="form-group">
                             <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
+                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -937,7 +958,7 @@
                             <div class='input-group date input-datepicker'>
                                 <input id='dtpTransferTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
                             </div>
                             <p ng-show="transferTraceForm.traceDate.$error.required && transferTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>

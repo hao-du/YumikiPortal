@@ -15,20 +15,11 @@ namespace Yumiki.Entity.Administration
             }
         }
 
-        public IEnumerable<TB_UserAddress> SortUserAddresses
-        {
-            get
-            {
-                return this.UserAddresses.OrderByDescending(c=>c.IsPrimary).ThenBy(c=>c.UserAddress);
-            }
-        }
-
         public class FieldName
         {
             public const string TB_ContactType = "TB_ContactType";
             public const string ID = "ID";
             public const string ContactTypeName = "ContactTypeName";
-            public const string SortUserAddresses = "SortUserAddresses";
             public const string UserAddresses = "UserAddresses";
         }
     }

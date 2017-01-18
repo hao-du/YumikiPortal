@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Data.Administration.Repositories
 {
@@ -117,11 +118,18 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userID">User need to get address details.</param>
         /// <param name="showInactive">Get active or inactive records.</param>
         /// <returns></returns>
-        public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
+        public List<ContactTypeWithUserAddress> GetAllContacts(Guid userID, bool showInactive)
         {
             return context.TB_ContactType.Include(TB_ContactType.FieldName.UserAddresses)
                             .Where(c => c.UserAddresses.Any(e => e.UserID == userID && e.IsActive != showInactive))
-                            .ToList();
+                            .Select(c => new ContactTypeWithUserAddress
+                            {
+                                ID = c.ID,
+                                ContactTypeName = c.ContactTypeName,
+                                UserAddresses = c.UserAddresses.Where(d => d.UserID == userID)
+                                                .OrderByDescending(d => d.IsPrimary)
+                                                .ThenBy(d => d.UserAddress)
+                            }).ToList();
         }
 
         /// <summary>
@@ -167,11 +175,11 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUserAddress.IsActive = userAddress.IsActive;
             }
 
-            if(userAddress.IsPrimary)
+            if (userAddress.IsPrimary)
             {
                 //Update Primary flag of all contacts of user which has the same ContactType to false.
                 //Only one contact is primary for each contact type.
-                Context.TB_UserAddress.Where(c => c.ID != userAddress.ID 
+                Context.TB_UserAddress.Where(c => c.ID != userAddress.ID
                                                 && c.IsPrimary
                                                 && c.UserID == userAddress.UserID
                                                 && c.UserContactTypeID == userAddress.UserContactTypeID)
