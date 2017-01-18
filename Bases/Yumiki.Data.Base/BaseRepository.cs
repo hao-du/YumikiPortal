@@ -77,7 +77,21 @@ namespace Yumiki.Data.Base
                 }
             }
 
-            context.SaveChanges();
+            using (DbContextTransaction transaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    context.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+
+                    throw ex;
+                }
+            }
         }
     }
 }
