@@ -5,34 +5,41 @@ using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
 {
     public class TraceRepository : MoneyTraceRepository, ITraceRepository
     {
         /// <summary>
-        /// Get all active Traces from Database.
+        /// Get all Traces with filters from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
-        /// <returns>List of all active Traces.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID, DateTime month, bool isDisplayedAll)
+        /// <param name="request">All criaterias to filters the traces.</param>
+        /// <returns>List of all Traces after filtered.</returns>
+        public GetTraceResponse<TB_Trace> GetAllTraces(GetTraceRequest<TB_Trace> request)
         {
-            DateTime startDate = DateTimeHelper.GetStartDateOfMonth(month);
-            DateTime endDate = DateTimeHelper.GetEndDateOfMonth(month);
+            DateTime startDate = DateTimeHelper.GetStartDateOfMonth(request.Month);
+            DateTime endDate = DateTimeHelper.GetEndDateOfMonth(request.Month);
 
             IQueryable<TB_Trace> query = Context.TB_Trace
                     .Include(TB_Trace.FieldName.Currency)
                     .Where(
-                            c => c.IsActive == !showInactive
-                            && c.UserID == userID
+                            c => c.IsActive == !request.ShowInactive
+                            && c.UserID == request.UserID
                         );
 
-            if (!isDisplayedAll)
+            if (!request.IsDisplayedAll)
             {
-                query = query.Where(c=> startDate <= c.TraceDate && c.TraceDate <= endDate);
+                query = query.Where(c => startDate <= c.TraceDate && c.TraceDate <= endDate);
             }
 
-            return query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).ToList();
+            return new GetTraceResponse<TB_Trace>
+            {
+                Records = query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage).ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = query.Count()
+            };
         }
 
         /// <summary>
@@ -75,7 +82,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                                 && c.UserID == userID
                                                 && c.TransactionType == EN_TransactionType.E_BANKING)
                                         .GroupBy(g => new { g.Bank, g.Currency })
-                                        .Where(g => g.Sum(d=>d.Amount) != 0)
+                                        .Where(g => g.Sum(d => d.Amount) != 0)
                                         .Select(s => new TraceSummary { BankName = s.Key.Bank.BankName, CurrencyShortName = s.Key.Currency.CurrencyShortName, TotalAmount = s.Sum(d => d.Amount) })
                                         .ToList();
 
@@ -183,7 +190,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of tags after filter.</returns>
         public List<string> GetTags(string keyword)
         {
-            return Context.TB_Tag.Where(c => c.TagName.Contains(keyword)).Select(c=>c.TagName).ToList();
+            return Context.TB_Tag.Where(c => c.TagName.Contains(keyword)).Select(c => c.TagName).ToList();
         }
     }
 }

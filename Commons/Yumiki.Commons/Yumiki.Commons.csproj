@@ -62,8 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparers\LowerCaseStringComparer - Copy.cs" />
     <Compile Include="Comparers\LowerCaseStringComparer.cs" />
+    <Compile Include="Comparers\ObjectComparer.cs" />
     <Compile Include="Dictionaries\SettingNames.cs" />
     <Compile Include="Settings\CustomConfigurations.cs" />
     <Compile Include="Settings\YumikiConfigLoader.cs" />

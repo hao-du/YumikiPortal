@@ -7,13 +7,12 @@
 }
 
 @section Script{
-    <!--Load Trace List-->
-    <script type="text/javascript" title="Load Trace List">
+    <script type="text/javascript" title="Init controls and variables">
         //Declare constant variables.
         var showActiveTraceString = 'Show Active Traces';
         var showInactiveTraceString = 'Show Inactive Traces';
 
-        var app = angular.module('moneyTrace', []);
+        var app = angular.module('moneyTrace', ['ui.bootstrap']);
 
         $(document).ready(function () {
             $('.input-datepicker').datetimepicker({
@@ -26,6 +25,7 @@
                 format: '@DateTimeHelper.MonthYear'
             });
 
+            //When focus on textbox, highlight all words.
             $("input:text").focus(function() { $(this).select(); } );
 
             //Reference Link: http://jqueryui.com/autocomplete/#multiple
@@ -65,7 +65,10 @@
                 }
             });
         });
+    </script>
 
+    <!--Load Trace List-->
+    <script type="text/javascript" title="Load Trace List">
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
             this.getCurrencyList = function () {
@@ -80,14 +83,14 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.UserGetAll, null)', { params: { 'showInactive': false } });
             };
 
-            this.getTraceList = function (showInactive, isDisplayedAll) {
+            this.getTraceList = function (showInactive, isDisplayedAll, currentPage, itemsPerPage) {
                 var datetime = $('#dtpMonth').val();
                 //In case of dtpMonth does not have value, add the default value to it.
                 if(datetime == ''){
                     datetime = moment('@ViewBag.CurrentDate').format('@DateTimeHelper.MonthYear');
                 }
 
-                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive, 'month': datetime , 'isDisplayedAll' : isDisplayedAll} });
+                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive, 'month': datetime , 'isDisplayedAll' : isDisplayedAll, 'currentPage' : currentPage, 'itemsPerPage' : itemsPerPage} });
             };
 
             this.getTotalSummaryTraces = function () {
@@ -111,7 +114,14 @@
         app.controller('traceController', function ($scope, $rootScope, $http, DataService) {
             $scope.inactiveButtonName = showInactiveTraceString;
             $scope.monthFilter = moment('@ViewBag.CurrentDate').format('@DateTimeHelper.MonthYear');
-            $scope.isDisplayedAll = false;
+            $scope.isDisplayedAll = true;
+
+            //For paging
+            $scope.viewby = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.maxSize = 5; //Number of pager buttons to show
 
             //To determine when load active or inactive list.
             $scope.isStatusChanged = false;
@@ -171,9 +181,12 @@
                     });
 
                 //Get all records on right side.
-                DataService.getTraceList(showInactive, $scope.isDisplayedAll).then(
+                DataService.getTraceList(showInactive, $scope.isDisplayedAll, $scope.currentPage, $scope.itemsPerPage).then(
                     function mySucces(response) {
-                        $scope.traceList = response.data;
+                        $scope.traceList = response.data.Records;
+                        $scope.currentPage = response.data.CurrentPage;
+                        $scope.totalItems = response.data.TotalItems;
+                        $scope.itemsPerPage = response.data.ItemsPerPage;
 
                         if ($scope.isStatusChanged) {
                             if ($scope.inactiveButtonName == showInactiveTraceString) {
@@ -718,6 +731,9 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                        <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
                     </div>
                 </div>
             </div>

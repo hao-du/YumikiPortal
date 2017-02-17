@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Yumiki.Entity.Base;
 
 namespace Yumiki.Commons.Comparers
 {
-    public class ObjectComparer : IEqualityComparer<IEntity>
+    public class LowerCaseStringComparer : IEqualityComparer<string>
     {
-        public bool Equals(IEntity x, IEntity y)
+        public bool Equals(string x, string y)
         {
             if(x == null || y == null)
             {
                 return false;
             }
 
-            return x.ID == y.ID;
+            return x.Equals(y, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public int GetHashCode(IEntity obj)
+        public int GetHashCode(string obj)
         {
             return obj.GetHashCode();
         }

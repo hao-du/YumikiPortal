@@ -4,6 +4,7 @@ using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Settings;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
 
@@ -14,17 +15,24 @@ namespace Yumiki.Web.MoneyTrace.Controllers
     {
         [Route("getall", Name = RouteNames.TraceGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive, string month, bool isDisplayedAll)
+        public IHttpActionResult Get(bool showInactive, string month, bool isDisplayedAll, int currentPage, int itemsPerPage)
         {
             try
             {
                 string[] monthArray = month.Split('-');
 
-                List<TB_Trace> traces = BusinessService.GetAllTraces(showInactive, 
-                                                                    HttpSession.UserID,
-                                                                    new DateTime(int.Parse(monthArray[1].Trim()), int.Parse(monthArray[0].Trim()), 1),
-                                                                    isDisplayedAll);
-                return Ok(traces);
+                GetTraceRequest<TB_Trace> traceRequest = new GetTraceRequest<TB_Trace>
+                {
+                    IsDisplayedAll = isDisplayedAll,
+                    Month = new DateTime(int.Parse(monthArray[1].Trim()), int.Parse(monthArray[0].Trim()), 1),
+                    UserID = HttpSession.UserID,
+                    ShowInactive = showInactive,
+                    CurrentPage = currentPage,
+                    ItemsPerPage = itemsPerPage
+                };
+
+                GetTraceResponse<TB_Trace> traceResponse = BusinessService.GetAllTraces(traceRequest);
+                return Ok(traceResponse);
             }
             catch (Exception ex)
             {

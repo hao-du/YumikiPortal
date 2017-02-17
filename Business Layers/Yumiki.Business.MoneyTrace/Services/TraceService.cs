@@ -8,19 +8,20 @@ using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Business.MoneyTrace.Services
 {
     public class TraceService : BaseService<ITraceRepository>, ITraceService
     {
         /// <summary>
-        /// Get all active Trace from Database.
+        /// Get all Traces with filters from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Trace or active Trace.</param>
-        /// <returns>List of all active Trace.</returns>
-        public List<TB_Trace> GetAllTraces(bool showInactive, Guid userID, DateTime month, bool isDisplayedAll)
+        /// <param name="request">All criaterias to filters the traces.</param>
+        /// <returns>List of all Traces after filtered.</returns>
+        public GetTraceResponse<TB_Trace> GetAllTraces(GetTraceRequest<TB_Trace> request)
         {
-            return Repository.GetAllTraces(showInactive, userID, month, isDisplayedAll);
+            return Repository.GetAllTraces(request);
         }
 
         /// <summary>

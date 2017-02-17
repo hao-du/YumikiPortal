@@ -136,6 +136,10 @@
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85d7cf5b-aaac-4d00-9287-94866e19545e}</Project>
+      <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Bases\Yumiki.Web.Base\Yumiki.Web.Base.csproj">
       <Project>{581BAAB0-B89D-401E-AD6D-6537DE8D47FB}</Project>
       <Name>Yumiki.Web.Base</Name>
@@ -164,7 +168,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49261</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

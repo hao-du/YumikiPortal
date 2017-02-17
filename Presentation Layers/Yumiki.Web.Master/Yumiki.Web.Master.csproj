@@ -129,6 +129,7 @@
     <Content Include="client\scripts\jquery.dataTables.js" />
     <Content Include="client\scripts\moment.min.js" />
     <Content Include="client\scripts\site.js" />
+    <Content Include="client\scripts\angular-ui-bootstrap.min.js" />
     <Content Include="deployment-tool.js" />
     <Content Include="Global.asax" />
     <Content Include="client\scripts\bootstrap.min.js" />
