@@ -18,8 +18,8 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of all Traces after filtered.</returns>
         public GetTraceResponse<TB_Trace> GetAllTraces(GetTraceRequest<TB_Trace> request)
         {
-            DateTime startDate = DateTimeHelper.GetStartDateOfMonth(request.Month);
-            DateTime endDate = DateTimeHelper.GetEndDateOfMonth(request.Month);
+            DateTime startDate = DateTimeExtension.GetStartDateOfMonth(request.Month);
+            DateTime endDate = DateTimeExtension.GetEndDateOfMonth(request.Month);
 
             IQueryable<TB_Trace> query = Context.TB_Trace
                     .Include(TB_Trace.FieldName.Currency)

@@ -11,7 +11,10 @@ using Yumiki.Commons.Helpers;
 
 namespace Yumiki.Commons.Settings
 {
-    public static class HttpSession
+    /// <summary>
+    /// Current Session of Logged on user.
+    /// </summary>
+    public static class CurrentUser
     {
         private static HttpSessionState Session
         {
@@ -87,7 +90,7 @@ namespace Yumiki.Commons.Settings
             {
                 if (Session == null && Session[HttpConstants.Session.TimeZone] == null)
                 {
-                    return DateTimeHelper.GetDefaultTimeZone();
+                    return DateTimeExtension.GetDefaultTimeZone();
                 }
                 return (SystemTimeZone)Session[HttpConstants.Session.TimeZone];
             }

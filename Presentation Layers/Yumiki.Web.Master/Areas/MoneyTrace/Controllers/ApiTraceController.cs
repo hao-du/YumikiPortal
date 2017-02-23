@@ -25,7 +25,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
                 {
                     IsDisplayedAll = isDisplayedAll,
                     Month = new DateTime(int.Parse(monthArray[1].Trim()), int.Parse(monthArray[0].Trim()), 1),
-                    UserID = HttpSession.UserID,
+                    UserID = CurrentUser.UserID,
                     ShowInactive = showInactive,
                     CurrentPage = currentPage,
                     ItemsPerPage = itemsPerPage
@@ -46,7 +46,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TraceSummary> traces = BusinessService.GetTotalAmount(HttpSession.UserID);
+                List<TraceSummary> traces = BusinessService.GetTotalAmount(CurrentUser.UserID);
                 return Ok(traces);
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TraceSummary> traces = BusinessService.GetBankingSummary(HttpSession.UserID);
+                List<TraceSummary> traces = BusinessService.GetBankingSummary(CurrentUser.UserID);
                 return Ok(traces);
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                item.UserID = HttpSession.UserID;
+                item.UserID = CurrentUser.UserID;
 
                 BusinessService.SaveTrace(item);
                 return Ok();

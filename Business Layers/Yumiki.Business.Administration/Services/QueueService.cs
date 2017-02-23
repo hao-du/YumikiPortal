@@ -59,7 +59,7 @@ namespace Yumiki.Business.Administration.Services
             }
             else
             {
-                Logger.Infomation(string.Format("No Queue to be executed at {0}", DateTimeHelper.GetLocalSystemDatetime()));
+                Logger.Infomation(string.Format("No Queue to be executed at {0}", DateTimeExtension.GetLocalSystemDatetime()));
             }
         }
     }

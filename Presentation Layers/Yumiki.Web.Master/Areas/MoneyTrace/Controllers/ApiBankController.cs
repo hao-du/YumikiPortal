@@ -21,7 +21,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, HttpSession.UserID);
+                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, CurrentUser.UserID);
                 return Ok(banks);
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, HttpSession.UserID, true);
+                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, CurrentUser.UserID, true);
                 return Ok(banks);
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                item.UserID = HttpSession.UserID;
+                item.UserID = CurrentUser.UserID;
 
                 BusinessService.SaveBank(item);
                 return Ok();

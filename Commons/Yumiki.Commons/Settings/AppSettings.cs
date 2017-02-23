@@ -8,6 +8,9 @@ using Yumiki.Commons.Dictionaries;
 
 namespace Yumiki.Commons.Settings
 {
+    /// <summary>
+    /// This is used for Background service such as Windows Services.
+    /// </summary>
     public class AppSettings
     {
         public static string FilePath

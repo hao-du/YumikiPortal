@@ -30,7 +30,7 @@ namespace Yumiki.Commons.Settings
                 {
                     try
                     {
-                        PropertyInfo property = typeof(CustomConfigurations).GetProperty(node.Name);
+                        PropertyInfo property = typeof(SystemSettings).GetProperty(node.Name);
                         property.SetValue(null, node.Value);
                     }
                     catch

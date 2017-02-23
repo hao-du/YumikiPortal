@@ -6,7 +6,7 @@ using Yumiki.Commons.Settings;
 
 namespace Yumiki.Commons.Helpers
 {
-    public class DateTimeHelper
+    public static class DateTimeExtension
     {
         public const string ShortDate = "MM/dd/yyyy";
         public const string LongDate = "dd MMM yyyy";
@@ -54,7 +54,7 @@ namespace Yumiki.Commons.Helpers
         /// <param name="value">Datetime need to be converted.</param>
         /// <param name="timeZone">Destination time zone.</param>
         /// <returns></returns>
-        public static DateTime GetUserTimeZoneFromUTC(DateTime value, TimeZoneInfo timeZone)
+        public static DateTime GetZonedDateTimeFromUTC(this DateTime value, TimeZoneInfo timeZone)
         {
             return TimeZoneInfo.ConvertTimeFromUtc(value, timeZone);
         }
@@ -63,17 +63,17 @@ namespace Yumiki.Commons.Helpers
         /// Return datetime from UTC to a user http session time zone.
         /// </summary>
         /// <param name="value">Datetime need to be converted.</param>
-        public static DateTime GetUserTimeZoneFromUTC(DateTime value)
+        public static DateTime GetZonedDateTimeFromUTC(this DateTime value)
         {
-            return TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.FindSystemTimeZoneById(HttpSession.TimeZone.ID));
+            return TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.FindSystemTimeZoneById(CurrentUser.TimeZone.ID));
         }
 
-        public static DateTime GetStartDateOfMonth(DateTime value)
+        public static DateTime GetStartDateOfMonth(this DateTime value)
         {
             return new DateTime(value.Year, value.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         }
 
-        public static DateTime GetEndDateOfMonth(DateTime value)
+        public static DateTime GetEndDateOfMonth(this DateTime value)
         {
             return GetStartDateOfMonth(value).AddMonths(1).AddMilliseconds(-1);
         }

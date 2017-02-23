@@ -18,12 +18,12 @@ namespace Yumiki.Web.Master
                 liLogoutSection.Visible = false;
                 lblUserName.Text = lblTimeZoneInfo.Text = string.Empty;
 
-                lblReleaseYear.Text = DateTimeHelper.GetSystemDatetime().Year.ToString();
+                lblReleaseYear.Text = DateTimeExtension.GetSystemDatetime().Year.ToString();
 
-                if (HttpSession.IsAuthenticated)
+                if (CurrentUser.IsAuthenticated)
                 {
-                    lblUserName.Text = HttpSession.UserLoginName;
-                    lblTimeZoneInfo.Text = HttpSession.TimeZone.ToString();
+                    lblUserName.Text = CurrentUser.UserLoginName;
+                    lblTimeZoneInfo.Text = CurrentUser.TimeZone.ToString();
                     liLogoutSection.Visible = true;
                 }
             }
@@ -34,9 +34,9 @@ namespace Yumiki.Web.Master
         /// </summary>
         private void LoadMenu()
         {
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                lblMenu.Text = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
+                lblMenu.Text = BusinessService.GetPrivilege(CurrentUser.UserID.ToString());
             }
             else
             {

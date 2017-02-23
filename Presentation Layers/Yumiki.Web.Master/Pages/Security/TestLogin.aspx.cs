@@ -25,10 +25,10 @@ namespace Yumiki.Web.Master.Pages.Security
             {
                 TB_User user = BusinessService.Login(txtUserLoginName.Text);
 
-                HttpSession.UserID = user.ID;
-                HttpSession.UserLoginName = user.UserLoginName;
-                HttpSession.LastLoginTime = DateTimeHelper.GetSystemDatetime();
-                HttpSession.TimeZone = DateTimeHelper.GetTimeZoneById(user.TimeZone);
+                CurrentUser.UserID = user.ID;
+                CurrentUser.UserLoginName = user.UserLoginName;
+                CurrentUser.LastLoginTime = DateTimeExtension.GetSystemDatetime();
+                CurrentUser.TimeZone = DateTimeExtension.GetTimeZoneById(user.TimeZone);
 
                 string path = Request.QueryString[HttpConstants.QueryStrings.Path];
                 if (string.IsNullOrWhiteSpace(path))

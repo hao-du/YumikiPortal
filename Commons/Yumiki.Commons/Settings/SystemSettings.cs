@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Yumiki.Commons.Settings
 {
-    public class CustomConfigurations
+    /// <summary>
+    /// This is used for Web Configuration Settings
+    /// </summary>
+    public class SystemSettings
     {
         public static string LoginPage { get; set; }
     }

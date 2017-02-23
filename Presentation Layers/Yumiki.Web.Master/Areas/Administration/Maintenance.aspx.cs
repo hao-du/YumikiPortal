@@ -18,7 +18,7 @@ namespace Yumiki.Web.Administration
         {
             TB_Queue queue = new TB_Queue();
             queue.QueueType = EN_QueueType.E_SHUTDOWN_SERVER;
-            queue.UserID = HttpSession.UserID;
+            queue.UserID = CurrentUser.UserID;
 
             BusinessService.SaveQueue(queue);
 

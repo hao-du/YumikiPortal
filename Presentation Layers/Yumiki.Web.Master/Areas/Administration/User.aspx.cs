@@ -327,7 +327,7 @@ namespace Yumiki.Web.Administration
         /// </summary>
         private void LoadTimeZones()
         {
-            IEnumerable<SystemTimeZone> timezones = DateTimeHelper.GetAllTimeZone();
+            IEnumerable<SystemTimeZone> timezones = DateTimeExtension.GetAllTimeZone();
 
             ddlSystemTimeZone.DataTextField = SystemTimeZone.FieldName.DisplayName;
             ddlSystemTimeZone.DataValueField = SystemTimeZone.FieldName.ID;

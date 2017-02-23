@@ -73,7 +73,7 @@ namespace Yumiki.Web.Base
         {
             base.Initialize(controllerContext);
 
-            if (!HttpSession.IsAuthenticated)
+            if (!CurrentUser.IsAuthenticated)
             {
                 HttpResponseException exception = new HttpResponseException(new HttpResponseMessage(HttpStatusCode.GatewayTimeout)
                 {

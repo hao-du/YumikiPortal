@@ -21,7 +21,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, HttpSession.UserID);
+                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, CurrentUser.UserID);
                 return Ok(currencyList);
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, HttpSession.UserID, true);
+                List<TB_Currency> currencyList = BusinessService.GetAllCurrency(showInactive, CurrentUser.UserID, true);
                 return Ok(currencyList);
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                item.UserID = HttpSession.UserID;
+                item.UserID = CurrentUser.UserID;
 
                 BusinessService.SaveCurrency(item);
                 return Ok();

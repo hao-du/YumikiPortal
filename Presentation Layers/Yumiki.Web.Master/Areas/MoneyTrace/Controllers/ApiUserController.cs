@@ -21,7 +21,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_User> users = BusinessService.GetAllUsers(showInactive, HttpSession.UserID);
+                List<TB_User> users = BusinessService.GetAllUsers(showInactive, CurrentUser.UserID);
                 return Ok(users);
             }
             catch (Exception ex)

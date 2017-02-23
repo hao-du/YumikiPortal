@@ -26,9 +26,9 @@ namespace Yumiki.Web.Master.Controllers
         {
             string menu = string.Empty;
 
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                menu = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
+                menu = BusinessService.GetPrivilege(CurrentUser.UserID.ToString());
             }
 
             return PartialView("GetMenu", menu);

@@ -53,7 +53,7 @@ namespace Yumiki.Web.Base
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            if (!HttpSession.IsAuthenticated)
+            if (!CurrentUser.IsAuthenticated)
             {
                 this.Logger.Infomation(string.Format("No Session from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
                 filterContext.Result = RedirectToLoginPage();
@@ -66,12 +66,12 @@ namespace Yumiki.Web.Base
 
             ViewBag.UserName = ViewBag.UserID = ViewBag.LastLoginTime = ViewBag.TimeZone = string.Empty;
 
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                ViewBag.UserName = HttpSession.UserLoginName;
-                ViewBag.UserID = HttpSession.UserID;
-                ViewBag.LastLoginTime = HttpSession.LastLoginTime;
-                ViewBag.TimeZone = HttpSession.TimeZone;
+                ViewBag.UserName = CurrentUser.UserLoginName;
+                ViewBag.UserID = CurrentUser.UserID;
+                ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
+                ViewBag.TimeZone = CurrentUser.TimeZone;
             }
         }
 
@@ -83,11 +83,11 @@ namespace Yumiki.Web.Base
         {
             if (hasQueryString)
             {
-                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
+                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
             }
             else
             {
-                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage));
+                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage));
             }
         }
 

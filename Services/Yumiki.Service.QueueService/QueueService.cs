@@ -38,13 +38,13 @@ namespace Yumiki.Service.QueueService
         {
             if (_finishCurrentTask)
             {
-                Logger.Infomation(string.Format("Process Queue start at {0}.", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue start at {0}.", e.SignalTime.ToString(DateTimeExtension.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                Logger.Infomation(string.Format("Process Queue end at {0}.", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(DateTimeExtension.ShortDateTime)));
             }
         }
 

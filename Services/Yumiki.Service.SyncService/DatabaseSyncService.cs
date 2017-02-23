@@ -38,13 +38,13 @@ namespace Yumiki.Service.SyncService
         {
             if (_finishCurrentTask)
             {
-                _logger.Infomation(string.Format("Process Sync start at {0}.", e.SignalTime.ToString(DateTimeHelper.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync start at {0}.", e.SignalTime.ToString(DateTimeExtension.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                _logger.Infomation(string.Format("Process Sync end at {0}.", DateTimeHelper.GetLocalSystemDatetime().ToString(DateTimeHelper.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(DateTimeExtension.ShortDateTime)));
             }
         }
 
