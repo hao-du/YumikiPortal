@@ -8,13 +8,6 @@ namespace Yumiki.Commons.Helpers
 {
     public static class DateTimeExtension
     {
-        public const string ShortDate = "MM/dd/yyyy";
-        public const string LongDate = "dd MMM yyyy";
-        public const string ShortDateTime = "MM/dd/yyyy HH:mm:ss";
-        public const string LongDateTime = "dd MMM yyyy HH:mm:ss";
-        public const string ClientMomentLongDate = "DD MMM YYYY";
-        public const string MonthYear = "MM-YYYY";
-
         public static DateTime GetSystemDatetime()
         {
             return DateTime.UtcNow;

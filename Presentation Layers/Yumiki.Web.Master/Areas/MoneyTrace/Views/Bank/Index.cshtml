@@ -21,7 +21,7 @@
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
             this.getBanks = function (showInactive) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAll, null)', { params: { 'showInactive': showInactive } });
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAll, null)', { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
             };
 
             this.getBankByID = function (bankID) {
@@ -39,6 +39,13 @@
 
             //To determine when load active or inactive list.
             $scope.isStatusChanged = false;
+
+            //For paging
+            $scope.viewby = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.maxSize = 5; //Number of pager buttons to show
 
             //Display Dialog and pass data to Dialog.
             $scope.showDialog = function (bankID) {
@@ -65,7 +72,10 @@
                 $(this).showLoadingBar();
                 DataService.getBanks(showInactive).then(
                     function mySucces(response) {
-                        $scope.banks = response.data;
+                        $scope.banks = response.data.Records;
+                        $scope.currentPage = response.data.CurrentPage;
+                        $scope.totalItems = response.data.TotalItems;
+                        $scope.itemsPerPage = response.data.ItemsPerPage;
 
                         if ($scope.isStatusChanged) {
                             if ($scope.inactiveButtonName == showInactiveBankString) {
@@ -197,6 +207,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="col-md-12">
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
             </div>
         </div>
     </div>

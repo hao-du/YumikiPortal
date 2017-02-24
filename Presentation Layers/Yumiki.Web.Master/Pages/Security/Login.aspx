@@ -74,7 +74,7 @@
                         Portal is applicable for a small business or personal. If you need any further information, please contact us at <a href="yumiki.help@gmail.com">Yumiki Support</a> to get better knowlegde on our products.
                     </p>
 
-                    <footer>&nbsp;© <% Yumiki.Commons.Helpers.DateTimeHelper.GetSystemDatetime().Year.ToString(); %> - Yumiki Portal.</footer>
+                    <footer>&nbsp;© <% Yumiki.Commons.Helpers.DateTimeExtension.GetSystemDatetime().Year.ToString(); %> - Yumiki Portal.</footer>
                 </blockquote>
             </div>
         </div>

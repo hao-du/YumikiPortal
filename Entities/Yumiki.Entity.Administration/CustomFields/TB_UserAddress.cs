@@ -12,7 +12,7 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.GetZonedDateTimeFromUTC().ToString(DateTimeExtension.ShortDateTime) : CreateDate.GetZonedDateTimeFromUTC().ToString(DateTimeExtension.ShortDateTime);
+                return LastUpdateDate.HasValue ? LastUpdateDate.Value.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDateTime) : CreateDate.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDateTime);
             }
         }
 

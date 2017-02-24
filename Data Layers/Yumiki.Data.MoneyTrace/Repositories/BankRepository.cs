@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
 {
@@ -13,22 +14,27 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <summary>
         /// Get all active Banks from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Banks or active Banks.</param>
+        /// <param name="request">Request include all filter parameters</param>
         /// <returns>List of all active Banks.</returns>
-        public List<TB_Bank> GetAllBanks(bool showInactive, Guid userID, bool getShareable)
+        public GetBankResponse<TB_Bank> GetAllBanks(GetBankRequest<TB_Bank> request)
         {
-            IQueryable<TB_Bank> queryable = Context.TB_Bank.Where(c => c.IsActive == !showInactive);
+            IQueryable<TB_Bank> queryable = Context.TB_Bank.Where(c => c.IsActive == !request.ShowInactive);
 
-            if (getShareable)
+            if (request.GetShareable)
             {
-                queryable = queryable.Where(c => c.UserID == userID || c.IsShareable == true);
+                queryable = queryable.Where(c => c.UserID == request.UserID || c.IsShareable);
             }
             else
             {
-                queryable = queryable.Where(c => c.UserID == userID);
+                queryable = queryable.Where(c => c.UserID == request.UserID);
             }
 
-            return queryable.ToList();
+            return new GetBankResponse<TB_Bank>() {
+                Records = queryable.OrderBy(c=>c.BankName).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage).ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = queryable.Count()
+            };
         }
 
         /// <summary>

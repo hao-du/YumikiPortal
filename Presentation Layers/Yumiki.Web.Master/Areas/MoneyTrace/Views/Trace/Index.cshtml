@@ -16,13 +16,13 @@
 
         $(document).ready(function () {
             $('.input-datepicker').datetimepicker({
-                format: '@DateTimeHelper.ClientMomentLongDate',
+                format: '@Formats.DateTime.ClientMomentLongDate',
                 ignoreReadonly: true,
             });
 
             $('#divMonth').datetimepicker({
                 viewMode: 'months',
-                format: '@DateTimeHelper.MonthYear'
+                format: '@Formats.DateTime.MonthYear'
             });
 
             //When focus on textbox, highlight all words.
@@ -87,7 +87,7 @@
                 var datetime = $('#dtpMonth').val();
                 //In case of dtpMonth does not have value, add the default value to it.
                 if(datetime == ''){
-                    datetime = moment('@ViewBag.CurrentDate').format('@DateTimeHelper.MonthYear');
+                    datetime = moment('@ViewBag.CurrentDate').format('@Formats.DateTime.MonthYear');
                 }
 
                 return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive, 'month': datetime , 'isDisplayedAll' : isDisplayedAll, 'currentPage' : currentPage, 'itemsPerPage' : itemsPerPage} });
@@ -113,7 +113,7 @@
         //Controller to display items' list
         app.controller('traceController', function ($scope, $rootScope, $http, DataService) {
             $scope.inactiveButtonName = showInactiveTraceString;
-            $scope.monthFilter = moment('@ViewBag.CurrentDate').format('@DateTimeHelper.MonthYear');
+            $scope.monthFilter = moment('@ViewBag.CurrentDate').format('@Formats.DateTime.MonthYear');
             $scope.isDisplayedAll = true;
 
             //For paging
@@ -240,7 +240,7 @@
                             $scope.trace = response.data;
 
                             //Format date to display on TraceDate input
-                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
                             $(this).hideLoadingBar();
 
@@ -342,7 +342,7 @@
                                 $scope.trace = response.data;
 
                                 //Format date to display on TraceDate input
-                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
                                 $(this).hideLoadingBar();
 
@@ -446,7 +446,7 @@
                                 $scope.trace = response.data;
 
                                 //Format date to display on TraceDate input
-                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
                                 $(this).hideLoadingBar();
 
@@ -546,7 +546,7 @@
                             $scope.trace = response.data;
 
                             //Format date to display on TraceDate input
-                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
+                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
                             $(this).hideLoadingBar();
 

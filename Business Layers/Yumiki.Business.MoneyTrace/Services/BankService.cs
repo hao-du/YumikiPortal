@@ -8,6 +8,7 @@ using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Business.MoneyTrace.Services
 {
@@ -16,11 +17,11 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <summary>
         /// Get all active Banks from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Banks or active Banks.</param>
+        /// <param name="request">Request include all filter parameters</param>
         /// <returns>List of all active Banks.</returns>
-        public List<TB_Bank> GetAllBanks(bool showInactive, Guid userID, bool getShareable = false)
+        public GetBankResponse<TB_Bank> GetAllBanks(GetBankRequest<TB_Bank> request)
         {
-            return Repository.GetAllBanks(showInactive, userID, getShareable);
+            return Repository.GetAllBanks(request);
         }
 
         /// <summary>
