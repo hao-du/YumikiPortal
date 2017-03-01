@@ -11,7 +11,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return LastUpdateDate.HasValue ? DateTimeExtension.GetZonedDateTimeFromUTC(LastUpdateDate.Value).ToString(DateTimeExtension.ShortDateTime) : CreateDate.GetZonedDateTimeFromUTC().ToString(DateTimeExtension.ShortDateTime);
+                return LastUpdateDate.HasValue ? DateTimeExtension.GetZonedDateTimeFromUTC(LastUpdateDate.Value).ToString(Formats.DateTime.ShortDateTime) : CreateDate.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDateTime);
             }
         }
 
@@ -19,7 +19,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return TraceDate.ToString(DateTimeExtension.ShortDate);
+                return TraceDate.ToString(Formats.DateTime.ShortDate);
             }
         }
 
