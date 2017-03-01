@@ -66,15 +66,14 @@
             <div class="col-md-8">
                 <blockquote>
                     <p class="text-info">Need to activate your account?</p>
-                    <p class="text-muted">Please send an email to <a href="yumiki.help@gmail.com">Yumiki Support</a> to get activation code.</p>
+                    <p class="text-muted">Please send an email to <a href="mailto:yumiki.help@gmail.com">Yumiki Support</a> to get activation code.</p>
                     <p class="bg-info paragraph-padding">
                         Yumiki Portal contains vary application modules which can help managing things better and quicker such as task/time/expense module etc... and is able to expend or add more modules to adapt your business needs.
                         <br />
                         <br />
-                        Portal is applicable for a small business or personal. If you need any further information, please contact us at <a href="yumiki.help@gmail.com">Yumiki Support</a> to get better knowlegde on our products.
+                        Portal is applicable for a small business or personal. If you need any further information, please contact us at <a href="mailto:yumiki.help@gmail.com">Yumiki Support</a> to get better knowlegde on our products.
                     </p>
-
-                    <footer>&nbsp;© <% Yumiki.Commons.Helpers.DateTimeExtension.GetSystemDatetime().Year.ToString(); %> - Yumiki Portal.</footer>
+                    <footer>© <%=Yumiki.Commons.Helpers.DateTimeExtension.GetLocalSystemDatetime().Year%> - Yumiki Portal.</footer>
                 </blockquote>
             </div>
         </div>

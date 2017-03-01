@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.ServiceProcess;
 using System.Timers;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
@@ -38,13 +39,13 @@ namespace Yumiki.Service.SyncService
         {
             if (_finishCurrentTask)
             {
-                _logger.Infomation(string.Format("Process Sync start at {0}.", e.SignalTime.ToString(DateTimeExtension.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync start at {0}.", e.SignalTime.ToString(Formats.DateTime.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                _logger.Infomation(string.Format("Process Sync end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(DateTimeExtension.ShortDateTime)));
+                _logger.Infomation(string.Format("Process Sync end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(Formats.DateTime.ShortDateTime)));
             }
         }
 

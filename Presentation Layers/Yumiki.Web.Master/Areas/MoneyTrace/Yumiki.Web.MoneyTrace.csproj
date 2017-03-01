@@ -108,14 +108,17 @@
     <None Include="Properties\PublishProfiles\MoneyTrace.pubxml" />
     <Content Include="Views\Trace\Index.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
+    <Content Include="Views\BankAccount\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiBankAccountController.cs" />
     <Compile Include="Controllers\ApiUserController.cs" />
     <Compile Include="Controllers\ApiBankController.cs" />
     <Compile Include="Controllers\ApiTraceController.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
+    <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\TraceController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />

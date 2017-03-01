@@ -96,3 +96,40 @@ function split(val) {
 function extractLast(term) {
     return split(term).pop();
 }
+
+//Common Directive
+angular.module('yumiki-module', [])
+.directive('datetimepicker', function () { //Bind Datetimepicker with Angular
+    return {
+        require: '?ngModel',
+        restrict: 'A',
+        scope: {
+            datetimeformat: '=', //Parameter
+        },
+        link: function (scope, element, attrs, ngModel) {
+
+            if (!ngModel) return; // do nothing if no ng-model
+
+            ngModel.$render = function () {
+                element.find('input').val(ngModel.$viewValue || '');
+            }
+
+            element.datetimepicker({
+                format: scope.datetimeformat,
+                ignoreReadonly: true,
+            });
+
+
+            element.on('dp.change', function (value) {
+                scope.$apply(read);
+            });
+
+            read();
+
+            function read() {
+                var value = element.find('input').val();
+                ngModel.$setViewValue(value);
+            }
+        }
+    }
+});

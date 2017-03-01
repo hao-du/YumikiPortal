@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.ServiceProcess;
 using System.Timers;
 using Yumiki.Business.Administration.Interfaces;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
@@ -38,13 +39,13 @@ namespace Yumiki.Service.QueueService
         {
             if (_finishCurrentTask)
             {
-                Logger.Infomation(string.Format("Process Queue start at {0}.", e.SignalTime.ToString(DateTimeExtension.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue start at {0}.", e.SignalTime.ToString(Formats.DateTime.ShortDateTime)));
 
                 _finishCurrentTask = false;
                 OnProcess();
                 _finishCurrentTask = true;
 
-                Logger.Infomation(string.Format("Process Queue end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(DateTimeExtension.ShortDateTime)));
+                Logger.Infomation(string.Format("Process Queue end at {0}.", DateTimeExtension.GetLocalSystemDatetime().ToString(Formats.DateTime.ShortDateTime)));
             }
         }
 

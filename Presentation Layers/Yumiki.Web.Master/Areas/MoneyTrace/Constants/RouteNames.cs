@@ -21,6 +21,10 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string BankGetByID = "BankGetByID";
         public const string BankSave = "BankSave";
 
+        public const string BankAccountGetAll = "BankAccountGetAll";
+        public const string BankAccountGetByID = "BankAccountGetByID";
+        public const string BankAccountSave = "BankAccountSave";
+
         public const string TraceGetAll = "TraceGetAll";
         public const string TraceGetTotalSummary = "TraceGetTotalSummary";
         public const string TraceGetBankingSummary = "TraceGetBankingSummary";

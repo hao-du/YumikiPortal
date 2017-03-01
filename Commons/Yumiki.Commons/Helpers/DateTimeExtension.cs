@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using Yumiki.Commons.Entities;
 using Yumiki.Commons.Settings;
@@ -16,6 +17,26 @@ namespace Yumiki.Commons.Helpers
         public static DateTime GetLocalSystemDatetime()
         {
             return DateTime.Now;
+        }
+
+        public static DateTime GetSystemMinDate()
+        {
+            return DateTime.MinValue;
+        }
+
+        public static DateTime GetSystemMaxDate()
+        {
+            return DateTime.MaxValue;
+        }
+
+        public static DateTime GetDatabaseMinDate()
+        {
+            return SqlDateTime.MinValue.Value;
+        }
+
+        public static DateTime GetDatabaseMaxDate()
+        {
+            return SqlDateTime.MaxValue.Value;
         }
 
         public static IEnumerable<SystemTimeZone> GetAllTimeZone()

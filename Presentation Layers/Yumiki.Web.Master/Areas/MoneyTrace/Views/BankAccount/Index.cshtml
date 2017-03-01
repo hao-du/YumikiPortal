@@ -1,0 +1,313 @@
+﻿@using Yumiki.Web.MoneyTrace.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Commons.Helpers;
+@using Yumiki.Entity.MoneyTrace;
+@{
+    ViewBag.Title = "Bank Account";
+}
+
+@section Script{
+    <script type="text/javascript">
+
+        //Declare constant variables.
+        var showActiveBankAccountString = 'Show Active Account';
+        var showInactiveBankAccountString = 'Show Inactive Account';
+
+        var app = angular.module('bankAccount', ['ui.bootstrap', 'yumiki-module']);
+
+        //Service to transfer data between controllers.
+        app.factory('DataTransfer', function () {
+            return { bankAccountID: '' };
+        });
+
+        //Service to communicate with Server.
+        app.service('DataService', function ($http) {
+            this.getBankAccounts = function (showInactive, currentPage, itemsPerPage) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankAccountGetAll, null)', { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
+            };
+
+            this.getBankAccountByID = function (bankAccountID) {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankAccountGetByID, null)', { params: { 'bankAccountID': bankAccountID } });
+            };
+
+            this.save = function (bankAccount) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.BankAccountSave, null)', bankAccount);
+            };
+
+            this.getBanks = function () {
+                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
+            };
+        });
+
+        //Controller to display items' list
+        app.controller('bankAccountController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            $scope.inactiveButtonName = showInactiveBankAccountString;
+
+            //To determine when load active or inactive list.
+            $scope.isStatusChanged = false;
+
+            //For paging
+            $scope.viewby = 20;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.maxSize = 5; //Number of pager buttons to show
+
+            //Display Dialog and pass data to Dialog.
+            $scope.showDialog = function (bankAccountID) {
+                //Call DialogController
+                $rootScope.$broadcast("OnLoad", bankAccountID);
+            }
+
+            //Event for other controllers to reload data.
+            $rootScope.$on('OnReloadData', function (event) {
+                $scope.loadData();
+            });
+
+            //Load active or inactive list.
+            $scope.loadData = function () {
+                var showInactive = true;
+                if ($scope.inactiveButtonName == showInactiveBankAccountString) {
+                    showInactive = false;
+                }
+
+                if ($scope.isStatusChanged) {
+                    showInactive = !showInactive;
+                }
+
+                $(this).showLoadingBar();
+                DataService.getBankAccounts(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
+                    function mySucces(response) {
+                        $scope.bankAccounts = response.data.Records;
+                        $scope.currentPage = response.data.CurrentPage;
+                        $scope.totalItems = response.data.TotalItems;
+                        $scope.itemsPerPage = response.data.ItemsPerPage;
+
+                        if ($scope.isStatusChanged) {
+                            if ($scope.inactiveButtonName == showInactiveBankAccountString) {
+                                $scope.inactiveButtonName = showActiveBankAccountString;
+                            } else {
+                                $scope.inactiveButtonName = showInactiveBankAccountString;
+                            }
+                            $scope.isStatusChanged = false;
+                        }
+                        $(this).hideLoadingBar();
+                    }, function myError(response) {
+                        $scope.isStatusChanged = false;
+                        $(this).hideLoadingBar();
+
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            };
+
+            //When click on "ShowInActiveButton", reload data with active status.
+            $scope.loadDataWithStatus = function () {
+                $scope.isStatusChanged = true;
+                $scope.loadData();
+            }
+        });
+
+        //Controller to display dialog
+        app.controller('bankAccountDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            $scope.bankAccountID = undefined;
+            $scope.isActiveCheckboxDisabled = false;
+
+            //Used to be called by other controllers.
+            $rootScope.$on('OnLoad', function (event, bankAccountID) {
+                $('#dlgBankAccount').modal({ backdrop: 'static' });
+
+                if (bankAccountID != undefined && bankAccountID != null) {
+                    $scope.bankAccountID = bankAccountID;
+                    $scope.isActiveCheckboxDisabled = false;
+                    $scope.dialogTitle = "Edit Account";
+
+                    $(this).showLoadingBar();
+
+                    DataService.getBankAccountByID($scope.bankAccountID)
+                        .then(function mySucces(response) {
+                            $scope.bankAccount = response.data;
+                            $(this).hideLoadingBar();
+
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+
+                } else {
+                    $scope.dialogTitle = "New Account";
+                    $scope.isActiveCheckboxDisabled = true;
+
+                    $scope.bankAccount = $scope.resetBankAccount();
+                }
+            });
+
+            //Reset object in new mode.
+            $scope.resetBankAccount = function () {
+                $scope.bankAccountForm.$setPristine();
+                return {
+                    '@CommonProperties.ID': undefined,
+                    '@TB_BankAccount.FieldName.AccountNumber': '',
+                    '@TB_BankAccount.FieldName.WithdrawDate': '',
+                    '@TB_BankAccount.FieldName.DepositDate  ': '',
+                    '@TB_BankAccount.FieldName.BankID': '',
+                    '@TB_BankAccount.FieldName.Interest': 0,
+                    '@CommonProperties.IsActive': true,
+                    '@CommonProperties.Descriptions': ''
+                };
+            }
+
+            //Save new or update object
+            $scope.save = function (isValid) {
+                if (isValid) {
+
+                    $(this).showLoadingBar();
+
+                    DataService.save($scope.bankAccount)
+                        .then(function mySucces(response) {
+                            $scope.bankAccountID = undefined;
+                            $('#dlgBankAccount').modal('hide');
+
+                            $scope.ReloadData();
+                        }, function myError(response) {
+                            $(this).hideLoadingBar();
+
+                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        });
+                }
+            };
+
+            //After saving, reload list.
+            $scope.ReloadData = function () {
+                $rootScope.$broadcast("OnReloadData");
+            };
+
+            // Bind datasource to controls such as Dropdownlist
+            $scope.bindControls = function () {
+                DataService.getBanks().then(
+                    function mySucces(response) {
+                        $scope.banks = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            }
+        });
+    </script>
+}
+<div ng-app="bankAccount">
+    <div class="container" ng-controller="bankAccountController" ng-init="loadData();">
+        <h2>Bank Account</h2>
+        <div class="well well-sm">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table id="tblBankAccount" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Deposit Date</th>
+                                <th>Bank Name</th>
+                                <th>Descriptions</th>
+                                <th>Modify Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="bankAccount in bankAccounts">
+                                <td>{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
+                                <td>{{ bankAccount.@TB_BankAccount.FieldName.DepositDateUI }}</td>
+                                <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
+                                <td>{{ bankAccount.@CommonProperties.Descriptions }}</td>
+                                <td>{{ bankAccount.@CommonProperties.LastUpdateDateUI }}</td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(bankAccount.@CommonProperties.ID);">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgBankAccount" class="modal fade" role="dialog" ng-controller="bankAccountDialogController" ng-init="bindControls();">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="bankAccountForm" ng-submit="save(bankAccountForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.accountNumber.$invalid }">
+                            <label>Account Number</label>
+                            <input type="text" name="accountNumber" ng-model="bankAccount.@TB_BankAccount.FieldName.AccountNumber" class="form-control" ng-required="true" />
+                            <p ng-show="bankAccountForm.accountNumber.$error.required && bankAccountForm.accountNumber.$dirty" class="help-block">Account Number Name is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.bank.$invalid }">
+                            <label>Bank</label>
+                            <select class="form-control selectpicker" name="bank" ng-required="true"
+                                    ng-model="bankAccount.@TB_BankAccount.FieldName.BankID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="bankAccountForm.bank.$error.required && bankAccountForm.bank.$dirty" class="help-block">Bank is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.depositDate.$invalid }">
+                            <label>Deposit Date</label>
+                            <div datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" class='input-group date input-datepicker' ng-model="bankAccount.@TB_BankAccount.FieldName.DepositDate">
+                                <input id='dtpDepositDate' type="text" name="depositDate" ng-model="bankAccount.@TB_BankAccount.FieldName.DepositDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                </span>
+                            </div>
+                            <p ng-show="bankAccountForm.depositDate.$error.required && bankAccountForm.depositDate.$dirty" class="help-block">Deposit Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.withdrawDate.$invalid }">
+                            <label>Withdraw Date</label>
+                            <div datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" class='input-group date input-datepicker' ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate">
+                                <input id='dtpWithdrawDate' type="text" name="withdrawDate" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate" class="form-control" ng-required="true" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                </span>
+                            </div>
+                            <p ng-show="bankAccountForm.withdrawDate.$error.required && bankAccountForm.withdrawDate.$dirty" class="help-block">Withdraw Date is required.</p>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.interest.$invalid }">
+                            <label>Interest</label>
+                            <input type="text" name="interest" ng-model="bankAccount.@TB_BankAccount.FieldName.Interest" class="form-control text-align-right" />
+                            <div class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.Interest | number:2 }}</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="bankAccount.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <span class="checkbox">
+                                <input type="checkbox" ng-model="bankAccount.@CommonProperties.IsActive" ng-checked="bankAccount.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                                <label>Is Active</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" ng-disabled="bankAccountForm.$invalid">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

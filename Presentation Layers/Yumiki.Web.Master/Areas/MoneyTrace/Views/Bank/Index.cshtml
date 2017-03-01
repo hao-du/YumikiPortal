@@ -11,7 +11,7 @@
         var showActiveBankString = 'Show Active Bank';
         var showInactiveBankString = 'Show Inactive Bank';
 
-        var app = angular.module('moneyTrace', []);
+        var app = angular.module('bank', ['ui.bootstrap']);
 
         //Service to transfer data between controllers.
         app.factory('DataTransfer', function () {
@@ -20,7 +20,7 @@
 
         //Service to communicate with Server.
         app.service('DataService', function ($http) {
-            this.getBanks = function (showInactive) {
+            this.getBanks = function (showInactive, currentPage, itemsPerPage) {
                 return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAll, null)', { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
             };
 
@@ -41,7 +41,7 @@
             $scope.isStatusChanged = false;
 
             //For paging
-            $scope.viewby = 1;
+            $scope.viewby = 20;
             $scope.itemsPerPage = $scope.viewby;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
@@ -70,7 +70,7 @@
                 }
 
                 $(this).showLoadingBar();
-                DataService.getBanks(showInactive).then(
+                DataService.getBanks(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
                     function mySucces(response) {
                         $scope.banks = response.data.Records;
                         $scope.currentPage = response.data.CurrentPage;
@@ -172,7 +172,7 @@
         });
     </script>
 }
-<div ng-app="moneyTrace">
+<div ng-app="bank">
     <div class="container" ng-controller="bankController" ng-init="loadData();">
         <h2>Bank</h2>
         <div class="well well-sm">
@@ -209,7 +209,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
             </div>
         </div>
     </div>

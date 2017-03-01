@@ -34,9 +34,13 @@ namespace Yumiki.Entity.MoneyTrace
 
         public Guid? BankID { get; set; }
 
+        public Guid? BankAccountID { get; set; }
+
         public virtual TB_Bank Bank { get; set; }
 
         public virtual TB_Currency Currency { get; set; }
+
+        public virtual TB_BankAccount BankAccount { get; set; }
 
         public virtual TB_User User { get; set; }
 

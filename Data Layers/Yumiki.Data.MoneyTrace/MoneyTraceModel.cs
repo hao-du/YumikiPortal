@@ -15,6 +15,7 @@ namespace Yumiki.Data.MoneyTrace
         }
 
         public virtual DbSet<TB_Bank> TB_Bank { get; set; }
+        public virtual DbSet<TB_BankAccount> TB_BankAccount { get; set; }
         public virtual DbSet<TB_Currency> TB_Currency { get; set; }
         public virtual DbSet<TB_Tag> TB_Tag { get; set; }
         public virtual DbSet<TB_Trace> TB_Trace { get; set; }
@@ -27,6 +28,17 @@ namespace Yumiki.Data.MoneyTrace
                 .WithOptional(e => e.Bank)
                 .HasForeignKey(e => e.BankID)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Bank>()
+                .HasMany(e => e.BankAccounts)
+                .WithRequired(e => e.Bank)
+                .HasForeignKey(e => e.BankID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_BankAccount>()
+                .HasMany(e => e.Traces)
+                .WithOptional(e => e.BankAccount)
+                .HasForeignKey(e => e.BankAccountID);
 
             modelBuilder.Entity<TB_Currency>()
                 .HasMany(e => e.Traces)
@@ -43,6 +55,13 @@ namespace Yumiki.Data.MoneyTrace
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.BankAccounts)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.Tags)

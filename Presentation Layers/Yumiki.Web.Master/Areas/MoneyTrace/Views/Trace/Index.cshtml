@@ -12,19 +12,9 @@
         var showActiveTraceString = 'Show Active Traces';
         var showInactiveTraceString = 'Show Inactive Traces';
 
-        var app = angular.module('moneyTrace', ['ui.bootstrap']);
+        var app = angular.module('moneyTrace', ['ui.bootstrap', 'yumiki-module']);
 
         $(document).ready(function () {
-            $('.input-datepicker').datetimepicker({
-                format: '@Formats.DateTime.ClientMomentLongDate',
-                ignoreReadonly: true,
-            });
-
-            $('#divMonth').datetimepicker({
-                viewMode: 'months',
-                format: '@Formats.DateTime.MonthYear'
-            });
-
             //When focus on textbox, highlight all words.
             $("input:text").focus(function() { $(this).select(); } );
 
@@ -83,9 +73,7 @@
                 return $http.get('@Url.HttpRouteUrl(RouteNames.UserGetAll, null)', { params: { 'showInactive': false } });
             };
 
-            this.getTraceList = function (showInactive, isDisplayedAll, currentPage, itemsPerPage) {
-                var datetime = $('#dtpMonth').val();
-                //In case of dtpMonth does not have value, add the default value to it.
+            this.getTraceList = function (datetime, showInactive, isDisplayedAll, currentPage, itemsPerPage) {
                 if(datetime == ''){
                     datetime = moment('@ViewBag.CurrentDate').format('@Formats.DateTime.MonthYear');
                 }
@@ -117,7 +105,7 @@
             $scope.isDisplayedAll = true;
 
             //For paging
-            $scope.viewby = 1;
+            $scope.viewby = 20;
             $scope.itemsPerPage = $scope.viewby;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
@@ -181,7 +169,7 @@
                     });
 
                 //Get all records on right side.
-                DataService.getTraceList(showInactive, $scope.isDisplayedAll, $scope.currentPage, $scope.itemsPerPage).then(
+                DataService.getTraceList($scope.monthFilter, showInactive, $scope.isDisplayedAll, $scope.currentPage, $scope.itemsPerPage).then(
                     function mySucces(response) {
                         $scope.traceList = response.data.Records;
                         $scope.currentPage = response.data.CurrentPage;
@@ -275,8 +263,6 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpNormalTraceDate').val();
 
                     //If amount < 0, it is outcome. Otherwise, it is income trace.
                     if($scope.trace.@TB_Trace.FieldName.Amount >= 0){
@@ -379,8 +365,6 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpBankingTraceDate').val();
 
                     $(this).showLoadingBar();
 
@@ -484,8 +468,6 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpExchangeTraceDate').val();
 
                     $(this).showLoadingBar();
 
@@ -582,8 +564,6 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTransferTraceDate').val();
 
                     $(this).showLoadingBar();
 
@@ -694,8 +674,8 @@
                         </span>
                     </div>
                     <div class="col-md-4 col-md-offset-5">
-                        <div class="input-group date" id="divMonth" ng-show="!isDisplayedAll">
-                            <input id='dtpMonth' type="text" name="traceDate" ng-model="monthFilter" class="form-control" />
+                        <div class="input-group date" datetimepicker datetimeformat="'@Formats.DateTime.MonthYear'" ng-model="monthFilter"  ng-show="!isDisplayedAll">
+                            <input type="text" name="traceDate" ng-model="monthFilter" class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-list-alt"></span>
                             </span>
@@ -752,8 +732,8 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
                             <label>Trace Date</label>
-                            <div class='input-group date input-datepicker'>
-                                <input id='dtpNormalTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
+                                <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
@@ -816,8 +796,8 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
                             <label>Trace Date</label>
-                            <div class='input-group date input-datepicker'>
-                                <input id='dtpBankingTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
+                                <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
@@ -890,8 +870,8 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.traceDate.$invalid }">
                             <label>Trace Date</label>
-                            <div class='input-group date input-datepicker'>
-                                <input id='dtpExchangeTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
+                                <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>
@@ -971,8 +951,8 @@
                     <div class="modal-body">
                         <div class="form-group" ng-class="{ 'has-error' : transferTraceForm.traceDate.$invalid }">
                             <label>Trace Date</label>
-                            <div class='input-group date input-datepicker'>
-                                <input id='dtpTransferTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
+                                <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                 </span>

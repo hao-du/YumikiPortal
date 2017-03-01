@@ -43,9 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DB_Administration\InsertData.sql" />
+    <None Include="DB_MoneyTrace\v.1.0.0.0-Beta04\CreateDatabase.sql" />
     <None Include="DB_MoneyTrace\v.1.0.0.0-Beta03\CreateDatabase.sql" />
     <None Include="DB_Administration\v.1.0.0.0-Beta03\CreateProcedures.sql" />
     <None Include="DB_Administration\v.1.0.0.0-Beta03\CreateDatabase.sql" />
+    <Content Include="DB_MoneyTrace\v.1.0.0.0-Beta04\InsertData.sql" />
     <Content Include="DB_Master\InsertData.sql" />
     <Content Include="DB_MoneyTrace\InsertData.sql" />
     <None Include="DB_MoneyTrace\CreateDatabase.sql" />
