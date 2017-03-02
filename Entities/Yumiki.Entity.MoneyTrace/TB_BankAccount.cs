@@ -25,6 +25,8 @@ namespace Yumiki.Entity.MoneyTrace
 
         public Guid BankID { get; set; }
 
+        public Guid CurrencyID { get; set; }
+
         public string Descriptions { get; set; }
 
         public bool IsActive { get; set; }
@@ -36,6 +38,8 @@ namespace Yumiki.Entity.MoneyTrace
         public virtual TB_Bank Bank { get; set; }
 
         public virtual TB_User User { get; set; }
+
+        public virtual TB_Currency Currency { get; set; }
 
         public virtual ICollection<TB_Trace> Traces { get; set; }
     }

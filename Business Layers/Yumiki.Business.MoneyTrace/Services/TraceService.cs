@@ -25,6 +25,22 @@ namespace Yumiki.Business.MoneyTrace.Services
         }
 
         /// <summary>
+        /// Get Bank Traces
+        /// </summary>
+        /// <param name="bankID">Bank need to obtain the Traces</param>
+        /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
+        /// <returns></returns>
+        public List<TB_Trace> GetBankTrace(Guid bankID, EN_TransactionType type)
+        {
+            if (type != EN_TransactionType.E_INCOME || type != EN_TransactionType.E_OUTCOME)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Transaction Type can only accept 'Income' or 'Outcome'", Logger);
+            }
+
+            return Repository.
+        }
+
+        /// <summary>
         /// Summary the trace to get total amount for each currency, 
         /// </summary>
         /// <param name="userID">User need to retrieved the records.</param>

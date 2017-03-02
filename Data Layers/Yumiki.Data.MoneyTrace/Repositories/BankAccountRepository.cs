@@ -18,8 +18,10 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>List of all active/inactive Bank Accounts.</returns>
         public GetBankAccountResponse<TB_BankAccount> GetAllBankAccounts(GetBankAccountRequest<TB_BankAccount> request)
         {
-            IQueryable<TB_BankAccount> queryable = Context.TB_BankAccount.Where(c => c.IsActive == !request.ShowInactive
-                                                                                    && c.UserID == request.UserID);
+            IQueryable<TB_BankAccount> queryable = Context.TB_BankAccount
+                                                                        .Include(TB_BankAccount.FieldName.Currency)
+                                                                        .Include(TB_BankAccount.FieldName.Bank)
+                                                                        .Where(c => c.IsActive == !request.ShowInactive && c.UserID == request.UserID);
 
             return new GetBankAccountResponse<TB_BankAccount>()
             {
@@ -56,6 +58,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbBankAccount.AccountNumber = bankAccount.AccountNumber;
                 dbBankAccount.UserID = bankAccount.UserID;
                 dbBankAccount.BankID = bankAccount.BankID;
+                dbBankAccount.CurrencyID = bankAccount.CurrencyID;
                 dbBankAccount.DepositDate = bankAccount.DepositDate;
                 dbBankAccount.WithdrawDate = bankAccount.WithdrawDate;
                 dbBankAccount.Interest = bankAccount.Interest;

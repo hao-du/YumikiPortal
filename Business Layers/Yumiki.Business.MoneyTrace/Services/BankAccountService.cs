@@ -73,7 +73,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank is required.", Logger);
             }
 
-            SaveBankAccount(bankAccount);
+            Repository.SaveBankAccount(bankAccount);
         }
     }
 }

@@ -6,6 +6,7 @@
 	[Interest] [decimal](18, 2) NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[BankID] [uniqueidentifier] NOT NULL,
+	[CurrencyID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
@@ -20,6 +21,11 @@ ALTER TABLE [dbo].[TB_BankAccount]  WITH CHECK ADD  CONSTRAINT [FK_TB_BankAccoun
 REFERENCES [dbo].[TB_Bank] ([ID])
 
 ALTER TABLE [dbo].[TB_BankAccount] CHECK CONSTRAINT [FK_TB_BankAccount_TB_Bank]
+
+ALTER TABLE [dbo].[TB_BankAccount]  WITH CHECK ADD  CONSTRAINT [FK_TB_BankAccount_TB_Currency] FOREIGN KEY([CurrencyID])
+REFERENCES [dbo].[TB_Currency] ([ID])
+
+ALTER TABLE [dbo].[TB_BankAccount] CHECK CONSTRAINT [FK_TB_BankAccount_TB_Currency]
 
 ALTER TABLE [dbo].[TB_BankAccount]  WITH CHECK ADD  CONSTRAINT [FK_TB_BankAccount_TB_User] FOREIGN KEY([UserID])
 REFERENCES [dbo].[TB_User] ([ID])

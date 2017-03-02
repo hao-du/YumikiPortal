@@ -43,6 +43,41 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         }
 
         /// <summary>
+        /// Get Bank Traces
+        /// </summary>
+        /// <param name="bankID">Bank need to obtain the Traces</param>
+        /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
+        /// <returns></returns>
+        public List<TB_Trace> GetBankTrace(Guid bankID, EN_TransactionType type)
+        {
+            if (type != EN_TransactionType.E_INCOME || type != EN_TransactionType.E_OUTCOME)
+            {
+                return new List<TB_Trace>();
+            }
+
+            //Example:
+            //Tracces:
+            // 1. Trace 1 | Token 1 | E_Banking
+            // 2. Trace 1 | Token 1 | E_Income
+            // 3. Trace 2 | Token 2 | E_Banking
+            // 4. Trace 2 | Token 2 | E_Outcome
+            // 5. Trace 3 | Token 3 | E_Transfer
+            // 6. Trace 3 | Token 3 | E_Income
+            // 7. Trace 3 | Token 3 | E_Outcome
+            // Filter with E_Income and E_Banking, we have record 1, 2, 3, 6, 7. Then we ground by Token and filter with count of token > 1, we got 1, 2. Finally removing log trace, we get 1.
+            List<TB_Trace> traces = Context.TB_Trace
+                                        .Where(c => c.BankID == bankID
+                                                && (c.TransactionType == EN_TransactionType.E_BANKING || c.TransactionType == type)) //First filter to get list of specific bank and all type E_Banking and param type.
+                                        .GroupBy(c => c.GroupTokenID)
+                                        .Where(c => c.Count() > 1) //This to filter the correct records. If the E_Banking record does not have trace log, it means this is not the E_Banking record we want.
+                                        .SelectMany(c => c.Select(d => d))
+                                        .Where(c => c.TransactionType == EN_TransactionType.E_BANKING && c.IsActive && !c.IsLogTrace) //Remove all trace log records to get only E_Banking type
+                                        .ToList();
+
+            return traces;
+        }
+
+        /// <summary>
         /// Summary the trace to get total amount for each currency, 
         /// </summary>
         /// <param name="userID">User need to retrieved the records.</param>

@@ -46,6 +46,12 @@ namespace Yumiki.Data.MoneyTrace
                 .HasForeignKey(e => e.CurrencyID)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<TB_Currency>()
+                .HasMany(e => e.BankAccounts)
+                .WithRequired(e => e.Currency)
+                .HasForeignKey(e => e.CurrencyID)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<TB_User>()
                 .Property(e => e.UserLoginName)
                 .IsUnicode(false);

@@ -9,6 +9,7 @@ namespace Yumiki.Entity.MoneyTrace
         public TB_Currency()
         {
             Traces = new HashSet<TB_Trace>();
+            BankAccounts = new HashSet<TB_BankAccount>();
         }
 
         public Guid ID { get; set; }
@@ -32,5 +33,7 @@ namespace Yumiki.Entity.MoneyTrace
         public virtual TB_User User { get; set; }
 
         public virtual ICollection<TB_Trace> Traces { get; set; }
+
+        public virtual ICollection<TB_BankAccount> BankAccounts { get; set; }
     }
 }
