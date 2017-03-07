@@ -102,7 +102,7 @@
         app.controller('traceController', function ($scope, $rootScope, $http, DataService) {
             $scope.inactiveButtonName = showInactiveTraceString;
             $scope.monthFilter = moment('@ViewBag.CurrentDate').format('@Formats.DateTime.MonthYear');
-            $scope.isDisplayedAll = true;
+            $scope.isDisplayedAll = false;
 
             //For paging
             $scope.viewby = 20;

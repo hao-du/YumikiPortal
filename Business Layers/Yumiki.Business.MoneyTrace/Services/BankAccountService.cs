@@ -58,6 +58,11 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Account Number is required.", Logger);
             }
 
+            if (bankAccount.Amount == decimal.Zero)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.");
+            }
+
             if (bankAccount.DepositDate == DateTimeExtension.GetSystemMinDate())
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Deposit Date is required.", Logger);

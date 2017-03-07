@@ -42,4 +42,8 @@ REFERENCES [dbo].[TB_BankAccount] ([ID])
 ALTER TABLE [dbo].[TB_Trace] CHECK CONSTRAINT [FK_TB_Trace_TB_BankAccount]
 
 -------------------------------------------------------------------------------------------------------------------------------------
+DELETE FROM [dbo].[TB_BankAccount]
+
+ALTER TABLE [dbo].[TB_BankAccount]
+	ADD Amount DECIMAL(18, 2) NOT NULL
 

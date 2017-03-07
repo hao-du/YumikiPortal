@@ -1,4 +1,4 @@
-﻿--v.1.0.0.0-beta4-----------------------------------------------------------------------------------------------------------------------------------
+﻿--INSERT INTO DB_Administration-----------------------------------------------------------------------------------------------------------------------------------
 
 DECLARE @ExistedRootPrivilegeID UNIQUEIDENTIFIER;
 SELECT @ExistedRootPrivilegeID = ID FROM TB_Privilege WHERE PrivilegeName = 'Money Trace'

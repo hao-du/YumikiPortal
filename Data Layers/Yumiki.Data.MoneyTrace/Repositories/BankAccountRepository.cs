@@ -56,6 +56,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             {
                 TB_BankAccount dbBankAccount = Context.TB_BankAccount.Single(c => c.ID == bankAccount.ID);
                 dbBankAccount.AccountNumber = bankAccount.AccountNumber;
+                dbBankAccount.Amount = bankAccount.Amount;
                 dbBankAccount.UserID = bankAccount.UserID;
                 dbBankAccount.BankID = bankAccount.BankID;
                 dbBankAccount.CurrencyID = bankAccount.CurrencyID;

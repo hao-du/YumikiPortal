@@ -37,7 +37,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Transaction Type can only accept 'Income' or 'Outcome'", Logger);
             }
 
-            return Repository.
+            return Repository.GetBankTrace(bankID, type);
         }
 
         /// <summary>

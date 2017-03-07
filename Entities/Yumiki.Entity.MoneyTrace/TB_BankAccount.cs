@@ -19,6 +19,8 @@ namespace Yumiki.Entity.MoneyTrace
 
         public DateTime WithdrawDate { get; set; }
 
+        public decimal Amount { get; set; }
+
         public decimal? Interest { get; set; }
 
         public Guid UserID { get; set; }
