@@ -30,14 +30,26 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <param name="bankID">Bank need to obtain the Traces</param>
         /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
         /// <returns></returns>
-        public List<TB_Trace> GetBankTrace(Guid bankID, EN_TransactionType type)
+        public List<TB_Trace> GetBankingTraces(string bankID, int type)
         {
-            if (type != EN_TransactionType.E_INCOME || type != EN_TransactionType.E_OUTCOME)
+            if (type != (int)EN_TransactionType.E_INCOME || type != (int)EN_TransactionType.E_OUTCOME)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Transaction Type can only accept 'Income' or 'Outcome'", Logger);
             }
 
-            return Repository.GetBankTrace(bankID, type);
+            if (string.IsNullOrWhiteSpace(bankID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank ID cannot be empty.");
+            }
+
+            Guid convertedBankID = Guid.Empty;
+            Guid.TryParse(bankID, out convertedBankID);
+            if (convertedBankID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Bank ID must be GUID type.");
+            }
+
+            return Repository.GetBankingTraces(convertedBankID, (EN_TransactionType)type);
         }
 
         /// <summary>

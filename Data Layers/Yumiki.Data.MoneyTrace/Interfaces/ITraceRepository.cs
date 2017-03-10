@@ -20,7 +20,7 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <param name="bankID">Bank need to obtain the Traces</param>
         /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
         /// <returns></returns>
-        List<TB_Trace> GetBankTrace(Guid bankID, EN_TransactionType type);
+        List<TB_Trace> GetBankingTraces(Guid bankID, EN_TransactionType type);
 
         /// <summary>
         /// Summary the trace to get total amount for each currency, 

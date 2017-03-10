@@ -48,7 +48,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <param name="bankID">Bank need to obtain the Traces</param>
         /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
         /// <returns></returns>
-        public List<TB_Trace> GetBankTrace(Guid bankID, EN_TransactionType type)
+        public List<TB_Trace> GetBankingTraces(Guid bankID, EN_TransactionType type)
         {
             if (type != EN_TransactionType.E_INCOME || type != EN_TransactionType.E_OUTCOME)
             {
@@ -71,7 +71,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                         .GroupBy(c => c.GroupTokenID)
                                         .Where(c => c.Count() > 1) //This to filter the correct records. If the E_Banking record does not have trace log, it means this is not the E_Banking record we want.
                                         .SelectMany(c => c.Select(d => d))
-                                        .Where(c => c.TransactionType == EN_TransactionType.E_BANKING && c.IsActive && !c.IsLogTrace) //Remove all trace log records to get only E_Banking type
+                                        .Where(c => c.TransactionType == EN_TransactionType.E_BANKING && c.IsActive && !c.IsLogTrace && c.BankAccountID != null) //Remove all trace log records to get only E_Banking type
                                         .ToList();
 
             return traces;

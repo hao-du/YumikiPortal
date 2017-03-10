@@ -40,6 +40,21 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
+        [Route("getbankingtrace", Name = RouteNames.TraceGetBankingTraces)]
+        [HttpGet()]
+        public IHttpActionResult GetBankingTrace(string bankID, int type)
+        {
+            try
+            {
+                List<TB_Trace> traces = BusinessService.GetBankingTraces(bankID, type);
+                return Ok(traces);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("gettotalsummary", Name = RouteNames.TraceGetTotalSummary)]
         [HttpGet()]
         public IHttpActionResult GetTotalSummary()
