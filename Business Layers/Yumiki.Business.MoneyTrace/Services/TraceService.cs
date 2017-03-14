@@ -32,7 +32,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <returns></returns>
         public List<TB_Trace> GetBankingTraces(string bankID, int type)
         {
-            if (type != (int)EN_TransactionType.E_INCOME || type != (int)EN_TransactionType.E_OUTCOME)
+            if (type != (int)EN_TransactionType.E_INCOME && type != (int)EN_TransactionType.E_OUTCOME)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Transaction Type can only accept 'Income' or 'Outcome'", Logger);
             }

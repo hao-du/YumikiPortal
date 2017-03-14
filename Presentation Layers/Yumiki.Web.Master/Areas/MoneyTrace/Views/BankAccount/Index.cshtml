@@ -126,7 +126,23 @@
             $scope.loadDataWithStatus = function () {
                 $scope.isStatusChanged = true;
                 $scope.loadData();
-            }
+            };
+
+            $scope.changeTraceType = function (type, bankAccount){
+                $scope.traceType = type;
+
+                DataService.getBankingTraces(bankAccount.@TB_BankAccount.FieldName.BankID, $scope.traceType).then(
+                    function mySucces(response) {
+                        $scope.traces = response.data;
+                    }, function myError(response) {
+                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                    });
+            };
+
+            //Associate trace to Bank Account
+            $scope.link = function () {
+
+            };
         });
 
         //Controller to display dialog
@@ -201,22 +217,6 @@
                 }
             };
 
-            //Associate trace to Bank Account
-            $scope.link = function () {
-
-            };
-
-            $scope.changeTraceType = function(type){
-                $scope.traceType = type;
-
-                DataService.getBankingTraces($scope.bankAccount.@TB_BankAccount.FieldName.BankID, $scope.traceType).then(
-                    function mySucces(response) {
-                        $scope.traces = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            };
-
             //After saving, reload list.
             $scope.ReloadData = function () {
                 $rootScope.$broadcast("OnReloadData");
@@ -276,10 +276,10 @@
                                             <td>{{ bankAccount.@TB_BankAccount.FieldName.Amount | number:2 }}</td>
                                             <td>{{ bankAccount.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                             <td class="text-align-right ">
-                                                <a ng-if="!bankAccount.@TB_BankAccount.FieldName.HasDepositeReference" href="#pnlTraceList" data-toggle="collapse" data-parent="#accordion" ng-click="changeTraceType('@((int)EN_TransactionType.E_OUTCOME)');">Link to D.Trace</a>
+                                                <a ng-if="!bankAccount.@TB_BankAccount.FieldName.HasDepositeReference" href="#pnlTraceList" data-toggle="collapse" data-parent="#accordion" ng-click="changeTraceType('@((int)EN_TransactionType.E_OUTCOME)', bankAccount);">Link to D.Trace</a>
                                                 <span ng-if="!bankAccount.@TB_BankAccount.FieldName.HasDepositeReference"> | </span>
 
-                                                <a ng-if="!bankAccount.@TB_BankAccount.FieldName.HasWithdrawReference" href="#pnlTraceList" data-toggle="collapse" data-parent="#accordion" ng-click="changeTraceType('@((int)EN_TransactionType.E_INCOME)');">Link to W.Trace</a>
+                                                <a ng-if="!bankAccount.@TB_BankAccount.FieldName.HasWithdrawReference" href="#pnlTraceList" data-toggle="collapse" data-parent="#accordion" ng-click="changeTraceType('@((int)EN_TransactionType.E_INCOME)', bankAccount);">Link to W.Trace</a>
                                                 <span ng-if="!bankAccount.@TB_BankAccount.FieldName.HasWithdrawReference"> | </span>
 
                                                 <a href="#" id="btnEdit" ng-click="showDialog(bankAccount.@CommonProperties.ID);">Edit</a>
@@ -301,7 +301,7 @@
                     <div class="well well-sm">
                         <div class="btn-group">
                             <a class="btn btn-primary" href="#pnlAccountList" data-toggle="collapse" data-parent="#accordion">Back</a>
-                            <button type="button" class="btn btn-primary" ng-click="showDialog();">Link</button>
+                            <button type="button" class="btn btn-primary" ng-click="link();">Link</button>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -317,11 +317,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="bankAccount in bankAccounts">
+                                    <tr ng-repeat="trace in traces">
                                         <td></td>
-                                        <td>{{ bankAccount.@TB_Trace.FieldName.TraceDateUI }}</td>
-                                        <td>{{ bankAccount.@TB_Trace.FieldName.Amount }}</td>
-                                        <td>{{ bankAccount.@TB_Trace.FieldName.CurrencyName }}</td>
+                                        <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
+                                        <td>{{ trace.@TB_Trace.FieldName.Amount }}</td>
+                                        <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
                                     </tr>
                                 </tbody>
                             </table>
