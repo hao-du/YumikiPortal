@@ -39,7 +39,9 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Bank Object</returns>
         public TB_BankAccount GetBankAccount(Guid bankAccountID)
         {
-            return Context.TB_BankAccount.SingleOrDefault(c => c.ID == bankAccountID);
+            return Context.TB_BankAccount.Include(TB_BankAccount.FieldName.Currency)
+                                        .Include(TB_BankAccount.FieldName.Bank)
+                                        .SingleOrDefault(c => c.ID == bankAccountID);
         }
 
         /// <summary>
@@ -63,9 +65,36 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbBankAccount.DepositDate = bankAccount.DepositDate;
                 dbBankAccount.WithdrawDate = bankAccount.WithdrawDate;
                 dbBankAccount.Interest = bankAccount.Interest;
-                dbBankAccount.IsActive = bankAccount.IsActive;
                 dbBankAccount.Descriptions = bankAccount.Descriptions;
             }
+
+            Save();
+        }
+
+        /// <summary>
+        /// Create Bank Account from Trace
+        /// </summary>
+        /// <param name="trace">Banking Trace</param>
+        public void SaveBankAccount(TB_Trace trace)
+        {
+            TB_Trace dbTrace = Context.TB_Trace.Include(TB_Trace.FieldName.BankAccount).SingleOrDefault(c => c.ID == trace.ID);
+
+            TB_BankAccount dbBankAccount = dbTrace.BankAccount;
+            if (dbBankAccount == null)
+            {
+                dbBankAccount = new TB_BankAccount();
+                Context.TB_BankAccount.Add(dbBankAccount);
+
+                dbBankAccount.Descriptions = trace.Descriptions;
+                dbBankAccount.Traces.Add(dbTrace);
+            }
+
+            dbBankAccount.Amount = trace.Amount;
+            dbBankAccount.BankID = trace.BankID.Value;
+            dbBankAccount.DepositDate = trace.TraceDate;
+            dbBankAccount.UserID = trace.UserID;
+            dbBankAccount.CurrencyID = trace.CurrencyID;
+            dbBankAccount.IsActive = trace.IsActive;
 
             Save();
         }

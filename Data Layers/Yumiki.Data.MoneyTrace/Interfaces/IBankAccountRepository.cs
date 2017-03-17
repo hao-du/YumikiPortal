@@ -29,5 +29,11 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// </summary>
         /// <param name="bank">If bank id is empty, then this is new bank. Otherwise, this needs to be updated</param>
         void SaveBankAccount(TB_BankAccount bankAccount);
+
+        /// <summary>
+        /// Create Bank Account from Trace
+        /// </summary>
+        /// <param name="trace">Banking Trace</param>
+        void SaveBankAccount(TB_Trace trace);
     }
 }

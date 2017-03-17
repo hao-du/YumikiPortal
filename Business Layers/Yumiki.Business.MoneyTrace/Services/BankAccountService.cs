@@ -53,24 +53,24 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <param name="bank">If bank id is empty, then this is new bank. Otherwise, this needs to be updated</param>
         public void SaveBankAccount(TB_BankAccount bankAccount)
         {
-            if (string.IsNullOrWhiteSpace(bankAccount.AccountNumber))
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Account Number is required.", Logger);
-            }
-
             if (bankAccount.Amount == decimal.Zero)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.");
             }
 
+            if (bankAccount.Interest.HasValue && bankAccount.Interest.Value < decimal.Zero)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must be greater than zero.");
+            }
+
             if (bankAccount.DepositDate == DateTimeExtension.GetSystemMinDate())
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Deposit Date is required.", Logger);
+                bankAccount.DepositDate = null;
             }
 
             if (bankAccount.WithdrawDate == DateTimeExtension.GetSystemMinDate())
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.", Logger);
+                bankAccount.WithdrawDate = null;
             }
 
             if (bankAccount.BankID == Guid.Empty)
@@ -79,6 +79,15 @@ namespace Yumiki.Business.MoneyTrace.Services
             }
 
             Repository.SaveBankAccount(bankAccount);
+        }
+
+        /// <summary>
+        /// Create Bank Account from Trace
+        /// </summary>
+        /// <param name="trace">Banking Trace</param>
+        public void SaveBankAccount(TB_Trace trace)
+        {
+            Repository.SaveBankAccount(trace);
         }
     }
 }

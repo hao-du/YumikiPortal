@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[TB_BankAccount](
 	[ID] [uniqueidentifier] NOT NULL,
-	[AccountNumber] [nvarchar](50) NOT NULL,
-	[DepositDate] [datetime] NOT NULL,
-	[WithdrawDate] [datetime] NOT NULL,
+	[AccountNumber] [nvarchar](50) NULL,
+	[DepositDate] [datetime] NULL,
+	[WithdrawDate] [datetime] NULL,
 	[Interest] [decimal](18, 2) NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[BankID] [uniqueidentifier] NOT NULL,

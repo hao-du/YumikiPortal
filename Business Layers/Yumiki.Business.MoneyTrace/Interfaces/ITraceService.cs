@@ -15,14 +15,6 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         GetTraceResponse<TB_Trace> GetAllTraces(GetTraceRequest<TB_Trace> request);
 
         /// <summary>
-        /// Get Bank Traces
-        /// </summary>
-        /// <param name="bankID">Bank need to obtain the Traces</param>
-        /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
-        /// <returns></returns>
-        List<TB_Trace> GetBankingTraces(string bankID, int type);
-
-        /// <summary>
         /// Summary the trace to get total amount for each currency, 
         /// </summary>
         /// <param name="userID">User need to retrieved the records.</param>
@@ -47,7 +39,7 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>
-        void SaveTrace(TB_Trace trace);
+        Guid SaveTrace(TB_Trace trace);
 
         /// <summary>
         /// Get tags from keyword.

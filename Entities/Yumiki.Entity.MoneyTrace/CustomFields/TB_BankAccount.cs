@@ -18,7 +18,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return DepositDate.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDate);
+                return DepositDate.HasValue ? DepositDate.Value.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDate) : string.Empty;
             }
         }
 
@@ -26,7 +26,7 @@ namespace Yumiki.Entity.MoneyTrace
         {
             get
             {
-                return CreateDate.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDate);
+                return WithdrawDate.HasValue ? WithdrawDate.Value.GetZonedDateTimeFromUTC().ToString(Formats.DateTime.ShortDate) : string.Empty;
             }
         }
 
@@ -81,14 +81,18 @@ namespace Yumiki.Entity.MoneyTrace
         public class FieldName
         {
             public const string TB_BankAccount = "TB_BankAccount";
-
-            public const string Bank = "Bank";
-            public const string Currency = "Currency";
+            public const string Traces = "Traces";
 
             public const string AccountNumber = "AccountNumber";
             public const string Amount = "Amount";
+
+            public const string Bank = "Bank";
             public const string BankID = "BankID";
+            public const string BankName = "BankName";
+
+            public const string Currency = "Currency";
             public const string CurrencyID = "CurrencyID";
+            public const string CurrencyShortName = "CurrencyShortName";
 
             public const string DepositDate = "DepositDate";
             public const string WithdrawDate = "WithdrawDate";

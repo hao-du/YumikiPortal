@@ -25,34 +25,6 @@ namespace Yumiki.Business.MoneyTrace.Services
         }
 
         /// <summary>
-        /// Get Bank Traces
-        /// </summary>
-        /// <param name="bankID">Bank need to obtain the Traces</param>
-        /// <param name="type">Only filter with E_INCOME and E_OUTCOME</param>
-        /// <returns></returns>
-        public List<TB_Trace> GetBankingTraces(string bankID, int type)
-        {
-            if (type != (int)EN_TransactionType.E_INCOME && type != (int)EN_TransactionType.E_OUTCOME)
-            {
-                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Transaction Type can only accept 'Income' or 'Outcome'", Logger);
-            }
-
-            if (string.IsNullOrWhiteSpace(bankID))
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank ID cannot be empty.");
-            }
-
-            Guid convertedBankID = Guid.Empty;
-            Guid.TryParse(bankID, out convertedBankID);
-            if (convertedBankID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Bank ID must be GUID type.");
-            }
-
-            return Repository.GetBankingTraces(convertedBankID, (EN_TransactionType)type);
-        }
-
-        /// <summary>
         /// Summary the trace to get total amount for each currency, 
         /// </summary>
         /// <param name="userID">User need to retrieved the records.</param>
@@ -131,8 +103,9 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>
-        public void SaveTrace(TB_Trace trace)
+        public Guid SaveTrace(TB_Trace trace)
         {
+            Guid traceID = Guid.Empty;
             if (trace.Amount == decimal.Zero)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.");
@@ -156,14 +129,14 @@ namespace Yumiki.Business.MoneyTrace.Services
                     {
                         throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.");
                     }
-                    SaveTrace(trace, true);
+                    traceID = SaveTrace(trace, true);
                     break;
                 case EN_TransactionType.E_OUTCOME:
                     if (trace.Amount > decimal.Zero)
                     {
                         throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Outcome type.");
                     }
-                    SaveTrace(trace, true);
+                    traceID = SaveTrace(trace, true);
                     break;
                 //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
                 case EN_TransactionType.E_BANKING:
@@ -177,7 +150,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                         trace.GroupTokenID = Guid.NewGuid();
                     }
 
-                    SaveTrace(trace, true);
+                    traceID = SaveTrace(trace, true);
 
                     //Save the backLog record.
                     TB_Trace logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value);
@@ -218,7 +191,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                         trace.GroupTokenID = Guid.NewGuid();
                     }
 
-                    SaveTrace(trace, true);
+                    traceID = SaveTrace(trace, true);
 
                     //Save income backLog record.
                     logTrace = Repository.GetLogTrace(trace.ID, trace.GroupTokenID.Value, EN_TransactionType.E_INCOME);
@@ -260,12 +233,14 @@ namespace Yumiki.Business.MoneyTrace.Services
                         throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Transferred User is required.");
                     }
 
-                    SaveTrace(trace, true);
+                    traceID = SaveTrace(trace, true);
                     break;
             }
+
+            return traceID;
         }
 
-        private void SaveTrace(TB_Trace trace, bool saveTags = true)
+        private Guid SaveTrace(TB_Trace trace, bool saveTags = true)
         {
             if (saveTags && !string.IsNullOrWhiteSpace(trace.Tags))
             {
@@ -290,7 +265,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                     trace.Tags = sb.ToString();
                 }
             }
-            Repository.SaveTrace(trace, saveTags);
+            return Repository.SaveTrace(trace, saveTags);
         }
     }
 }

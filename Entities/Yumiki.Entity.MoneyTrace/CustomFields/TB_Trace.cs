@@ -100,6 +100,7 @@ namespace Yumiki.Entity.MoneyTrace
             public const string Bank = "Bank";
             public const string BankID = "BankID";
             public const string BankName = "BankName";
+            public const string BankAccount = "BankAccount";
 
             public const string Currency = "Currency";
             public const string CurrencyID = "CurrencyID";

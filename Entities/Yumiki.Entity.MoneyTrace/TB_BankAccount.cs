@@ -15,9 +15,9 @@ namespace Yumiki.Entity.MoneyTrace
 
         public string AccountNumber { get; set; }
 
-        public DateTime DepositDate { get; set; }
+        public DateTime? DepositDate { get; set; }
 
-        public DateTime WithdrawDate { get; set; }
+        public DateTime? WithdrawDate { get; set; }
 
         public decimal Amount { get; set; }
 

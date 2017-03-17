@@ -44,6 +44,16 @@ namespace Yumiki.Web.Base
             }
         }
 
+        /// <summary>
+        /// Call another service instance
+        /// </summary>
+        /// <typeparam name="E">Business Service Layer Class</typeparam>
+        /// <returns>Instance of Business Service Layer Class</returns>
+        protected E GetServiceInstance<E>()
+        {
+            return Service.GetInstance<E>();
+        }
+
         private Dependency _service;
         private Dependency Service
         {
