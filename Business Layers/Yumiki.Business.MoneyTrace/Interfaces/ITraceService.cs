@@ -52,6 +52,6 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// Create/Update a banking withdrawing trace and logs from BankAccount
         /// If BankAccount has Interest Amount, create an INCOME trace as well.
         /// </summary>
-        void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> traceRequest, TB_BankAccount bankAccount);
+        void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> bankingTraceRequest, GetTraceRequest<TB_Trace> interestTraceRequest, TB_BankAccount bankAccount);
     }
 }

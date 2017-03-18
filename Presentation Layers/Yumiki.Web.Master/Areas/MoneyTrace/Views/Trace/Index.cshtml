@@ -776,7 +776,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -850,7 +850,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid">Save</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -931,7 +931,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="exchangeTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -1005,7 +1005,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="transferTraceForm.$invalid">Save</button>
+                        <button type="submit" class="btn btn-default" ng-disabled="transferTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </form>

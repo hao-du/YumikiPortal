@@ -139,7 +139,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                GetTraceRequest<TB_Trace> traceRequest = new GetTraceRequest<TB_Trace>
+                GetTraceRequest<TB_Trace> bankingTraceRequest = new GetTraceRequest<TB_Trace>
                 {
                     BankAccountID = item.ID,
                     TransactionType = EN_TransactionType.E_BANKING,
@@ -149,7 +149,16 @@ namespace Yumiki.Web.MoneyTrace.Controllers
                     UserID = CurrentUser.UserID
                 };
 
-                BusinessService.SaveBankingWithdrawingTrace(traceRequest, item);
+                GetTraceRequest<TB_Trace> interestTraceRequest = new GetTraceRequest<TB_Trace>
+                {
+                    BankAccountID = item.ID,
+                    TransactionType = EN_TransactionType.E_INCOME,
+                    GetLogTraceLOnly = false,
+                    EnablePaging = false,
+                    UserID = CurrentUser.UserID
+                };
+
+                BusinessService.SaveBankingWithdrawingTrace(bankingTraceRequest, interestTraceRequest, item);
 
                 return Ok();
             }

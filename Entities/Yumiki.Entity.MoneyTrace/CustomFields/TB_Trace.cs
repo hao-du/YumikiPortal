@@ -55,6 +55,19 @@ namespace Yumiki.Entity.MoneyTrace
             }
         }
 
+        public bool AllowSaving
+        {
+            get
+            {
+                return ID == Guid.Empty ||
+                        !(
+                            IsLogTrace
+                            || (TransactionType == EN_TransactionType.E_INCOME && BankAccountID.HasValue) //Banking Interst Trace
+                            || (TransactionType == EN_TransactionType.E_BANKING && BankAccountID.HasValue && Amount < 0) //Banking Withdraw Trace
+                        );
+            }
+        }
+
         public string TransactionTypeName
         {
             get
@@ -93,7 +106,9 @@ namespace Yumiki.Entity.MoneyTrace
             public const string TraceDate = "TraceDate";
             public const string TraceDateUI = "TraceDateUI";
             public const string Tags = "Tags";
+
             public const string IsLogTrace = "IsLogTrace";
+            public const string AllowSaving = "AllowSaving";
 
             public const string TransferredUserID = "TransferredUserID";
 

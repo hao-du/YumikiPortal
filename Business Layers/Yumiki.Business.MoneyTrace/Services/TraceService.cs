@@ -6,6 +6,7 @@ using Yumiki.Business.Base;
 using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Helpers;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
@@ -162,6 +163,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                     logTrace.Tags = trace.Tags;
                     logTrace.CurrencyID = trace.CurrencyID;
                     logTrace.BankID = trace.BankID;
+                    logTrace.BankAccountID = trace.BankAccountID;
                     logTrace.TraceDate = trace.TraceDate;
                     logTrace.TransactionType = logTrace.Amount < decimal.Zero ? EN_TransactionType.E_OUTCOME : EN_TransactionType.E_INCOME;
                     logTrace.GroupTokenID = trace.GroupTokenID;
@@ -269,17 +271,64 @@ namespace Yumiki.Business.MoneyTrace.Services
         }
 
         /// <summary>
-        /// Create/Update a banking withdrawing trace and logs from BankAccount
+        /// Create/Update a banking withdrawing trace and logs from BankAccount.
+        /// Create INCOME trace if Interest > 0.
         /// </summary>
-        public void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> traceRequest, TB_BankAccount bankAccount)
+        public void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> bankingTraceRequest, GetTraceRequest<TB_Trace> interestTraceRequest, TB_BankAccount bankAccount)
         {
-            IEnumerable<TB_Trace> traces = Repository.GetAllTraces(traceRequest).Records;
+            if(!bankAccount.WithdrawDate.HasValue 
+                || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMinDate()
+                || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMaxDate())
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.");
+            }
+
+            if (interestTraceRequest != null && bankAccount.Interest < decimal.Zero)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must greater than zero.");
+            }
+
+            IEnumerable<TB_Trace> traces = Repository.GetAllTraces(bankingTraceRequest).Records;
 
             TB_Trace bankingTrace = traces.SingleOrDefault(c => c.TransactionType == EN_TransactionType.E_BANKING);
 
             if(bankingTrace == null)
             {
                 bankingTrace = new TB_Trace();
+
+                bankingTrace.TransactionType = EN_TransactionType.E_BANKING;
+                bankingTrace.UserID = bankAccount.UserID;
+                bankingTrace.BankAccountID = bankAccount.ID;
+            }
+
+            bankingTrace.Amount = -bankAccount.Amount;
+            bankingTrace.BankID = bankAccount.BankID;
+            bankingTrace.CurrencyID = bankAccount.CurrencyID;
+            bankingTrace.TraceDate = bankAccount.WithdrawDate.Value;
+            bankingTrace.Descriptions = bankAccount.Descriptions;
+
+            SaveTrace(bankingTrace);
+
+            if(interestTraceRequest != null && bankAccount.Interest > decimal.Zero)
+            {
+                TB_Trace interestTrace = Repository.GetAllTraces(interestTraceRequest).Records.SingleOrDefault();
+
+                if (interestTrace == null)
+                {
+                    interestTrace = new TB_Trace();
+
+                    interestTrace.TransactionType = EN_TransactionType.E_INCOME;
+                    interestTrace.UserID = bankAccount.UserID;
+                    interestTrace.BankAccountID = bankAccount.ID;
+                }
+
+                interestTrace.Amount = bankAccount.Interest.Value;
+                interestTrace.BankID = bankAccount.BankID;
+                interestTrace.CurrencyID = bankAccount.CurrencyID;
+                interestTrace.TraceDate = bankAccount.WithdrawDate.Value;
+                interestTrace.Descriptions = bankAccount.Descriptions;
+
+                SaveTrace(interestTrace);
             }
         }
     }

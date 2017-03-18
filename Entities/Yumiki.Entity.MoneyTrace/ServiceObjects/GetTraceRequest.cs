@@ -16,6 +16,11 @@ namespace Yumiki.Entity.MoneyTrace.ServiceObjects
         public bool IsDisplayedAll { get; set; } = true;
 
         public Guid? BankAccountID { get; set; }
+        
+        /// <summary>
+        /// NULL: Not filter, TRUE: Filter log traces only, FASLE: Filter traces only. 
+        /// </summary>
+        public bool? GetLogTraceLOnly { get; set; } = null;
 
         public EN_TransactionType? TransactionLogType { get; set; }
         public EN_TransactionType? TransactionType { get; set; }

@@ -52,6 +52,11 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 query = query.Where(c => c.TransactionType == request.TransactionLogType.Value);
             }
 
+            if (request.GetLogTraceLOnly.HasValue)
+            {
+                query = query.Where(c => (c.GroupTokenID.HasValue && (c.TransactionType == EN_TransactionType.E_INCOME || c.TransactionType == EN_TransactionType.E_OUTCOME)) == request.GetLogTraceLOnly.Value);
+            }
+
             if (request.GetOnlyGroupRecords)
             {
                 query = query.GroupBy(c => c.GroupTokenID)
@@ -179,6 +184,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbTrace.TransactionType = trace.TransactionType;
                 dbTrace.GroupTokenID = trace.GroupTokenID;
                 dbTrace.BankID = trace.BankID;
+                dbTrace.BankAccountID = trace.BankAccountID;
                 dbTrace.UserID = trace.UserID;
                 dbTrace.TransferredUserID = trace.TransferredUserID;
                 dbTrace.Descriptions = trace.Descriptions;
@@ -201,19 +207,22 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <param name="userID">User who creates tags.</param>
         private void SaveTags(string tags, Guid userID)
         {
-            string[] tagList = tags.Split(new char[] { CommonValues.SeparateCharComma }, StringSplitOptions.RemoveEmptyEntries);
-
-            //From existed tags to get the new tags which are not in db.
-            IEnumerable<TB_Tag> existedTags = Context.TB_Tag.Where(c => tagList.Any(d => d.ToLower() == c.TagName.ToLower())).AsEnumerable();
-            IEnumerable<string> newTags = tagList.Where(c => !existedTags.Any(d => d.TagName.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
-
-            foreach (string tag in newTags)
+            if (!string.IsNullOrWhiteSpace(tags))
             {
-                TB_Tag dbTag = new TB_Tag();
-                dbTag.TagName = tag;
-                dbTag.UserID = userID;
+                string[] tagList = tags.Split(new char[] { CommonValues.SeparateCharComma }, StringSplitOptions.RemoveEmptyEntries);
 
-                Context.TB_Tag.Add(dbTag);
+                //From existed tags to get the new tags which are not in db.
+                IEnumerable<TB_Tag> existedTags = Context.TB_Tag.Where(c => tagList.Any(d => d.ToLower() == c.TagName.ToLower())).AsEnumerable();
+                IEnumerable<string> newTags = tagList.Where(c => !existedTags.Any(d => d.TagName.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
+
+                foreach (string tag in newTags)
+                {
+                    TB_Tag dbTag = new TB_Tag();
+                    dbTag.TagName = tag;
+                    dbTag.UserID = userID;
+
+                    Context.TB_Tag.Add(dbTag);
+                }
             }
         }
 
