@@ -66,6 +66,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbBankAccount.WithdrawDate = bankAccount.WithdrawDate;
                 dbBankAccount.Interest = bankAccount.Interest;
                 dbBankAccount.Descriptions = bankAccount.Descriptions;
+                dbBankAccount.IsActive = bankAccount.IsActive;
             }
 
             Save();
