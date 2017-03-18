@@ -3,6 +3,7 @@
 	[AccountNumber] [nvarchar](50) NULL,
 	[DepositDate] [datetime] NULL,
 	[WithdrawDate] [datetime] NULL,
+	[Tags] [ntext] NULL,
 	[Interest] [decimal](18, 2) NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[BankID] [uniqueidentifier] NOT NULL,

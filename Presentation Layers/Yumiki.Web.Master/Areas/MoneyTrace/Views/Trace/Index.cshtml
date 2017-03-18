@@ -16,7 +16,10 @@
 
         $(document).ready(function () {
             //When focus on textbox, highlight all words.
-            $("input:text").focus(function() { $(this).select(); } );
+            $("input:text").focus(function () { $(this).select(); });
+
+            //Initialise month filter on page start up.
+            $("#txtMonthFilter").val(moment('@ViewBag.CurrentDate').format('@Formats.DateTime.MonthYear'));
 
             //Reference Link: http://jqueryui.com/autocomplete/#multiple
             $('.auto-complete').autocomplete({
@@ -26,34 +29,34 @@
                         url: '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)',
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
-                        data: { keyword: extractLast( request.term ) },
+                        data: { keyword: extractLast(request.term) },
                         success: function (data) {
                             response(data);
                         }
-                    });
-                },
-                search: function() {
-                    // custom minLength
-                    var term = extractLast( this.value );
-                    if ( term.length < 2 ) {
-                        return false;
-                    }
-                },
-                focus: function() {
-                    // prevent value inserted on focus
-                    return false;
-                },
-                select: function( event, ui ) {
-                    var terms = split( this.value );
-                    terms.pop();
-                    // add the selected item
-                    terms.push( ui.item.value );
-                    // add placeholder to get the comma-and-space at the end
-                    terms.push( "" );
-                    this.value = terms.join( "," );
+                });
+            },
+            search: function () {
+                // custom minLength
+                var term = extractLast(this.value);
+                if (term.length < 2) {
                     return false;
                 }
-            });
+            },
+            focus: function () {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function (event, ui) {
+                var terms = split(this.value);
+                terms.pop();
+                // add the selected item
+                terms.push(ui.item.value);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                this.value = terms.join(",");
+                return false;
+            }
+        });
         });
     </script>
 
@@ -195,6 +198,17 @@
 
                         clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
+            };
+
+            $scope.isDisplayAllChange = function() {
+                $scope.currentPage = 1;
+                $scope.loadData();
+            };
+
+            $scope.pagingIndexChange = function() {
+                if ($scope.totalItems > $scope.viewby) {
+                    $scope.loadData();
+                }
             };
 
             //When click on "ShowInActiveButton", reload data with active status.
@@ -669,13 +683,13 @@
                 <div class="row">
                     <div class="col-md-3">
                         <span class="checkbox">
-                            <input type="checkbox" ng-model="isDisplayedAll" ng-checked="isDisplayedAll" ng-change="loadData();" />
+                            <input type="checkbox" ng-model="isDisplayedAll" ng-checked="isDisplayedAll" ng-change="isDisplayAllChange();" />
                             <label>Show All Records</label>
                         </span>
                     </div>
                     <div class="col-md-4 col-md-offset-5">
-                        <div class="input-group date" datetimepicker datetimeformat="'@Formats.DateTime.MonthYear'" ng-show="!isDisplayedAll">
-                            <input type="text" name="traceDate" ng-model="monthFilter"  class="form-control" />
+                        <div class="input-group date" datetimepicker datetimeformat="'@Formats.DateTime.MonthYear'" ng-model="monthFilter"  ng-show="!isDisplayedAll">
+                            <input type="text" id="txtMonthFilter" name="traceDate" ng-model="monthFilter" class="form-control" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-list-alt"></span>
                             </span>
@@ -713,7 +727,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
+                        <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="pagingIndexChange();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
                     </div>
                 </div>
             </div>

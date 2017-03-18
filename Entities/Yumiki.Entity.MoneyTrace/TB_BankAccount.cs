@@ -29,6 +29,8 @@ namespace Yumiki.Entity.MoneyTrace
 
         public Guid CurrencyID { get; set; }
 
+        public string Tags { get; set; }
+
         public string Descriptions { get; set; }
 
         public bool IsActive { get; set; }

@@ -306,6 +306,7 @@ namespace Yumiki.Business.MoneyTrace.Services
             bankingTrace.CurrencyID = bankAccount.CurrencyID;
             bankingTrace.TraceDate = bankAccount.WithdrawDate.Value;
             bankingTrace.Descriptions = bankAccount.Descriptions;
+            bankingTrace.Tags = bankAccount.Tags;
 
             SaveTrace(bankingTrace);
 
@@ -327,6 +328,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 interestTrace.CurrencyID = bankAccount.CurrencyID;
                 interestTrace.TraceDate = bankAccount.WithdrawDate.Value;
                 interestTrace.Descriptions = bankAccount.Descriptions;
+                interestTrace.Tags = bankAccount.Tags;
 
                 SaveTrace(interestTrace);
             }

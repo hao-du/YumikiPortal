@@ -64,6 +64,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                             .SelectMany(c => c);
             }
 
+            int count = query.Count();
             if (request.EnablePaging)
             {
                 query = query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
@@ -74,7 +75,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 Records = query.ToList(),
                 CurrentPage = request.CurrentPage,
                 ItemsPerPage = request.ItemsPerPage,
-                TotalItems = query.Count()
+                TotalItems = count
             };
         }
 

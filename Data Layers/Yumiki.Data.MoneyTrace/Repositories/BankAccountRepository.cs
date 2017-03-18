@@ -94,6 +94,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             dbBankAccount.DepositDate = trace.TraceDate;
             dbBankAccount.UserID = trace.UserID;
             dbBankAccount.CurrencyID = trace.CurrencyID;
+            dbBankAccount.Tags = trace.Tags;
             dbBankAccount.IsActive = trace.IsActive;
 
             Save();
