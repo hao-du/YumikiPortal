@@ -34,9 +34,39 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 query = query.Where(c => startDate <= c.TraceDate && c.TraceDate <= endDate);
             }
 
+            if (request.BankAccountID.HasValue)
+            {
+                query = query.Where(c => c.BankAccountID == request.BankAccountID);
+            }
+
+            if (request.TransactionType.HasValue && request.TransactionLogType.HasValue)
+            {
+                query = query.Where(c => c.TransactionType == request.TransactionType.Value || c.TransactionType == request.TransactionLogType.Value);
+            }
+            else if (request.TransactionType.HasValue)
+            {
+                query = query.Where(c => c.TransactionType == request.TransactionType.Value);
+            }
+            else if (request.TransactionLogType.HasValue)
+            {
+                query = query.Where(c => c.TransactionType == request.TransactionLogType.Value);
+            }
+
+            if (request.GetOnlyGroupRecords)
+            {
+                query = query.GroupBy(c => c.GroupTokenID)
+                            .Where(c => c.Count() > 1)
+                            .SelectMany(c => c);
+            }
+
+            if (request.EnablePaging)
+            {
+                query = query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
+            }
+
             return new GetTraceResponse<TB_Trace>
             {
-                Records = query.OrderBy(c => c.TraceDate).ThenBy(c => c.LastUpdateDate).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage).ToList(),
+                Records = query.ToList(),
                 CurrentPage = request.CurrentPage,
                 ItemsPerPage = request.ItemsPerPage,
                 TotalItems = query.Count()

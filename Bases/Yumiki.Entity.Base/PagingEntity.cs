@@ -8,6 +8,8 @@ namespace Yumiki.Entity.Base
 {
     public abstract class PagingEntity<T> where T : IEntity
     {
+        public bool EnablePaging { get; set; } = true;
+
         public int TotalItems
         {
             get; set;

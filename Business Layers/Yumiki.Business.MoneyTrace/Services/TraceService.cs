@@ -267,5 +267,20 @@ namespace Yumiki.Business.MoneyTrace.Services
             }
             return Repository.SaveTrace(trace, saveTags);
         }
+
+        /// <summary>
+        /// Create/Update a banking withdrawing trace and logs from BankAccount
+        /// </summary>
+        public void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> traceRequest, TB_BankAccount bankAccount)
+        {
+            IEnumerable<TB_Trace> traces = Repository.GetAllTraces(traceRequest).Records;
+
+            TB_Trace bankingTrace = traces.SingleOrDefault(c => c.TransactionType == EN_TransactionType.E_BANKING);
+
+            if(bankingTrace == null)
+            {
+                bankingTrace = new TB_Trace();
+            }
+        }
     }
 }

@@ -46,8 +46,8 @@
                 return $http.post('@Url.HttpRouteUrl(RouteNames.BankAccountSave, null)', bankAccount);
             };
 
-            this.saveTraceViaBankAccount = function (bankAccount) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.TraceSaveViaBankAccount, null)', bankAccount);
+            this.saveBankingWithdrawingTrace = function (bankAccount) {
+                return $http.post('@Url.HttpRouteUrl(RouteNames.SaveBankingWithdrawingTrace, null)', bankAccount);
             };
 
             this.getBanks = function () {
@@ -209,7 +209,7 @@
             $scope.withdraw = function () {
                 $(this).showLoadingBar();
 
-                DataService.saveTraceViaBankAccount($scope.bankAccount)
+                DataService.saveBankingWithdrawingTrace($scope.bankAccount)
                     .then(function mySucces(response) {
                         $scope.bankAccountID = undefined;
                         $('#dlgWithdrawMessageDialog').modal('hide');

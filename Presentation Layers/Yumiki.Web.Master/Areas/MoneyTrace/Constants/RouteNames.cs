@@ -31,6 +31,6 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string TraceGetByID = "TraceGetByID";
         public const string TraceGetTags = "TraceGetTags";
         public const string TraceSave = "TraceSave";
-        public const string TraceSaveViaBankAccount = "TraceSaveViaBankAccount";
+        public const string SaveBankingWithdrawingTrace = "SaveBankingWithdrawingTrace";
     }
 }

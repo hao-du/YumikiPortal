@@ -133,12 +133,23 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("savetraceviabankaccount", Name = RouteNames.TraceSaveViaBankAccount)]
+        [Route("savebankingwithdrawingtrace", Name = RouteNames.SaveBankingWithdrawingTrace)]
         [HttpPost()]
-        public IHttpActionResult SaveTraceViaBankAccount([FromBody] TB_BankAccount item)
+        public IHttpActionResult SaveBankingWithdrawingTrace([FromBody] TB_BankAccount item)
         {
             try
             {
+                GetTraceRequest<TB_Trace> traceRequest = new GetTraceRequest<TB_Trace>
+                {
+                    BankAccountID = item.ID,
+                    TransactionType = EN_TransactionType.E_BANKING,
+                    TransactionLogType = EN_TransactionType.E_INCOME,
+                    GetOnlyGroupRecords = true,
+                    EnablePaging = false,
+                    UserID = CurrentUser.UserID
+                };
+
+                BusinessService.SaveBankingWithdrawingTrace(traceRequest, item);
 
                 return Ok();
             }

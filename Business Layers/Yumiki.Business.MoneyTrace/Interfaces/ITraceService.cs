@@ -47,5 +47,11 @@ namespace Yumiki.Business.MoneyTrace.Interfaces
         /// <param name="keyword">Keyword to filter tag results.</param>
         /// <returns>List of tags after filter.</returns>
         List<string> GetTags(string keyword);
+
+        /// <summary>
+        /// Create/Update a banking withdrawing trace and logs from BankAccount
+        /// If BankAccount has Interest Amount, create an INCOME trace as well.
+        /// </summary>
+        void SaveBankingWithdrawingTrace(GetTraceRequest<TB_Trace> traceRequest, TB_BankAccount bankAccount);
     }
 }
