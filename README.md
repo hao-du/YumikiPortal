@@ -5,7 +5,7 @@
 Yumiki Portal is an web application which is able to integrate multiple kinds of sub-applications into a signle project with well design partern.
 
 ## SYSTEM PRE-REQUISITES: ##
-* Visual Studio 2015 Update 3
+* Visual Studio 2017.1
 * SQL Server 2016
 
 ## TECHNICAL NOTES: ##
