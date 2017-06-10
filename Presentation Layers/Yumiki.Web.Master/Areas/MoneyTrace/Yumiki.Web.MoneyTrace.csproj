@@ -102,9 +102,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Bank\Index.cshtml" />
-    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\MoneyTrace.pubxml" />
     <Content Include="Views\Trace\Index.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />

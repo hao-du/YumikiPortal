@@ -62,7 +62,7 @@
                     showInactive = !showInactive;
                 }
 
-                $(this).showLoadingBar();
+               yumiki.message.displayLoadingDialog(true);
                 DataService.getCurrencyList(showInactive).then(
                     function mySucces(response) {
                         $scope.currencyList = response.data;
@@ -75,12 +75,12 @@
                             }
                             $scope.isStatusChanged = false;
                         }
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
                     }, function myError(response) {
                         $scope.isStatusChanged = false;
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             };
 
@@ -105,17 +105,17 @@
                     $scope.isActiveDisabled = false;
                     $scope.dialogTitle = "Edit Currency";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getCurrencyByID($scope.currencyID)
                         .then(function mySucces(response) {
                             $scope.currency = response.data;
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
@@ -141,7 +141,7 @@
             //Save new or update object
             $scope.save = function (isValid) {
                 if (isValid) {
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
                     DataService.save($scope.currency)
                         .then(function mySucces(response) {
                             $scope.currencyID = undefined;
@@ -149,9 +149,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };

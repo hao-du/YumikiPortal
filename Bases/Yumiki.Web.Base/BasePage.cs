@@ -134,7 +134,7 @@ namespace Yumiki.Web.Base
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message, details, logType.ToString());
+            stringBuilder.AppendFormat("yumiki.message.clientMessage('{0}', '{1}', '{2}');", message, details, logType.ToString());
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }
@@ -155,7 +155,7 @@ namespace Yumiki.Web.Base
             StringBuilder stringBuilder = new StringBuilder();
             string exMessage = Logger.GetExceptionDetails(ex);
 
-            stringBuilder.AppendFormat("clientMessage('{0}', '{1}', '{2}');", message.Replace('\'', CommonValues.HashTag), exMessage.Replace('\'', CommonValues.HashTag), logType.ToString());
+            stringBuilder.AppendFormat("yumiki.message.clientMessage('{0}', '{1}', '{2}');", message.Replace('\'', CommonValues.HashTag), exMessage.Replace('\'', CommonValues.HashTag), logType.ToString());
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Message", stringBuilder.ToString(), true);
         }

@@ -29,7 +29,7 @@
                         url: '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)',
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
-                        data: { keyword: extractLast(request.term) },
+                        data: { keyword: yumiki.jquery.extractLast(request.term) },
                         success: function (data) {
                             response(data);
                         }
@@ -37,7 +37,7 @@
             },
             search: function () {
                 // custom minLength
-                var term = extractLast(this.value);
+                var term = yumiki.jquery.extractLast(this.value);
                 if (term.length < 2) {
                     return false;
                 }
@@ -151,7 +151,7 @@
                     showInactive = !showInactive;
                 }
 
-                $(this).showLoadingBar();
+               yumiki.message.displayLoadingDialog(true);
 
                 //Get total amount summary trace on left side.
                 DataService.getTotalSummaryTraces().then(
@@ -159,7 +159,7 @@
                         $scope.traceTotalSummaryList = response.data;
                     },
                     function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 //Get banking summary trace on left side.
@@ -168,7 +168,7 @@
                         $scope.traceBankingSummaryList = response.data;
                     },
                     function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 //Get all records on right side.
@@ -188,15 +188,15 @@
                             $scope.isStatusChanged = false;
                         }
 
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
                     },
                     function myError(response) {
                         $scope.isStatusChanged = false;
 
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             };
 
@@ -235,7 +235,7 @@
                     $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Trace";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getTraceByID($scope.traceID)
                         .then(function mySucces(response) {
@@ -244,12 +244,12 @@
                             //Format date to display on TraceDate input
                             $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
@@ -286,7 +286,7 @@
                         $scope.trace.@TB_Trace.FieldName.TransactionType = @((int)EN_TransactionType.E_OUTCOME);
                     }
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
                     DataService.save($scope.trace)
                         .then(function mySucces(response) {
                             $scope.traceID = undefined;
@@ -294,9 +294,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -312,7 +312,7 @@
                     function mySucces(response) {
                         $scope.currencyList = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             }
         });
@@ -334,7 +334,7 @@
                     $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Banking Trace";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getTraceByID($scope.traceID)
                         .then(
@@ -344,13 +344,13 @@
                                 //Format date to display on TraceDate input
                                 $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
-                                $(this).hideLoadingBar();
+                               yumiki.message.displayLoadingDialog(false);
 
                             },
                             function myError(response) {
-                                $(this).hideLoadingBar();
+                               yumiki.message.displayLoadingDialog(false);
 
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                                yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                             });
 
                 } else {
@@ -380,7 +380,7 @@
             $scope.save = function (isValid) {
                 if (isValid) {
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.save($scope.trace)
                         .then(function mySucces(response) {
@@ -389,9 +389,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -407,14 +407,14 @@
                     function mySucces(response) {
                         $scope.currencyList = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 DataService.getBanks().then(
                     function mySucces(response) {
                         $scope.banks = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             }
         });
@@ -436,7 +436,7 @@
                     $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Exchange Trace";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getTraceByID($scope.traceID)
                         .then(
@@ -446,13 +446,13 @@
                                 //Format date to display on TraceDate input
                                 $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
-                                $(this).hideLoadingBar();
+                               yumiki.message.displayLoadingDialog(false);
 
                             },
                             function myError(response) {
-                                $(this).hideLoadingBar();
+                               yumiki.message.displayLoadingDialog(false);
 
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                                yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                             });
 
                 } else {
@@ -483,7 +483,7 @@
             $scope.save = function (isValid) {
                 if (isValid) {
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.save($scope.trace)
                         .then(
@@ -495,9 +495,9 @@
                                 $scope.ReloadData();
                             },
                             function myError(response) {
-                                $(this).hideLoadingBar();
+                               yumiki.message.displayLoadingDialog(false);
 
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                                yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -513,7 +513,7 @@
                     function mySucces(response) {
                         $scope.currencyList = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             }
         });
@@ -535,7 +535,7 @@
                     $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Transfer Trace";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getTraceByID($scope.traceID)
                         .then(function mySucces(response) {
@@ -544,12 +544,12 @@
                             //Format date to display on TraceDate input
                             $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@Formats.DateTime.ClientMomentLongDate');
 
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
@@ -579,7 +579,7 @@
             $scope.save = function (isValid) {
                 if (isValid) {
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.save($scope.trace)
                         .then(function mySucces(response) {
@@ -588,9 +588,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -606,14 +606,14 @@
                     function mySucces(response) {
                         $scope.currencyList = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 DataService.getUsers().then(
                    function mySucces(response) {
                        $scope.userList = response.data;
                    }, function myError(response) {
-                       clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                       yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                    });
             }
         });

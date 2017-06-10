@@ -96,7 +96,7 @@
                     showInactive = !showInactive;
                 }
 
-                $(this).showLoadingBar();
+               yumiki.message.displayLoadingDialog(true);
                 DataService.getBankAccounts(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
                     function mySucces(response) {
                         $scope.bankAccounts = response.data.Records;
@@ -112,12 +112,12 @@
                             }
                             $scope.isStatusChanged = false;
                         }
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
                     }, function myError(response) {
                         $scope.isStatusChanged = false;
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             };
 
@@ -142,7 +142,7 @@
                     $scope.isActiveCheckboxDisabled = false;
                     $scope.dialogTitle = "Edit Account";
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.getBankAccountByID($scope.bankAccountID)
                         .then(function mySucces(response) {
@@ -150,12 +150,12 @@
 
                             $scope.bankAccount.@TB_BankAccount.FieldName.WithdrawDate = moment($scope.bankAccount.@TB_BankAccount.FieldName.WithdrawDate).format('@Formats.DateTime.ClientMomentLongDate');
 
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
 
                 } else {
@@ -187,7 +187,7 @@
             $scope.save = function (isValid) {
                 if (isValid) {
 
-                    $(this).showLoadingBar();
+                   yumiki.message.displayLoadingDialog(true);
 
                     DataService.save($scope.bankAccount)
                         .then(function mySucces(response) {
@@ -196,9 +196,9 @@
 
                             $scope.ReloadData();
                         }, function myError(response) {
-                            $(this).hideLoadingBar();
+                           yumiki.message.displayLoadingDialog(false);
 
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                         });
                 }
             };
@@ -210,19 +210,19 @@
 
             //Withdraw bank account's amount
             $scope.withdraw = function () {
-                $(this).showLoadingBar();
+               yumiki.message.displayLoadingDialog(true);
 
                 DataService.saveBankingWithdrawingTrace($scope.bankAccount)
                     .then(function mySucces(response) {
                         $scope.bankAccountID = undefined;
 
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
-                        clientMessage("Populated Withdraw Trace.", '', '@Yumiki.Commons.Logging.LogLevel.INFO');
+                        yumiki.message.clientMessage("Populated Withdraw Trace.", '', '@Yumiki.Commons.Logging.LogLevel.INFO');
                     }, function myError(response) {
-                        $(this).hideLoadingBar();
+                       yumiki.message.displayLoadingDialog(false);
 
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 $('#dlgWithdrawMessageDialog').modal('hide');
@@ -239,14 +239,14 @@
                     function mySucces(response) {
                         $scope.banks = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
 
                 DataService.getCurrencyList().then(
                     function mySucces(response) {
                         $scope.currencyList = response.data;
                     }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
+                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
                     });
             }
         });

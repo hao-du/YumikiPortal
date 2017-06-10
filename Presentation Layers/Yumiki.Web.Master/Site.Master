@@ -8,21 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUMIKI PORTAL</title>
 
-    <!--3rd Libraries-->
-    <script src="../../client/scripts/jquery.min.js"></script>
-    <script src="../../client/scripts/jquery-ui.min.js"></script>
-    <script src="../../client/scripts/angular.min.js"></script>
+<!--3rd Libraries-->
+    <link href="~/third-party-clients/styles/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/third-party-clients/styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/third-party-clients/styles/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 
-    <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />
-    <script src="../../client/scripts/bootstrap.min.js"></script>
-    <script src="../../client/scripts/angular-ui-bootstrap.min.js"></script>
-    
-    <link href="~/client/contents/bootstrap-select.min.css" rel="stylesheet" />
-    <script src="../../client/scripts/bootstrap-select.min.js"></script>
+    <script src="../../../third-party-clients/scripts/jquery.min.js"></script>
+    <script src="../../../third-party-clients/scripts/angular.min.js"></script>
+    <script src="../../../third-party-clients/scripts/jquery-ui.min.js"></script>
+    <script src="../../../third-party-clients/scripts/bootstrap.min.js"></script>
+    <script src="../../../third-party-clients/scripts/angular-ui-bootstrap.min.js"></script>
+    <script src="../../../third-party-clients/scripts/moment.min.js"></script>
+    <script src="../../../third-party-clients/scripts/bootstrap-datetimepicker.min.js"></script>
 
     <!--Global Libraries-->
-    <link href="~/client/contents/site.less" rel="stylesheet" />
-    <script src="../../client/scripts/site.js"></script>
+    <link href="~/clients/styles/site.less" rel="stylesheet" />
+    <script src="../../../clients/scripts/site.js"></script>
+    <script src="../../../clients/scripts/yumiki.js"></script>
+    <script src="../../../clients/scripts/yumiki-angular.js"></script>
+    <script src="../../../clients/scripts/yumiki-jquery.js"></script>
+    <script src="../../../clients/scripts/yumiki-menu.js"></script>
+    <script src="../../../clients/scripts/yumiki-message.js"></script>
+    <script src="../../../clients/scripts/yumiki-side-bar.js"></script>
+    <script src="../../../clients/scripts/init.js"></script>
 
     <!--Common client methods-->
     <script type="text/javascript">
@@ -99,7 +107,7 @@
                     <button type="button" class="navbar-btn btn navbar-toggle navbar-toggle-override collapsed" data-toggle="collapse" data-target="#navbarFooter" aria-expanded="false" aria-controls="navbar">
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </button>
-                    <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
+                    <a href="#" class="navbar-btn btn pull-left" onclick="yumiki.sideBar.openNav()">
                         <span class="glyphicon glyphicon-th-large"></span>
                     </a>
                     <p class="navbar-text">
@@ -122,7 +130,7 @@
         </div>
         <!--Side Bar Navigation-->
         <div id="sbnSideBarNav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="javascript:void(0)" class="closebtn" onclick="yumiki.sideBar.closeNav()">&times;</a>
             <a href="#">About</a>
             <a href="#">Services</a>
             <a href="#">Clients</a>
