@@ -1,33 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Yumiki.Web.Administration.User" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
+    <script src="../../../clients/scripts/yumiki-webform-validation.js"></script>
     <script>
-        //Validation for asp.net controls on client side.
-        var startUserValidation = function () {
-            var isValid = true;
-            //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                $(control).closest(".form-group").removeClass("has-error has-feedback");
-            }
-
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                ValidatorValidate(control);
-                if (!control.isvalid) {
-                    isValid = false;
-                    $(control).closest(".form-group").addClass("has-error has-feedback");
-                }
-            }
-
-            if (!isValid) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-
         var initPicker = function () {
             $('.select-picker').selectpicker({
                 style: 'btn-default'
@@ -111,7 +86,7 @@
                     <asp:View runat="server" ID="vwAddEditTab">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnUserSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnUserSave_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -234,7 +209,7 @@
                     <asp:View runat="server" ID="vwResetPassword">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnResetPassword_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsResetPasswordValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />

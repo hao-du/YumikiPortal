@@ -23,40 +23,15 @@
 
     <!--Global Libraries-->
     <link href="~/clients/styles/site.less" rel="stylesheet" />
-    <script src="../../../clients/scripts/site.js"></script>
+
     <script src="../../../clients/scripts/yumiki.js"></script>
+    <script src="../../../clients/scripts/yumiki-webform.js"></script>
     <script src="../../../clients/scripts/yumiki-angular.js"></script>
     <script src="../../../clients/scripts/yumiki-jquery.js"></script>
     <script src="../../../clients/scripts/yumiki-menu.js"></script>
     <script src="../../../clients/scripts/yumiki-message.js"></script>
     <script src="../../../clients/scripts/yumiki-side-bar.js"></script>
     <script src="../../../clients/scripts/init.js"></script>
-
-    <!--Common client methods-->
-    <script type="text/javascript">
-        //Validation for asp.net controls on client side.
-        var startValidation = function () {
-            var isValid = true;
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                ValidatorValidate(control);
-                if (!control.isvalid) {
-                    isValid = false;
-                    $(control).closest(".form-group").addClass("has-error has-feedback");
-
-                } else {
-                    $(control).closest(".form-group").removeClass("has-error has-feedback");
-                }
-            }
-
-            if (!isValid) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-    </script>
 
     <!--Custom Javascript for each modules-->
     <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">

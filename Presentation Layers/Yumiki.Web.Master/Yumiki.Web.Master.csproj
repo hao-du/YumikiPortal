@@ -125,6 +125,8 @@
   <ItemGroup>
     <Content Include="Areas\SampleArea\Sample.aspx" />
     <Content Include="clients\scripts\init.js" />
+    <Content Include="clients\scripts\yumiki-webform.js" />
+    <Content Include="clients\scripts\yumiki-webform-validation.js" />
     <Content Include="clients\scripts\yumiki-angular.js" />
     <Content Include="clients\scripts\yumiki-jquery.js" />
     <Content Include="clients\scripts\yumiki-menu.js" />
