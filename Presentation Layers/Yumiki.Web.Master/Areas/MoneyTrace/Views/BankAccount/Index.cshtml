@@ -19,237 +19,33 @@
         }
     </style>
 
+    <script src="~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js"></script>
+    <script src="~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank-account.js"></script>
+
     <script type="text/javascript">
-
-        //Declare constant variables.
-        var showActiveBankAccountString = 'Show Active Account';
-        var showInactiveBankAccountString = 'Show Inactive Account';
-
-        var app = angular.module('bankAccount', ['ui.bootstrap', 'yumiki-module']);
-
-        //Service to transfer data between controllers.
-        app.factory('DataTransfer', function () {
-            return { bankAccountID: '' };
-        });
-
-        //Service to communicate with Server.
-        app.service('DataService', function ($http) {
-            this.getBankAccounts = function (showInactive, currentPage, itemsPerPage) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankAccountGetAll, null)', { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
-            };
-
-            this.getBankAccountByID = function (bankAccountID) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankAccountGetByID, null)', { params: { 'bankAccountID': bankAccountID } });
-            };
-
-            this.save = function (bankAccount) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.BankAccountSave, null)', bankAccount);
-            };
-
-            this.saveBankingWithdrawingTrace = function (bankAccount) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.SaveBankingWithdrawingTrace, null)', bankAccount);
-            };
-
-            this.getBanks = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
-            };
-
-            this.getCurrencyList = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
-            };
-
-        });
-
-        //Controller to display items' list
-        app.controller('bankAccountController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.inactiveButtonName = showInactiveBankAccountString;
-
-            //To determine when load active or inactive list.
-            $scope.isStatusChanged = false;
-
-            //For paging
-            $scope.viewby = 20;
-            $scope.itemsPerPage = $scope.viewby;
-            $scope.totalItems = 0;
-            $scope.currentPage = 1;
-            $scope.maxSize = 5; //Number of pager buttons to show
-
-            //Display Dialog and pass data to Dialog.
-            $scope.showDialog = function (bankAccountID) {
-                //Call DialogController
-                $rootScope.$broadcast("OnLoad", bankAccountID);
-            }
-
-            //Event for other controllers to reload data.
-            $rootScope.$on('OnReloadData', function (event) {
-                $scope.loadData();
-            });
-
-            //Load active or inactive list.
-            $scope.loadData = function () {
-                var showInactive = true;
-                if ($scope.inactiveButtonName == showInactiveBankAccountString) {
-                    showInactive = false;
-                }
-
-                if ($scope.isStatusChanged) {
-                    showInactive = !showInactive;
-                }
-
-               yumiki.message.displayLoadingDialog(true);
-                DataService.getBankAccounts(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
-                    function mySucces(response) {
-                        $scope.bankAccounts = response.data.Records;
-                        $scope.currentPage = response.data.CurrentPage;
-                        $scope.totalItems = response.data.TotalItems;
-                        $scope.itemsPerPage = response.data.ItemsPerPage;
-
-                        if ($scope.isStatusChanged) {
-                            if ($scope.inactiveButtonName == showInactiveBankAccountString) {
-                                $scope.inactiveButtonName = showActiveBankAccountString;
-                            } else {
-                                $scope.inactiveButtonName = showInactiveBankAccountString;
-                            }
-                            $scope.isStatusChanged = false;
-                        }
-                       yumiki.message.displayLoadingDialog(false);
-                    }, function myError(response) {
-                        $scope.isStatusChanged = false;
-                       yumiki.message.displayLoadingDialog(false);
-
-                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            };
-
-            //When click on "ShowInActiveButton", reload data with active status.
-            $scope.loadDataWithStatus = function () {
-                $scope.isStatusChanged = true;
-                $scope.loadData();
-            };
-        });
-
-        //Controller to display dialog
-        app.controller('bankAccountDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.bankAccountID = undefined;
-            $scope.isActiveCheckboxDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnLoad', function (event, bankAccountID) {
-                $('#dlgBankAccount').modal({ backdrop: 'static' });
-
-                if (bankAccountID != undefined && bankAccountID != null) {
-                    $scope.bankAccountID = bankAccountID;
-                    $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Account";
-
-                   yumiki.message.displayLoadingDialog(true);
-
-                    DataService.getBankAccountByID($scope.bankAccountID)
-                        .then(function mySucces(response) {
-                            $scope.bankAccount = response.data;
-
-                            $scope.bankAccount.@TB_BankAccount.FieldName.WithdrawDate = moment($scope.bankAccount.@TB_BankAccount.FieldName.WithdrawDate).format('@Formats.DateTime.ClientMomentLongDate');
-
-                           yumiki.message.displayLoadingDialog(false);
-
-                        }, function myError(response) {
-                           yumiki.message.displayLoadingDialog(false);
-
-                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-
-                } else {
-                    $scope.dialogTitle = "New Account";
-                    $scope.isActiveCheckboxDisabled = true;
-
-                    $scope.bankAccount = $scope.resetBankAccount();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetBankAccount = function () {
-                $scope.bankAccountForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_BankAccount.FieldName.AccountNumber': '',
-                    '@TB_BankAccount.FieldName.Amount': 0,
-                    '@TB_BankAccount.FieldName.WithdrawDate': '',
-                    '@TB_BankAccount.FieldName.DepositDate  ': '',
-                    '@TB_BankAccount.FieldName.BankID': '',
-                    '@TB_BankAccount.FieldName.CurrencyID': '',
-                    '@TB_BankAccount.FieldName.Interest': 0,
-                    '@CommonProperties.IsActive': true,
-                    '@CommonProperties.Descriptions': ''
-                };
-            }
-
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-
-                   yumiki.message.displayLoadingDialog(true);
-
-                    DataService.save($scope.bankAccount)
-                        .then(function mySucces(response) {
-                            $scope.bankAccountID = undefined;
-                            $('#dlgBankAccount').modal('hide');
-
-                            $scope.ReloadData();
-                        }, function myError(response) {
-                           yumiki.message.displayLoadingDialog(false);
-
-                            yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //Open Withdraw Bank Account dialog
-            $scope.openWithdrawMessageDialog = function () {
-                $('#dlgWithdrawMessageDialog').modal({ backdrop: 'static' });
-            }
-
-            //Withdraw bank account's amount
-            $scope.withdraw = function () {
-               yumiki.message.displayLoadingDialog(true);
-
-                DataService.saveBankingWithdrawingTrace($scope.bankAccount)
-                    .then(function mySucces(response) {
-                        $scope.bankAccountID = undefined;
-
-                       yumiki.message.displayLoadingDialog(false);
-
-                        yumiki.message.clientMessage("Populated Withdraw Trace.", '', '@Yumiki.Commons.Logging.LogLevel.INFO');
-                    }, function myError(response) {
-                       yumiki.message.displayLoadingDialog(false);
-
-                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-
-                $('#dlgWithdrawMessageDialog').modal('hide');
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-
-            // Bind datasource to controls such as Dropdownlist
-            $scope.bindControls = function () {
-                DataService.getBanks().then(
-                    function mySucces(response) {
-                        $scope.banks = response.data;
-                    }, function myError(response) {
-                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-
-                DataService.getCurrencyList().then(
-                    function mySucces(response) {
-                        $scope.currencyList = response.data;
-                    }, function myError(response) {
-                        yumiki.message.clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            }
-        });
+        yumiki.moneyTrace.bankAccount.initBankAccount(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_BankAccount.FieldName.AccountNumber': '',
+                '@TB_BankAccount.FieldName.Amount': 0,
+                '@TB_BankAccount.FieldName.WithdrawDate': '',
+                '@TB_BankAccount.FieldName.DepositDate  ': '',
+                '@TB_BankAccount.FieldName.BankID': '',
+                '@TB_BankAccount.FieldName.CurrencyID': '',
+                '@TB_BankAccount.FieldName.Interest': 0,
+                '@CommonProperties.IsActive': true,
+                '@CommonProperties.Descriptions': ''
+            },
+            '@Url.HttpRouteUrl(RouteNames.BankAccountGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.BankAccountGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.BankAccountSave, null)',
+            '@Url.HttpRouteUrl(RouteNames.SaveBankingWithdrawingTrace, null)',
+            '@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)',
+            '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
+            '@Yumiki.Commons.Logging.LogLevel.INFO',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR',
+            '@Formats.DateTime.ClientMomentLongDate'
+        )
     </script>
 }
 

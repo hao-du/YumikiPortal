@@ -102,6 +102,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\yumiki-money-trace-currency.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-bank-account.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-bank.js" />
+    <Content Include="clients\scripts\yumiki-money-trace.js" />
     <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Bank\Index.cshtml" />

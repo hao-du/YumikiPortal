@@ -10,13 +10,13 @@
             $("#txtDialogTitle").empty();
             switch (logType) {
                 case 'ERROR':
-                    $("#txtDialogTitle").append(constError);
+                    $("#txtDialogTitle").append(yumiki.message.constError);
                     break;
                 case 'INFO':
-                    $("#txtDialogTitle").append(constInfo);
+                    $("#txtDialogTitle").append(yumiki.message.constInfo);
                     break;
                 case 'WARN':
-                    $("#txtDialogTitle").append(constWarn);
+                    $("#txtDialogTitle").append(yumiki.message.constWarn);
                     break;
                 default:
                     $("#txtDialogTitle").append('Message from System...');
@@ -24,7 +24,7 @@
             }
 
             $("#txtMessageDetails").empty();
-            if (details == null || details == undefined || details == "") {
+            if (!details) {
                 $("#btnMessageDetails").hide();
             }
             else {
@@ -35,13 +35,25 @@
             $("#txtMessage").empty();
             if (typeof message == 'string') {
                 $("#txtMessage").append("<p>" + message + "</p>");
+
+                yumiki.message.checkExpiredSession(message);
             }
             else {
                 $("#txtMessage").append("<p>" + message.ExceptionMessage + "</p>");
+
+                //Append the stack trace and other details
+                $("#btnMessageDetails").show();
+                $("#txtMessageDetails").append("<p><b>Exception Type:</b> " + message.ExceptionType + "</p>");
+                $("#txtMessageDetails").append("<p><b>Stack Trace:</b> " + message.StackTrace + "</p>");
+
+                yumiki.message.checkExpiredSession(message.ExceptionMessage);
             }
 
             $("#dlgMessageDialog").modal({ backdrop: 'static' });
+        },
 
+        //Check if session expired.
+        checkExpiredSession : function(message) {
             //If session expired, refresh page to navigate to Login screen.
             if (message.indexOf(yumiki.noSession) >= 0) {
                 location.href = location.href;

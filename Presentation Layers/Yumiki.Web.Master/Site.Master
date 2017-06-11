@@ -136,7 +136,7 @@
                         <div id="txtMessage"></div>
                         <div id="txtDetails" class="panel panel-default collapse">
                             <div class="panel-heading">Details...</div>
-                            <div id="txtMessageDetails" class="panel-body">
+                            <div id="txtMessageDetails" class="panel-body yumiki-panel">
                             </div>
                         </div>
                     </div>
