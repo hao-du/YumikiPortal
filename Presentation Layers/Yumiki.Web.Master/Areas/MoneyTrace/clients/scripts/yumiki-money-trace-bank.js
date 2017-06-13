@@ -7,17 +7,9 @@
         initBank: function (defaultObject, getAllBankUrl, getBankByIdUrl, saveBankUrl, errorLogType) {
             var app = angular.module('bank', ['ui.bootstrap']);
 
-            yumiki.moneyTrace.bank.initFactory(app);
             yumiki.moneyTrace.bank.initService(app, getAllBankUrl, getBankByIdUrl, saveBankUrl);
             yumiki.moneyTrace.bank.initBankListController(app);
             yumiki.moneyTrace.bank.initBankDialogController(app, defaultObject);
-        },
-
-        //Service to transfer data between controllers.
-        initFactory: function (app) {
-            app.factory('DataTransfer', function () {
-                return { bankID: '' };
-            });
         },
 
         //Service to communicate with Server.
@@ -40,7 +32,7 @@
 
         //Controller to display items' list
         initBankListController: function (app) {
-            app.controller('bankController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            app.controller('bankController', function ($scope, $rootScope, $http, DataService) {
                 $scope.inactiveButtonName = yumiki.moneyTrace.bank.showInactiveText;
 
                 //To determine when load active or inactive list.
@@ -110,7 +102,7 @@
 
         initBankDialogController: function (app, defaultObject) {
             //Controller to display dialog
-            app.controller('bankDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            app.controller('bankDialogController', function ($scope, $rootScope, $http, DataService) {
                 $scope.bankID = undefined;
                 $scope.isActiveCheckboxDisabled = false;
 

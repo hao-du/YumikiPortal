@@ -7,17 +7,9 @@
         initCurrency: function (defaultObject, getAllCurrencyUrl, getCurrencyByIdUrl, saveCurrencyUrl, errorLogType) {
             var app = angular.module('currency', ['ui.bootstrap']);
 
-            yumiki.moneyTrace.currency.initFactory(app);
             yumiki.moneyTrace.currency.initService(app, getAllCurrencyUrl, getCurrencyByIdUrl, saveCurrencyUrl);
             yumiki.moneyTrace.currency.initCurrencyListController(app);
             yumiki.moneyTrace.currency.initCurrencyDialogController(app, defaultObject);
-        },
-
-        //Service to transfer data between controllers.
-        initFactory: function (app) {
-            app.factory('DataTransfer', function () {
-                return { currencyID: '' };
-            });
         },
 
         //Service to communicate with Server.
@@ -40,7 +32,7 @@
 
         //Controller to display items' list
         initCurrencyListController: function (app) {
-            app.controller('currencyController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            app.controller('currencyController', function ($scope, $rootScope, $http, DataService) {
                 $scope.inactiveButtonName = yumiki.moneyTrace.currency.showInactiveText;
 
                 //To determine when load active or inactive list.
@@ -100,7 +92,7 @@
 
         //Controller to display dialog
         initCurrencyDialogController: function (app, defaultObject) {
-            app.controller('currencyDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
+            app.controller('currencyDialogController', function ($scope, $rootScope, $http, DataService) {
                 $scope.currencyID = undefined;
                 $scope.isActiveDisabled = false;
 
