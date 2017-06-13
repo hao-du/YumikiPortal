@@ -1,8 +1,12 @@
 ﻿(function (win, doc, $, yumiki) {
     yumiki.jquery = {
         //For jquery ui autocomplete extract terms
+        split: function (val) {
+            return val.split(/,\s*/);
+        },
+
         extractLast: function (term) {
-            return split(term.split(/,\s*/)).pop();
+            return yumiki.jquery.split(term).pop();
         },
     };
 }(window, document, jQuery, yumiki));

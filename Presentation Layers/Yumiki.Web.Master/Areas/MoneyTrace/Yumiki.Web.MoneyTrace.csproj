@@ -102,6 +102,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-transfer.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-exchange.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-controls.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-banking.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-normal.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-list.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace.js" />
     <Content Include="clients\scripts\yumiki-money-trace-currency.js" />
     <Content Include="clients\scripts\yumiki-money-trace-bank-account.js" />
     <Content Include="clients\scripts\yumiki-money-trace-bank.js" />
@@ -113,6 +120,11 @@
     <Content Include="Views\Trace\Index.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="Views\BankAccount\Index.cshtml" />
+    <Content Include="Views\Trace\_NormalTrace.cshtml" />
+    <Content Include="Views\Trace\_BankingTrace.cshtml" />
+    <Content Include="Views\Trace\_ExchangeTrace.cshtml" />
+    <Content Include="Views\Trace\_TransferTrace.cshtml" />
+    <Content Include="Views\Trace\_TraceList.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
