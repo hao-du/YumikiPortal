@@ -1,19 +1,27 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants;
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework;
+
 @{
     ViewBag.Title = "Trace";
 }
 
 @section Script{
-<script src="~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-controls.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-list.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-normal.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js"></script>
-<script src="~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js"></script>
+@MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-controls.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-list.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-normal.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js")
+        .ForceRelease()
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
+
 
     <script type="text/javascript">
         yumiki.moneyTrace.trace.init(

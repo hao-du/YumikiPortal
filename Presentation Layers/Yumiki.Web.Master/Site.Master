@@ -1,5 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Yumiki.Web.Master.Site" %>
 
+<%@ Import Namespace="SquishIt.Framework" %>
+
 <!DOCTYPE html>
 
 <html>
@@ -8,30 +10,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUMIKI PORTAL</title>
 
-<!--3rd Libraries-->
-    <link href="~/third-party-clients/styles/jquery-ui.min.css" rel="stylesheet" />
-    <link href="~/third-party-clients/styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/third-party-clients/styles/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <asp:PlaceHolder runat="server">
+        <!--3rd Libraries-->
+        <%= Bundle.Css()
+        .Add("~/third-party-clients/styles/jquery-ui.min.css")
+        .Add("~/third-party-clients/styles/bootstrap.min.css")
+        .Add("~/third-party-clients/styles/bootstrap-datetimepicker.min.css")
+        .Add("~/clients/styles/site.less")
+        .ForceRelease()
+        .Render("~/cache/yumiki_#.css")
+        %>
 
-    <script src="../../../third-party-clients/scripts/jquery.min.js"></script>
-    <script src="../../../third-party-clients/scripts/angular.min.js"></script>
-    <script src="../../../third-party-clients/scripts/jquery-ui.min.js"></script>
-    <script src="../../../third-party-clients/scripts/bootstrap.min.js"></script>
-    <script src="../../../third-party-clients/scripts/angular-ui-bootstrap.min.js"></script>
-    <script src="../../../third-party-clients/scripts/moment.min.js"></script>
-    <script src="../../../third-party-clients/scripts/bootstrap-datetimepicker.min.js"></script>
-
-    <!--Global Libraries-->
-    <link href="~/clients/styles/site.less" rel="stylesheet" />
-
-    <script src="../../../clients/scripts/yumiki.js"></script>
-    <script src="../../../clients/scripts/yumiki-webform.js"></script>
-    <script src="../../../clients/scripts/yumiki-angular.js"></script>
-    <script src="../../../clients/scripts/yumiki-jquery.js"></script>
-    <script src="../../../clients/scripts/yumiki-menu.js"></script>
-    <script src="../../../clients/scripts/yumiki-message.js"></script>
-    <script src="../../../clients/scripts/yumiki-side-bar.js"></script>
-    <script src="../../../clients/scripts/init.js"></script>
+        <%= Bundle.JavaScript()
+        .Add("~/third-party-clients/scripts/jquery.min.js")
+        .Add("~/third-party-clients/scripts/angular.min.js")
+        .Add("~/third-party-clients/scripts/jquery-ui.min.js")
+        .Add("~/third-party-clients/scripts/bootstrap.min.js")
+        .Add("~/third-party-clients/scripts/angular-ui-bootstrap.min.js")
+        .Add("~/third-party-clients/scripts/moment.min.js")
+        .Add("~/third-party-clients/scripts/bootstrap-datetimepicker.min.js")
+        .Add("~/clients/scripts/yumiki.js")
+        .Add("~/clients/scripts/yumiki-webform.js")
+        .Add("~/clients/scripts/yumiki-angular.js")
+        .Add("~/clients/scripts/yumiki-jquery.js")
+        .Add("~/clients/scripts/yumiki-menu.js")
+        .Add("~/clients/scripts/yumiki-message.js")
+        .Add("~/clients/scripts/yumiki-side-bar.js")
+        .Add("~/clients/scripts/init.js")
+        .ForceRelease()
+        .Render("~/cache/yumiki_#.js")
+        %>
+    </asp:PlaceHolder>
 
     <!--Custom Javascript for each modules-->
     <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">

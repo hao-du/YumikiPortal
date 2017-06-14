@@ -2,6 +2,8 @@
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Commons.Helpers;
 @using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework;
+
 @{
     ViewBag.Title = "Bank Account";
 }
@@ -19,8 +21,13 @@
         }
     </style>
 
-    <script src="~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js"></script>
-    <script src="~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank-account.js"></script>
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank-account.js")
+        .ForceRelease()
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
 
     <script type="text/javascript">
         yumiki.moneyTrace.bankAccount.initBankAccount(
