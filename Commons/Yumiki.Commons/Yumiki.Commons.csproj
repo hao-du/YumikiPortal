@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Comparers\LowerCaseStringComparer.cs" />
     <Compile Include="Comparers\ObjectComparer.cs" />
+    <Compile Include="Database\QueryBuilder.cs" />
     <Compile Include="Dictionaries\Formats.cs" />
     <Compile Include="Dictionaries\SettingNames.cs" />
     <Compile Include="Settings\SystemSettings.cs" />
