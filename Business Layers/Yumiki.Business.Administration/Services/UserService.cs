@@ -7,6 +7,7 @@ using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Security;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Business.Administration.Services
 {
@@ -110,7 +111,7 @@ namespace Yumiki.Business.Administration.Services
         /// <param name="userID">User need to get address details.</param>
         /// <param name="showInactive">Get active or inactive records.</param>
         /// <returns></returns>
-        public List<TB_ContactType> GetAllContacts(string userID, bool showInactive)
+        public List<ContactTypeWithUserAddress> GetAllContacts(string userID, bool showInactive)
         {
             Guid convertedID = CheckandConvertUserID(userID);
 

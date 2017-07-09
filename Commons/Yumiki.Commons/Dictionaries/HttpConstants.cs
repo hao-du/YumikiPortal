@@ -13,6 +13,7 @@ namespace Yumiki.Commons.Dictionaries
             public const string UserLoginName = "UserLoginName";
             public const string UserID = "UserID";
             public const string LastLoginTime = "LastLoginTime";
+            public const string TimeZone = "TimeZone";
         }
 
         public class QueryStrings

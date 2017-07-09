@@ -319,6 +319,11 @@ namespace Yumiki.Web.Administration
         /// <param name="sender">Link Button from tab headers</param>
         private void SwitchPanel(object sender)
         {
+            if(sender == null)
+            {
+                sender = btnGroupListTab;
+            }
+
             mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
             liGroupList.Attributes.Remove("class");
             liUserAssignment.Attributes.Remove("class");
@@ -380,6 +385,8 @@ namespace Yumiki.Web.Administration
             List<TB_Group> groups = BusinessService.GetAllGroups(showInactive);
             rptGroup.DataSource = groups;
             rptGroup.DataBind();
+
+            SwitchPanel(null);
         }
     }
 }

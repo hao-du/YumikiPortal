@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Data.MoneyTrace.Interfaces
 {
     public interface ITraceRepository
     {
         /// <summary>
-        /// Get all active Traces from Database.
+        /// Get all Traces with filters from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Traces or active Traces.</param>
-        /// <returns>List of all active Traces.</returns>
-        List<TB_Trace> GetAllTraces(bool showInactive);
+        /// <param name="request">All criaterias to filters the traces.</param>
+        /// <returns>List of all Traces after filtered.</returns>
+        GetTraceResponse<TB_Trace> GetAllTraces(GetTraceRequest<TB_Trace> request);
+
+        /// <summary>
+        /// Summary the trace to get total amount for each currency, 
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        List<TraceSummary> GetTotalAmount(Guid userID);
+
+        /// <summary>
+        /// Get summary of expense trace for each bank.
+        /// </summary>
+        /// <param name="userID">User need to retrieved the records.</param>
+        /// <returns></returns>
+        List<TraceSummary> GetBankingSummary(Guid userID);
 
         /// <summary>
         /// Get a specific Trace.
@@ -48,6 +59,13 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// Create/Update a Trace
         /// </summary>
         /// <param name="trace">If Trace id is empty, then this is new Trace. Otherwise, this needs to be updated</param>
-        void SaveTrace(TB_Trace trace, bool saveTags = true);
+        Guid SaveTrace(TB_Trace trace, bool saveTags = true);
+
+        /// <summary>
+        /// Get tags from keyword.
+        /// </summary>
+        /// <param name="keyword">Keyword to filter tag results.</param>
+        /// <returns>List of tags after filter.</returns>
+        List<string> GetTags(string keyword);
     }
 }

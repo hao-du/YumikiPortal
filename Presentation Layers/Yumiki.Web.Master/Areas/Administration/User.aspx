@@ -1,35 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Yumiki.Web.Administration.User" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
+    <script src="../../../clients/scripts/yumiki-webform-validation.js"></script>
     <script>
-        //Validation for asp.net controls on client side.
-        var startUserValidation = function () {
-            var isValid = true;
-            //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                $(control).closest(".form-group").removeClass("has-error has-feedback");
-            }
-
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                ValidatorValidate(control);
-                if (!control.isvalid) {
-                    isValid = false;
-                    $(control).closest(".form-group").addClass("has-error has-feedback");
-                }
-            }
-
-            if (!isValid) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-
         var initPicker = function () {
-            $('.selectpicker').selectpicker({
+            $('.select-picker').selectpicker({
                 style: 'btn-default'
             });
         }
@@ -42,7 +17,7 @@
                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
                 <h2>User Management</h2>
                 <ul class="nav nav-tabs">
-                    <li class="active" runat="server" id="liUserList">
+                    <li runat="server" id="liUserList">
                         <asp:LinkButton runat="server" ID="btnUserListTab" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserProcess" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserProcessTab" Text="Add/Edit User" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
@@ -111,7 +86,7 @@
                     <asp:View runat="server" ID="vwAddEditTab">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnUserSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnUserSave_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -121,6 +96,12 @@
                                     <label>Login Name</label>
                                     <asp:TextBox runat="server" ID="txtUserLoginName" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserLoginName" Display="None" ErrorMessage="User Name is required." />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Time Zone</label>
+                                    <asp:DropDownList runat="server" ID="ddlSystemTimeZone" CssClass="form-control select-picker"></asp:DropDownList>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlSystemTimeZone" Display="None" ErrorMessage="Time Zone is required." />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -173,12 +154,12 @@
                                     <div class="panel panel-info">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>'><%# Eval("ContactTypeName") %></a>
+                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>'><%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.ContactTypeName) %></a>
                                             </h4>
                                         </div>
                                         <div id='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' class="panel-collapse collapse in">
                                             <div class="panel-body">
-                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.TB_ContactType.FieldName.SortUserAddresses) %>'>
+                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
                                                     <HeaderTemplate>
                                                         <div class="table-responsive">
                                                             <table class="table table-striped table-bordered">
@@ -228,7 +209,7 @@
                     <asp:View runat="server" ID="vwResetPassword">
                         <div class="well well-sm">
                             <div class="btn-group">
-                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnResetPassword_Click" CausesValidation="true" />
                             </div>
                         </div>
                         <asp:ValidationSummary ID="vsResetPasswordValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
@@ -271,7 +252,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Type</label>
-                                    <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control selectpicker"></asp:DropDownList>
+                                    <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control select-picker"></asp:DropDownList>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlContactType" Display="None" ErrorMessage="Contact Type is required." />
                                 </div>
                                 <div class="form-group">

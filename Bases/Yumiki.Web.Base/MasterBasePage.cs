@@ -1,5 +1,4 @@
-﻿using Yumiki.Commons.Configurations;
-using Yumiki.Commons.Dictionaries;
+﻿using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
@@ -11,33 +10,33 @@ namespace Yumiki.Web.Base
     /// </summary>
     public class MasterBasePage<T> : System.Web.UI.MasterPage
     {
-        private Logger logger;
+        private Logger _logger;
         public Logger Logger
         {
             get
             {
-                if (logger == null)
+                if (_logger == null)
                 {
-                    logger = new Logger(GetType());
+                    _logger = new Logger(GetType());
                 }
-                return logger;
+                return _logger;
             }
         }
 
-        private T businessService;
+        private T _businessService;
         protected T BusinessService
         {
             get
             {
-                if (businessService == null)
+                if (_businessService == null)
                 {
-                    businessService = Service.GetInstance<T>();
+                    _businessService = Service.GetInstance<T>();
                 }
-                return businessService;
+                return _businessService;
             }
         }
 
-        private Dependency service;
+        private Dependency _service;
         /// <summary>
         /// Get Dependency Injection Service
         /// </summary>
@@ -45,26 +44,13 @@ namespace Yumiki.Web.Base
         {
             get
             {
-                if (service == null)
+                if (_service == null)
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
                     string containerName = this.GetType().BaseType.FullName.Split('.')[2];
-                    service = Dependency.GetService(containerName);
+                    _service = Dependency.GetService(containerName);
                 }
-                return service;
-            }
-        }
-
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if (httpSession == null)
-                {
-                    httpSession = new HttpSession(Session);
-                }
-                return httpSession;
+                return _service;
             }
         }
 
@@ -75,11 +61,11 @@ namespace Yumiki.Web.Base
         {
             if (hasQueryString)
             {
-                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
+                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
             }
             else
             {
-                Response.Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage));
+                Response.Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage));
             }
         }
     }

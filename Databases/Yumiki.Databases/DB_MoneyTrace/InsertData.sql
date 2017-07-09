@@ -1,8 +1,8 @@
 ﻿DELETE FROM [DB_MoneyTrace].[dbo].[TB_User]
 
 INSERT INTO [DB_MoneyTrace].[dbo].[TB_User]
-		([ID], [UserLoginName], [FirstName], [LastName], [Descriptions], [IsActive], [CreateDate], [LastUpdateDate])
-SELECT [ID], [UserLoginName], [FirstName], [LastName], [Descriptions], [IsActive], [CreateDate], [LastUpdateDate]
+		([ID], [UserLoginName], [FirstName], [LastName], [TimeZone], [Descriptions], [IsActive], [CreateDate], [LastUpdateDate])
+SELECT [ID], [UserLoginName], [FirstName], [LastName], [TimeZone], [Descriptions], [IsActive], [CreateDate], [LastUpdateDate]
 FROM [DB_Administration].[dbo].[TB_User]
 
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -14,9 +14,12 @@ FROM [DB_Administration].[dbo].[TB_User]
 --VALUES(@MonneyTraceID, 'Money Trace', '/MoneyTrace/', 0, NULL, 'Root of Money Trace Module', 1, GETDATE(), NULL)
 
 --INSERT INTO TB_Privilege
---VALUES(NEWID(), 'Currency', '/MoneyTrace/Currency', 1, @MonneyTraceID, 'Currency Page', 1, GETDATE(), NULL)
+--VALUES(NEWID(), 'Currency', '/MoneyTrace/Currency/Index', 1, @MonneyTraceID, 'Currency Page', 1, GETDATE(), NULL)
 
 --INSERT INTO TB_Privilege
---VALUES(NEWID(), 'Trace', '/MoneyTrace/Trace', 1, @MonneyTraceID, 'Trace Page', 1, GETDATE(), NULL)
+--VALUES(NEWID(), 'Trace', '/MoneyTrace/Trace/Index', 1, @MonneyTraceID, 'Trace Page', 1, GETDATE(), NULL)
+
+--INSERT INTO TB_Privilege
+--VALUES(NEWID(), 'Bank', '/MoneyTrace/Bank/Index', 1, @MonneyTraceID, 'Bank Page', 1, GETDATE(), NULL)
 
 -------------------------------------------------------------------------------------------------------------------------------------

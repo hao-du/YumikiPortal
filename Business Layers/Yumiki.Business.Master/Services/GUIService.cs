@@ -44,7 +44,7 @@ namespace Yumiki.Business.Master.Services
         {
             StringBuilder menu = new StringBuilder();
 
-            string path = CommonValues.HashTag;
+            string path = CommonValues.HashTag.ToString();
             //If the page is Displayable, add a URL to path. Otherwise, user cannot navigate to actual page.
             if (parent.IsDisplayable)
             {
@@ -73,8 +73,8 @@ namespace Yumiki.Business.Master.Services
             }
             else
             {
-                menu.Append("<li class=\"dropdown\">");
-                menu.AppendFormat("<a href=\"{0}\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">{1}<span class=\"caret\"></span></a>",  path, parent.PrivilegeName);
+                menu.Append("<li>");
+                menu.AppendFormat("<a href=\"{0}\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">{1}<span class=\"caret\"></span></a>",  path, parent.PrivilegeName);
                 menu.Append("<ul class=\"dropdown-menu\">");
 
                 foreach (VW_Privilege child in children)

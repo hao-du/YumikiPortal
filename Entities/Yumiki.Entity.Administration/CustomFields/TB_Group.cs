@@ -14,13 +14,15 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToString(DateTimeHelper.ShortDateTime);
+                return LastUpdateDate.HasValue ? DateTimeExtension.GetZonedDateTimeFromUTC(LastUpdateDate.Value).ToString(Formats.DateTime.ShortDateTime) : DateTimeExtension.GetZonedDateTimeFromUTC(CreateDate).ToString(Formats.DateTime.ShortDateTime);
             }
         }
 
         public class FieldName
         {
             public const string GroupName = "GroupName";
+            public const string Users = "Users";
+            public const string Privileges = "Privileges";
         }
     }
 }

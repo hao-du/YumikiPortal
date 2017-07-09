@@ -8,7 +8,7 @@ namespace Yumiki.Entity.Administration
     {
         public TB_ContactType()
         {
-            TB_UserAddress = new HashSet<TB_UserAddress>();
+            UserAddresses = new HashSet<TB_UserAddress>();
         }
 
         public Guid ID { get; set; }
@@ -17,6 +17,6 @@ namespace Yumiki.Entity.Administration
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
-        public virtual ICollection<TB_UserAddress> TB_UserAddress { get; set; }
+        public virtual ICollection<TB_UserAddress> UserAddresses { get; set; }
     }
 }

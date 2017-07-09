@@ -1,169 +1,38 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework;
+
 @{
     ViewBag.Title = "Currency";
 }
 
 @section Script{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-currency.js")
+        .ForceRelease()
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
+
     <script type="text/javascript">
-        //Declare constant variables.
-        var showActiveCurrencyString = 'Show Active Currency';
-        var showInactiveCurrencyString = 'Show Inactive Currency';
-
-        var app = angular.module('moneyTrace', []);
-
-        //Service to transfer data between controllers.
-        app.factory('DataTransfer', function () {
-            return { currencyID: '' };
-        });
-
-        //Service to communicate with Server.
-        app.service('DataService', function ($http) {
-            this.getCurrencyList = function (showInactive) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAll, null)', { params: { 'showInactive': showInactive } });
-            };
-
-            this.getCurrencyByID = function (currencyID) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetByID, null)', { params: { 'currencyID': currencyID } });
-            };
-
-            this.save = function (currency) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.CurrencySave, null)', currency);
-            };
-        });
-
-        //Controller to display items' list
-        app.controller('currencyController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.inactiveButtonName = showInactiveCurrencyString;
-
-            //To determine when load active or inactive list.
-            $scope.isStatusChanged = false;
-
-            //Display Dialog and pass data to Dialog.
-            $scope.showDialog = function (currencyID) {
-                //Call DialogController
-                $rootScope.$broadcast("OnLoad", currencyID);
-            }
-
-            //Event for other controllers to reload data.
-            $rootScope.$on('OnReloadData', function (event) {
-                $scope.loadData();
-            });
-
-            //Load active or inactive list.
-            $scope.loadData = function () {
-                var showInactive = true;
-                if ($scope.inactiveButtonName == showInactiveCurrencyString) {
-                    showInactive = false;
-                }
-
-                if ($scope.isStatusChanged) {
-                    showInactive = !showInactive;
-                }
-
-                $(this).showLoadingBar();
-                DataService.getCurrencyList(showInactive).then(
-                    function mySucces(response) {
-                        $scope.currencyList = response.data;
-
-                        if ($scope.isStatusChanged) {
-                            if ($scope.inactiveButtonName == showInactiveCurrencyString) {
-                                $scope.inactiveButtonName = showActiveCurrencyString;
-                            } else {
-                                $scope.inactiveButtonName = showInactiveCurrencyString;
-                            }
-                            $scope.isStatusChanged = false;
-                        }
-                        $(this).hideLoadingBar();
-                    }, function myError(response) {
-                        $scope.isStatusChanged = false;
-                        $(this).hideLoadingBar();
-
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            };
-
-            //When click on "ShowInActiveButton", reload data with active status.
-            $scope.loadDataWithStatus = function () {
-                $scope.isStatusChanged = true;
-                $scope.loadData();
-            }
-        });
-
-        //Controller to display dialog
-        app.controller('currencyDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.currencyID = undefined;
-            $scope.isActiveDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnLoad', function (event, currencyID) {
-                $('#dlgCurrency').modal({ backdrop: 'static' });
-
-                if (currencyID != undefined && currencyID != null) {
-                    $scope.currencyID = currencyID;
-                    $scope.isActiveDisabled = false;
-                    $scope.dialogTitle = "Edit Currency";
-
-                    $(this).showLoadingBar();
-
-                    DataService.getCurrencyByID($scope.currencyID)
-                        .then(function mySucces(response) {
-                            $scope.currency = response.data;
-                            $(this).hideLoadingBar();
-
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-
-                } else {
-                    $scope.dialogTitle = "New Currency";
-                    $scope.isActiveDisabled = true;
-
-                    $scope.currency = $scope.resetCurrency();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetCurrency = function () {
-                $scope.currencyForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_Currency.FieldName.CurrencyName': '',
-                    '@TB_Currency.FieldName.CurrencyShortName': '',
-                    '@TB_Currency.FieldName.IsShareable': false,
-                    '@CommonProperties.IsActive': true
-                };
-            }
-
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-                    $(this).showLoadingBar();
-                    DataService.save($scope.currency)
-                        .then(function mySucces(response) {
-                            $scope.currencyID = undefined;
-                            $('#dlgCurrency').modal('hide');
-
-                            $scope.ReloadData();
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-        });
+        yumiki.moneyTrace.currency.initCurrency(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Currency.FieldName.CurrencyName': '',
+                '@TB_Currency.FieldName.CurrencyShortName': '',
+                '@TB_Currency.FieldName.IsShareable': false,
+                '@CommonProperties.IsActive': true
+            },
+            '@Url.HttpRouteUrl(RouteNames.CurrencyGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.CurrencyGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.CurrencySave, null)',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
     </script>
 }
-<div ng-app="moneyTrace">
+<div ng-app="currency">
     <div class="container" ng-controller="currencyController" ng-init="loadData();">
         <h2>Currency</h2>
         <div class="well well-sm">

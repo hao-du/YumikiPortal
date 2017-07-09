@@ -1,683 +1,117 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants;
 @using Yumiki.Commons.Dictionaries;
-@using Yumiki.Commons.Helpers;
 @using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework;
+
 @{
     ViewBag.Title = "Trace";
 }
 
 @section Script{
-    <!--Load Trace List-->
-    <script type="text/javascript" title="Load Trace List">
-        //Declare constant variables.
-        var showActiveTraceString = 'Show Active Traces';
-        var showInactiveTraceString = 'Show Inactive Traces';
+@MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-controls.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-list.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-normal.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js")
+        .ForceRelease()
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
 
-        var app = angular.module('moneyTrace', []);
 
-        $(document).ready(function () {
-            $('.date').datetimepicker({
-                format: '@DateTimeHelper.ClientMomentLongDate',
-                ignoreReadonly: true,
-            });
-        });
+    <script type="text/javascript">
+        yumiki.moneyTrace.trace.init(
+            {
+                currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
+                bankGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)',
+                userGetAllUrl: '@Url.HttpRouteUrl(RouteNames.UserGetAll, null)',
+                traceGetAllUrl: '@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)',
+                traceGetTotalSummaryUrl: '@Url.HttpRouteUrl(RouteNames.TraceGetTotalSummary, null)',
+                traceGetBankingSummaryUrl: '@Url.HttpRouteUrl(RouteNames.TraceGetBankingSummary, null)',
+                traceGetByIDUrl: '@Url.HttpRouteUrl(RouteNames.TraceGetByID, null)',
+                traceSaveUrl : '@Url.HttpRouteUrl(RouteNames.TraceSave, null)'
+            },
+            '@ViewBag.CurrentDate',
+            '@Formats.DateTime.MonthYear',
+            '@Formats.DateTime.ClientMomentLongDate',
+            {
+                income: '@((int)EN_TransactionType.E_INCOME)',
+                outcome: '@((int)EN_TransactionType.E_OUTCOME)',
+                banking: '@((int)EN_TransactionType.E_BANKING)',
+                exchange: '@((int)EN_TransactionType.E_EXCHANGE)',
+                transfer: '@((int)EN_TransactionType.E_TRANSFER)'
+            },
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
 
-        //Service to communicate with Server.
-        app.service('DataService', function ($http) {
-            this.getCurrencyList = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
-            };
+        yumiki.moneyTrace.trace.controls.init('@ViewBag.CurrentDate', '@Formats.DateTime.MonthYear', '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)');
 
-            this.getBanks = function () {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAllWithShareableItems, null)', { params: { 'showInactive': false } });
-            };
-
-            this.getTraceList = function (showInactive) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetAll, null)', { params: { 'showInactive': showInactive } });
-            };
-
-            this.getTraceByID = function (traceID) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.TraceGetByID, null)', { params: { 'traceID': traceID } });
-            };
-
-            this.save = function (trace) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.TraceSave, null)', trace);
-            };
-        });
-
-        //Controller to display items' list
-        app.controller('traceController', function ($scope, $rootScope, $http, DataService) {
-            $scope.inactiveButtonName = showInactiveTraceString;
-
-            //To determine when load active or inactive list.
-            $scope.isStatusChanged = false;
-
-            //Display Normal Trace Dialog and pass data to Dialog.
-            $scope.showTraceDialog = function (traceID, transactionType) {
-                //Call DialogController
-                if (transactionType == '@((int)EN_TransactionType.E_INCOME)' || transactionType == '@((int)EN_TransactionType.E_OUTCOME)') {
-                    $rootScope.$broadcast("OnNormalTraceLoad", traceID);
-                }
-                else if(transactionType == '@((int)EN_TransactionType.E_BANKING)'){
-                    $rootScope.$broadcast("OnBankingTraceLoad", traceID);
-                }
-                else if(transactionType == '@((int)EN_TransactionType.E_EXCHANGE)'){
-                    $rootScope.$broadcast("OnExchangeTraceLoad", traceID);
-                }
+        yumiki.moneyTrace.trace.normal.init(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Trace.FieldName.Amount': 0,
+                '@TB_Trace.FieldName.Tags': '',
+                '@TB_Trace.FieldName.CurrencyID': '',
+                '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_INCOME),
+                '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                '@CommonProperties.IsActive': true
             }
+        );
 
-            //Event for other controllers to reload data.
-            $rootScope.$on('OnReloadData', function (event) {
-                $scope.loadData();
-            });
-
-            //Load active or inactive list.
-            $scope.loadData = function () {
-                var showInactive = true;
-                if ($scope.inactiveButtonName == showInactiveTraceString) {
-                    showInactive = false;
-                }
-
-                if ($scope.isStatusChanged) {
-                    showInactive = !showInactive;
-                }
-
-                $(this).showLoadingBar();
-                DataService.getTraceList(showInactive).then(
-                    function mySucces(response) {
-                        $scope.traceList = response.data;
-
-                        if ($scope.isStatusChanged) {
-                            if ($scope.inactiveButtonName == showInactiveTraceString) {
-                                $scope.inactiveButtonName = showActiveTraceString;
-                            } else {
-                                $scope.inactiveButtonName = showInactiveTraceString;
-                            }
-                            $scope.isStatusChanged = false;
-                        }
-
-                        $(this).hideLoadingBar();
-
-                    },
-                    function myError(response) {
-                        $scope.isStatusChanged = false;
-
-                        $(this).hideLoadingBar();
-
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            };
-
-            //When click on "ShowInActiveButton", reload data with active status.
-            $scope.loadDataWithStatus = function () {
-                $scope.isStatusChanged = true;
-                $scope.loadData();
+        yumiki.moneyTrace.trace.banking.init(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Trace.FieldName.Amount': 0,
+                '@TB_Trace.FieldName.Tags': '',
+                '@TB_Trace.FieldName.CurrencyID': '',
+                '@TB_Trace.FieldName.BankName': '',
+                '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_BANKING),
+                '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                '@CommonProperties.IsActive': true
             }
-        });
-    </script>
+        );
 
-    <!--Normal Trace Dialog-->
-    <script type="text/javascript" title="Normal Trace Dialog">
-        //Controller to display dialog
-        app.controller('normalTraceDialogController', function ($scope, $rootScope, $http, DataService) {
-            $scope.traceID = undefined;
-            $scope.isActiveCheckboxDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnNormalTraceLoad', function (event, traceID) {
-                $('#dlgNormalTrace').modal({ backdrop: 'static' });
-
-                if (traceID != undefined && traceID != null) {
-                    $scope.traceID = traceID;
-                    $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Trace";
-
-                    $(this).showLoadingBar();
-
-                    DataService.getTraceByID($scope.traceID)
-                        .then(function mySucces(response) {
-                            $scope.trace = response.data;
-
-                            //Format date to display on TraceDate input
-                            $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
-
-                            $(this).hideLoadingBar();
-
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-
-                } else {
-                    $scope.dialogTitle = "New Trace";
-                    $scope.isActiveCheckboxDisabled = true;
-
-                    $scope.trace = $scope.resetTrace();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetTrace = function () {
-                $scope.traceForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_Trace.FieldName.Amount': 0,
-                    '@TB_Trace.FieldName.Tags': '',
-                    '@TB_Trace.FieldName.CurrencyID': '',
-                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_INCOME),
-                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
-                    '@CommonProperties.IsActive': true
-                };
+        yumiki.moneyTrace.trace.exchange.init(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Trace.FieldName.Amount': 0,
+                '@TB_Trace.FieldName.ExchangeAmount': 0,
+                '@TB_Trace.FieldName.Tags': '',
+                '@TB_Trace.FieldName.CurrencyID': '',
+                '@TB_Trace.FieldName.ExchangeCurrencyID': '',
+                '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_EXCHANGE),
+                '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                '@CommonProperties.IsActive': true
             }
+        );
 
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
-
-                    //If amount < 0, it is outcome. Otherwise, it is income trace.
-                    if($scope.trace.@TB_Trace.FieldName.Amount >= 0){
-                        $scope.trace.@TB_Trace.FieldName.TransactionType = @((int)EN_TransactionType.E_INCOME);
-                    }
-                    else{
-                        $scope.trace.@TB_Trace.FieldName.TransactionType = @((int)EN_TransactionType.E_OUTCOME);
-                    }
-
-                    $(this).showLoadingBar();
-                    DataService.save($scope.trace)
-                        .then(function mySucces(response) {
-                            $scope.traceID = undefined;
-                            $('#dlgNormalTrace').modal('hide');
-
-                            $scope.ReloadData();
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-
-            // Bind datasource to controls such as Dropdownlist
-            $scope.bindControls = function () {
-                DataService.getCurrencyList().then(
-                    function mySucces(response) {
-                        $scope.currencyList = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
+        yumiki.moneyTrace.trace.transfer.init(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Trace.FieldName.Amount': 0,
+                '@TB_Trace.FieldName.Tags': '',
+                '@TB_Trace.FieldName.CurrencyID': '',
+                '@TB_Trace.FieldName.TransferredUserID': '',
+                '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_TRANSFER),
+                '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
+                '@CommonProperties.IsActive': true
             }
-        });
-    </script>
-
-    <!--Banking Trace Dialog-->
-    <script type="text/javascript" title="Banking Trace Dialog">
-        //Controller to display dialog
-        app.controller('bankingTraceDialogController', function ($scope, $rootScope, $http, DataService) {
-            $scope.traceID = undefined;
-            $scope.isActiveCheckboxDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnBankingTraceLoad', function (event, traceID) {
-                $('#dlgBankingTrace').modal({ backdrop: 'static' });
-
-                if (traceID != undefined && traceID != null) {
-                    $scope.traceID = traceID;
-                    $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Banking Trace";
-
-                    $(this).showLoadingBar();
-
-                    DataService.getTraceByID($scope.traceID)
-                        .then(
-                            function mySucces(response) {
-                                $scope.trace = response.data;
-
-                                //Format date to display on TraceDate input
-                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
-
-                                $(this).hideLoadingBar();
-
-                            },
-                            function myError(response) {
-                                $(this).hideLoadingBar();
-
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                            });
-
-                } else {
-                    $scope.dialogTitle = "New Banking Trace";
-                    $scope.isActiveCheckboxDisabled = true;
-
-                    $scope.trace = $scope.resetTrace();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetTrace = function () {
-                $scope.traceForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_Trace.FieldName.Amount': 0,
-                    '@TB_Trace.FieldName.Tags': '',
-                    '@TB_Trace.FieldName.CurrencyID': '',
-                    '@TB_Trace.FieldName.BankName': '',
-                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_BANKING),
-                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
-                    '@CommonProperties.IsActive': true
-                };
-            }
-
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
-
-                    $(this).showLoadingBar();
-
-                    DataService.save($scope.trace)
-                        .then(function mySucces(response) {
-                            $scope.traceID = undefined;
-                            $('#dlgBankingTrace').modal('hide');
-
-                            $scope.ReloadData();
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-
-            // Bind datasource to controls such as Dropdownlist
-            $scope.bindControls = function () {
-                DataService.getCurrencyList().then(
-                    function mySucces(response) {
-                        $scope.currencyList = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-
-                DataService.getBanks().then(
-                    function mySucces(response) {
-                        $scope.banks = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            }
-        });
-    </script>
-
-    <!--Exchange Trace Dialog-->
-    <script type="text/javascript" title="Exchange Trace Dialog">
-        //Controller to display dialog
-        app.controller('exchangeTraceDialogController', function ($scope, $rootScope, $http, DataService) {
-            $scope.traceID = undefined;
-            $scope.isActiveCheckboxDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnExchangeTraceLoad', function (event, traceID) {
-                $('#dlgExchangeTrace').modal({ backdrop: 'static' });
-
-                if (traceID != undefined && traceID != null) {
-                    $scope.traceID = traceID;
-                    $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Exchange Trace";
-
-                    $(this).showLoadingBar();
-
-                    DataService.getTraceByID($scope.traceID)
-                        .then(
-                            function mySucces(response) {
-                                $scope.trace = response.data;
-
-                                //Format date to display on TraceDate input
-                                $scope.trace.@TB_Trace.FieldName.TraceDate = moment($scope.trace.@TB_Trace.FieldName.TraceDate).format('@DateTimeHelper.ClientMomentLongDate');
-
-                                $(this).hideLoadingBar();
-
-                            },
-                            function myError(response) {
-                                $(this).hideLoadingBar();
-
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                            });
-
-                } else {
-                    $scope.dialogTitle = "New Exchange Trace";
-                    $scope.isActiveCheckboxDisabled = true;
-
-                    $scope.trace = $scope.resetTrace();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetTrace = function () {
-                $scope.traceForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_Trace.FieldName.Amount': 0,
-                    '@TB_Trace.FieldName.ExchangeAmount': 0,
-                    '@TB_Trace.FieldName.Tags': '',
-                    '@TB_Trace.FieldName.CurrencyID': '',
-                    '@TB_Trace.FieldName.ExchangeCurrencyID': '',
-                    '@TB_Trace.FieldName.TransactionType': @((int)EN_TransactionType.E_EXCHANGE),
-                    '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate',
-                    '@CommonProperties.IsActive': true
-                };
-            }
-
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-                    //datetimepicker does not work with ng-model, bind data manually.
-                    $scope.trace.@TB_Trace.FieldName.TraceDate = $('#dtpTraceDate').val();
-
-                    $(this).showLoadingBar();
-
-                    DataService.save($scope.trace)
-                        .then(
-                            function mySucces(response) {
-                                $scope.traceID = undefined;
-
-                                $('#dlgExchangeTrace').modal('hide');
-
-                                $scope.ReloadData();
-                            },
-                            function myError(response) {
-                                $(this).hideLoadingBar();
-
-                                clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-
-            // Bind datasource to controls such as Dropdownlist
-            $scope.bindControls = function () {
-                DataService.getCurrencyList().then(
-                    function mySucces(response) {
-                        $scope.currencyList = response.data;
-                    }, function myError(response) {
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            }
-        });
+        );
     </script>
 }
 
 <div ng-app="moneyTrace">
-    <div class="container" ng-controller="traceController" ng-init="loadData();">
-        <h2>Trace</h2>
-        <div class="well well-sm">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
-                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
-                <button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table id="tblTrace" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Currency</th>
-                                <th>Descriptions</th>
-                                <th>Active Status</th>
-                                <th>Modify Date</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="trace in traceList">
-                                <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
-                                <td>{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
-                                <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
-                                <td>{{ trace.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ trace.@CommonProperties.IsActive }}" disabled="disabled" /></td>
-                                <td>{{ trace.@CommonProperties.LastUpdateDateUI }}</td>
-                                <td><a href="#" id="btnEdit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);">Edit</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_TraceList")
 
-    <!-- Normal Trace Modal -->
-    <div id="dlgNormalTrace" class="modal fade" role="dialog" ng-controller="normalTraceDialogController" ng-init="bindControls();">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{ dialogTitle }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
-                            <label>Trace Date</label>
-                            <div class='input-group date'>
-                                <input id='dtpTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                            <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                        </div>
+    @Html.Partial("_NormalTrace")
 
-                        <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
-                            <label>Amount</label>
-                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
-                            <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
-                        </div>
+    @Html.Partial("_BankingTrace")
 
-                        <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
-                            <label>Currency</label>
-                            <select class="form-control selectpicker" name="currency" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
-                        </div>
+    @Html.Partial("_ExchangeTrace")
 
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                <label>Is Active</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Banking Trace Modal -->
-    <div id="dlgBankingTrace" class="modal fade" role="dialog" ng-controller="bankingTraceDialogController" ng-init="bindControls();">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <form name="bankingTraceForm" ng-submit="save(bankingTraceForm.$valid)" novalidate>
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{ dialogTitle }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
-                            <label>Trace Date</label>
-                            <div class='input-group date'>
-                                <input id='dtpTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                            <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.amount.$invalid }">
-                            <label>Amount</label>
-                            <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
-                            <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.currency.$invalid }">
-                            <label>Currency</label>
-                            <select class="form-control selectpicker" name="currency" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="help-block">Currency is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.bank.$invalid }">
-                            <label>Currency</label>
-                            <select class="form-control selectpicker" name="bank" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.BankID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="help-block">Bank is required.</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                <label>Is Active</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Exchange Trace Modal -->
-    <div id="dlgExchangeTrace" class="modal fade" role="dialog" ng-controller="exchangeTraceDialogController" ng-init="bindControls();">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <form name="exchangeTraceForm" ng-submit="save(exchangeTraceForm.$valid)" novalidate>
-                    <div class="modal-header">
-                        <h4 class="modal-title">{{ dialogTitle }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.traceDate.$invalid }">
-                            <label>Trace Date</label>
-                            <div class='input-group date'>
-                                <input id='dtpTraceDate' type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                            <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceAmount.$invalid }">
-                            <label>Source Amount</label>
-                            <input type="text" name="sourceAmount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control" ng-required="true" />
-                            <p ng-show="exchangeTraceForm.sourceAmount.$error.required && exchangeTraceForm.sourceAmount.$dirty" class="help-block">Source Amount is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceCurrency.$invalid }">
-                            <label>Source Currency</label>
-                            <select class="form-control selectpicker" name="sourceCurrency" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="exchangeTraceForm.sourceCurrency.$error.required && exchangeTraceForm.sourceCurrency.$dirty" class="help-block">Source Currency is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destAmount.$invalid }">
-                            <label>Destination Amount</label>
-                            <input type="text" name="destAmount" ng-model="trace.@TB_Trace.FieldName.ExchangeAmount" class="form-control" ng-required="true" />
-                            <p ng-show="exchangeTraceForm.destAmount.$error.required && exchangeTraceForm.destAmount.$dirty" class="help-block">Destination Amount is required.</p>
-                        </div>
-
-                        <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destCurrency.$invalid }">
-                            <label>Destination Currency</label>
-                            <select class="form-control selectpicker" name="destCurrency" ng-required="true"
-                                    ng-model="trace.@TB_Trace.FieldName.ExchangeCurrencyID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="exchangeTraceForm.destCurrency.$error.required && exchangeTraceForm.destCurrency.$dirty" class="help-block">Destination Currency is required.</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Tags (with ',' separator)</label>
-                            <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control" rows="5"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                <label>Is Active</label>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_TransferTrace")
 </div>

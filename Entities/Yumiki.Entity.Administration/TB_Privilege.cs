@@ -8,8 +8,8 @@ namespace Yumiki.Entity.Administration
     {
         public TB_Privilege()
         {
-            TB_Privilege1 = new HashSet<TB_Privilege>();
-            TB_Group = new HashSet<TB_Group>();
+            ChildPrivileges = new HashSet<TB_Privilege>();
+            Groups = new HashSet<TB_Group>();
         }
 
         public Guid ID { get; set; }
@@ -21,8 +21,8 @@ namespace Yumiki.Entity.Administration
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
-        public virtual ICollection<TB_Privilege> TB_Privilege1 { get; set; }
-        public virtual TB_Privilege TB_Privilege2 { get; set; }
-        public virtual ICollection<TB_Group> TB_Group { get; set; }
+        public virtual ICollection<TB_Privilege> ChildPrivileges { get; set; }
+        public virtual TB_Privilege ParentPrivilege { get; set; }
+        public virtual ICollection<TB_Group> Groups { get; set; }
     }
 }

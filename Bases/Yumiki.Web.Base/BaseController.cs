@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using System.Web.Mvc.Filters;
-using Yumiki.Commons.Configurations;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
@@ -10,64 +9,51 @@ namespace Yumiki.Web.Base
 {
     public class BaseController<T> : Controller
     {
-        private Logger logger;
+        private Logger _logger;
         public Logger Logger
         {
             get
             {
-                if (logger == null)
+                if (_logger == null)
                 {
-                    logger = new Logger(GetType());
+                    _logger = new Logger(GetType());
                 }
-                return logger;
+                return _logger;
             }
         }
 
-        private T businessService;
+        private T _businessService;
         protected T BusinessService
         {
             get
             {
-                if (businessService == null)
+                if (_businessService == null)
                 {
-                    businessService = Service.GetInstance<T>();
+                    _businessService = Service.GetInstance<T>();
                 }
-                return businessService;
+                return _businessService;
             }
         }
 
-        private Dependency service;
+        private Dependency _service;
         private Dependency Service
         {
             get
             {
-                if (service == null)
+                if (_service == null)
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
                     string containerName = this.GetType().FullName.Split('.')[2];
-                    service = Dependency.GetService(containerName);
+                    _service = Dependency.GetService(containerName);
                 }
-                return service;
-            }
-        }
-
-        private HttpSession httpSession;
-        public HttpSession HttpSession
-        {
-            get
-            {
-                if (httpSession == null)
-                {
-                    httpSession = new HttpSession(Session);
-                }
-                return httpSession;
+                return _service;
             }
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            if (!HttpSession.IsAuthenticated)
+            if (!CurrentUser.IsAuthenticated)
             {
                 this.Logger.Infomation(string.Format("No Session from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
                 filterContext.Result = RedirectToLoginPage();
@@ -78,15 +64,14 @@ namespace Yumiki.Web.Base
         {
             base.OnAuthentication(filterContext);
 
-            ViewBag.UserName = string.Empty;
-            ViewBag.UserID = string.Empty;
-            ViewBag.LastLoginTime = string.Empty;
+            ViewBag.UserName = ViewBag.UserID = ViewBag.LastLoginTime = ViewBag.TimeZone = string.Empty;
 
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                ViewBag.UserName = HttpSession.UserLoginName;
-                ViewBag.UserID = HttpSession.UserID;
-                ViewBag.LastLoginTime = HttpSession.LastLoginTime;
+                ViewBag.UserName = CurrentUser.UserLoginName;
+                ViewBag.UserID = CurrentUser.UserID;
+                ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
+                ViewBag.TimeZone = CurrentUser.TimeZone;
             }
         }
 
@@ -98,11 +83,11 @@ namespace Yumiki.Web.Base
         {
             if (hasQueryString)
             {
-                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
+                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
             }
             else
             {
-                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, CustomConfigurations.LoginPage));
+                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage));
             }
         }
 

@@ -1,168 +1,37 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework
+
 @{
     ViewBag.Title = "Bank";
 }
 
 @section Script{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank.js")
+        .ForceRelease()
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
+
     <script type="text/javascript">
-        //Declare constant variables.
-        var showActiveBankString = 'Show Active Bank';
-        var showInactiveBankString = 'Show Inactive Bank';
-
-        var app = angular.module('moneyTrace', []);
-
-        //Service to transfer data between controllers.
-        app.factory('DataTransfer', function () {
-            return { bankID: '' };
-        });
-
-        //Service to communicate with Server.
-        app.service('DataService', function ($http) {
-            this.getBanks = function (showInactive) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetAll, null)', { params: { 'showInactive': showInactive } });
-            };
-
-            this.getBankByID = function (bankID) {
-                return $http.get('@Url.HttpRouteUrl(RouteNames.BankGetByID, null)', { params: { 'bankID': bankID } });
-            };
-
-            this.save = function (bank) {
-                return $http.post('@Url.HttpRouteUrl(RouteNames.BankSave, null)', bank);
-            };
-        });
-
-        //Controller to display items' list
-        app.controller('bankController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.inactiveButtonName = showInactiveBankString;
-
-            //To determine when load active or inactive list.
-            $scope.isStatusChanged = false;
-
-            //Display Dialog and pass data to Dialog.
-            $scope.showDialog = function (bankID) {
-                //Call DialogController
-                $rootScope.$broadcast("OnLoad", bankID);
-            }
-
-            //Event for other controllers to reload data.
-            $rootScope.$on('OnReloadData', function (event) {
-                $scope.loadData();
-            });
-
-            //Load active or inactive list.
-            $scope.loadData = function () {
-                var showInactive = true;
-                if ($scope.inactiveButtonName == showInactiveBankString) {
-                    showInactive = false;
-                }
-
-                if ($scope.isStatusChanged) {
-                    showInactive = !showInactive;
-                }
-
-                $(this).showLoadingBar();
-                DataService.getBanks(showInactive).then(
-                    function mySucces(response) {
-                        $scope.banks = response.data;
-
-                        if ($scope.isStatusChanged) {
-                            if ($scope.inactiveButtonName == showInactiveBankString) {
-                                $scope.inactiveButtonName = showActiveBankString;
-                            } else {
-                                $scope.inactiveButtonName = showInactiveBankString;
-                            }
-                            $scope.isStatusChanged = false;
-                        }
-                        $(this).hideLoadingBar();
-                    }, function myError(response) {
-                        $scope.isStatusChanged = false;
-                        $(this).hideLoadingBar();
-
-                        clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                    });
-            };
-
-            //When click on "ShowInActiveButton", reload data with active status.
-            $scope.loadDataWithStatus = function () {
-                $scope.isStatusChanged = true;
-                $scope.loadData();
-            }
-        });
-
-        //Controller to display dialog
-        app.controller('bankDialogController', function ($scope, $rootScope, $http, DataService, DataTransfer) {
-            $scope.bankID = undefined;
-            $scope.isActiveCheckboxDisabled = false;
-
-            //Used to be called by other controllers.
-            $rootScope.$on('OnLoad', function (event, bankID) {
-                $('#dlgBank').modal({ backdrop: 'static' });
-
-                if (bankID != undefined && bankID != null) {
-                    $scope.bankID = bankID;
-                    $scope.isActiveCheckboxDisabled = false;
-                    $scope.dialogTitle = "Edit Bank";
-
-                    $(this).showLoadingBar();
-
-                    DataService.getBankByID($scope.bankID)
-                        .then(function mySucces(response) {
-                            $scope.bank = response.data;
-                            $(this).hideLoadingBar();
-
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-
-                } else {
-                    $scope.dialogTitle = "New Bank";
-                    $scope.isActiveCheckboxDisabled = true;
-
-                    $scope.bank = $scope.resetBank();
-                }
-            });
-
-            //Reset object in new mode.
-            $scope.resetBank = function () {
-                $scope.bankForm.$setPristine();
-                return {
-                    '@CommonProperties.ID': undefined,
-                    '@TB_Bank.FieldName.BankName': '',
-                    '@TB_Bank.FieldName.IsShareable': false,
-                    '@CommonProperties.IsActive': true
-                };
-            }
-
-            //Save new or update object
-            $scope.save = function (isValid) {
-                if (isValid) {
-                    $(this).showLoadingBar();
-                    DataService.save($scope.bank)
-                        .then(function mySucces(response) {
-                            $scope.bankID = undefined;
-                            $('#dlgBank').modal('hide');
-
-                            $scope.ReloadData();
-                        }, function myError(response) {
-                            $(this).hideLoadingBar();
-
-                            clientMessage(response.data, '', '@Yumiki.Commons.Logging.LogLevel.ERROR');
-                        });
-                }
-            };
-
-            //After saving, reload list.
-            $scope.ReloadData = function () {
-                $rootScope.$broadcast("OnReloadData");
-            };
-        });
+        yumiki.moneyTrace.bank.initBank(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Bank.FieldName.BankName': '',
+                '@TB_Bank.FieldName.IsShareable': false,
+                '@CommonProperties.IsActive': true
+            },
+            '@Url.HttpRouteUrl(RouteNames.BankGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.BankGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.BankSave, null)',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        )
     </script>
 }
-<div ng-app="moneyTrace">
+<div ng-app="bank">
     <div class="container" ng-controller="bankController" ng-init="loadData();">
         <h2>Bank</h2>
         <div class="well well-sm">
@@ -197,6 +66,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="col-md-12">
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
             </div>
         </div>
     </div>

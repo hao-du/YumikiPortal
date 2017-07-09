@@ -1,0 +1,67 @@
+﻿@using Yumiki.Web.MoneyTrace.Constants;
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.MoneyTrace;
+ 
+<!-- Normal Trace Modal -->
+<div id="dlgNormalTrace" class="modal fade" role="dialog" ng-controller="normalTraceDialogController" ng-init="bindControls();">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form name="traceForm" ng-submit="save(traceForm.$valid)" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ dialogTitle }}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
+                        <label>Trace Date</label>
+                        <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </span>
+                        </div>
+                        <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
+                        <label>Amount</label>
+                        <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
+                        <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                        <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
+                        <label>Currency</label>
+                        <select class="form-control selectpicker" name="currency" ng-required="true"
+                                ng-model="trace.@TB_Trace.FieldName.CurrencyID"
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                        </select>
+                        <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descriptions</label>
+                        <textarea ng-model="trace.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tags (with ',' separator)</label>
+                        <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="checkbox">
+                            <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
+                            <label>Is Active</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" ng-disabled="traceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

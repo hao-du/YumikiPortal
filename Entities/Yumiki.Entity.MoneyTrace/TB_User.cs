@@ -11,6 +11,8 @@ namespace Yumiki.Entity.MoneyTrace
             Currency = new HashSet<TB_Currency>();
             Tags = new HashSet<TB_Tag>();
             Traces = new HashSet<TB_Trace>();
+            TransferredTraces = new HashSet<TB_Trace>();
+            BankAccounts = new HashSet<TB_BankAccount>();
         }
 
         public Guid ID { get; set; }
@@ -20,6 +22,8 @@ namespace Yumiki.Entity.MoneyTrace
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string TimeZone { get; set; }
 
         public string Descriptions { get; set; }
 
@@ -34,5 +38,9 @@ namespace Yumiki.Entity.MoneyTrace
         public virtual ICollection<TB_Tag> Tags { get; set; }
 
         public virtual ICollection<TB_Trace> Traces { get; set; }
+
+        public virtual ICollection<TB_BankAccount> BankAccounts { get; set; }
+
+        public virtual ICollection<TB_Trace> TransferredTraces { get; set; }
     }
 }

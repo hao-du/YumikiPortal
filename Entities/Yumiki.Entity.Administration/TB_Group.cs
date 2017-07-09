@@ -8,8 +8,8 @@
     {
         public TB_Group()
         {
-            TB_Privilege = new HashSet<TB_Privilege>();
-            TB_User = new HashSet<TB_User>();
+            Privileges = new HashSet<TB_Privilege>();
+            Users = new HashSet<TB_User>();
         }
 
         public Guid ID { get; set; }
@@ -18,7 +18,7 @@
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
-        public virtual ICollection<TB_Privilege> TB_Privilege { get; set; }
-        public virtual ICollection<TB_User> TB_User { get; set; }
+        public virtual ICollection<TB_Privilege> Privileges { get; set; }
+        public virtual ICollection<TB_User> Users { get; set; }
     }
 }

@@ -1,30 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ContactType.aspx.cs" Inherits="Yumiki.Web.Administration.ContactType" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
-    <script>
-        //Validation for asp.net controls on client side.
-        var startValidation = function () {
-            var isValid = true;
-            for (i = 0; i < Page_Validators.length; i++) {
-                var control = Page_Validators[i];
-                ValidatorValidate(control);
-                if (!control.isvalid) {
-                    isValid = false;
-                    $(control).closest(".form-group").addClass("has-error has-feedback");
-
-                } else {
-                    $(control).closest(".form-group").removeClass("has-error has-feedback");
-                }
-            }
-
-            if (!isValid) {
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
-    </script>
+    <script src="../../../clients/scripts/yumiki-webform-validation.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlContactType">
@@ -110,7 +87,7 @@
                                 <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger"/>
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false" />
                             </div>
                         </div>

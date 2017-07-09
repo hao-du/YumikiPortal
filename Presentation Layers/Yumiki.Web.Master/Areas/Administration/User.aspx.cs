@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Entities;
 using Yumiki.Entity.Administration;
 using Yumiki.Web.Base;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Web.Administration
 {
@@ -35,6 +38,7 @@ namespace Yumiki.Web.Administration
             {
                 LoadUsers();
                 LoadContactTypes();
+                LoadTimeZones();
                 btnDisplayInactiveUsers.Text = showInactiveString;
             }
 
@@ -83,6 +87,7 @@ namespace Yumiki.Web.Administration
                 txtPassword.Text = txtConfirmPassword.Text = user.CurrentPassword;
                 txtDescription.Text = user.Descriptions;
                 ckbIsActive.Checked = user.IsActive;
+                ddlSystemTimeZone.SelectedValue = user.TimeZone;
 
                 LoadUserAddresses();
 
@@ -120,7 +125,7 @@ namespace Yumiki.Web.Administration
                 user.CurrentPassword = txtPassword.Text;
                 user.Descriptions = txtDescription.Text;
                 user.IsActive = ckbIsActive.Checked;
-
+                user.TimeZone = ddlSystemTimeZone.SelectedValue;
                 BusinessService.SaveUser(user);
                 LoadUsers();
                 SendInformation("Save successfully!");
@@ -224,7 +229,7 @@ namespace Yumiki.Web.Administration
                 userAddress.UserAddress = txtUserAddress.Text;
                 userAddress.UserContactTypeID = ddlContactType.SelectedValue == CommonValues.EmptyValue? Guid.Empty: Guid.Parse(ddlContactType.SelectedValue);
                 userAddress.IsPrimary = ckbIsPrimary.Checked;
-                userAddress.Descriptions = txtDescription.Text;
+                userAddress.Descriptions = txtUserAddressDescriptions.Text;
                 userAddress.UserID = Guid.Parse(hdnID.Value);
                 userAddress.IsActive = ckbUserAddressIsActive.Checked;
 
@@ -260,7 +265,7 @@ namespace Yumiki.Web.Administration
         /// </summary>
         private void ResetControls()
         {
-            txtUserLoginName.Text = txtPassword.Text = txtConfirmPassword.Text = txtFirstName.Text = txtLastName.Text = txtDescription.Text = hdnID.Value = string.Empty;
+            ddlSystemTimeZone.SelectedValue = txtUserLoginName.Text = txtPassword.Text = txtConfirmPassword.Text = txtFirstName.Text = txtLastName.Text = txtDescription.Text = hdnID.Value = CommonValues.EmptyValue;
             ckbIsActive.Checked = true;
             txtUserLoginName.Enabled = true;
             pnlPasswordSection.Visible = true;
@@ -284,6 +289,8 @@ namespace Yumiki.Web.Administration
             List<TB_User> users = BusinessService.GetAllUsers(showInactive);
             rptUser.DataSource = users;
             rptUser.DataBind();
+
+            SwitchPanel(null);
         }
 
         /// <summary>
@@ -293,7 +300,7 @@ namespace Yumiki.Web.Administration
         {
             if (!IsNewMode)
             {
-                List<TB_ContactType> contactTypes = BusinessService.GetAllContacts(hdnID.Value, false);
+                List<ContactTypeWithUserAddress> contactTypes = BusinessService.GetAllContacts(hdnID.Value, false);
 
                 rptContactType.DataSource = contactTypes;
                 rptContactType.DataBind();
@@ -315,6 +322,20 @@ namespace Yumiki.Web.Administration
             ddlContactType.Items.Insert(0, new ListItem { Selected = true, Text = CommonValues.SelectOneForDropDown, Value = CommonValues.EmptyValue });
         }
 
+        /// <summary>
+        /// Load all Time Zone and bind to dropdownlist
+        /// </summary>
+        private void LoadTimeZones()
+        {
+            IEnumerable<SystemTimeZone> timezones = DateTimeExtension.GetAllTimeZone();
+
+            ddlSystemTimeZone.DataTextField = SystemTimeZone.FieldName.DisplayName;
+            ddlSystemTimeZone.DataValueField = SystemTimeZone.FieldName.ID;
+            ddlSystemTimeZone.DataSource = timezones;
+            ddlSystemTimeZone.DataBind();
+
+            ddlSystemTimeZone.Items.Insert(0, new ListItem { Selected = true, Text = CommonValues.SelectOneForDropDown, Value = CommonValues.EmptyValue });
+        }
 
         /// <summary>
         /// Switch panel on UI by setting style and visibility of tabs and views
@@ -322,6 +343,11 @@ namespace Yumiki.Web.Administration
         /// <param name="sender">Link Button from tab headers</param>
         private void SwitchPanel(object sender)
         {
+            if(sender == null)
+            {
+                sender = btnUserListTab;
+            }
+
             mtvUserTabs.ActiveViewIndex = listTabIndex;
             liUserList.Attributes.Remove("class");
             liUserProcess.Attributes.Remove("class");

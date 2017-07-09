@@ -56,11 +56,13 @@
     <Compile Include="Interfaces\IContactTypeRepository.cs" />
     <Compile Include="Interfaces\IGroupRepository.cs" />
     <Compile Include="Interfaces\IPrivilegeRepository.cs" />
+    <Compile Include="Interfaces\IQueueRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\ContactTypeRepository.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\PrivilegeRepository.cs" />
+    <Compile Include="Repositories\QueueRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>

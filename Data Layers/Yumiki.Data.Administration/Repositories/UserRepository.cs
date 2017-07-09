@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Data.Administration.Repositories
 {
@@ -59,7 +60,7 @@ namespace Yumiki.Data.Administration.Repositories
         {
             if (user.ID == Guid.Empty)
             {
-                user.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = user.CurrentPassword, Descriptions = string.Format("Initial Password: \"{0}\"", user.CurrentPassword) });
+                user.PasswordHistories.Add(new TB_PasswordHistory { Password = user.CurrentPassword, Descriptions = string.Format("Initial Password: \"{0}\"", user.CurrentPassword) });
                 Context.TB_User.Add(user);
             }
             else
@@ -68,6 +69,7 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUser.UserLoginName = user.UserLoginName;
                 dbUser.FirstName = user.FirstName;
                 dbUser.LastName = user.LastName;
+                dbUser.TimeZone = user.TimeZone;
                 dbUser.Descriptions = user.Descriptions;
                 dbUser.IsActive = user.IsActive;
             }
@@ -83,7 +85,7 @@ namespace Yumiki.Data.Administration.Repositories
         public void ResetPassword(Guid userID, string newPassword)
         {
             TB_User dbUser = Context.TB_User.Where(c => c.ID == userID).Single();
-            dbUser.TB_PasswordHistory.Add(new TB_PasswordHistory { Password = newPassword, Descriptions = string.Format("Password has changed from \"{0}\" to \"{1}\"", dbUser.CurrentPassword, newPassword) });
+            dbUser.PasswordHistories.Add(new TB_PasswordHistory { Password = newPassword, Descriptions = string.Format("Password has changed from \"{0}\" to \"{1}\"", dbUser.CurrentPassword, newPassword) });
             dbUser.CurrentPassword = newPassword;
 
             Save();
@@ -116,11 +118,18 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userID">User need to get address details.</param>
         /// <param name="showInactive">Get active or inactive records.</param>
         /// <returns></returns>
-        public List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive)
+        public List<ContactTypeWithUserAddress> GetAllContacts(Guid userID, bool showInactive)
         {
-            return context.TB_ContactType.Include(TB_UserAddress.FieldName.TB_UserAddress)
-                            .Where(c => c.TB_UserAddress.Any(e => e.UserID == userID && e.IsActive != showInactive))
-                            .ToList();
+            return context.TB_ContactType.Include(TB_ContactType.FieldName.UserAddresses)
+                            .Where(c => c.UserAddresses.Any(e => e.UserID == userID && e.IsActive != showInactive))
+                            .Select(c => new ContactTypeWithUserAddress
+                            {
+                                ID = c.ID,
+                                ContactTypeName = c.ContactTypeName,
+                                UserAddresses = c.UserAddresses.Where(d => d.UserID == userID)
+                                                .OrderByDescending(d => d.IsPrimary)
+                                                .ThenBy(d => d.UserAddress)
+                            }).ToList();
         }
 
         /// <summary>
@@ -166,11 +175,11 @@ namespace Yumiki.Data.Administration.Repositories
                 dbUserAddress.IsActive = userAddress.IsActive;
             }
 
-            if(userAddress.IsPrimary)
+            if (userAddress.IsPrimary)
             {
                 //Update Primary flag of all contacts of user which has the same ContactType to false.
                 //Only one contact is primary for each contact type.
-                Context.TB_UserAddress.Where(c => c.ID != userAddress.ID 
+                Context.TB_UserAddress.Where(c => c.ID != userAddress.ID
                                                 && c.IsPrimary
                                                 && c.UserID == userAddress.UserID
                                                 && c.UserContactTypeID == userAddress.UserContactTypeID)

@@ -8,9 +8,9 @@ namespace Yumiki.Entity.Administration
     {
         public TB_User()
         {
-            TB_PasswordHistory = new HashSet<TB_PasswordHistory>();
-            TB_UserAddress = new HashSet<TB_UserAddress>();
-            TB_Group = new HashSet<TB_Group>();
+            PasswordHistories = new HashSet<TB_PasswordHistory>();
+            UserAddresses = new HashSet<TB_UserAddress>();
+            Groups = new HashSet<TB_Group>();
         }
 
         public Guid ID { get; set; }
@@ -18,12 +18,13 @@ namespace Yumiki.Entity.Administration
         public string CurrentPassword { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string TimeZone { get; set; }
         public string Descriptions { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
-        public virtual ICollection<TB_PasswordHistory> TB_PasswordHistory { get; set; }
-        public virtual ICollection<TB_UserAddress> TB_UserAddress { get; set; }
-        public virtual ICollection<TB_Group> TB_Group { get; set; }
+        public virtual ICollection<TB_PasswordHistory> PasswordHistories { get; set; }
+        public virtual ICollection<TB_UserAddress> UserAddresses { get; set; }
+        public virtual ICollection<TB_Group> Groups { get; set; }
     }
 }

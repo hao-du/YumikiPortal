@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yumiki.Business.WellCovered</RootNamespace>
+    <AssemblyName>Yumiki.Business.WellCovered</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interfaces\IAppService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AppService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
+      <Project>{a2595517-2380-4fca-8c7f-41ebbcade68b}</Project>
+      <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7c58deb3-e136-4086-b9a5-44c5cb28b269}</Project>
+      <Name>Yumiki.Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data Layers\Yumiki.Data.WellCovered\Yumiki.Data.WellCovered.csproj">
+      <Project>{10a05fc7-c621-44b4-bb73-810ff0d600d8}</Project>
+      <Name>Yumiki.Data.WellCovered</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Entities\Yumiki.Entity.WellCovered\Yumiki.Entity.WellCovered.csproj">
+      <Project>{c3e9b0d0-2d29-4d52-ac13-89b8b4ab1efb}</Project>
+      <Name>Yumiki.Entity.WellCovered</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

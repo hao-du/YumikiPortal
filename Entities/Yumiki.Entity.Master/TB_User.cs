@@ -10,6 +10,7 @@ namespace Yumiki.Entity.Master
         public string CurrentPassword { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string TimeZone { get; set; }
         public string Descriptions { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }

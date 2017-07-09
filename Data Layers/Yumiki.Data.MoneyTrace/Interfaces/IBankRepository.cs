@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Data.MoneyTrace.Interfaces
 {
@@ -12,9 +13,9 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <summary>
         /// Get all active Banks from Database.
         /// </summary>
-        /// <param name="showInactive">Show list of inactive Banks or active Banks.</param>
+        /// <param name="request">Request include all filter parameters</param>
         /// <returns>List of all active Banks.</returns>
-        List<TB_Bank> GetAllBanks(bool showInactive, Guid userID, bool getShareable);
+        GetBankResponse<TB_Bank> GetAllBanks(GetBankRequest<TB_Bank> request);
 
         /// <summary>
         /// Get a specific bank.

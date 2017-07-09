@@ -2,6 +2,7 @@
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Settings;
 using Yumiki.Entity.Master;
 using Yumiki.Web.Base;
 
@@ -24,9 +25,10 @@ namespace Yumiki.Web.Master.Pages.Security
             {
                 TB_User user = BusinessService.Login(txtUserLoginName.Text, txtPassword.Text);
 
-                HttpSession.UserID = user.ID;
-                HttpSession.UserLoginName = user.UserLoginName;
-                HttpSession.LastLoginTime = DateTimeHelper.GetSystemDatetime;
+                CurrentUser.UserID = user.ID;
+                CurrentUser.UserLoginName = user.UserLoginName;
+                CurrentUser.LastLoginTime = DateTimeExtension.GetSystemDatetime();
+                CurrentUser.TimeZone = DateTimeExtension.GetTimeZoneById(user.TimeZone);
 
                 string path = Request.QueryString[HttpConstants.QueryStrings.Path];
                 if (string.IsNullOrWhiteSpace(path))

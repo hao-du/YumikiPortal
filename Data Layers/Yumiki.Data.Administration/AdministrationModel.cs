@@ -20,23 +20,24 @@ namespace Yumiki.Data.Administration
         public virtual DbSet<TB_UserAddress> TB_UserAddress { get; set; }
         public virtual DbSet<TB_ContactType> TB_ContactType { get; set; }
         public virtual DbSet<TB_PasswordHistory> TB_PasswordHistory { get; set; }
+        public virtual DbSet<TB_Queue> TB_Queue { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TB_ContactType>()
-                .HasMany(e => e.TB_UserAddress)
-                .WithRequired(e => e.TB_ContactType)
+                .HasMany(e => e.UserAddresses)
+                .WithRequired(e => e.ContactType)
                 .HasForeignKey(e => e.UserContactTypeID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Group>()
-                .HasMany(e => e.TB_Privilege)
-                .WithMany(e => e.TB_Group)
+                .HasMany(e => e.Privileges)
+                .WithMany(e => e.Groups)
                 .Map(m => m.ToTable("TB_GroupPrivilege").MapLeftKey("GroupID").MapRightKey("PrivilegeID"));
 
             modelBuilder.Entity<TB_Group>()
-                .HasMany(e => e.TB_User)
-                .WithMany(e => e.TB_Group)
+                .HasMany(e => e.Users)
+                .WithMany(e => e.Groups)
                 .Map(m => m.ToTable("TB_UserGroup").MapLeftKey("GroupID").MapRightKey("UserID"));
 
             modelBuilder.Entity<TB_PasswordHistory>()
@@ -48,8 +49,8 @@ namespace Yumiki.Data.Administration
                 .IsUnicode(false);
 
             modelBuilder.Entity<TB_Privilege>()
-                .HasMany(e => e.TB_Privilege1)
-                .WithOptional(e => e.TB_Privilege2)
+                .HasMany(e => e.ChildPrivileges)
+                .WithOptional(e => e.ParentPrivilege)
                 .HasForeignKey(e => e.ParentPrivilegeID);
 
             modelBuilder.Entity<TB_User>()
@@ -61,14 +62,14 @@ namespace Yumiki.Data.Administration
                 .IsUnicode(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_PasswordHistory)
-                .WithRequired(e => e.TB_User)
+                .HasMany(e => e.PasswordHistories)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_User>()
-                .HasMany(e => e.TB_UserAddress)
-                .WithRequired(e => e.TB_User)
+                .HasMany(e => e.UserAddresses)
+                .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
         }

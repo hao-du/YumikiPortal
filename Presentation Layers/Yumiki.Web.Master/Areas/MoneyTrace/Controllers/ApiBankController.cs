@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Commons.Settings;
 using Yumiki.Entity.MoneyTrace;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
 
@@ -16,11 +18,20 @@ namespace Yumiki.Web.MoneyTrace.Controllers
     {
         [Route("getall", Name = RouteNames.BankGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive)
+        public IHttpActionResult Get(bool showInactive, int currentPage, int itemsPerPage)
         {
             try
             {
-                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, HttpSession.UserID);
+                GetBankRequest<TB_Bank> bankRequest = new GetBankRequest<TB_Bank>
+                {
+                    UserID = CurrentUser.UserID,
+                    ShowInactive = showInactive,
+                    GetShareable = false,
+                    CurrentPage = currentPage,
+                    ItemsPerPage = itemsPerPage
+                };
+
+                GetBankResponse<TB_Bank> banks = BusinessService.GetAllBanks(bankRequest);
                 return Ok(banks);
             }
             catch (Exception ex)
@@ -35,7 +46,14 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                List<TB_Bank> banks = BusinessService.GetAllBanks(showInactive, HttpSession.UserID, true);
+                GetBankRequest<TB_Bank> bankRequest = new GetBankRequest<TB_Bank>
+                {
+                    UserID = CurrentUser.UserID,
+                    ShowInactive = showInactive,
+                    GetShareable = true,
+                };
+
+                IEnumerable<TB_Bank> banks = BusinessService.GetAllBanks(bankRequest).Records;
                 return Ok(banks);
             }
             catch (Exception ex)
@@ -65,7 +83,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         {
             try
             {
-                item.UserID = HttpSession.UserID;
+                item.UserID = CurrentUser.UserID;
 
                 BusinessService.SaveBank(item);
                 return Ok();

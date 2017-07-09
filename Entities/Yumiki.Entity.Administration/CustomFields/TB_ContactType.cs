@@ -11,15 +11,7 @@ namespace Yumiki.Entity.Administration
         {
             get
             {
-                return LastUpdateDate.HasValue ? LastUpdateDate.Value.ToString(DateTimeHelper.ShortDateTime) : CreateDate.ToString(DateTimeHelper.ShortDateTime);
-            }
-        }
-
-        public IEnumerable<TB_UserAddress> SortUserAddresses
-        {
-            get
-            {
-                return this.TB_UserAddress.OrderByDescending(c=>c.IsPrimary).ThenBy(c=>c.UserAddress);
+                return LastUpdateDate.HasValue ? DateTimeExtension.GetZonedDateTimeFromUTC(LastUpdateDate.Value).ToString(Formats.DateTime.ShortDateTime) : DateTimeExtension.GetZonedDateTimeFromUTC(CreateDate).ToString(Formats.DateTime.ShortDateTime);
             }
         }
 
@@ -28,7 +20,7 @@ namespace Yumiki.Entity.Administration
             public const string TB_ContactType = "TB_ContactType";
             public const string ID = "ID";
             public const string ContactTypeName = "ContactTypeName";
-            public const string SortUserAddresses = "SortUserAddresses";
+            public const string UserAddresses = "UserAddresses";
         }
     }
 }

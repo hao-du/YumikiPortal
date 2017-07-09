@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Group.aspx.cs" Inherits="Yumiki.Web.Administration.Group" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
+    <script src="../../../clients/scripts/yumiki-webform-validation.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlGroup">
@@ -10,7 +11,7 @@
                 <!--hdnGlobalGroupID: To keep group id for User Assignment tab-->
                 <asp:HiddenField ID="hdnGlobalGroupID" runat="server" Value="" />
                 <ul class="nav nav-tabs">
-                    <li class="active" runat="server" id="liGroupList">
+                    <li runat="server" id="liGroupList">
                         <asp:LinkButton runat="server" ID="btnGroupListTab" Text="Group List" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
                     <li runat="server" id="liUserAssignment" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserAssignmentTab" Text="User Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton></li>
@@ -203,7 +204,7 @@
                                 <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startValidation()" OnClick="btnDialogSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false" />
                             </div>
                         </div>

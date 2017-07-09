@@ -102,19 +102,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-transfer.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-exchange.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-controls.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-banking.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-normal.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace-list.js" />
+    <Content Include="clients\scripts\trace\yumiki-money-trace-trace.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-currency.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-bank-account.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-bank.js" />
+    <Content Include="clients\scripts\yumiki-money-trace.js" />
+    <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Bank\Index.cshtml" />
-    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\MoneyTrace.pubxml" />
     <Content Include="Views\Trace\Index.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
+    <Content Include="Views\BankAccount\Index.cshtml" />
+    <Content Include="Views\Trace\_NormalTrace.cshtml" />
+    <Content Include="Views\Trace\_BankingTrace.cshtml" />
+    <Content Include="Views\Trace\_ExchangeTrace.cshtml" />
+    <Content Include="Views\Trace\_TransferTrace.cshtml" />
+    <Content Include="Views\Trace\_TraceList.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiBankAccountController.cs" />
+    <Compile Include="Controllers\ApiUserController.cs" />
     <Compile Include="Controllers\ApiBankController.cs" />
     <Compile Include="Controllers\ApiTraceController.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
+    <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\TraceController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
@@ -135,6 +155,10 @@
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85d7cf5b-aaac-4d00-9287-94866e19545e}</Project>
+      <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Bases\Yumiki.Web.Base\Yumiki.Web.Base.csproj">
       <Project>{581BAAB0-B89D-401E-AD6D-6537DE8D47FB}</Project>
       <Name>Yumiki.Web.Base</Name>
@@ -152,6 +176,11 @@
       <Name>Yumiki.Entity.MoneyTrace</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SquishIt">
+      <Version>0.9.9</Version>
+    </PackageReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -163,7 +192,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49261</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

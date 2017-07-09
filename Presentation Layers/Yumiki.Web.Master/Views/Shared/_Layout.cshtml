@@ -1,4 +1,5 @@
 ﻿@using Yumiki.Commons.Helpers
+@using SquishIt.Framework
 
 <!DOCTYPE html>
 <html>
@@ -7,23 +8,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YUMIKI PORTAL</title>
     <!--3rd Libraries-->
-    <script src="../../../client/scripts/jquery.min.js"></script>
-    <script src="../../../client/scripts/angular.min.js"></script>
+    @MvcHtmlString.Create(
+        Bundle.Css()
+        .Add("~/third-party-clients/styles/jquery-ui.min.css")
+        .Add("~/third-party-clients/styles/bootstrap.min.css")
+        .Add("~/third-party-clients/styles/bootstrap-datetimepicker.min.css")
+        .Add("~/clients/styles/site.less")
+        .ForceRelease()
+        .Render("~/cache/yumiki_#.css"))
 
-    <link href="~/client/contents/bootstrap.min.css" rel="stylesheet" />
-    <script src="../../../client/scripts/bootstrap.min.js"></script>
-
-    <link href="~/client/contents/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <script src="~/client/scripts/moment.min.js"></script>
-    <script src="../../../client/scripts/bootstrap-datetimepicker.min.js"></script>
-
-    <!--Global Libraries-->
-    <link href="~/client/contents/site.less" rel="stylesheet" />
-    <script src="../../../client/scripts/site.js"></script>
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/third-party-clients/scripts/jquery.min.js")
+        .Add("~/third-party-clients/scripts/angular.min.js")
+        .Add("~/third-party-clients/scripts/jquery-ui.min.js")
+        .Add("~/third-party-clients/scripts/bootstrap.min.js")
+        .Add("~/third-party-clients/scripts/angular-ui-bootstrap.min.js")
+        .Add("~/third-party-clients/scripts/moment.min.js")
+        .Add("~/third-party-clients/scripts/bootstrap-datetimepicker.min.js")
+        .Add("~/clients/scripts/yumiki.js")
+        .Add("~/clients/scripts/yumiki-angular.js")
+        .Add("~/clients/scripts/yumiki-jquery.js")
+        .Add("~/clients/scripts/yumiki-menu.js")
+        .Add("~/clients/scripts/yumiki-message.js")
+        .Add("~/clients/scripts/yumiki-side-bar.js")
+        .Add("~/clients/scripts/init.js")
+        .ForceRelease()
+        .Render("~/cache/yumiki_#.js"))
 
     <script type="text/javascript">
-        //Overide NoSession variable in site.js.
-        noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
+        //Overide NoSession variable
+        yumiki.noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
     </script>
 </head>
 <body>
@@ -63,15 +78,26 @@
     </div>
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container-fluid">
-            <a href="#" class="navbar-btn btn pull-left" onclick="openNav()">
-                <span class="glyphicon glyphicon-th-large"></span>
-            </a>
-            <p class="navbar-text">
-                &nbsp;© @DateTimeHelper.GetSystemDatetime.Year.ToString() - Yumiki Portal.
-            </p>
-            <a href="http://youtu.be/" class="navbar-btn btn-danger btn pull-right">
-                <span class="glyphicon glyphicon-star"></span> Subscribe on YouTube
-            </a>
+            <div class="navbar-header">
+                <button type="button" class="navbar-btn btn navbar-toggle navbar-toggle-override collapsed" data-toggle="collapse" data-target="#navbarFooter" aria-expanded="false" aria-controls="navbar">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </button>
+                <a href="#" class="navbar-btn btn pull-left" onclick="yumiki.sideBar.openNav()">
+                    <span class="glyphicon glyphicon-th-large"></span>
+                </a>
+                <p class="navbar-text">
+                    &nbsp;© @DateTimeExtension.GetSystemDatetime().Year.ToString() - Yumiki Portal.
+                </p>
+            </div>
+            <div id="navbarFooter" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <p class="navbar-text">
+                            <b>Your Time Zone</b>: @ViewBag.TimeZone
+                        </p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <!--Loading Progress Bar-->
@@ -96,7 +122,7 @@
                     <div id="txtMessage"></div>
                     <div id="txtDetails" class="panel panel-default collapse">
                         <div class="panel-heading">Details...</div>
-                        <div id="txtMessageDetails" class="panel-body">
+                        <div id="txtMessageDetails" class="panel-body yumiki-panel">
                         </div>
                     </div>
                 </div>
@@ -109,7 +135,7 @@
     </div>
     <!--Side Bar Navigation-->
     <div id="sbnSideBarNav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="yumiki.sideBar.closeNav()">&times;</a>
         <a href="#">About</a>
         <a href="#">Services</a>
         <a href="#">Clients</a>

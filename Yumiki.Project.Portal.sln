@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bases", "Bases", "{98CBC24E-7226-440D-91EA-AC893F61218E}"
 EndProject
@@ -50,6 +50,26 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.MoneyTrace", "Presentation Layers\Yumiki.Web.Master\Areas\MoneyTrace\Yumiki.Web.MoneyTrace.csproj", "{F1AA35D6-B0C3-4DE9-86BD-C6BE6EE8E5E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Commons", "Commons\Yumiki.Commons\Yumiki.Commons.csproj", "{7C58DEB3-E136-4086-B9A5-44C5CB28B269}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Resources", "Commons\Yumiki.Resources\Yumiki.Resources.csproj", "{FDB29123-A3F0-4ED0-9D67-EC25734877AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{112A417A-FE5C-4934-B28B-B6F3544E2AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.SyncService", "Services\Yumiki.Service.SyncService\Yumiki.Service.SyncService.csproj", "{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.QueueService", "Services\Yumiki.Service.QueueService\Yumiki.Service.QueueService.csproj", "{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Service.Base", "Bases\Yumiki.Service.Base\Yumiki.Service.Base.csproj", "{76218200-AE05-4A06-9C41-35674B98DC81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WellCovered", "WellCovered", "{1D37D19B-CF70-41B8-998A-DD871EC5BFBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Data.WellCovered", "Data Layers\Yumiki.Data.WellCovered\Yumiki.Data.WellCovered.csproj", "{10A05FC7-C621-44B4-BB73-810FF0D600D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Business.WellCovered", "Business Layers\Yumiki.Business.WellCovered\Yumiki.Business.WellCovered.csproj", "{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Entity.WellCovered", "Entities\Yumiki.Entity.WellCovered\Yumiki.Entity.WellCovered.csproj", "{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yumiki.Web.WellCovered", "Presentation Layers\Yumiki.Web.Master\Areas\WellCovered\Yumiki.Web.WellCovered.csproj", "{2B0E03EC-5D44-49C5-B550-A15EC5D5768F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +149,35 @@ Global
 		{7C58DEB3-E136-4086-B9A5-44C5CB28B269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C58DEB3-E136-4086-B9A5-44C5CB28B269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C58DEB3-E136-4086-B9A5-44C5CB28B269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB29123-A3F0-4ED0-9D67-EC25734877AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76218200-AE05-4A06-9C41-35674B98DC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A05FC7-C621-44B4-BB73-810FF0D600D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A05FC7-C621-44B4-BB73-810FF0D600D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A05FC7-C621-44B4-BB73-810FF0D600D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A05FC7-C621-44B4-BB73-810FF0D600D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F96259AA-1DD2-4EE3-B7AE-EF049F09A934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B0E03EC-5D44-49C5-B550-A15EC5D5768F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B0E03EC-5D44-49C5-B550-A15EC5D5768F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B0E03EC-5D44-49C5-B550-A15EC5D5768F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B0E03EC-5D44-49C5-B550-A15EC5D5768F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,5 +201,13 @@ Global
 		{70328F31-CD05-48A1-8027-FC67B8F9BF7F} = {4BA228E8-8A45-4780-B99B-590D4AC96377}
 		{F1AA35D6-B0C3-4DE9-86BD-C6BE6EE8E5E4} = {4BA228E8-8A45-4780-B99B-590D4AC96377}
 		{7C58DEB3-E136-4086-B9A5-44C5CB28B269} = {5CF9EC9C-A660-4177-99A8-374DE3E55C4E}
+		{FDB29123-A3F0-4ED0-9D67-EC25734877AB} = {5CF9EC9C-A660-4177-99A8-374DE3E55C4E}
+		{3A3C975F-1DF8-44E6-9F16-543FDB495F6A} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
+		{66CFB1B9-61AB-4B5A-BF8D-C598550DD2EF} = {112A417A-FE5C-4934-B28B-B6F3544E2AFA}
+		{76218200-AE05-4A06-9C41-35674B98DC81} = {98CBC24E-7226-440D-91EA-AC893F61218E}
+		{10A05FC7-C621-44B4-BB73-810FF0D600D8} = {1D37D19B-CF70-41B8-998A-DD871EC5BFBD}
+		{F96259AA-1DD2-4EE3-B7AE-EF049F09A934} = {1D37D19B-CF70-41B8-998A-DD871EC5BFBD}
+		{C3E9B0D0-2D29-4D52-AC13-89B8B4AB1EFB} = {1D37D19B-CF70-41B8-998A-DD871EC5BFBD}
+		{2B0E03EC-5D44-49C5-B550-A15EC5D5768F} = {1D37D19B-CF70-41B8-998A-DD871EC5BFBD}
 	EndGlobalSection
 EndGlobal

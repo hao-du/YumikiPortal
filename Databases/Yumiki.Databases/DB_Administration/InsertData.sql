@@ -17,4 +17,16 @@ VALUES(NEWID(), 'Contact Type', '/Administration/ContactType', 1, @Administratio
 -------------------------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO [dbo].[TB_User]
-VALUES (NEWID(), 'Administrator', 'rMjUHljPYXs41v7DsdvTHUPF5nnhzuQU81+85Oggr04=', 'Admin', 'Account', 'administrator account', 1, GETDATE(), NULL)
+VALUES (NEWID(), 'Administrator', 'rMjUHljPYXs41v7DsdvTHUPF5nnhzuQU81+85Oggr04=', 'Admin', 'Account', 'SE Asia Standard Time' ,'administrator account', 1, GETDATE(), NULL)
+
+--v.1.0.0.0-beta3-----------------------------------------------------------------------------------------------------------------------------------
+
+DECLARE @ExistedAdministrationPrivilegeID UNIQUEIDENTIFIER;
+SELECT @ExistedAdministrationPrivilegeID = ID FROM TB_Privilege WHERE PrivilegeName = 'Administration'
+
+DECLARE @SystemPrivilegeID UNIQUEIDENTIFIER = NEWID();
+INSERT INTO TB_Privilege
+VALUES(@SystemPrivilegeID, 'System Utilities', '/Administration/Utilities', 0, @ExistedAdministrationPrivilegeID, 'System Utilities', 1, GETDATE(), NULL)
+
+INSERT INTO TB_Privilege
+VALUES(NEWID(), 'Maintenance', '/Administration/Maintenance', 1, @SystemPrivilegeID, 'System Maintenance Utilities page', 1, GETDATE(), NULL)

@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Settings;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master.Controllers
@@ -25,9 +26,9 @@ namespace Yumiki.Web.Master.Controllers
         {
             string menu = string.Empty;
 
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                menu = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
+                menu = BusinessService.GetPrivilege(CurrentUser.UserID.ToString());
             }
 
             return PartialView("GetMenu", menu);

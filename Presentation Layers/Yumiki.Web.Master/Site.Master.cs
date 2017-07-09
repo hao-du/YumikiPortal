@@ -1,6 +1,8 @@
 ﻿using System;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Settings;
 using Yumiki.Web.Base;
 
 namespace Yumiki.Web.Master
@@ -14,11 +16,14 @@ namespace Yumiki.Web.Master
                 LoadMenu();
 
                 liLogoutSection.Visible = false;
-                lblUserName.Text = string.Empty;
+                lblUserName.Text = lblTimeZoneInfo.Text = string.Empty;
 
-                if (HttpSession.IsAuthenticated)
+                lblReleaseYear.Text = DateTimeExtension.GetSystemDatetime().Year.ToString();
+
+                if (CurrentUser.IsAuthenticated)
                 {
-                    lblUserName.Text = HttpSession.UserLoginName;
+                    lblUserName.Text = CurrentUser.UserLoginName;
+                    lblTimeZoneInfo.Text = CurrentUser.TimeZone.ToString();
                     liLogoutSection.Visible = true;
                 }
             }
@@ -29,9 +34,9 @@ namespace Yumiki.Web.Master
         /// </summary>
         private void LoadMenu()
         {
-            if (HttpSession.IsAuthenticated)
+            if (CurrentUser.IsAuthenticated)
             {
-                lblMenu.Text = BusinessService.GetPrivilege(HttpSession.UserID.ToString());
+                lblMenu.Text = BusinessService.GetPrivilege(CurrentUser.UserID.ToString());
             }
             else
             {

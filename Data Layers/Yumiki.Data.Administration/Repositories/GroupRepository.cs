@@ -80,9 +80,9 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_User> GetUsersFromGroup(Guid groupID, bool showAssginedUser)
         {
-            IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_User.FieldName.TB_User)
+            IEnumerable<TB_User> assginedUsers = Context.TB_Group.Include(TB_Group.FieldName.Users)
                                                         .Where(c => c.ID == groupID)
-                                                        .SelectMany(c => c.TB_User).Where(c => c.IsActive).AsEnumerable();
+                                                        .SelectMany(c => c.Users).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedUser)
             {
                 return assginedUsers.ToList();
@@ -100,12 +100,12 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be assigned to group.</param>
         public void AddUsersToGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Users).Single(c => c.ID == groupID);
             List<TB_User> unassignedUsers = Context.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in unassignedUsers)
             {
-                group.TB_User.Add(user);
+                group.Users.Add(user);
             }
 
             Save();
@@ -118,12 +118,12 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="userIDs">List of Users will be unassigned to group.</param>
         public void RemoveUsersFromGroup(Guid groupID, List<Guid> userIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_User.FieldName.TB_User).Single(c => c.ID == groupID);
-            List<TB_User> assginedUsers = group.TB_User.Where(c => userIDs.Contains(c.ID)).ToList();
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Users).Single(c => c.ID == groupID);
+            List<TB_User> assginedUsers = group.Users.Where(c => userIDs.Contains(c.ID)).ToList();
 
             foreach (TB_User user in assginedUsers)
             {
-                group.TB_User.Remove(user);
+                group.Users.Remove(user);
             }
 
             Save();
@@ -137,9 +137,9 @@ namespace Yumiki.Data.Administration.Repositories
         /// <returns></returns>
         public List<TB_Privilege> GetPrivilegesFromGroup(Guid groupID, bool showAssginedPrivilege)
         {
-            IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege)
+            IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Group.FieldName.Privileges)
                                                         .Where(c => c.ID == groupID)
-                                                        .SelectMany(c => c.TB_Privilege).Where(c => c.IsActive).AsEnumerable();
+                                                        .SelectMany(c => c.Privileges).Where(c => c.IsActive).AsEnumerable();
             if (showAssginedPrivilege)
             {
                 return assginedPrivileges.ToList();
@@ -157,12 +157,12 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be assigned to group.</param>
         public void AddPrivilegesToGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Privileges).Single(c => c.ID == groupID);
             List<TB_Privilege> unassignedPrivileges = Context.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in unassignedPrivileges)
             {
-                group.TB_Privilege.Add(privilege);
+                group.Privileges.Add(privilege);
             }
 
             Save();
@@ -175,12 +175,12 @@ namespace Yumiki.Data.Administration.Repositories
         /// <param name="privilegeIDs">List of Privileges will be unassigned to group.</param>
         public void RemovePrivilegesFromGroup(Guid groupID, List<Guid> privilegeIDs)
         {
-            TB_Group group = Context.TB_Group.Include(TB_Privilege.FieldName.TB_Privilege).Single(c => c.ID == groupID);
-            List<TB_Privilege> assginedPrivileges = group.TB_Privilege.Where(c => privilegeIDs.Contains(c.ID)).ToList();
+            TB_Group group = Context.TB_Group.Include(TB_Group.FieldName.Privileges).Single(c => c.ID == groupID);
+            List<TB_Privilege> assginedPrivileges = group.Privileges.Where(c => privilegeIDs.Contains(c.ID)).ToList();
 
             foreach (TB_Privilege privilege in assginedPrivileges)
             {
-                group.TB_Privilege.Remove(privilege);
+                group.Privileges.Remove(privilege);
             }
 
             Save();

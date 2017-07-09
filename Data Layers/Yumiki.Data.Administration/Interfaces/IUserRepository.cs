@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Entity.Administration;
+using Yumiki.Entity.Administration.CustomObjects;
 
 namespace Yumiki.Data.Administration.Interfaces
 {
@@ -65,7 +66,7 @@ namespace Yumiki.Data.Administration.Interfaces
         /// <param name="userID">User need to get address details.</param>
         /// <param name="showInactive">Get active or inactive records.</param>
         /// <returns></returns>
-        List<TB_ContactType> GetAllContacts(Guid userID, bool showInactive);
+        List<ContactTypeWithUserAddress> GetAllContacts(Guid userID, bool showInactive);
 
         /// <summary>
         /// Remote method to Contact Type Repo to get all contact types for binding data purpose.

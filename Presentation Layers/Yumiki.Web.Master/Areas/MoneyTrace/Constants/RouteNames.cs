@@ -9,6 +9,8 @@ namespace Yumiki.Web.MoneyTrace.Constants
     {
         public const string DefaultMVCRoute = "MoneyTrace_default";
 
+        public const string UserGetAll = "UserGetAll";
+
         public const string CurrencyGetAll = "CurrencyGetAll";
         public const string CurrencyGetAllWithShareableItems = "CurrencyGetAllWithShareableItems";
         public const string CurrencyGetByID = "CurrencyGetByID";
@@ -19,8 +21,16 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string BankGetByID = "BankGetByID";
         public const string BankSave = "BankSave";
 
+        public const string BankAccountGetAll = "BankAccountGetAll";
+        public const string BankAccountGetByID = "BankAccountGetByID";
+        public const string BankAccountSave = "BankAccountSave";
+
         public const string TraceGetAll = "TraceGetAll";
+        public const string TraceGetTotalSummary = "TraceGetTotalSummary";
+        public const string TraceGetBankingSummary = "TraceGetBankingSummary";
         public const string TraceGetByID = "TraceGetByID";
+        public const string TraceGetTags = "TraceGetTags";
         public const string TraceSave = "TraceSave";
+        public const string SaveBankingWithdrawingTrace = "SaveBankingWithdrawingTrace";
     }
 }
