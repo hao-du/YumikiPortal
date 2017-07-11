@@ -1,8 +1,9 @@
 namespace Yumiki.Entity.WellCovered
 {
     using System;
+    using Yumiki.Entity.Base;
 
-    public partial class TB_Field
+    public partial class TB_Field : IEntity
     {
         public Guid ID { get; set; }
         public string FieldName { get; set; }

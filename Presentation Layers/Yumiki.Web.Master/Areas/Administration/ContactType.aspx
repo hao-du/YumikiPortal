@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ContactType.aspx.cs" Inherits="Yumiki.Web.Administration.ContactType" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
-    <script src="../../../clients/scripts/yumiki-webform-validation.js"></script>
+    <script src="/clients/scripts/yumiki-webform-validation.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlContactType">
@@ -12,7 +12,7 @@
                 <div class="well well-sm">
                     <div class="btn-group">
                         <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
-                        <asp:Button ID="btnDisplayInactiveContactTypes" runat="server" CssClass="btn btn-primary" Text="Show Inactive ContactTypes" OnClick="btnDisplayInactiveContactTypes_Click" CausesValidation="false" />
+                        <asp:Button ID="btnDisplayInactiveContactTypes" runat="server" CssClass="btn btn-default" Text="Show Inactive ContactTypes" OnClick="btnDisplayInactiveContactTypes_Click" CausesValidation="false" />
                     </div>
                 </div>
                 <div class="row">
@@ -23,17 +23,20 @@
                                     <table id="tblContactType" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Contact Type Name</th>
                                                 <th>Descriptions</th>
                                                 <th>Active Status</th>
                                                 <th>Modify Date</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <tr>
+                                        <td>
+                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                        </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblContactTypeName" Text='<%# Eval("ContactTypeName") %>'></asp:Literal>
                                         </td>
@@ -45,9 +48,6 @@
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                        </td>
-                                        <td>
-                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                         </td>
                                     </tr>
                                 </ItemTemplate>

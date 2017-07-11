@@ -2,8 +2,9 @@ namespace Yumiki.Entity.WellCovered
 {
     using System;
     using System.Collections.Generic;
+    using Yumiki.Entity.Base;
 
-    public partial class TB_App
+    public partial class TB_App : IEntity
     {
         public TB_App()
         {

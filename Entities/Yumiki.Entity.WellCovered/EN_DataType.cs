@@ -6,6 +6,9 @@ namespace Yumiki.Entity.WellCovered
         E_DECIMAL,
         E_STRING,
         E_BOOL,
+        E_DATE,
+        E_DATETIME,
+        E_TIME,
         E_DATASOURCE
     }
 }

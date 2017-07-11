@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
@@ -73,6 +75,16 @@ namespace Yumiki.Web.Base
                 ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
                 ViewBag.TimeZone = CurrentUser.TimeZone;
             }
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (!(filterContext.Exception is YumikiException))
+            {
+                this.Logger.Error("Error during process request.", filterContext.Exception);
+            }
+
+            base.OnException(filterContext);
         }
 
         /// <summary>
