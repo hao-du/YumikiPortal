@@ -6,7 +6,7 @@ namespace Yumiki.Entity.WellCovered
     using Yumiki.Commons.Helpers;
     using Yumiki.Entity.Base;
 
-    public partial class TB_App
+    public partial class TB_Object
     {
         public string LastUpdateDateUI
         {
@@ -16,9 +16,21 @@ namespace Yumiki.Entity.WellCovered
             }
         }
 
+        public string AppName
+        {
+            get
+            {
+                return App == null ? string.Empty : App.AppName;
+            }
+        }
+
         public class FieldName
         {
+            public const string ObjectName = "ObjectName";
+            public const string DisplayName = "DisplayName";
+            public const string ApiName = "ApiName";
             public const string AppName = "AppName";
+
             public const string IsShareable = "IsShareable";
         }
     }

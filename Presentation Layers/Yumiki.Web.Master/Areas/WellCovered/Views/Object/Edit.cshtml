@@ -1,0 +1,77 @@
+﻿@model Yumiki.Web.WellCovered.Models.MD_Object
+
+@{
+    ViewBag.Title = "Edit Object";
+}
+
+<div class="container" ">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="well well-sm">
+            <div class="btn-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Back", "List", new { }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ObjectName)
+                    @Html.EditorFor(model => model.ObjectName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ObjectName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DisplayName)
+                    @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApiName)
+                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ApiName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApplicationName)
+                    @Html.DropDownListFor(model => model.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Descriptions)
+                    @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.LabelFor(model => model.IsActive)
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>

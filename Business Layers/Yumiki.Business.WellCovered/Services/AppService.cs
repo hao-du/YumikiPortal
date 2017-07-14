@@ -52,6 +52,16 @@ namespace Yumiki.Business.WellCovered.Services
         /// <param name="app">If app id is empty, then this is new app. Otherwise, this needs to be updated</param>
         public void Save(TB_App app)
         {
+            if (string.IsNullOrWhiteSpace(app.AppName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Application Name cannot be empty.", Logger);
+            }
+
+            if (Repository.Any(app))
+            {
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, "Application Name has already been used.", Logger);
+            }
+
             Repository.Save(app);
         }
     }

@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IAppRepository.cs" />
+    <Compile Include="Interfaces\IObjectRepository.cs" />
     <Compile Include="Repositories\AppRepository.cs" />
+    <Compile Include="Repositories\ObjectRepository.cs" />
     <Compile Include="WellCoveredModel.cs" />
     <Compile Include="WellCoveredRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

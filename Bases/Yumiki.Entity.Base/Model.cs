@@ -53,6 +53,11 @@ namespace Yumiki.Entity.Base
 
         public virtual T ToObject()
         {
+            if (ID == Guid.Empty)
+            {
+                _interalItem.IsActive = true;
+            }
+
             return _interalItem;
         } 
     }

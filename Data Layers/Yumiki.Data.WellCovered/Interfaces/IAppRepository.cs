@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Data.Base;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Interfaces
 {
-    public interface IAppRepository
+    public interface IAppRepository : IShareableRepository<WellCoveredModel>
     {
         /// <summary>
         /// Get all active Apps from Database.
@@ -22,6 +23,13 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// <param name="id">TB_App Guid ID.</param>
         /// <returns>Result with TB_App type.</returns>
         TB_App GetAppByID(Guid id);
+
+        /// <summary>
+        /// Check if App Name already existed in DB.
+        /// </summary>
+        /// <param name="app">app with name to check.</param>
+        /// <returns></returns>
+        bool Any(TB_App app);
 
         /// <summary>
         /// Save app to DB

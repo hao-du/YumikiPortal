@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Logging;
+using Yumiki.Commons.Unity;
 using Yumiki.Entity.Base;
 
 namespace Yumiki.Data.Base
@@ -34,6 +35,40 @@ namespace Yumiki.Data.Base
                 }
                 return logger;
             }
+        }
+
+        private Dependency alternativeRepository;
+        /// <summary>
+        /// Get Dependency Injection Service
+        /// </summary>
+        protected Dependency AlternativeRepository
+        {
+            get
+            {
+                if (alternativeRepository == null)
+                {
+                    //Get domain name such as "SampleService" in "Yumiki.Business.SampleService" (index = 2)
+                    string containerName = this.GetType().FullName.Split('.')[2];
+                    alternativeRepository = Dependency.GetService(containerName);
+                }
+                return alternativeRepository;
+            }
+        }
+
+        /// <summary>
+        /// Create an Alternative Repository instance
+        /// </summary>
+        /// <typeparam name="E">Interface of Alternative Repository instance and it is inherited by IShareableRepository</typeparam>
+        /// <typeparam name="T">EF Context Model</typeparam>
+        /// <returns>Instance of Repository Interface </returns>
+        protected E GetAlternativeRepository<E>() where E : IShareableRepository<T>
+        {
+            E instance = AlternativeRepository.GetInstance<E>();
+
+            //Assgin current openning context to avoid creating multiple connections to DB
+            instance.AssignContext(this.context);
+
+            return instance;
         }
 
         /// <summary>

@@ -4,7 +4,7 @@
     ViewBag.Title = "Create Application";
 }
 
-<div class="container"">
+<div class="container">
     <h2>@ViewBag.Title</h2>
 
     @using (Html.BeginForm())
@@ -30,17 +30,7 @@
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descriptions)
-                    @Html.EditorFor(model => model.Descriptions, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="form-group">
-                    <span class="checkbox">
-                        @Html.EditorFor(model => model.IsActive)
-                        @Html.LabelFor(model => model.IsActive)
-                    </span>
+                    @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
                 </div>
             </div>
         </div>

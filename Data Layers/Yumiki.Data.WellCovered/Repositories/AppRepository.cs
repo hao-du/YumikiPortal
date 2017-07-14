@@ -42,6 +42,16 @@ namespace Yumiki.Data.WellCovered.Repositories
         }
 
         /// <summary>
+        /// Check if App Name already existed in DB.
+        /// </summary>
+        /// <param name="app">app with name to check.</param>
+        /// <returns></returns>
+        public bool Any(TB_App app)
+        {
+            return Context.TB_App.Any(c => c.ID != app.ID && c.AppName == app.AppName);
+        }
+
+        /// <summary>
         /// Save app to DB
         /// </summary>
         /// <param name="app">If app id is empty, then this is new app. Otherwise, this needs to be updated</param>
