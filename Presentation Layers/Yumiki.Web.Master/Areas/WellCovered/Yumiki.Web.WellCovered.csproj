@@ -108,8 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Models\MD_App.cs" />
+    <Compile Include="Models\MD_Field.cs" />
     <Compile Include="Models\MD_Object.cs" />
     <Compile Include="WellCoveredAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

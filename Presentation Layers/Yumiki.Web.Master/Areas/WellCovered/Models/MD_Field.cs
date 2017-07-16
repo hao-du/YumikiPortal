@@ -9,29 +9,29 @@ using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Web.WellCovered.Models
 {
-    public class MD_Object : Model<TB_Object>
+    public class MD_Field : Model<TB_Field>
     {
-        public MD_Object()
+        public MD_Field()
         {
-            this._interalItem = new TB_Object();
+            this._interalItem = new TB_Field();
         }
 
-        public MD_Object(TB_Object obj)
+        public MD_Field(TB_Field field)
         {
-            _interalItem = obj;
+            _interalItem = field;
         }
 
-        [Display(Name = "Object Name")]
+        [Display(Name = "Field Name")]
         [Required]
-        public string ObjectName
+        public string FieldName
         {
             get
             {
-                return _interalItem.ObjectName;
+                return _interalItem.FieldName;
             }
             set
             {
-                _interalItem.ObjectName = value;
+                _interalItem.FieldName = value;
             }
         }
 
@@ -63,36 +63,63 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
-        public Guid? AppID
+        public Guid ObjectID
         {
             get
             {
-                return _interalItem.AppID;
+                return _interalItem.ObjectID;
             }
             set
             {
-                _interalItem.AppID = value;
+                _interalItem.ObjectID = value;
             }
         }
 
-        public TB_App App
+        public TB_Object Object
         {
             get
             {
-                return _interalItem.App;
+                return _interalItem.Object;
             }
             set
             {
-                _interalItem.App = value;
+                _interalItem.Object = value;
             }
         }
 
-        [Display(Name = "Application Name")]
-        public string ApplicationName
+        public EN_DataType FieldType
         {
             get
             {
-                return _interalItem.AppName;
+                return _interalItem.FieldType;
+            }
+            set
+            {
+                _interalItem.FieldType = value;
+            }
+        }
+
+        public int? FieldLength
+        {
+            get
+            {
+                return _interalItem.FieldLength;
+            }
+            set
+            {
+                _interalItem.FieldLength = value;
+            }
+        }
+
+        public bool IsRequired
+        {
+            get
+            {
+                return _interalItem.IsRequired;
+            }
+            set
+            {
+                _interalItem.IsRequired = value;
             }
         }
 
@@ -105,7 +132,7 @@ namespace Yumiki.Web.WellCovered.Models
         }
 
 
-        public override TB_Object ToObject()
+        public override TB_Field ToObject()
         {
             _interalItem.UserID = CurrentUser.UserID;
 

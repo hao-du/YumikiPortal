@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IAppRepository.cs" />
+    <Compile Include="Interfaces\IFieldRepository.cs" />
     <Compile Include="Interfaces\IObjectRepository.cs" />
     <Compile Include="Repositories\AppRepository.cs" />
+    <Compile Include="Repositories\FieldRepository.cs" />
     <Compile Include="Repositories\ObjectRepository.cs" />
     <Compile Include="WellCoveredModel.cs" />
     <Compile Include="WellCoveredRepository.cs" />
