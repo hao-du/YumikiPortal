@@ -129,6 +129,7 @@
     <Content Include="User.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\Administrator.pubxml" />
     <None Include="web.config" />
     <None Include="web.Debug.config">
