@@ -111,6 +111,7 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Is Required")]
         public bool IsRequired
         {
             get

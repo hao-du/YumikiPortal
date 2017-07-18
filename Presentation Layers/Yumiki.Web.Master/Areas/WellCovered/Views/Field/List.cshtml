@@ -1,26 +1,31 @@
-﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Object>
+﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
 
 @{
-    ViewBag.Title = "Object List";
+    ViewBag.Title = "Field List";
 }
+
 <div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="well well-sm">
         <div class="btn-group">
             @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
 
-            @{ 
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) ||  bool.Parse(Request.Params["active"]))
+            @{
+                var hasRecords = Model.Any();
+                var paramObjectID = hasRecords ? Model.First().ObjectID.ToString() : Guid.Empty.ToString();
+
+                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
                 {
-                    @Html.ActionLink("Show Inactive", "List", new { active = false }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = string.Format("btn btn-default {0}", hasRecords ? string.Empty : "disabled") })
                 }
                 else
                 {
-                    @Html.ActionLink("Show Active", "List", new { active = true }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Show Active", "List", new { active = true, objectID = paramObjectID }, new { @class = string.Format("btn btn-default {0}", hasRecords ? string.Empty : "disabled") })
                 }
             }
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -28,13 +33,13 @@
                     <tr>
                         <th></th>
                         <th>
-                            @Html.DisplayNameFor(model => model.ObjectName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ApplicationName)
+                            @Html.DisplayNameFor(model => model.FieldName)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Descriptions)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsRequired)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.IsActive)
@@ -43,21 +48,21 @@
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
                         </th>
                     </tr>
+
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
-                                @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString() }, new { })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ObjectName)
+                                @Html.DisplayFor(modelItem => item.FieldName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ApplicationName)
+                                @Html.DisplayFor(modelItem => item.Descriptions)
                             </td>
                             <td>
-                                @Html.DisplayNameFor(model => model.Descriptions)
+                                @Html.DisplayFor(modelItem => item.IsRequired)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.IsActive)
