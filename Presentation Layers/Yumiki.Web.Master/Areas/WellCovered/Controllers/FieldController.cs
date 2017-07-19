@@ -15,6 +15,9 @@ namespace Yumiki.Web.WellCovered.Controllers
 {
     public class FieldController : BaseController<IFieldService>
     {
+        public const string PostDropdownList = "PostDropdownList";
+        public const string PostSave = "PostSave";
+
         // GET: App
         public ActionResult List(bool active, string objectID)
         {
@@ -24,16 +27,24 @@ namespace Yumiki.Web.WellCovered.Controllers
         }
 
         // GET: App/Create
-        public ActionResult Create()
+        public ActionResult Create(string objectID)
         {
+            MD_Field field = new MD_Field();
+
+            Guid convertedObjectID;
+            if(Guid.TryParse(objectID, out convertedObjectID))
+            {
+                field.ObjectID = convertedObjectID;
+            }
+
             InitDatasource();
 
-            return View();
+            return View(field);
         }
 
         // POST: App/Create
         [HttpPost]
-        public ActionResult Create(MD_Field field)
+        public ActionResult Create(string action, MD_Field field)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +70,7 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         // POST: App/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, MD_Field field)
+        public ActionResult Edit(string id, string action, MD_Field field)
         {
             if (ModelState.IsValid)
             {

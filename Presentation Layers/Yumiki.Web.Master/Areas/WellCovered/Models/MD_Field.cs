@@ -87,6 +87,8 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Field Type")]
+        [Required]
         public EN_DataType FieldType
         {
             get
@@ -99,6 +101,7 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Field Length")]
         public int? FieldLength
         {
             get
@@ -121,6 +124,18 @@ namespace Yumiki.Web.WellCovered.Models
             set
             {
                 _interalItem.IsRequired = value;
+            }
+        }
+
+        public string Datasource
+        {
+            get
+            {
+                return _interalItem.Datasource;
+            }
+            set
+            {
+                _interalItem.Datasource = value;
             }
         }
 

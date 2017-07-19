@@ -8,11 +8,11 @@
     <h2>@ViewBag.Title</h2>
     <div class="well well-sm">
         <div class="btn-group">
-            @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
-
             @{
                 var hasRecords = Model.Any();
                 var paramObjectID = hasRecords ? Model.First().ObjectID.ToString() : Guid.Empty.ToString();
+
+                @Html.ActionLink("Add", "Create", new { objectID = paramObjectID }, new { @class = "btn btn-primary" })
 
                 if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
                 {
