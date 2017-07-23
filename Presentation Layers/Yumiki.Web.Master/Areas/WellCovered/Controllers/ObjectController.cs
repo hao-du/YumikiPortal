@@ -17,9 +17,17 @@ namespace Yumiki.Web.WellCovered.Controllers
         // GET: App
         public ActionResult List(bool active = true)
         {
-            IEnumerable<MD_Object> apps = BusinessService.GetAllObjects(!active).Select(c => new MD_Object(c));
+            IEnumerable<MD_Object> objects = new List<MD_Object>();
+            try
+            {
+                objects = BusinessService.GetAllObjects(!active).Select(c => new MD_Object(c));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
 
-            return View(apps);
+            return View(objects);
         }
 
         // GET: App/Create
@@ -34,11 +42,18 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Create(MD_Object obj)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BusinessService.Save(obj.ToObject());
+                if (ModelState.IsValid)
+                {
+                    BusinessService.Save(obj.ToObject());
 
-                return RedirectToAction("List");
+                    return RedirectToAction("List");
+                }
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
             }
 
             InitDatasource();
@@ -49,7 +64,15 @@ namespace Yumiki.Web.WellCovered.Controllers
         // GET: App/Edit/5
         public ActionResult Edit(string id)
         {
-            MD_Object app = new MD_Object(BusinessService.GetObjectByID(id));
+            MD_Object app = null;
+            try
+            {
+                app = new MD_Object(BusinessService.GetObjectByID(id));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
 
             InitDatasource();
 
@@ -60,11 +83,18 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Edit(string id, MD_Object obj)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BusinessService.Save(obj.ToObject());
+                if (ModelState.IsValid)
+                {
+                    BusinessService.Save(obj.ToObject());
 
-                return RedirectToAction("List");
+                    return RedirectToAction("List");
+                }
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
             }
 
             InitDatasource();
@@ -74,8 +104,15 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         private void InitDatasource()
         {
-            IEnumerable<MD_App> apps = BusinessService.GetApps(CurrentUser.UserID.ToString()).Select(c => new MD_App(c));
-            ViewBag.AppDatasource = new SelectList(apps, CommonProperties.ID, TB_App.FieldName.AppName);
+            try
+            {
+                IEnumerable<MD_App> apps = BusinessService.GetApps(CurrentUser.UserID.ToString()).Select(c => new MD_App(c));
+                ViewBag.AppDatasource = new SelectList(apps, CommonProperties.ID, TB_App.FieldName.AppName);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
         }
     }
 }

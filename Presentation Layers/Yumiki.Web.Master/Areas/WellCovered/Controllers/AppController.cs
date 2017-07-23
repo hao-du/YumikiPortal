@@ -15,7 +15,15 @@ namespace Yumiki.Web.WellCovered.Controllers
         // GET: App
         public ActionResult List(bool active = true)
         {
-            IEnumerable<MD_App> apps = BusinessService.GetAllApps(!active, CurrentUser.UserID, true).Select(c => new MD_App(c));
+            IEnumerable<MD_App> apps = new List<MD_App>();
+            try
+            {
+                apps = BusinessService.GetAllApps(!active, CurrentUser.UserID, true).Select(c => new MD_App(c));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
 
             return View(apps);
         }
@@ -30,19 +38,35 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Create(MD_App app)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BusinessService.Save(app.ToObject());
+                if (ModelState.IsValid)
+                {
+                    BusinessService.Save(app.ToObject());
 
-                return RedirectToAction("List");
+                    return RedirectToAction("List");
+                }
             }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
             return View(app);
         }
 
         // GET: App/Edit/5
         public ActionResult Edit(string id)
         {
-            MD_App app = new MD_App(BusinessService.GetAppByID(id));
+            MD_App app = null;
+            try
+            {
+                app = new MD_App(BusinessService.GetAppByID(id));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
 
             return View(app);
         }
@@ -51,12 +75,20 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Edit(string id, MD_App app)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BusinessService.Save(app.ToObject());
+                if (ModelState.IsValid)
+                {
+                    BusinessService.Save(app.ToObject());
 
-                return RedirectToAction("List");
+                    return RedirectToAction("List");
+                }
             }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
             return View(app);
         }
     }
