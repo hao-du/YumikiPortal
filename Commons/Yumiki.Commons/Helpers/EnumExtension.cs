@@ -35,7 +35,7 @@ namespace Yumiki.Commons.Helpers
                 ExtendEnum extendEnum = new ExtendEnum
                 {
                     Text = Enum.GetName(typeof(T), value),
-                    Value = int.Parse(value.ToString()),
+                    Value = (int)value,
                     DisplayText = displayText
                 };
 

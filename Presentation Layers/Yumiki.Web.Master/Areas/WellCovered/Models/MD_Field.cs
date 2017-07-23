@@ -6,6 +6,7 @@ using System.Web;
 using Yumiki.Commons.Settings;
 using Yumiki.Entity.Base;
 using Yumiki.Entity.WellCovered;
+using Yumiki.Web.WellCovered.Validations;
 
 namespace Yumiki.Web.WellCovered.Models
 {
@@ -126,7 +127,8 @@ namespace Yumiki.Web.WellCovered.Models
                 _interalItem.IsRequired = value;
             }
         }
-
+        
+        [IsRequiredBasedOnField(TB_Field.FieldNames.FieldType, EN_DataType.E_STRING)]
         public string Datasource
         {
             get

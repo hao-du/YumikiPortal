@@ -17,6 +17,7 @@ namespace Yumiki.Entity.WellCovered
 
         public class FieldNames
         {
+            public const string FieldType = "FieldType";
         }
     }
 }

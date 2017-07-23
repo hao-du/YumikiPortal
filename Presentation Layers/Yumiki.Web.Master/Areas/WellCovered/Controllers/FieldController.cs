@@ -46,11 +46,19 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Create(string action, MD_Field field)
         {
-            if (ModelState.IsValid)
+            switch (action)
             {
-                BusinessService.Save(field.ToObject());
+                case PostDropdownList:
+                    ModelState.Clear();
+                    break;
+                case PostSave:
+                    if (ModelState.IsValid)
+                    {
+                        BusinessService.Save(field.ToObject());
 
-                return RedirectToAction("List");
+                        return RedirectToAction("List");
+                    }
+                    break;
             }
 
             InitDatasource();

@@ -32,15 +32,24 @@
 </head>
 <body>
     <form runat="server" defaultfocus="txtUserLoginName">
-        <p>Sign In</p>
-        <br />
-        <asp:TextBox runat="server" ID="txtUserLoginName" ></asp:TextBox>
+        <h1>Sign In</h1>
+        <asp:TextBox runat="server" ID="txtUserLoginName" Text="Administrator"></asp:TextBox>
         <br />
         <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserLoginName" Display="None" ErrorMessage="User Name is required." />
         <br />
         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" />
-        <br />
         <asp:Button ID="btnLogin" runat="server" Text="Sign In" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
+        <hr />
+        <h1>Testing Account</h1>
+        <ul>
+            <asp:Repeater runat="server" ID="rptUserNames">
+                <ItemTemplate>
+                    <li>
+                        <asp:LinkButton runat="server" ID="btnLoginLink" Text='<%# Eval("UserLoginName") %>'  OnClick="btnLogin_Click"></asp:LinkButton>
+                    </li>
+                </ItemTemplate>
+            </asp:Repeater>
+        </ul>
     </form>
 </body>
 </html>

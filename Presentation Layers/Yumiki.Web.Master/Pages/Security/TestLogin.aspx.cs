@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
 using Yumiki.Business.Master.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
@@ -19,11 +21,27 @@ namespace Yumiki.Web.Master.Pages.Security
             //Nothing to do here.
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            List<TB_User> testUsers = new List<TB_User>();
+            testUsers.Add(new TB_User { UserLoginName = "Administrator" });
+            testUsers.Add(new TB_User { UserLoginName = "dchao" });
+            testUsers.Add(new TB_User { UserLoginName = "nkthu" });
+            testUsers.Add(new TB_User { UserLoginName = "ltkiet" });
+            testUsers.Add(new TB_User { UserLoginName = "ntkoanh" });
+            testUsers.Add(new TB_User { UserLoginName = "ltoanh" });
+
+            rptUserNames.DataSource = testUsers;
+            rptUserNames.DataBind();
+        }
+
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             try
             {
-                TB_User user = BusinessService.Login(txtUserLoginName.Text);
+                TB_User user = BusinessService.Login(sender is Button ? txtUserLoginName.Text : ((LinkButton)sender).Text);
 
                 CurrentUser.UserID = user.ID;
                 CurrentUser.UserLoginName = user.UserLoginName;
