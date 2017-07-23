@@ -18,7 +18,7 @@ namespace Yumiki.Web.WellCovered
             context.MapRoute(
                 "WellCovered_default",
                 string.Format("{0}/{1}/{2}", HttpConstants.Pages.WebFormAreaPrefix, AreaName, "{controller}/{action}/{id}"),
-                new { action = "List", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional }
             );
         }
     }

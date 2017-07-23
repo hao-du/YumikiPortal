@@ -102,6 +102,7 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [IsRequiredBasedOnField(TB_Field.FieldNames.FieldType, EN_DataType.E_STRING)]
         [Display(Name = "Field Length")]
         public int? FieldLength
         {
@@ -128,7 +129,7 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
         
-        [IsRequiredBasedOnField(TB_Field.FieldNames.FieldType, EN_DataType.E_STRING)]
+        [IsRequiredBasedOnField(TB_Field.FieldNames.FieldType, EN_DataType.E_DATASOURCE)]
         public string Datasource
         {
             get

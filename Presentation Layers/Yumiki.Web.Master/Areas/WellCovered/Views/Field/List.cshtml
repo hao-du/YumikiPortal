@@ -10,17 +10,17 @@
         <div class="btn-group">
             @{
                 var hasRecords = Model.Any();
-                var paramObjectID = hasRecords ? Model.First().ObjectID.ToString() : Guid.Empty.ToString();
+                string paramObjectID = ViewBag.ObjectID;
 
-                @Html.ActionLink("Add", "Create", new { objectID = paramObjectID }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Add", "Create", new { objectID = ViewBag.ObjectID }, new { @class = "btn btn-primary" })
 
                 if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
                 {
-                    @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = string.Format("btn btn-default {0}", hasRecords ? string.Empty : "disabled") })
+                    @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = "btn btn-default" })
                 }
                 else
                 {
-                    @Html.ActionLink("Show Active", "List", new { active = true, objectID = paramObjectID }, new { @class = string.Format("btn btn-default {0}", hasRecords ? string.Empty : "disabled") })
+                    @Html.ActionLink("Show Active", "List", new { active = true, objectID = paramObjectID }, new { @class = "btn btn-default" })
                 }
             }
         </div>
@@ -53,7 +53,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID, objectID = item.ObjectID })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FieldName)

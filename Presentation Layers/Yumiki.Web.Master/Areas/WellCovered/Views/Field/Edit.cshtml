@@ -1,7 +1,7 @@
 ﻿@model Yumiki.Web.WellCovered.Models.MD_Field
 
 @{
-    ViewBag.Title = "Create Field";
+    ViewBag.Title = "Edit Field";
 }
 <div class="container">
     <h2>@ViewBag.Title</h2>
@@ -9,6 +9,7 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ID)
         @Html.Hidden("action", string.Empty)
 
         <div class="well well-sm">
@@ -107,6 +108,16 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descriptions)
                     @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.LabelFor(model => model.IsActive)
+                    </span>
                 </div>
             </div>
         </div>

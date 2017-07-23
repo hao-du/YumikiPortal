@@ -31,5 +31,10 @@ namespace Yumiki.Web.WellCovered.Validations
 
             return ValidationResult.Success;            
         }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return string.Format("The {0} field is required.", name);
+        }
     }
 }

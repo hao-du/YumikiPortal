@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Entities;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
@@ -85,6 +86,7 @@ namespace Yumiki.Web.Base
             }
 
             base.OnException(filterContext);
+
         }
 
         /// <summary>
@@ -103,6 +105,50 @@ namespace Yumiki.Web.Base
             }
         }
 
+        protected void SendInformation(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.INFO);
+        }
 
+        protected void SendWarning(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.WARN);
+        }
+
+        protected void SendError(Exception ex)
+        {
+            SendClientMessage(ex.Message, ex, LogLevel.ERROR);
+        }
+
+        /// <summary>
+        /// Send message to client side
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="details">Message Details</param>
+        /// <param name="logType">Log Level to display dialog in Client side</param>
+        protected void SendClientMessage(string message, string details, LogLevel logType)
+        {
+            Message clientMessage = new Message(message, details, logType);
+
+            ViewBag.Message = clientMessage;
+        }
+
+        /// <summary>
+        /// Send exception message to client side
+        /// </summary>
+        /// <param name="message">Exception Message</param>
+        /// <param name="ex">Exception Error</param>
+        /// <param name="logType">To show exception type to client side</param>
+        protected void SendClientMessage(string message, Exception ex, LogLevel logType)
+        {
+            if (ex != null && !(ex is YumikiException))
+            {
+                Logger.Append(logType, message, ex);
+            }
+
+            string details = Logger.GetExceptionDetails(ex);
+
+            SendClientMessage(message, details, logType);
+        }
     }
 }

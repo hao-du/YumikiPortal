@@ -23,6 +23,8 @@ namespace Yumiki.Web.WellCovered.Controllers
         {
             IEnumerable<MD_Field> apps = BusinessService.GetAllFields(!active, objectID).Select(c => new MD_Field(c));
 
+            ViewBag.ObjectID = objectID;
+
             return View(apps);
         }
 
@@ -56,7 +58,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                     {
                         BusinessService.Save(field.ToObject());
 
-                        return RedirectToAction("List");
+                        return RedirectToAction("List", new { active = true, objectID = field.ObjectID });
                     }
                     break;
             }
@@ -66,8 +68,13 @@ namespace Yumiki.Web.WellCovered.Controllers
             return View(field);
         }
 
-        // GET: App/Edit/5
-        public ActionResult Edit(string id)
+        /// <summary>
+        /// GET: App/Edit/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="objectID">To generate the parameter to URL</param>
+        /// <returns></returns>
+        public ActionResult Edit(string id, string objectID)
         {
             MD_Field field = new MD_Field(BusinessService.GetFieldByID(id));
 
@@ -80,15 +87,29 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Edit(string id, string action, MD_Field field)
         {
-            if (ModelState.IsValid)
+            try
             {
-                BusinessService.Save(field.ToObject());
+                switch (action)
+                {
+                    case PostDropdownList:
+                        ModelState.Clear();
+                        break;
+                    case PostSave:
+                        ///if (ModelState.IsValid)
+                        //{
+                        BusinessService.Save(field.ToObject());
 
-                return RedirectToAction("List");
+                        return RedirectToAction("List", new { active = true, objectID = field.ObjectID });
+                        //}
+                        //break;
+                }  
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
             }
 
             InitDatasource();
-
             return View(field);
         }
 
