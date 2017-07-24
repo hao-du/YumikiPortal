@@ -44,5 +44,36 @@ namespace Yumiki.Commons.Helpers
 
             return extendEnums;
         }
+
+        public static string GetMappingValue(Type type, string name)
+        {
+            MemberInfo[] memberInfo = type.GetMember(name);
+            if (memberInfo != null && memberInfo.Length > 0)
+            {
+                MappingValue attr = Attribute.GetCustomAttribute(memberInfo[0], typeof(MappingValue)) as MappingValue;
+                if (attr != null)
+                {
+                    return attr.Value;
+                }
+            }
+            return null;
+        }
+
+        public static string GetMappingValue(object enm)
+        {
+            if (enm != null)
+            {
+                MemberInfo[] memberInfo = enm.GetType().GetMember(enm.ToString());
+                if (memberInfo != null && memberInfo.Length > 0)
+                {
+                    MappingValue attr = Attribute.GetCustomAttribute(memberInfo[0], typeof(MappingValue)) as MappingValue;
+                    if (attr != null)
+                    {
+                        return attr.Value;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

@@ -30,6 +30,7 @@ namespace Yumiki.Entity.WellCovered
             public const string DisplayName = "DisplayName";
             public const string ApiName = "ApiName";
             public const string AppName = "AppName";
+            public const string Fields = "Fields";
 
             public const string IsShareable = "IsShareable";
         }
