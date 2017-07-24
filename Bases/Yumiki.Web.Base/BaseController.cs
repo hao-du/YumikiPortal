@@ -69,6 +69,8 @@ namespace Yumiki.Web.Base
 
             ViewBag.UserName = ViewBag.UserID = ViewBag.LastLoginTime = ViewBag.TimeZone = string.Empty;
 
+            ViewBag.Message = TempData["Message"];
+
             if (CurrentUser.IsAuthenticated)
             {
                 ViewBag.UserName = CurrentUser.UserLoginName;
@@ -130,7 +132,7 @@ namespace Yumiki.Web.Base
         {
             Message clientMessage = new Message(message, details, logType);
 
-            ViewBag.Message = clientMessage;
+            TempData["Message"] = ViewBag.Message = clientMessage;
         }
 
         /// <summary>

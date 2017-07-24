@@ -20,6 +20,7 @@ namespace Yumiki.Entity.WellCovered
         {
             public const string AppName = "AppName";
             public const string IsShareable = "IsShareable";
+            public const string Objects = "Objects";
         }
     }
 }

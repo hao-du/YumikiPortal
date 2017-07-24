@@ -50,8 +50,10 @@
     <Compile Include="Interfaces\IAppRepository.cs" />
     <Compile Include="Interfaces\IFieldRepository.cs" />
     <Compile Include="Interfaces\IObjectRepository.cs" />
+    <Compile Include="Interfaces\ILiveRepository.cs" />
     <Compile Include="Repositories\AppRepository.cs" />
     <Compile Include="Repositories\FieldRepository.cs" />
+    <Compile Include="Repositories\LiveRepository.cs" />
     <Compile Include="Repositories\ObjectRepository.cs" />
     <Compile Include="WellCoveredModel.cs" />
     <Compile Include="WellCoveredRepository.cs" />
@@ -61,6 +63,10 @@
     <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
       <Project>{04117f61-b63a-4414-a95d-63e6288449c6}</Project>
       <Name>Yumiki.Data.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7c58deb3-e136-4086-b9a5-44c5cb28b269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Entities\Yumiki.Entity.WellCovered\Yumiki.Entity.WellCovered.csproj">
       <Project>{c3e9b0d0-2d29-4d52-ac13-89b8b4ab1efb}</Project>

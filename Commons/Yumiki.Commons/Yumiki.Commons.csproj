@@ -63,6 +63,7 @@
     <Compile Include="Dictionaries\Formats.cs" />
     <Compile Include="Dictionaries\SettingNames.cs" />
     <Compile Include="Entities\ExtendEnum.cs" />
+    <Compile Include="Entities\MappingValue.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Helpers\EnumExtension.cs" />
     <Compile Include="Settings\SystemSettings.cs" />

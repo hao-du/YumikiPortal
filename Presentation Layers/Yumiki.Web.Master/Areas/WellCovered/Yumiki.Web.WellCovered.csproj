@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Controllers\LiveController.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
     <Compile Include="Models\MD_App.cs" />
     <Compile Include="Models\MD_Field.cs" />
@@ -130,6 +131,7 @@
     <Content Include="Views\Field\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Live\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

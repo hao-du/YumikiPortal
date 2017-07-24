@@ -11,6 +11,7 @@
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.ID)
         @Html.Hidden("action", string.Empty)
+        @Html.HiddenFor(model=>model.ApiName)
 
         <div class="well well-sm">
             <div class="btn-group">
@@ -41,7 +42,10 @@
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApiName)
-                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control", disabled= "disabled" } })
+                    <p class="text-info">
+                        <i>Api Name is used by system and can only name it during adding new.</i>
+                    </p>
                     @Html.ValidationMessageFor(model => model.ApiName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -123,16 +127,17 @@
         </div>
     }
 </div>
-
-<script type="text/javascript">
-    var onFormSubmit = function (action) {
-        if (!action) {
-            return false;
+@section Script{
+    <script type="text/javascript">
+        var onFormSubmit = function (action) {
+            if (!action) {
+                return false;
+            }
+            //Set value in hidden field 'action' to be URL param
+            $('#action').val(action);
+            //Submit form after filling all params
+            var form = $('#action').closest('form');
+            form.submit();
         }
-        //Set value in hidden field 'action' to be URL param
-        $('#action').val(action);
-        //Submit form after filling all params
-        var form = $('#action').closest('form');
-        form.submit();
-    }
-</script>
+    </script>
+}

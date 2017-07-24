@@ -10,7 +10,7 @@ namespace Yumiki.Entity.WellCovered
         E_INT,
 
         [Description("Decimal")]
-        [MappingValue("decimal(18, 2)")]
+        [MappingValue("decimal")]
         E_DECIMAL,
 
         [Description("String")]
@@ -34,7 +34,7 @@ namespace Yumiki.Entity.WellCovered
         E_TIME,
 
         [Description("Datasource")]
-        [MappingValue("nvarchar(100)")]
+        [MappingValue("nvarchar")]
         E_DATASOURCE
     }
 }

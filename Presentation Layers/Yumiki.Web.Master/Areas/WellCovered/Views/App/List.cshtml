@@ -42,6 +42,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
                         </th>
+                        <th></th>
                     </tr>
                     @foreach (var item in Model)
                     {
@@ -64,6 +65,13 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
                             </td>
+                            <td>
+                                @using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
+                                {
+                                    @Html.Hidden("appID", item.ID.ToString())
+                                    <a href="#" onclick="onFormSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
+                                }
+                            </td>
                         </tr>
                     }
 
@@ -72,3 +80,13 @@
         </div>
     </div>
 </div>
+@section Script{
+    <script type="text/javascript">
+        var onFormSubmit = function (id) {
+            //Submit form
+            var form = $('#' + id);
+            form.submit();
+        }
+    </script>
+}
+

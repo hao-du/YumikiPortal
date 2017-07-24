@@ -32,7 +32,7 @@ namespace Yumiki.Commons.Entities
 
         public Message(string message, string details, LogLevel logType)
         {
-            InitMessage(message, details, LogLevel.ERROR);
+            InitMessage(message, details, logType);
         }
 
         private void InitMessage(string message, string details, LogLevel logType)

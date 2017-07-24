@@ -40,6 +40,9 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApiName)
                     @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control" } })
+                    <p class="text-info">
+                        <i>Api Name is used by system and can only name it during adding new.</i>
+                    </p>
                     @Html.ValidationMessageFor(model => model.ApiName, "", new { @class = "text-danger" })
                 </div>
             </div>
