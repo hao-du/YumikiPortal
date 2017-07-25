@@ -28,7 +28,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 queryable = queryable.Where(c => c.UserID == userID);
             }
 
-            return queryable.AsEnumerable();
+            return queryable.ToList();
         }
 
         /// <summary>

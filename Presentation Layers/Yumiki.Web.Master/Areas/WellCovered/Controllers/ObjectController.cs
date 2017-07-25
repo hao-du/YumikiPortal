@@ -20,7 +20,23 @@ namespace Yumiki.Web.WellCovered.Controllers
             IEnumerable<MD_Object> objects = new List<MD_Object>();
             try
             {
-                objects = BusinessService.GetAllObjects(!active).Select(c => new MD_Object(c));
+                objects = BusinessService.GetAllObjects(!active, null).Select(c => new MD_Object(c));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return View(objects);
+        }
+
+        // GET: App
+        public ActionResult List(bool active, string appID)
+        {
+            IEnumerable<MD_Object> objects = new List<MD_Object>();
+            try
+            {
+                objects = BusinessService.GetAllObjects(!active, appID).Select(c => new MD_Object(c));
             }
             catch (Exception ex)
             {

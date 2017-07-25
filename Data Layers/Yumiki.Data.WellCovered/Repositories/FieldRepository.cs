@@ -17,7 +17,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <returns>List of all active Fields.</returns>
         public IEnumerable<TB_Field> GetAllFields(bool showInactive, Guid objectID)
         {
-            IEnumerable<TB_Field> fields = Context.TB_Field.Where(c => c.IsActive == !showInactive && c.ObjectID == objectID).AsEnumerable();
+            IEnumerable<TB_Field> fields = Context.TB_Field.Where(c => c.IsActive == !showInactive && c.ObjectID == objectID).ToList();
 
             return fields;
         }

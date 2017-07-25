@@ -36,13 +36,10 @@
                             @Html.DisplayNameFor(model => model.FieldName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Descriptions)
+                            @Html.DisplayNameFor(model => model.ApiName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.IsRequired)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IsActive)
+                            @Html.DisplayNameFor(model => model.FieldType)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
@@ -56,16 +53,24 @@
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID, objectID = item.ObjectID })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.FieldName)
+                                @Html.DisplayFor(modelItem => string.Format("{0} - {1}", item.FieldName, item.DisplayName))
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Descriptions)
+                                @Html.DisplayFor(modelItem => item.ApiName)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsRequired)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsActive)
+                                @if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
+                                {
+                                    @Html.DisplayFor(modelItem => string.Format("{0}{1} - Datasource: {2}", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), (item.IsRequired ? " Required" : string.Empty) , item.Datasource))
+                                }
+                                else if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
+                                {
+                                    @Html.DisplayFor(modelItem => string.Format("{0} ({1})", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), item.FieldLength.HasValue ? item.FieldLength.Value : 0))
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType))
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)

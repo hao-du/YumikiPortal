@@ -34,10 +34,10 @@
                             @Html.DisplayNameFor(model => model.Descriptions)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.IsActive)
+                            @Html.DisplayNameFor(model => model.IsShareable)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.IsShareable)
+                            @Html.DisplayNameFor(model => model.IsActive)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
@@ -49,6 +49,7 @@
                         <tr>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.AppName)
@@ -57,10 +58,10 @@
                                 @Html.DisplayFor(modelItem => item.Descriptions)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsActive)
+                                @Html.DisplayFor(modelItem => item.IsShareable)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsShareable)
+                                @Html.DisplayFor(modelItem => item.IsActive)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)

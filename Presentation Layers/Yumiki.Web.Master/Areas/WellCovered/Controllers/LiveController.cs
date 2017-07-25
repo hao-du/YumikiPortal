@@ -11,6 +11,11 @@ namespace Yumiki.Web.WellCovered.Controllers
 {
     public class LiveController : BaseController<ILiveService>
     {
+        public ActionResult List(string objectID)
+        {
+            return View();
+        }
+
         // POST:
         [HttpPost]
         public ActionResult PublishApp(string appID)

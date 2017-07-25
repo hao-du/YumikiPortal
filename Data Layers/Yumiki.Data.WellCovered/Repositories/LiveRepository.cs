@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Entity.WellCovered;
@@ -13,6 +14,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 {
     public class LiveRepository : WellCoveredRepository, ILiveRepository
     {
+        #region Publish Object
         /// <summary>
         /// Check if Apps is ready for publish (Has objects and fields)
         /// </summary>
@@ -20,7 +22,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <returns>True if Valid</returns>
         public bool IsAppValidToPublish(Guid appID)
         {
-            return Context.TB_App.Where(c => c.ID == appID && c.Objects.Where(d=>d.Fields.Any()).Any()).SingleOrDefault() != null;
+            return Context.TB_App.Where(c => c.ID == appID && c.Objects.Where(d => d.Fields.Any()).Any()).SingleOrDefault() != null;
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             Logger.Debug(string.Format("Publishing app with ID '{0}' with {1} objects.", appID.ToString(), objects.Count()));
 
-            foreach(TB_Object obj in objects)
+            foreach (TB_Object obj in objects)
             {
                 PublishObject(obj);
             }
@@ -99,20 +101,20 @@ namespace Yumiki.Data.WellCovered.Repositories
         {
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.AppendFormat("CREATE TABLE {0} (", obj.ApiName);
-            foreach(TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields)
             {
                 string fieldName = field.ApiName;
                 string fieldType = EnumHelper.GetMappingValue(field.FieldType);
                 string fieldLength = GetFieldLength(field);
-                
+
                 sqlBuilder.AppendFormat("{0} {1}{2} NULL, ", fieldName, fieldType, fieldLength);
             }
 
-            sqlBuilder.Append("ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, ");
-            sqlBuilder.Append("Descriptions VARCHAR(255) NULL, ");
-            sqlBuilder.Append("IsActive BIT NOT NULL, ");
-            sqlBuilder.Append("CreateDate DATETIME NOT NULL, ");
-            sqlBuilder.Append("LastUpdateDate DATETIME NULL");
+            sqlBuilder.AppendFormat("{0} UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, ", CommonProperties.ID);
+            sqlBuilder.AppendFormat("{0} VARCHAR(255) NULL, ", CommonProperties.Descriptions);
+            sqlBuilder.AppendFormat("{0} BIT NOT NULL, ", CommonProperties.IsActive);
+            sqlBuilder.AppendFormat("{0} DATETIME NOT NULL, ", CommonProperties.CreateDate);
+            sqlBuilder.AppendFormat("{0} DATETIME NULL", CommonProperties.LastUpdateDate);
 
             sqlBuilder.Append(")");
 
@@ -135,7 +137,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             EnumerableRowCollection<DataRow> fieldInfos = GetDynamicRecords(string.Format("SELECT {0}, {1}, {2} FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{3}'", ColumnName, DataType, Length, obj.ApiName)).AsEnumerable();
 
             StringBuilder sqlBuilder = new StringBuilder();
-            
+
             foreach (TB_Field field in obj.Fields)
             {
                 string fieldName = field.ApiName;
@@ -145,20 +147,20 @@ namespace Yumiki.Data.WellCovered.Repositories
                 DataRow row = fieldInfos.Where(c => c.Field<string>(ColumnName) == fieldName).FirstOrDefault();
 
                 //New field for existing table
-                if(row == null)
+                if (row == null)
                 {
                     sqlBuilder.AppendFormat("ALTER TABLE {0} ADD {1} {2}{3} NULL;", obj.ApiName, fieldName, fieldType, fieldLength);
                 }
                 else
                 {
                     //If field type is changed
-                    if(fieldType != row.Field<string>(DataType))
+                    if (fieldType != row.Field<string>(DataType))
                     {
                         sqlBuilder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", obj.ApiName, fieldName);
                         sqlBuilder.AppendFormat("ALTER TABLE {0} ADD {1} {2}{3} NULL;", obj.ApiName, fieldName, fieldType, fieldLength);
                     }
                     //If length's nvarchar column is changed
-                    else if(field.FieldType == EN_DataType.E_STRING && field.FieldLength != row.Field<int>(Length))
+                    else if (field.FieldType == EN_DataType.E_STRING && field.FieldLength != row.Field<int>(Length))
                     {
                         sqlBuilder.AppendFormat("ALTER TABLE {0} ALTER COLUMN {1} {2}{3};", obj.ApiName, fieldName, fieldType, fieldLength);
                     }
@@ -203,6 +205,64 @@ namespace Yumiki.Data.WellCovered.Repositories
                     break;
             }
             return fieldLength;
+        }
+        #endregion
+
+        /// <summary>
+        /// Fetch all data from Object
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        public DataTable FetchObjectData(Guid objectID, bool isActive)
+        {
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            if(obj == null)
+            {
+                return null;
+            }
+
+            StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
+
+            StringBuilder sqlFromBuilder = new StringBuilder();
+            sqlFromBuilder.AppendFormat(" FROM {0} AS [0] ", obj.ApiName);
+
+            int aliasUniqueID = 1;
+
+            foreach(TB_Field field in obj.Fields)
+            {
+
+                bool hasDatasource = false;
+                if (field.FieldType == EN_DataType.E_DATASOURCE)
+                {
+                    //Format: Link DisplayField=API_Field_Name>>API_Object_Name
+                    string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        hasDatasource = true;
+                        
+                        string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+                        sqlSelectBuilder.AppendFormat(" , [{0}].{1} as [{2}]", aliasUniqueID, displayField, field.DisplayName);
+
+                        sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS {1} ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
+                    }
+                }
+
+                if (!hasDatasource)
+                {
+                    sqlSelectBuilder.AppendFormat(" ,[0].{0} as [{1}] ", field.ApiName, field.DisplayName);
+                }
+
+                aliasUniqueID++;
+            }
+
+            StringBuilder sqlWhereBuilder = new StringBuilder();
+            sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive);
+
+            return GetDynamicRecords(string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString()));
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="showInactive">Show list of inactive Objects or active Objects.</param>
         /// <returns>List of all active Objects.</returns>
-        IEnumerable<TB_Object> GetAllObjects(bool showInactive);
+        IEnumerable<TB_Object> GetAllObjects(bool showInactive, Guid? appID);
 
         /// <summary>
         /// Return specific Object by id.

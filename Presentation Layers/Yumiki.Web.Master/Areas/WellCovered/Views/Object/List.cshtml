@@ -30,14 +30,11 @@
                         <th>
                             @Html.DisplayNameFor(model => model.ObjectName)
                         </th>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ApiName)
+                        </td>
                         <th>
                             @Html.DisplayNameFor(model => model.ApplicationName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Descriptions)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IsActive)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
@@ -49,24 +46,24 @@
                         <tr>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                <span class="yumiki-separator-vbar"></span>
                                 @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString() }, new { })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ObjectName)
+                                @Html.DisplayFor(modelItem => string.Format("{0} - {1}", item.ObjectName, item.DisplayName))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApiName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ApplicationName)
                             </td>
                             <td>
-                                @Html.DisplayNameFor(model => model.Descriptions)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsActive)
-                            </td>
-                            <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
                             </td>
                             <td>
+                                @Html.ActionLink("View Data", "List", "Live", new { objectID = item.ID.ToString() }, new { })
+                                <span class="yumiki-separator-vbar"></span>
                                 @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
                                     @Html.Hidden("objectID", item.ID.ToString())
