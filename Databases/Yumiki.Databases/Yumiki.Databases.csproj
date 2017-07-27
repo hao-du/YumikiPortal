@@ -49,6 +49,7 @@
     <None Include="DB_Administration\v.1.0.0.0-Beta03\CreateProcedures.sql" />
     <None Include="DB_Administration\v.1.0.0.0-Beta03\CreateDatabase.sql" />
     <None Include="DB_Administration\v.1.0.0.0-Beta05\AlterPROC_SyncUser.sql" />
+    <Content Include="DB_Administration\v.1.0.0.0-Beta05\InsertData.sql" />
     <Content Include="DB_MoneyTrace\v.1.0.0.0-Beta04\InsertData.sql" />
     <Content Include="DB_Master\InsertData.sql" />
     <Content Include="DB_MoneyTrace\InsertData.sql" />

@@ -15,7 +15,16 @@ namespace Yumiki.Web.WellCovered.Controllers
     {
         public ActionResult List(string objectID, bool active)
         {
-            MD_Live live = BusinessService.FetchObjectData(objectID, active);
+            MD_Live live = new MD_Live();
+
+            try
+            {
+                live = BusinessService.FetchObjectData(objectID, active);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
 
             return View(live);
         }

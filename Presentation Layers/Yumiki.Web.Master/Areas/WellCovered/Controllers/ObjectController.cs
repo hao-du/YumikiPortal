@@ -15,12 +15,14 @@ namespace Yumiki.Web.WellCovered.Controllers
     public class ObjectController : BaseController<IObjectService>
     {
         // GET: App
-        public ActionResult List(bool active, string appID)
+        public ActionResult List(bool? active, string appID)
         {
             IEnumerable<MD_Object> objects = new List<MD_Object>();
             try
             {
-                objects = BusinessService.GetAllObjects(!active, appID).Select(c => new MD_Object(c));
+                if(!active == null) { active = true; }
+
+                objects = BusinessService.GetAllObjects(!active.Value, appID).Select(c => new MD_Object(c));
             }
             catch (Exception ex)
             {
