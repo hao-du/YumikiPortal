@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,22 @@ namespace Yumiki.Business.WellCovered.Services
             }
 
             Repository.PublishObject(convertedID);
+        }
+
+        /// <summary>
+        /// Fetch all data from Object
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        public MD_Live FetchObjectData(string objectID, bool isActive)
+        {
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(objectID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            return Repository.FetchObjectData(convertedID, isActive);
         }
     }
 }

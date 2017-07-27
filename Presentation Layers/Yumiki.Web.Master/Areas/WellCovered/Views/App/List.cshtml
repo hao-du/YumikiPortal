@@ -49,6 +49,7 @@
                         <tr>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                <span class="yumiki-separator-vbar"></span>
                                 @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { })
                             </td>
                             <td>

@@ -53,24 +53,32 @@
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID, objectID = item.ObjectID })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => string.Format("{0} - {1}", item.FieldName, item.DisplayName))
+                                @{ 
+                                    string fieldName = string.Format("{0} - Display Name: {1}", item.FieldName, item.DisplayName);
+                                }
+                                @Html.DisplayFor(modelItem => fieldName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ApiName)
                             </td>
                             <td>
-                                @if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
-                                {
-                                    @Html.DisplayFor(modelItem => string.Format("{0}{1} - Datasource: {2}", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), (item.IsRequired ? " Required" : string.Empty) , item.Datasource))
+                                @{
+                                    string description = string.Empty;
+
+                                    if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
+                                    {
+                                        description = string.Format("{0}{1} - Datasource: {2}", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), (item.IsRequired ? " Required" : string.Empty), item.Datasource);
+                                    }
+                                    else if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
+                                    {
+                                        description = string.Format("{0} ({1})", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), item.FieldLength.HasValue ? item.FieldLength.Value : 0);
+                                    }
+                                    else
+                                    {
+                                        description = Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType);
+                                    }
                                 }
-                                else if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
-                                {
-                                    @Html.DisplayFor(modelItem => string.Format("{0} ({1})", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), item.FieldLength.HasValue ? item.FieldLength.Value : 0))
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(modelItem => Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType))
-                                }
+                                @Html.DisplayFor(modelItem => description)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)

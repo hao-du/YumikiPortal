@@ -38,5 +38,11 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="objectID">Id of Object need to be gone live.</param>
         void PublishObject(Guid objectID);
+
+        /// <summary>
+        /// Fetch all data from Object
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        MD_Live FetchObjectData(Guid objectID, bool isActive);
     }
 }

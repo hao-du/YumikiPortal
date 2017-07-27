@@ -212,11 +212,16 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        public DataTable FetchObjectData(Guid objectID, bool isActive)
+        public MD_Live FetchObjectData(Guid objectID, bool isActive)
         {
+            MD_Live live = new MD_Live();
+
             TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
 
-            if(obj == null)
+            live.ObjectID = obj.ID;
+            live.LiveName = obj.DisplayName;
+
+            if (obj == null)
             {
                 return null;
             }
@@ -230,6 +235,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach(TB_Field field in obj.Fields)
             {
+                live.ColumnNames.Add(field.DisplayName);
 
                 bool hasDatasource = false;
                 if (field.FieldType == EN_DataType.E_DATASOURCE)
@@ -260,9 +266,11 @@ namespace Yumiki.Data.WellCovered.Repositories
             }
 
             StringBuilder sqlWhereBuilder = new StringBuilder();
-            sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive);
+            sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive ? 1 : 0);
 
-            return GetDynamicRecords(string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString()));
+            live.Datasource = GetDynamicRecords(string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString())).AsEnumerable();
+
+            return live;
         }
     }
 }

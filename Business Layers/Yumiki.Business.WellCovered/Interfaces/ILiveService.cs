@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Business.WellCovered.Interfaces
@@ -17,5 +18,11 @@ namespace Yumiki.Business.WellCovered.Interfaces
         /// </summary>
         /// <param name="objectID">Id of Object need to be gone live.</param>
         void PublishObject(string objectID);
+
+        /// <summary>
+        /// Fetch all data from Object
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        MD_Live FetchObjectData(string objectID, bool isActive);
     }
 }

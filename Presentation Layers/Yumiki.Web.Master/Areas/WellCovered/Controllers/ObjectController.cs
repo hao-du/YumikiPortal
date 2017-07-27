@@ -15,22 +15,6 @@ namespace Yumiki.Web.WellCovered.Controllers
     public class ObjectController : BaseController<IObjectService>
     {
         // GET: App
-        public ActionResult List(bool active = true)
-        {
-            IEnumerable<MD_Object> objects = new List<MD_Object>();
-            try
-            {
-                objects = BusinessService.GetAllObjects(!active, null).Select(c => new MD_Object(c));
-            }
-            catch (Exception ex)
-            {
-                SendError(ex);
-            }
-
-            return View(objects);
-        }
-
-        // GET: App
         public ActionResult List(bool active, string appID)
         {
             IEnumerable<MD_Object> objects = new List<MD_Object>();
@@ -64,7 +48,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 {
                     BusinessService.Save(obj.ToObject());
 
-                    return RedirectToAction("List");
+                    return RedirectToAction("List", new { active = true });
                 }
             }
             catch (Exception ex)
@@ -105,7 +89,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 {
                     BusinessService.Save(obj.ToObject());
 
-                    return RedirectToAction("List");
+                    return RedirectToAction("List", new { active = true });
                 }
             }
             catch (Exception ex)

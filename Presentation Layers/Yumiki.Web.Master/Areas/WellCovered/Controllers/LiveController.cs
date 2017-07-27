@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Yumiki.Business.WellCovered.Interfaces;
+using Yumiki.Entity.WellCovered;
 using Yumiki.Web.Base;
 using Yumiki.Web.WellCovered.Models;
 
@@ -11,9 +13,11 @@ namespace Yumiki.Web.WellCovered.Controllers
 {
     public class LiveController : BaseController<ILiveService>
     {
-        public ActionResult List(string objectID)
+        public ActionResult List(string objectID, bool active)
         {
-            return View();
+            MD_Live live = BusinessService.FetchObjectData(objectID, active);
+
+            return View(live);
         }
 
         // POST:

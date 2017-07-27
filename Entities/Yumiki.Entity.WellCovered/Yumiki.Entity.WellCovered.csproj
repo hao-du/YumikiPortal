@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="CustomFields\TB_Field.cs" />
     <Compile Include="CustomFields\TB_Object.cs" />
+    <Compile Include="MD_Live.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EN_DataType.cs" />
     <Compile Include="CustomFields\TB_App.cs" />

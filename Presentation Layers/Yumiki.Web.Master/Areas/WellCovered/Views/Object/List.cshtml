@@ -8,7 +8,6 @@
     <div class="well well-sm">
         <div class="btn-group">
             @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Go Live", "Dashboard", "Live", new { }, new { @class = "btn btn-info" })
             @{ 
                 if (string.IsNullOrWhiteSpace(Request.Params["active"]) ||  bool.Parse(Request.Params["active"]))
                 {
@@ -30,9 +29,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.ObjectName)
                         </th>
-                        <td>
+                        <th>
                             @Html.DisplayNameFor(model => model.ApiName)
-                        </td>
+                        </th>
                         <th>
                             @Html.DisplayNameFor(model => model.ApplicationName)
                         </th>
@@ -50,7 +49,10 @@
                                 @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString() }, new { })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => string.Format("{0} - {1}", item.ObjectName, item.DisplayName))
+                                @{ 
+                                    string objectName = string.Format("{0} - Display Name: {1}", item.ObjectName, item.DisplayName);
+                                }
+                                @Html.DisplayFor(modelItem => objectName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ApiName)
@@ -62,7 +64,7 @@
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
                             </td>
                             <td>
-                                @Html.ActionLink("View Data", "List", "Live", new { objectID = item.ID.ToString() }, new { })
+                                @Html.ActionLink("View Data", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { })
                                 <span class="yumiki-separator-vbar"></span>
                                 @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
