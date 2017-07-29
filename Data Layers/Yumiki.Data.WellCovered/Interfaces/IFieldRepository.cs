@@ -8,7 +8,7 @@ using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Interfaces
 {
-    public interface IFieldRepository
+    public interface IFieldRepository : IShareableRepository<WellCoveredModel>
     {
         /// <summary>
         /// Get all active Fields from specific Object in Database.

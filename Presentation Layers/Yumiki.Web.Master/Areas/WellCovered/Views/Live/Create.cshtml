@@ -1,0 +1,72 @@
+﻿@model  IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
+
+@{
+    ViewBag.Title = "Create Object";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        string objectID = ViewBag.ObjectID;
+
+        @Html.Hidden("objectID", objectID)
+
+        <div class="well well-sm">
+            <div class="btn-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model)
+        {
+            switch (field.FieldType)
+            {
+                case Yumiki.Entity.WellCovered.EN_DataType.E_STRING:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type="number" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_BOOL:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                <span class="checkbox">
+                                    @Html.CheckBox(field.ApiName)
+                                    @Html.Label(field.ApiName)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATE:
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATETIME:
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_TIME:
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE:
+                    break;
+            }
+        }
+    }
+</div>

@@ -14,6 +14,11 @@ namespace Yumiki.Data.WellCovered.Interfaces
     public interface ILiveRepository
     {
         /// <summary>
+        /// Get fields from ObjectID
+        /// </summary>
+        IEnumerable<TB_Field> GetFields(Guid objectID);
+
+        /// <summary>
         /// Check if Apps is ready for publish (Has objects and fields)
         /// </summary>
         /// <param name="objectID">Apps need to be checked the validity</param>
@@ -44,5 +49,11 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
         MD_Live FetchObjectData(Guid objectID, bool isActive);
+
+        /// <summary>
+        /// Save an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        void Add(Guid objectID, DataRow record);
     }
 }

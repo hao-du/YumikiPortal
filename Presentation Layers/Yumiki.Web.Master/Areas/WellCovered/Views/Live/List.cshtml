@@ -7,7 +7,7 @@
     <h2>@ViewBag.Title</h2>
     <div class="well well-sm">
         <div class="btn-group">
-            @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Add", "Create", new { objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
 
             @{
                 if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))

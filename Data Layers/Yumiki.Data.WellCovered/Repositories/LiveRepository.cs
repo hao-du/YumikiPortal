@@ -209,6 +209,15 @@ namespace Yumiki.Data.WellCovered.Repositories
         #endregion
 
         /// <summary>
+        /// Get fields from ObjectID
+        /// </summary>
+        public IEnumerable<TB_Field> GetFields(Guid objectID)
+        {
+            IFieldRepository fieldRepository = this.GetAlternativeRepository<IFieldRepository>();
+            return fieldRepository.GetAllFields(false, objectID);
+        }
+
+        /// <summary>
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
@@ -271,6 +280,42 @@ namespace Yumiki.Data.WellCovered.Repositories
             live.Datasource = GetDynamicRecords(string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString())).AsEnumerable();
 
             return live;
+        }
+
+        /// <summary>
+        /// Save an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        public void Add(Guid objectID ,DataRow record)
+        {
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            StringBuilder sqlInsertBuilder = new StringBuilder();
+            StringBuilder sqlValueBuilder = new StringBuilder();
+            List<SqlParameter> pamameters = new List<SqlParameter>();
+
+            sqlInsertBuilder.AppendFormat(" INSERT INTO {0} ", obj.ApiName);
+            sqlInsertBuilder.AppendFormat(" ([{0}], [{1}], [{2}], [{3}], [{4}] ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
+
+            sqlValueBuilder.AppendFormat(" VALUES(@{1}, @{2}, @{3}, @{4}, @{5} ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
+            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.ID), Guid.NewGuid()));
+            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.Descriptions), string.Empty));
+            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.IsActive), true));
+            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.CreateDate), DateTimeExtension.GetSystemDatetime()));
+            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.LastUpdateDate), DateTimeExtension.GetSystemDatetime()));
+            
+            foreach(TB_Field field in obj.Fields)
+            {
+                sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
+                sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
+
+                pamameters.Add(new SqlParameter(string.Format("@{0}", field.ApiName), record[field.ApiName]));
+            }
+
+            sqlInsertBuilder.Append(" ) ");
+            sqlValueBuilder.Append(" ) ");
+
+            ExecuteCommand(sqlInsertBuilder.Append(sqlValueBuilder.ToString()).ToString(), pamameters.ToArray());
         }
     }
 }

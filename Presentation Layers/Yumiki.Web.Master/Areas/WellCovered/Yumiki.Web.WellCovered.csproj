@@ -177,6 +177,7 @@
     <Content Include="Views\Field\List.cshtml" />
     <Content Include="Views\Field\Edit.cshtml" />
     <Content Include="Views\Live\List.cshtml" />
+    <Content Include="Views\Live\Create.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

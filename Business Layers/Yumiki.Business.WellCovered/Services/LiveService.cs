@@ -17,6 +17,21 @@ namespace Yumiki.Business.WellCovered.Services
     public class LiveService : BaseService<ILiveRepository>, ILiveService
     {
         /// <summary>
+        /// Get fields from ObjectID
+        /// </summary>
+        public IEnumerable<TB_Field> GetFields(string objectID)
+        {
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(objectID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            return Repository.GetFields(convertedID);
+        }
+
+        /// <summary>
         /// Publish App and its related objects and fields to Live.
         /// </summary>
         /// <param name="objectID">Id of App need to be gone live.</param>
@@ -72,6 +87,22 @@ namespace Yumiki.Business.WellCovered.Services
             }
 
             return Repository.FetchObjectData(convertedID, isActive);
+        }
+
+        /// <summary>
+        /// Save an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        public void Add(string objectID, DataRow record)
+        {
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(objectID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            Repository.Add(convertedID, record);
         }
     }
 }

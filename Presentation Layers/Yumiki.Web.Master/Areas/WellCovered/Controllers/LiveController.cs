@@ -29,6 +29,39 @@ namespace Yumiki.Web.WellCovered.Controllers
             return View(live);
         }
 
+        // GET: App/Create
+        public ActionResult Create(string objectID)
+        {
+            IEnumerable<MD_Field> fields = new List<MD_Field>();
+            try
+            {
+                fields = BusinessService.GetFields(objectID).Select(c=> new MD_Field(c));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            ViewBag.ObjectID = objectID;
+
+            return View(fields);
+        }
+
+        // POST: App/Create
+        [HttpPost]
+        public ActionResult Create(FormCollection formCollection)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return View();
+        }
+
         // POST:
         [HttpPost]
         public ActionResult PublishApp(string appID)
