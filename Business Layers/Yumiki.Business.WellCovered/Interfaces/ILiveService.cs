@@ -25,15 +25,23 @@ namespace Yumiki.Business.WellCovered.Interfaces
         void PublishObject(string objectID);
 
         /// <summary>
+        /// Get Datasource from Datasource Field
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="displayFieldName"></param>
+        /// <returns></returns>
+        IEnumerable<MD_Datasource> GetDataSource(string dataSource);
+
+        /// <summary>
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        MD_Live FetchObjectData(string objectID, bool isActive);
+        MD_Live FetchViewObjectData(string objectID, bool isActive);
 
         /// <summary>
         /// Save an record of object to DB
         /// </summary>
         /// <param name="record"></param>
-        void Add(string objectID, DataRow record);
+        void Add(string objectID, Dictionary<string, string> fields);
     }
 }

@@ -20,7 +20,7 @@ namespace Yumiki.Data.Base
     /// Base repository class to contains all methods to interract with database throgth Entity Framework
     /// </summary>
     /// <typeparam name="T">Class which is inherited by DBContext</typeparam>
-    public class BaseRepository<T> where T : DbContext
+    public class BaseRepository<T> where T : DbContext, new()
     {
         protected T context;
 
@@ -66,7 +66,7 @@ namespace Yumiki.Data.Base
             E instance = AlternativeRepository.GetInstance<E>();
 
             //Assgin current openning context to avoid creating multiple connections to DB
-            instance.AssignContext(this.context);
+            this.context = instance.AssignContext(this.context);
 
             return instance;
         }
@@ -75,9 +75,18 @@ namespace Yumiki.Data.Base
         /// To cross context among repositories to avoid open SQL Connection many times.
         /// </summary>
         /// <param name="context">Entity Framework context</param>
-        public void AssignContext(T context)
+        public T AssignContext(T context)
         {
-            this.context = context;
+            if (context == null)
+            {
+                this.context = new T();
+            }
+            else
+            {
+                this.context = context;
+            }
+
+            return this.context;
         }
 
         /// <summary>

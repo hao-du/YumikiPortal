@@ -12,7 +12,7 @@
         @Html.AntiForgeryToken()
         string objectID = ViewBag.ObjectID;
 
-        @Html.Hidden("objectID", objectID)
+        @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.objectID, objectID)
 
         <div class="well well-sm">
             <div class="btn-group">
@@ -41,7 +41,7 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type="number" })
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "number" })
                             </div>
                         </div>
                     </div>
@@ -59,14 +59,47 @@
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATE:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "date" })
+                            </div>
+                        </div>
+                    </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATETIME:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "datetime-local" })
+                            </div>
+                        </div>
+                    </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_TIME:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "time" })
+                            </div>
+                        </div>
+                    </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.DropDownList(field.ApiName, ((Dictionary<string, SelectList>)ViewBag.Datasources)[field.ApiName], Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+                            </div>
+                        </div>
+                    </div>
                     break;
             }
         }
     }
 </div>
+

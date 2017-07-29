@@ -221,7 +221,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        public MD_Live FetchObjectData(Guid objectID, bool isActive)
+        public MD_Live FetchViewObjectData(Guid objectID, bool isActive)
         {
             MD_Live live = new MD_Live();
 
@@ -262,7 +262,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                         sqlSelectBuilder.AppendFormat(" , [{0}].{1} as [{2}]", aliasUniqueID, displayField, field.DisplayName);
 
-                        sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS {1} ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
+                        sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS [{1}] ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
                     }
                 }
 
@@ -283,10 +283,35 @@ namespace Yumiki.Data.WellCovered.Repositories
         }
 
         /// <summary>
+        /// Get Datasource from Datasource Field
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="displayFieldName"></param>
+        /// <returns></returns>
+        public IEnumerable<MD_Datasource> GetDataSource(string tableName, string displayFieldName)
+        {
+            string sql = string.Format(" SELECT ID AS {0}, {1} AS {2} FROM {3} WHERE {4} = 1 ", MD_Datasource.FieldNames.ID, displayFieldName, MD_Datasource.FieldNames.DisplayText, tableName, CommonProperties.IsActive);
+
+            EnumerableRowCollection<DataRow> rows = GetDynamicRecords(sql).AsEnumerable();
+
+            List<MD_Datasource> datasource = new List<MD_Datasource>();
+
+            foreach (DataRow row in rows)
+            {
+                datasource.Add(new MD_Datasource {
+                    ID = row[MD_Datasource.FieldNames.ID].ToString(),
+                    DisplayText = row[MD_Datasource.FieldNames.DisplayText].ToString()
+                });
+            }
+
+            return datasource;
+        }
+
+        /// <summary>
         /// Save an record of object to DB
         /// </summary>
         /// <param name="record"></param>
-        public void Add(Guid objectID ,DataRow record)
+        public void Add(Guid objectID , IEnumerable<TB_Field> record)
         {
             TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
 
@@ -309,7 +334,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
 
-                pamameters.Add(new SqlParameter(string.Format("@{0}", field.ApiName), record[field.ApiName]));
+                pamameters.Add(new SqlParameter(string.Format("@{0}", field.ApiName), record.Where(c=>c.ApiName == field.ApiName).First().Value));
             }
 
             sqlInsertBuilder.Append(" ) ");

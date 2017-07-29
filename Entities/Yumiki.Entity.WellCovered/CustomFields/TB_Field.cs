@@ -15,9 +15,15 @@ namespace Yumiki.Entity.WellCovered
             }
         }
 
+        public object Value
+        {
+            get; set;
+        }
+
         public class FieldNames
         {
             public const string FieldType = "FieldType";
+            public const string Value = "Value";
         }
     }
 }

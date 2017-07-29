@@ -142,6 +142,18 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        public object Value
+        {
+            get
+            {
+                return _interalItem.Value;
+            }
+            set
+            {
+                _interalItem.Value = value;
+            }
+        }
+
         public override string LastUpdateDateUI
         {
             get

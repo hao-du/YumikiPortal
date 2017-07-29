@@ -26,6 +26,6 @@ namespace Yumiki.Data.Base
         /// To cross context among repositories to avoid open SQL Connection many times.
         /// </summary>
         /// <param name="context">Entity Framework context</param>
-        void AssignContext(T context);
+        T AssignContext(T context);
     }
 }

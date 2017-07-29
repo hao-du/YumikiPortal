@@ -57,6 +57,9 @@ namespace Yumiki.Entity.WellCovered
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Field>()
+                .Ignore(e => e.Value);
         }
     }
 }
