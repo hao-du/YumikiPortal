@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Create Object";
 }
+<style>
+    .yumiki-color-enable, .yumiki-color-enable[readonly] {
+        background-color: #ffffff;
+    }
+</style>
 
 <div class="container">
     <h2>@ViewBag.Title</h2>
@@ -63,7 +68,12 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "date" })
+                                <div class="input-group date yumiki-control-date">
+                                    @Html.TextBox(field.ApiName, null, new { @class = "form-control yumiki-color-enable", @readonly = "readonly" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,7 +83,12 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "datetime-local" })
+                                <div class="input-group date yumiki-control-datetime">
+                                    @Html.TextBox(field.ApiName, null, new { @class = "form-control yumiki-color-enable", @readonly = "readonly" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -83,7 +98,12 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, null, new { @class = "form-control", @type = "time" })
+                                <div class="input-group date yumiki-control-time">
+                                    @Html.TextBox(field.ApiName, null, new { @class = "form-control yumiki-color-enable", @readonly = "readonly" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,4 +122,21 @@
         }
     }
 </div>
+<script type="text/javascript">
+    $(".yumiki-control-time").datetimepicker({
+        format: '@Yumiki.Commons.Dictionaries.Formats.DateTime.Hour',
+        ignoreReadonly: true
+    });
+
+    $(".yumiki-control-datetime").datetimepicker({
+        format: '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDateTime',
+        ignoreReadonly: true
+    });
+
+     $(".yumiki-control-date").datetimepicker({
+        format: '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate',
+        ignoreReadonly: true
+    });
+
+</script>
 

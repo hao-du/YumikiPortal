@@ -81,7 +81,62 @@ namespace Yumiki.Web.WellCovered.Controllers
 
             ViewBag.ObjectID = objectID;
 
-            return View();
+            IEnumerable<MD_Field> fields = new List<MD_Field>();
+            try
+            {
+                fields = BusinessService.GetFields(objectID).Select(c=> new MD_Field(c));
+
+                foreach (string key in formCollection.AllKeys)
+                {
+                    MD_Field selectedField = fields.Where(c => c.ApiName == key).FirstOrDefault();
+
+                    if (selectedField != null)
+                    {
+                        selectedField.ObjectID = Guid.Parse(formCollection[LiveController.objectID]);
+
+                        string value = formCollection[key];
+
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            switch (selectedField.FieldType)
+                            {
+                                case EN_DataType.E_INT:
+                                    selectedField.Value = int.Parse(value);
+                                    break;
+                                case EN_DataType.E_DECIMAL:
+                                    selectedField.Value = decimal.Parse(value);
+                                    break;
+                                case EN_DataType.E_BOOL:
+                                    selectedField.Value = bool.Parse(value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)[0]);
+                                    break;
+                                case EN_DataType.E_DATE:
+                                    selectedField.Value = DateTime.Parse(value).Date;
+                                    break;
+                                case EN_DataType.E_DATETIME:
+                                    selectedField.Value = DateTime.Parse(value);
+                                    break;
+                                case EN_DataType.E_TIME:
+                                    selectedField.Value = DateTime.Parse(value).TimeOfDay;
+                                    break;
+                                default:
+                                    //Datasource Type and String type use String as it is.
+                                    selectedField.Value = value;
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                InitDataSource(fields);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            ViewBag.ObjectID = LiveController.objectID;
+
+            return View(fields);
         }
 
         // POST:

@@ -242,7 +242,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             int aliasUniqueID = 1;
 
-            foreach(TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields)
             {
                 live.ColumnNames.Add(field.DisplayName);
 
@@ -255,7 +255,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                     if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
                     {
                         hasDatasource = true;
-                        
+
                         string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
                         string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
@@ -298,7 +298,8 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (DataRow row in rows)
             {
-                datasource.Add(new MD_Datasource {
+                datasource.Add(new MD_Datasource
+                {
                     ID = row[MD_Datasource.FieldNames.ID].ToString(),
                     DisplayText = row[MD_Datasource.FieldNames.DisplayText].ToString()
                 });
@@ -311,7 +312,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// Save an record of object to DB
         /// </summary>
         /// <param name="record"></param>
-        public void Add(Guid objectID , IEnumerable<TB_Field> record)
+        public void Add(Guid objectID, IEnumerable<TB_Field> record)
         {
             TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
 
@@ -322,19 +323,51 @@ namespace Yumiki.Data.WellCovered.Repositories
             sqlInsertBuilder.AppendFormat(" INSERT INTO {0} ", obj.ApiName);
             sqlInsertBuilder.AppendFormat(" ([{0}], [{1}], [{2}], [{3}], [{4}] ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
 
-            sqlValueBuilder.AppendFormat(" VALUES(@{1}, @{2}, @{3}, @{4}, @{5} ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
-            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.ID), Guid.NewGuid()));
-            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.Descriptions), string.Empty));
-            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.IsActive), true));
-            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.CreateDate), DateTimeExtension.GetSystemDatetime()));
-            pamameters.Add(new SqlParameter(string.Format("@{0}", CommonProperties.LastUpdateDate), DateTimeExtension.GetSystemDatetime()));
-            
-            foreach(TB_Field field in obj.Fields)
+            sqlValueBuilder.AppendFormat(" VALUES (@{0}, @{1}, @{2}, @{3}, @{4} ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = Guid.NewGuid(), SqlDbType = SqlDbType.UniqueIdentifier });
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.Descriptions), Value = string.Empty, SqlDbType = SqlDbType.NVarChar });
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.IsActive), Value = true, SqlDbType = SqlDbType.Bit });
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.CreateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
+
+            foreach (TB_Field field in obj.Fields)
             {
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
 
-                pamameters.Add(new SqlParameter(string.Format("@{0}", field.ApiName), record.Where(c=>c.ApiName == field.ApiName).First().Value));
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = string.Format("@{0}", field.ApiName);
+                parameter.Value = record.Where(c => c.ApiName == field.ApiName).First().Value;
+
+                switch (field.FieldType)
+                {
+                    case EN_DataType.E_INT:
+                        parameter.SqlDbType = SqlDbType.Int;
+                        break;
+                    case EN_DataType.E_DECIMAL:
+                        parameter.SqlDbType = SqlDbType.Decimal;
+                        break;
+                    case EN_DataType.E_STRING:
+                        parameter.SqlDbType = SqlDbType.NVarChar;
+                        break;
+                    case EN_DataType.E_BOOL:
+                        parameter.SqlDbType = SqlDbType.Bit;
+                        break;
+                    case EN_DataType.E_DATE:
+                        parameter.SqlDbType = SqlDbType.Date;
+                        break;
+                    case EN_DataType.E_DATETIME:
+                        parameter.SqlDbType = SqlDbType.DateTime;
+                        break;
+                    case EN_DataType.E_TIME:
+                        parameter.SqlDbType = SqlDbType.Time;
+                        break;
+                    case EN_DataType.E_DATASOURCE:
+                        parameter.SqlDbType = SqlDbType.NText;
+                        break;
+                }
+
+                pamameters.Add(parameter);
             }
 
             sqlInsertBuilder.Append(" ) ");
