@@ -146,30 +146,33 @@ namespace Yumiki.Business.WellCovered.Services
                     throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, string.Format("{0} field is required.", field.DisplayName), Logger);
                 }
 
-                switch (field.FieldType)
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    case EN_DataType.E_INT:
-                        field.Value = int.Parse(value);
-                        break;
-                    case EN_DataType.E_DECIMAL:
-                        field.Value = decimal.Parse(value);
-                        break;
-                    case EN_DataType.E_BOOL:
-                        field.Value = bool.Parse(value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)[0]);
-                        break;
-                    case EN_DataType.E_DATE:
-                        field.Value = DateTime.Parse(value).Date;
-                        break;
-                    case EN_DataType.E_DATETIME:
-                        field.Value = DateTime.Parse(value);
-                        break;
-                    case EN_DataType.E_TIME:
-                        field.Value = DateTime.Parse(value).TimeOfDay;
-                        break;
-                    default:
-                        //Datasource Type and String type use String as it is.
-                        field.Value = value;
-                        break;
+                    switch (field.FieldType)
+                    {
+                        case EN_DataType.E_INT:
+                            field.Value = int.Parse(value);
+                            break;
+                        case EN_DataType.E_DECIMAL:
+                            field.Value = decimal.Parse(value);
+                            break;
+                        case EN_DataType.E_BOOL:
+                            field.Value = bool.Parse(value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)[0]);
+                            break;
+                        case EN_DataType.E_DATE:
+                            field.Value = DateTime.Parse(value).Date;
+                            break;
+                        case EN_DataType.E_DATETIME:
+                            field.Value = DateTime.Parse(value);
+                            break;
+                        case EN_DataType.E_TIME:
+                            field.Value = DateTime.Parse(value).TimeOfDay;
+                            break;
+                        default:
+                            //Datasource Type and String type use String as it is.
+                            field.Value = value;
+                            break;
+                    }
                 }
             }
 

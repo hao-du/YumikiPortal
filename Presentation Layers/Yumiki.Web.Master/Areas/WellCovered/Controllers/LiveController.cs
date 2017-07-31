@@ -92,8 +92,6 @@ namespace Yumiki.Web.WellCovered.Controllers
 
                     if (selectedField != null)
                     {
-                        selectedField.ObjectID = Guid.Parse(formCollection[LiveController.objectID]);
-
                         string value = formCollection[key];
 
                         if (!string.IsNullOrWhiteSpace(value))
@@ -133,8 +131,6 @@ namespace Yumiki.Web.WellCovered.Controllers
             {
                 SendError(ex);
             }
-
-            ViewBag.ObjectID = LiveController.objectID;
 
             return View(fields);
         }
@@ -186,7 +182,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 {
                     IEnumerable<MD_Datasource> dataSource = BusinessService.GetDataSource(dataSourceField.Datasource);
 
-                    SelectList select = new SelectList(dataSource, MD_Datasource.FieldNames.ID, MD_Datasource.FieldNames.DisplayText);
+                    SelectList select = new SelectList(dataSource, MD_Datasource.FieldNames.ID, MD_Datasource.FieldNames.DisplayText, dataSourceField.Value);
 
                     ((Dictionary<string, SelectList>)ViewBag.Datasources).Add(dataSourceField.ApiName, select);
                 }
