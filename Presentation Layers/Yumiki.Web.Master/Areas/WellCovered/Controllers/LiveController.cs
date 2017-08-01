@@ -14,8 +14,9 @@ namespace Yumiki.Web.WellCovered.Controllers
 {
     public class LiveController : BaseController<ILiveService>
     {
-        public const string objectID = "objectID";
-        public const string __RequestVerificationToken = "__RequestVerificationToken";
+        public const string ObjectID = "objectID";
+        public const string RecordID = "recordID";
+        public const string RequestVerificationToken = "__RequestVerificationToken";
 
         public ActionResult List(string objectID, bool active)
         {
@@ -39,7 +40,7 @@ namespace Yumiki.Web.WellCovered.Controllers
             IEnumerable<MD_Field> fields = new List<MD_Field>();
             try
             {
-                fields = BusinessService.GetFields(objectID).Select(c=> new MD_Field(c));
+                fields = BusinessService.GetFields(objectID).Select(c => new MD_Field(c));
 
                 InitDataSource(fields);
             }
@@ -48,7 +49,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            ViewBag.ObjectID = LiveController.objectID;
+            ViewBag.ObjectID = objectID;
 
             return View(fields);
         }
@@ -57,14 +58,14 @@ namespace Yumiki.Web.WellCovered.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection formCollection)
         {
-            string objectID = formCollection[LiveController.objectID];
+            string objectID = formCollection[LiveController.ObjectID];
             try
             {
                 Dictionary<string, string> dicFields = new Dictionary<string, string>();
 
-                foreach(string key in formCollection.AllKeys)
+                foreach (string key in formCollection.AllKeys)
                 {
-                    if(!key.Equals(LiveController.__RequestVerificationToken, StringComparison.InvariantCultureIgnoreCase))
+                    if (!key.Equals(LiveController.RequestVerificationToken, StringComparison.InvariantCultureIgnoreCase))
                     {
                         dicFields.Add(key, formCollection[key]);
                     }
@@ -81,10 +82,83 @@ namespace Yumiki.Web.WellCovered.Controllers
 
             ViewBag.ObjectID = objectID;
 
+            IEnumerable<MD_Field> fields = SetFieldValues(formCollection);
+
+            InitDataSource(fields);
+
+            return View(fields);
+        }
+
+        // GET: App/Edit
+        public ActionResult Edit(string objectID, string recordID)
+        {
             IEnumerable<MD_Field> fields = new List<MD_Field>();
             try
             {
-                fields = BusinessService.GetFields(objectID).Select(c=> new MD_Field(c));
+                fields = BusinessService.GetFieldsByID(objectID, recordID).Select(c => new MD_Field(c));
+
+                InitDataSource(fields);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            ViewBag.ObjectID = objectID;
+            ViewBag.RecordID = recordID;
+
+            return View(fields);
+        }
+
+        // POST: App/Edit
+        [HttpPost]
+        public ActionResult Edit(FormCollection formCollection)
+        {
+            string objectID = formCollection[LiveController.ObjectID];
+            string recordID = formCollection[LiveController.RecordID];
+
+            try
+            {
+                Dictionary<string, string> dicFields = new Dictionary<string, string>();
+
+                foreach (string key in formCollection.AllKeys)
+                {
+                    if (!key.Equals(LiveController.RequestVerificationToken, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        dicFields.Add(key, formCollection[key]);
+                    }
+                }
+
+                BusinessService.Update(objectID, recordID, dicFields);
+
+                return RedirectToAction("List", new { active = true, objectID = objectID });
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            ViewBag.ObjectID = objectID;
+            ViewBag.RecordID = recordID;
+
+            IEnumerable<MD_Field> fields = SetFieldValues(formCollection);
+
+            InitDataSource(fields);
+
+            return View(fields);
+        }
+
+        /// <summary>
+        /// When validation fails, add values which entered by user back to UI by assign value in submitted form to return Field list.
+        /// </summary>
+        /// <param name="formCollection">Form Collection which contains entered values.</param>
+        /// <returns></returns>
+        private IEnumerable<MD_Field> SetFieldValues(FormCollection formCollection)
+        {
+            IEnumerable<MD_Field> fields = new List<MD_Field>();
+            try
+            {
+                fields = BusinessService.GetFields(formCollection[LiveController.ObjectID]).Select(c => new MD_Field(c));
 
                 foreach (string key in formCollection.AllKeys)
                 {
@@ -124,15 +198,13 @@ namespace Yumiki.Web.WellCovered.Controllers
                         }
                     }
                 }
-
-                InitDataSource(fields);
             }
             catch (Exception ex)
             {
                 SendError(ex);
             }
 
-            return View(fields);
+            return fields;
         }
 
         // POST:

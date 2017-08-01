@@ -123,6 +123,42 @@ namespace Yumiki.Business.WellCovered.Services
         }
 
         /// <summary>
+        /// Fetch record from Object by ID
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        public IEnumerable<TB_Field> GetFieldsByID(string objectID, string recordID)
+        {
+            Guid convertedObjectID = Guid.Empty;
+            Guid.TryParse(objectID, out convertedObjectID);
+            if (convertedObjectID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            Guid convertedRecordD = Guid.Empty;
+            Guid.TryParse(recordID, out convertedRecordD);
+            if (convertedRecordD == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Record ID must be GUID type.", Logger);
+            }
+
+            MD_Live live = Repository.FetchViewObjectDataByID(convertedObjectID, convertedRecordD);
+            DataRow row = live.Datasource.FirstOrDefault();
+
+            IEnumerable<TB_Field> fields = this.GetFields(objectID);
+
+            if (row != null)
+            {
+                foreach (TB_Field field in fields)
+                {
+                    field.Value = row[field.ApiName];
+                }
+            }
+
+            return fields;
+        }
+
+        /// <summary>
         /// Save an record of object to DB
         /// </summary>
         /// <param name="record"></param>
@@ -135,7 +171,45 @@ namespace Yumiki.Business.WellCovered.Services
                 throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
             }
 
-            IEnumerable<TB_Field> dbFields = Repository.GetFields(convertedObjectID);
+            IEnumerable<TB_Field> dbFields = AssignValueToFields(convertedObjectID, inputFields);
+
+            Repository.Add(convertedObjectID, dbFields);
+        }
+
+        /// <summary>
+        /// Update an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        public void Update(string objectID, string recordID, Dictionary<string, string> inputFields)
+        {
+            Guid convertedObjectID = Guid.Empty;
+            Guid.TryParse(objectID, out convertedObjectID);
+            if (convertedObjectID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            Guid convertedRecordD = Guid.Empty;
+            Guid.TryParse(recordID, out convertedRecordD);
+            if (convertedRecordD == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Record ID must be GUID type.", Logger);
+            }
+
+            IEnumerable<TB_Field> dbFields = AssignValueToFields(convertedObjectID, inputFields);
+
+            Repository.Update(convertedObjectID, convertedRecordD, dbFields);
+        }
+
+        /// <summary>
+        /// Assign value to fields.
+        /// </summary>
+        /// <param name="objectID"></param>
+        /// <param name="inputFields"></param>
+        /// <returns></returns>
+        private IEnumerable<TB_Field> AssignValueToFields(Guid objectID, Dictionary<string, string> inputFields)
+        {
+            IEnumerable<TB_Field> dbFields = Repository.GetFields(objectID);
 
             foreach (TB_Field field in dbFields)
             {
@@ -176,7 +250,7 @@ namespace Yumiki.Business.WellCovered.Services
                 }
             }
 
-            Repository.Add(convertedObjectID, dbFields);
+            return dbFields;
         }
     }
 }

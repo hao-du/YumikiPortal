@@ -119,6 +119,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\yumiki-well-covered.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -130,9 +131,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Field\Create.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Shared\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
       <Project>{85d7cf5b-aaac-4d00-9287-94866e19545e}</Project>
@@ -178,6 +177,8 @@
     <Content Include="Views\Field\Edit.cshtml" />
     <Content Include="Views\Live\List.cshtml" />
     <Content Include="Views\Live\Create.cshtml" />
+    <Content Include="Views\Live\Edit.cshtml" />
+    <Content Include="Views\Shared\_WellCoveredInclude.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

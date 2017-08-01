@@ -39,9 +39,21 @@ namespace Yumiki.Business.WellCovered.Interfaces
         MD_Live FetchViewObjectData(string objectID, bool isActive);
 
         /// <summary>
+        /// Fetch record from Object by ID
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        IEnumerable<TB_Field> GetFieldsByID(string objectID, string recordID);
+
+        /// <summary>
         /// Save an record of object to DB
         /// </summary>
         /// <param name="record"></param>
         void Add(string objectID, Dictionary<string, string> fields);
+
+        /// <summary>
+        /// Save an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        void Update(string objectID, string recordID, Dictionary<string, string> inputFields);
     }
 }

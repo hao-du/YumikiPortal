@@ -81,11 +81,9 @@
     </div>
 </div>
 @section Script{
+    @Html.Partial("_WellCoveredInclude")
+
     <script type="text/javascript">
-        var onFormSubmit = function (id) {
-            //Submit form
-            var form = $('#' + id);
-            form.submit();
-        }
+        yumiki.wellCovered.initListSubmit();
     </script>
 }

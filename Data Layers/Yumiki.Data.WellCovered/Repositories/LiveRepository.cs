@@ -235,6 +235,56 @@ namespace Yumiki.Data.WellCovered.Repositories
                 return null;
             }
 
+            foreach (TB_Field field in obj.Fields)
+            {
+                live.ColumnNames.Add(field.DisplayName);
+            }
+
+            live.Datasource = GetDynamicRecords(PrepareQueryStament(obj, isActive)).AsEnumerable();
+
+            return live;
+        }
+
+        /// <summary>
+        /// Fetch record from Object by ID
+        /// </summary>
+        /// <param name="objectID">Object ID need to fetch data</param>
+        public MD_Live FetchViewObjectDataByID(Guid objectID, Guid recordID)
+        {
+            MD_Live live = new MD_Live();
+
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            live.ObjectID = obj.ID;
+            live.LiveName = obj.DisplayName;
+
+            if (obj == null)
+            {
+                return null;
+            }
+
+            foreach (TB_Field field in obj.Fields)
+            {
+                live.ColumnNames.Add(field.DisplayName);
+            }
+
+            string sqlStament = PrepareQueryStament(obj, null);
+
+            string whereStament = string.Format(" WHERE ID = '{0}' ", recordID.ToString());
+
+            live.Datasource = GetDynamicRecords(string.Join(" ", sqlStament, whereStament)).AsEnumerable();
+
+            return live;
+        }
+
+        /// <summary>
+        /// Prepare basic SELECT SQL Stament for Live
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        private string PrepareQueryStament(TB_Object obj, bool? isActive)
+        {
             StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
 
             StringBuilder sqlFromBuilder = new StringBuilder();
@@ -244,8 +294,6 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (TB_Field field in obj.Fields)
             {
-                live.ColumnNames.Add(field.DisplayName);
-
                 bool hasDatasource = false;
                 if (field.FieldType == EN_DataType.E_DATASOURCE)
                 {
@@ -275,11 +323,12 @@ namespace Yumiki.Data.WellCovered.Repositories
             }
 
             StringBuilder sqlWhereBuilder = new StringBuilder();
-            sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive ? 1 : 0);
+            if (isActive.HasValue)
+            {
+                sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive.Value ? 1 : 0);
+            }
 
-            live.Datasource = GetDynamicRecords(string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString())).AsEnumerable();
-
-            return live;
+            return string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString());
         }
 
         /// <summary>
@@ -335,45 +384,85 @@ namespace Yumiki.Data.WellCovered.Repositories
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
 
-                SqlParameter parameter = new SqlParameter();
-                parameter.ParameterName = string.Format("@{0}", field.ApiName);
-                parameter.Value = record.Where(c => c.ApiName == field.ApiName).First().Value;
+                object value = record.Where(c => c.ApiName == field.ApiName).First().Value;
 
-                switch (field.FieldType)
-                {
-                    case EN_DataType.E_INT:
-                        parameter.SqlDbType = SqlDbType.Int;
-                        break;
-                    case EN_DataType.E_DECIMAL:
-                        parameter.SqlDbType = SqlDbType.Decimal;
-                        break;
-                    case EN_DataType.E_STRING:
-                        parameter.SqlDbType = SqlDbType.NVarChar;
-                        break;
-                    case EN_DataType.E_BOOL:
-                        parameter.SqlDbType = SqlDbType.Bit;
-                        break;
-                    case EN_DataType.E_DATE:
-                        parameter.SqlDbType = SqlDbType.Date;
-                        break;
-                    case EN_DataType.E_DATETIME:
-                        parameter.SqlDbType = SqlDbType.DateTime;
-                        break;
-                    case EN_DataType.E_TIME:
-                        parameter.SqlDbType = SqlDbType.Time;
-                        break;
-                    case EN_DataType.E_DATASOURCE:
-                        parameter.SqlDbType = SqlDbType.NText;
-                        break;
-                }
-
-                pamameters.Add(parameter);
+                pamameters.Add(PrepareParameter(field, value));
             }
 
             sqlInsertBuilder.Append(" ) ");
             sqlValueBuilder.Append(" ) ");
 
             ExecuteCommand(sqlInsertBuilder.Append(sqlValueBuilder.ToString()).ToString(), pamameters.ToArray());
+        }
+
+        /// <summary>
+        /// Save an record of object to DB
+        /// </summary>
+        /// <param name="record"></param>
+        public void Update(Guid objectID, Guid recordID, IEnumerable<TB_Field> record)
+        {
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            StringBuilder sqlUpdateBuilder = new StringBuilder();
+            StringBuilder sqlSetBuilder = new StringBuilder();
+            StringBuilder sqlWhereBuilder = new StringBuilder();
+            List<SqlParameter> pamameters = new List<SqlParameter>();
+
+            sqlUpdateBuilder.AppendFormat(" UPDATE {0} ", obj.ApiName);
+            sqlSetBuilder.AppendFormat(" SET [{0}] = @{1} ", CommonProperties.LastUpdateDate, CommonProperties.LastUpdateDate);
+
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
+
+            foreach (TB_Field field in obj.Fields)
+            {
+                sqlSetBuilder.AppendFormat(" , SET [{0}] = @{1} ", field.ApiName, field.ApiName);
+
+                object value = record.Where(c => c.ApiName == field.ApiName).First().Value;
+
+                pamameters.Add(PrepareParameter(field, value));
+            }
+
+            sqlWhereBuilder.AppendFormat(" WHERE [{0}] = @{1} ", CommonProperties.ID, CommonProperties.ID);
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = recordID, SqlDbType = SqlDbType.UniqueIdentifier });
+
+            ExecuteCommand(string.Format(" {0} {1} {2} ", sqlUpdateBuilder.ToString(), sqlSetBuilder.ToString(), sqlWhereBuilder.ToString()), pamameters.ToArray());
+        }
+
+        private SqlParameter PrepareParameter(TB_Field field, object value)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = string.Format("@{0}", field.ApiName);
+            parameter.Value = value;
+
+            switch (field.FieldType)
+            {
+                case EN_DataType.E_INT:
+                    parameter.SqlDbType = SqlDbType.Int;
+                    break;
+                case EN_DataType.E_DECIMAL:
+                    parameter.SqlDbType = SqlDbType.Decimal;
+                    break;
+                case EN_DataType.E_STRING:
+                    parameter.SqlDbType = SqlDbType.NVarChar;
+                    break;
+                case EN_DataType.E_BOOL:
+                    parameter.SqlDbType = SqlDbType.Bit;
+                    break;
+                case EN_DataType.E_DATE:
+                    parameter.SqlDbType = SqlDbType.Date;
+                    break;
+                case EN_DataType.E_DATETIME:
+                    parameter.SqlDbType = SqlDbType.DateTime;
+                    break;
+                case EN_DataType.E_TIME:
+                    parameter.SqlDbType = SqlDbType.Time;
+                    break;
+                case EN_DataType.E_DATASOURCE:
+                    parameter.SqlDbType = SqlDbType.NText;
+                    break;
+            }
+
+            return parameter;
         }
     }
 }
