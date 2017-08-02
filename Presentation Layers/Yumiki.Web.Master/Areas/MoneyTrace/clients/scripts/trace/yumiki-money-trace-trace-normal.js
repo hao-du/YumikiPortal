@@ -52,10 +52,10 @@
 
                         //If amount < 0, it is outcome. Otherwise, it is income trace.
                         if ($scope.trace.Amount >= 0) {
-                            $scope.trace.TransactionType = yumiki.moneyTrace.trace.traceType.Income;
+                            $scope.trace.TransactionType = yumiki.moneyTrace.trace.traceType.income;
                         }
                         else {
-                            $scope.trace.TransactionType = yumiki.moneyTrace.trace.traceType.Outcome;
+                            $scope.trace.TransactionType = yumiki.moneyTrace.trace.traceType.outcome;
                         }
 
                         yumiki.message.displayLoadingDialog(true);
