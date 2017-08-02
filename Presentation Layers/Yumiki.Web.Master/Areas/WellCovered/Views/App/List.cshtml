@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_App>
+
+@{
+    ViewBag.Title = "Application List";
+}
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="well well-sm">
+        <div class="btn-group">
+            @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
+
+            @{ 
+                if (string.IsNullOrWhiteSpace(Request.Params["active"]) ||  bool.Parse(Request.Params["active"]))
+                {
+                    @Html.ActionLink("Show Inactive", "List", new { active = false }, new { @class = "btn btn-default" })
+                }
+                else
+                {
+                    @Html.ActionLink("Show Active", "List", new { active = true }, new { @class = "btn btn-default" })
+                }
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AppName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Descriptions)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsShareable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastUpdateDateUI)
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                <span class="yumiki-separator-vbar"></span>
+                                @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AppName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descriptions)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsShareable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
+                                {
+                                    @Html.Hidden("appID", item.ID.ToString())
+                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script{
+    @Html.Partial("_WellCoveredInclude")
+}
+

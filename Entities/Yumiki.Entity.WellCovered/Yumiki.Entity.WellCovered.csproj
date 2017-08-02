@@ -40,12 +40,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomFields\TB_Field.cs" />
+    <Compile Include="CustomFields\TB_Object.cs" />
+    <Compile Include="MD_Datasource.cs" />
+    <Compile Include="MD_Live.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EN_DataType.cs" />
+    <Compile Include="CustomFields\TB_App.cs" />
     <Compile Include="TB_App.cs" />
     <Compile Include="TB_Field.cs" />
     <Compile Include="TB_Object.cs" />
     <Compile Include="TB_User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
+      <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

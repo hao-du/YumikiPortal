@@ -1,0 +1,129 @@
+﻿@model  IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
+
+@{
+    ViewBag.Title = "Edit Object";
+}
+
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        string objectID = ViewBag.ObjectID;
+        string recordID = ViewBag.RecordID;
+
+        @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.ObjectID, objectID)
+        @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.RecordID, recordID)
+
+        <div class="well well-sm">
+            <div class="btn-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model)
+        {
+            switch (field.FieldType)
+            {
+                case Yumiki.Entity.WellCovered.EN_DataType.E_STRING:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control", @type = "number" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_BOOL:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                <span class="checkbox">
+                                    @Html.CheckBox(field.ApiName, field.Value == null || string.IsNullOrWhiteSpace(field.Value.ToString()) ? false : bool.Parse(field.Value.ToString()))
+                                    @Html.Label(field.ApiName)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATE:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                <div class="input-group date yumiki-control-date">
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDate) : string.Empty, new { @class = "form-control" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATETIME:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                <div class="input-group date yumiki-control-datetime">
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDateTime2) : string.Empty, new { @class = "form-control" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_TIME:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                <div class="input-group date yumiki-control-time">
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? new DateTime(((TimeSpan)field.Value).Ticks).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.Hour) : string.Empty, new { @class = "form-control" })
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                case Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.DropDownList(field.ApiName, ((Dictionary<string, SelectList>)ViewBag.Datasources)[field.ApiName], Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
+            }
+        }
+    }
+</div>
+@section Script{
+    @Html.Partial("_WellCoveredInclude")
+
+    <script type="text/javascript">
+        yumiki.wellCovered.initDateTimePicker('@Yumiki.Commons.Dictionaries.Formats.DateTime.Hour', '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate', '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDateTime');
+    </script>
+}
+

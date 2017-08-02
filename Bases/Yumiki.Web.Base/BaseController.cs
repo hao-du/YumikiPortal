@@ -1,6 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Entities;
+using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Logging;
 using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
@@ -66,6 +69,8 @@ namespace Yumiki.Web.Base
 
             ViewBag.UserName = ViewBag.UserID = ViewBag.LastLoginTime = ViewBag.TimeZone = string.Empty;
 
+            ViewBag.Message = TempData["Message"];
+
             if (CurrentUser.IsAuthenticated)
             {
                 ViewBag.UserName = CurrentUser.UserLoginName;
@@ -73,6 +78,17 @@ namespace Yumiki.Web.Base
                 ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
                 ViewBag.TimeZone = CurrentUser.TimeZone;
             }
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (!(filterContext.Exception is YumikiException))
+            {
+                this.Logger.Error("Error during process request.", filterContext.Exception);
+            }
+
+            base.OnException(filterContext);
+
         }
 
         /// <summary>
@@ -91,6 +107,50 @@ namespace Yumiki.Web.Base
             }
         }
 
+        protected void SendInformation(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.INFO);
+        }
 
+        protected void SendWarning(string message)
+        {
+            SendClientMessage(message, string.Empty, LogLevel.WARN);
+        }
+
+        protected void SendError(Exception ex)
+        {
+            SendClientMessage(ex.Message, ex, LogLevel.ERROR);
+        }
+
+        /// <summary>
+        /// Send message to client side
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="details">Message Details</param>
+        /// <param name="logType">Log Level to display dialog in Client side</param>
+        protected void SendClientMessage(string message, string details, LogLevel logType)
+        {
+            Message clientMessage = new Message(message, details, logType);
+
+            TempData["Message"] = ViewBag.Message = clientMessage;
+        }
+
+        /// <summary>
+        /// Send exception message to client side
+        /// </summary>
+        /// <param name="message">Exception Message</param>
+        /// <param name="ex">Exception Error</param>
+        /// <param name="logType">To show exception type to client side</param>
+        protected void SendClientMessage(string message, Exception ex, LogLevel logType)
+        {
+            if (ex != null && !(ex is YumikiException))
+            {
+                Logger.Append(logType, message, ex);
+            }
+
+            string details = Logger.GetExceptionDetails(ex);
+
+            SendClientMessage(message, details, logType);
+        }
     }
 }

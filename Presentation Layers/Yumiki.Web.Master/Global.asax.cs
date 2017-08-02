@@ -24,6 +24,9 @@ namespace Yumiki.Web.Master
             //Loading Json for WebAPI.
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+
+            //In some servers, the default policy does not work, and it will not generate the details of exception message.
+            GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
         }
 
         protected void Application_PostAuthorizeRequest()

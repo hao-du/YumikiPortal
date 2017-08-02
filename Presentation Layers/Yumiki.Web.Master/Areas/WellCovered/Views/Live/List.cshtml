@@ -1,0 +1,102 @@
+﻿@model Yumiki.Entity.WellCovered.MD_Live
+
+@{
+    ViewBag.Title = string.Format("{0} List", Model.LiveName);
+}
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="well well-sm">
+        <div class="btn-group">
+            @Html.ActionLink("Add", "Create", new { objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
+
+            @{
+                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
+                {
+                    @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-default" })
+                }
+                else
+                {
+                    @Html.ActionLink("Show Active", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-default" })
+                }
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th></th>
+                        @foreach (KeyValuePair<string, Yumiki.Entity.WellCovered.EN_DataType> columnName in Model.ColumnNames)
+                        {
+                            <th>
+                                @Html.DisplayName(columnName.Key)
+                            </th>
+                        }
+                    </tr>
+                    @if (Model.Datasource != null)
+                    {
+                        foreach (System.Data.DataRow item in Model.Datasource)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { objectID = Model.ObjectID.ToString(), recordID = item[Yumiki.Commons.Dictionaries.CommonProperties.ID].ToString() })
+                                </td>
+                                @foreach (KeyValuePair<string, Yumiki.Entity.WellCovered.EN_DataType> columnName in Model.ColumnNames)
+                                {
+                                    object obj = item[columnName.Key];
+                                    if (obj != null && !string.IsNullOrWhiteSpace(obj.ToString()))
+                                    {
+                                        switch (columnName.Value)
+                                        {
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
+                                                <td align="right">
+                                                    @obj.ToString()
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_STRING:
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE:
+                                                <td>
+                                                    @obj.ToString()
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
+                                                <td align="right">
+                                                    @((((decimal)obj).ToString(Yumiki.Commons.Dictionaries.Formats.Number.Decimal)))
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_BOOL:
+                                                <td align="center">
+                                                    @Html.CheckBox(columnName.Key, (bool)item[columnName.Key], new { @disabled = "disabled" })
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_DATE:
+                                                <td align="right">
+                                                    @(((DateTime)obj).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDate))
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_DATETIME:
+                                                <td align="right">
+                                                    @(((DateTime)obj).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDateTime2))
+                                                </td>
+                                                break;
+                                            case Yumiki.Entity.WellCovered.EN_DataType.E_TIME:
+                                                <td align="right">
+                                                    @(new DateTime(((TimeSpan)obj).Ticks).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.Hour))
+                                                </td>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

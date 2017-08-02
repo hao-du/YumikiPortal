@@ -1,0 +1,132 @@
+﻿@model Yumiki.Web.WellCovered.Models.MD_Field
+
+@{
+    ViewBag.Title = "Edit Field";
+}
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ID)
+        @Html.Hidden("action", string.Empty)
+        @Html.HiddenFor(model=>model.ApiName)
+
+        <div class="well well-sm">
+            <div class="btn-group">
+                <input type="button" value="Save" class="btn btn-primary" onclick="yumiki.wellCovered.onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
+                @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FieldName)
+                    @Html.EditorFor(model => model.FieldName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FieldName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DisplayName)
+                    @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApiName)
+                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control", disabled= "disabled" } })
+                    <p class="text-info">
+                        <i>Api Name is used by system and can only name it during adding new.</i>
+                    </p>
+                    @Html.ValidationMessageFor(model => model.ApiName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FieldType)
+                    @Html.DropDownListFor(model => model.FieldType
+                                                , (SelectList)ViewBag.DataTypeDatasource
+                                                , Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown
+                                                , new
+                                                {
+                                                    @class = "form-control selectpicker"
+                                                        ,
+                                                    onchange = string.Format("yumiki.wellCovered.onFormSubmit('{0}')", Yumiki.Web.WellCovered.Controllers.FieldController.PostDropdownList)
+                                                })
+                    @Html.ValidationMessageFor(model => model.FieldType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        if (Model.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
+        {
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FieldLength)
+                        @Html.EditorFor(model => model.FieldLength, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FieldLength, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
+        {
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Datasource)
+                        @Html.EditorFor(model => model.Datasource, new { htmlAttributes = new { @class = "form-control" } })
+                        <p class="text-info">
+                            <i>1. Simple Datasource: List>>A,B,C,D,E,F</i>
+                        </p>
+                        <p class="text-info">
+                            <i>2. Link DataSource: Link DisplayField=API_Field_Name>>API_Object_Name</i>
+                        </p>
+                        @Html.ValidationMessageFor(model => model.Datasource, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.IsRequired)
+                        @Html.LabelFor(model => model.IsRequired)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Descriptions)
+                    @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.LabelFor(model => model.IsActive)
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Script{
+    @Html.Partial("_WellCoveredInclude")
+}

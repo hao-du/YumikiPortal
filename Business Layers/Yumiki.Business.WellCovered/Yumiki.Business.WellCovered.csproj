@@ -41,13 +41,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IAppService.cs" />
+    <Compile Include="Interfaces\IFieldService.cs" />
+    <Compile Include="Interfaces\IObjectService.cs" />
+    <Compile Include="Interfaces\ILiveService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppService.cs" />
+    <Compile Include="Services\FieldService.cs" />
+    <Compile Include="Services\LiveService.cs" />
+    <Compile Include="Services\ObjectService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
       <Project>{a2595517-2380-4fca-8c7f-41ebbcade68b}</Project>
       <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
+      <Project>{04117f61-b63a-4414-a95d-63e6288449c6}</Project>
+      <Name>Yumiki.Data.Base</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7c58deb3-e136-4086-b9a5-44c5cb28b269}</Project>

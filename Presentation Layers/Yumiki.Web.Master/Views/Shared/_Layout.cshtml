@@ -39,6 +39,19 @@
     <script type="text/javascript">
         //Overide NoSession variable
         yumiki.noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
+
+        $(document).ready(function () {
+            //In MVC app, ViewBag.Message to send message from Server side to Client side
+            @{
+                if(ViewBag.Message != null)
+                {
+                    Yumiki.Commons.Entities.Message message = (Yumiki.Commons.Entities.Message)ViewBag.Message;
+                    <text>
+            yumiki.message.clientMessage('@message.Msg', '@message.Details', '@message.LogType');
+                    </text>
+                }
+            }
+        });
     </script>
 </head>
 <body>

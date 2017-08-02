@@ -12,5 +12,7 @@ namespace Yumiki.Commons.Dictionaries
         public const string LastUpdateDateUI = "LastUpdateDateUI";
         public const string IsActive = "IsActive";
         public const string Descriptions = "Descriptions";
+        public const string CreateDate = "CreateDate";
+        public const string LastUpdateDate = "LastUpdateDate";
     }
 }

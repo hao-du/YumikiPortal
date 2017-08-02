@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Privilege.aspx.cs" Inherits="Yumiki.Web.Administration.Privilege" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
+    <script src="/clients/scripts/yumiki-webform-validation.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <asp:UpdatePanel runat="server" ID="upnlPrivilege">
@@ -9,9 +10,9 @@
                 <h2>Privilege Management</h2>
 
                 <div class="well well-sm">
-                    <div class="btn-privilege">
+                    <div class="btn-group">
                         <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
-                        <asp:Button ID="btnDisplayInactivePrivileges" runat="server" CssClass="btn btn-primary" Text="Show Inactive Privileges" OnClick="btnDisplayInactivePrivileges_Click" CausesValidation="false" />
+                        <asp:Button ID="btnDisplayInactivePrivileges" runat="server" CssClass="btn btn-default" Text="Show Inactive Privileges" OnClick="btnDisplayInactivePrivileges_Click" CausesValidation="false" />
                     </div>
                 </div>
                 <div class="row">
@@ -30,19 +31,22 @@
                                     <table id="tblPrivilege" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Privilege Name</th>
                                                 <th>Page Path</th>
                                                 <th>Displayable on UI</th>
                                                 <th>Descriptions</th>
                                                 <th>Active Status</th>
                                                 <th>Modify Date</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <tr>
+                                        <td>
+                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                        </td>
                                         <td>
                                             <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString() + Yumiki.Commons.Dictionaries.CommonValues.SeparateCharUnique +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>
                                         </td>
@@ -60,9 +64,6 @@
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                        </td>
-                                        <td>
-                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                         </td>
                                     </tr>
                                 </ItemTemplate>
