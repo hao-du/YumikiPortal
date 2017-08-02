@@ -1,24 +1,20 @@
 ﻿(function (win, doc, $, yumiki) {
     yumiki.wellCovered = {
-        initListSubmit: function () {
-            var onFormSubmit = function (id) {
-                //Submit form
-                var form = $('#' + id);
-                form.submit();
-            };
+        onListSubmit: function (id) {
+            //Submit form
+            var form = $('#' + id);
+            form.submit();
         },
 
-        initFormSubmit: function () {
-            var onFormSubmit = function (action) {
-                if (!action) {
-                    return false;
-                }
-                //Set value in hidden field 'action' to be URL param
-                $('#action').val(action);
-                //Submit form after filling all params
-                var form = $('#action').closest('form');
-                form.submit();
-            };
+        onFormSubmit: function (action) {
+            if (!action) {
+                return false;
+            }
+            //Set value in hidden field 'action' to be URL param
+            $('#action').val(action);
+            //Submit form after filling all params
+            var form = $('#action').closest('form');
+            form.submit();
         },
 
         initDateTimePicker: function (timeFormat, dateFormat, datetimeFormat) {

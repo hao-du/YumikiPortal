@@ -69,7 +69,7 @@
                                 @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
                                     @Html.Hidden("objectID", item.ID.ToString())
-                                    <a href="#" onclick="onFormSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
+                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
                                 }
                             </td>
                         </tr>
@@ -82,8 +82,4 @@
 </div>
 @section Script{
     @Html.Partial("_WellCoveredInclude")
-
-    <script type="text/javascript">
-        yumiki.wellCovered.initListSubmit();
-    </script>
 }

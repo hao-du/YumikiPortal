@@ -53,7 +53,7 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 <span class="checkbox">
-                                    @Html.CheckBox(field.ApiName, field.Value == null? false : bool.Parse(field.Value.ToString()))
+                                    @Html.CheckBox(field.ApiName, field.Value == null || string.IsNullOrWhiteSpace(field.Value.ToString()) ? false : bool.Parse(field.Value.ToString()))
                                     @Html.Label(field.ApiName)
                                 </span>
                             </div>
@@ -66,7 +66,7 @@
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-date">
-                                    @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDate) : string.Empty, new { @class = "form-control" })
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-list-alt"></span>
                                     </span>
@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-datetime">
-                                    @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDateTime2) : string.Empty, new { @class = "form-control" })
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-list-alt"></span>
                                     </span>
@@ -96,7 +96,7 @@
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-time">
-                                    @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                    @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? new DateTime(((TimeSpan)field.Value).Ticks).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.Hour) : string.Empty, new { @class = "form-control" })
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-list-alt"></span>
                                     </span>

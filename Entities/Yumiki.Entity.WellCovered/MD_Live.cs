@@ -11,14 +11,14 @@ namespace Yumiki.Entity.WellCovered
     {
         public MD_Live()
         {
-            ColumnNames = new List<string>();
+            ColumnNames = new Dictionary<string, EN_DataType>();
         }
 
         public Guid ObjectID { get; set; }
 
         public string LiveName { get; set; }
 
-        public List<string> ColumnNames { get; set; }
+        public Dictionary<string, EN_DataType> ColumnNames { get; set; }
 
         public EnumerableRowCollection<DataRow> Datasource { get; set; }
     }

@@ -237,7 +237,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (TB_Field field in obj.Fields)
             {
-                live.ColumnNames.Add(field.DisplayName);
+                live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
             live.Datasource = GetDynamicRecords(PrepareQueryStament(obj, isActive)).AsEnumerable();
@@ -265,12 +265,12 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (TB_Field field in obj.Fields)
             {
-                live.ColumnNames.Add(field.DisplayName);
+                live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            string sqlStament = PrepareQueryStament(obj, null);
+            string sqlStament = PrepareQueryStament(obj, null, false);
 
-            string whereStament = string.Format(" WHERE ID = '{0}' ", recordID.ToString());
+            string whereStament = string.Format(" WHERE [0].ID = '{0}' ", recordID.ToString());
 
             live.Datasource = GetDynamicRecords(string.Join(" ", sqlStament, whereStament)).AsEnumerable();
 
@@ -283,7 +283,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="obj"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        private string PrepareQueryStament(TB_Object obj, bool? isActive)
+        private string PrepareQueryStament(TB_Object obj, bool? isActive, bool getLinkDisplayName = true)
         {
             StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
 
@@ -300,17 +300,20 @@ namespace Yumiki.Data.WellCovered.Repositories
                     //Format: Link DisplayField=API_Field_Name>>API_Object_Name
                     string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
+                    if (getLinkDisplayName)
                     {
-                        hasDatasource = true;
+                        if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            hasDatasource = true;
 
-                        string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
-                        string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                            string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-                        sqlSelectBuilder.AppendFormat(" , [{0}].{1} as [{2}]", aliasUniqueID, displayField, field.DisplayName);
+                            sqlSelectBuilder.AppendFormat(" , [{0}].{1} as [{2}]", aliasUniqueID, displayField, field.DisplayName);
 
-                        sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS [{1}] ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
+                            sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS [{1}] ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
+                        }
                     }
                 }
 
@@ -415,7 +418,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (TB_Field field in obj.Fields)
             {
-                sqlSetBuilder.AppendFormat(" , SET [{0}] = @{1} ", field.ApiName, field.ApiName);
+                sqlSetBuilder.AppendFormat(" , [{0}] = @{1} ", field.ApiName, field.ApiName);
 
                 object value = record.Where(c => c.ApiName == field.ApiName).First().Value;
 

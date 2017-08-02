@@ -13,7 +13,7 @@
 
         <div class="well well-sm">
             <div class="btn-group">
-                <input type="button" value="Save" class="btn btn-primary" onclick="onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
+                <input type="button" value="Save" class="btn btn-primary" onclick="yumiki.wellCovered.onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
                 @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
             </div>
         </div>
@@ -59,7 +59,7 @@
                                                 {
                                                     @class = "form-control selectpicker"
                                                         ,
-                                                    onchange = string.Format("onFormSubmit('{0}')", Yumiki.Web.WellCovered.Controllers.FieldController.PostDropdownList)
+                                                    onchange = string.Format("yumiki.wellCovered.onFormSubmit('{0}')", Yumiki.Web.WellCovered.Controllers.FieldController.PostDropdownList)
                                                 })
                     @Html.ValidationMessageFor(model => model.FieldType, "", new { @class = "text-danger" })
                 </div>
@@ -117,8 +117,4 @@
 </div>
 @section Script{
     @Html.Partial("_WellCoveredInclude")
-
-    <script type="text/javascript">
-        yumiki.wellCovered.initFormSubmit();
-    </script>
 }

@@ -98,9 +98,12 @@ namespace Yumiki.Business.WellCovered.Services
             else
             {
                 List<MD_Datasource> datasource = new List<MD_Datasource>();
-                foreach(string item in datasourceFormat[1].Split(','))
+                if (datasourceFormat.Count() > 1)
                 {
-                    datasource.Add(new MD_Datasource() { ID = item, DisplayText = item });
+                    foreach (string item in datasourceFormat[1].Split(','))
+                    {
+                        datasource.Add(new MD_Datasource() { ID = item, DisplayText = item });
+                    }
                 }
                 return datasource;
             }
@@ -151,7 +154,7 @@ namespace Yumiki.Business.WellCovered.Services
             {
                 foreach (TB_Field field in fields)
                 {
-                    field.Value = row[field.ApiName];
+                    field.Value = row[field.DisplayName];
                 }
             }
 
