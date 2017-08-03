@@ -23,6 +23,8 @@ namespace Yumiki.Web.WellCovered.Controllers
                 if(!active == null) { active = true; }
 
                 objects = BusinessService.GetAllObjects(!active.Value, appID).Select(c => new MD_Object(c));
+
+                InitDatasource(appID, true);
             }
             catch (Exception ex)
             {
@@ -35,7 +37,7 @@ namespace Yumiki.Web.WellCovered.Controllers
         // GET: App/Create
         public ActionResult Create()
         {
-            InitDatasource();
+            InitDatasource(null);
 
             return View();
         }
@@ -58,7 +60,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            InitDatasource();
+            InitDatasource(null);
 
             return View(obj);
         }
@@ -76,7 +78,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            InitDatasource();
+            InitDatasource(null);
 
             return View(app);
         }
@@ -99,17 +101,35 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            InitDatasource();
+            InitDatasource(null);
 
             return View(obj);
         }
 
-        private void InitDatasource()
+        private void InitDatasource(string appID, bool includeFreeObject = false)
         {
             try
             {
-                IEnumerable<MD_App> apps = BusinessService.GetApps(CurrentUser.UserID.ToString()).Select(c => new MD_App(c));
-                ViewBag.AppDatasource = new SelectList(apps, CommonProperties.ID, TB_App.FieldName.AppName);
+                List<MD_App> apps = BusinessService.GetApps(CurrentUser.UserID.ToString()).Select(c => new MD_App(c)).ToList();
+
+                if (includeFreeObject)
+                {
+                    MD_App app = new MD_App();
+                    app.ID = Guid.Empty;
+                    app.AppName = "Free Objects";
+
+                    apps.Insert(0, app);
+                }
+
+                Guid convertedAppID;
+                if (Guid.TryParse(appID, out convertedAppID))
+                {
+                    ViewBag.AppDatasource = new SelectList(apps, CommonProperties.ID, TB_App.FieldName.AppName, convertedAppID);
+                }
+                else
+                {
+                    ViewBag.AppDatasource = new SelectList(apps, CommonProperties.ID, TB_App.FieldName.AppName);
+                }
             }
             catch (Exception ex)
             {

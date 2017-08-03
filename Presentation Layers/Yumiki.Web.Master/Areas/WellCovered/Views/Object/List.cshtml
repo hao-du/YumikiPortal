@@ -21,6 +21,14 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-1">
+            Objects
+        </div>
+        <div class="col-md-11">
+            @Html.DropDownList(Yumiki.Entity.WellCovered.TB_Object.FieldName.AppName, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
