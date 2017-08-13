@@ -19,9 +19,16 @@ namespace Yumiki.Data.WellCovered.Repositories
         {
             IQueryable<TB_Object> objectQueryable = Context.TB_Object.Where(c => c.IsActive == !showInactive);
 
-            if(appID.HasValue && appID.Value != Guid.Empty)
+            if(appID.HasValue)
             {
-                objectQueryable = objectQueryable.Where(c => c.AppID == appID.Value);
+                if (appID.Value.Equals(Guid.Empty))
+                {
+                    objectQueryable = objectQueryable.Where(c => !c.AppID.HasValue);
+                }
+                else
+                {
+                    objectQueryable = objectQueryable.Where(c => c.AppID == appID.Value);
+                }
             }
 
             IEnumerable<TB_Object> objects = objectQueryable.ToList();

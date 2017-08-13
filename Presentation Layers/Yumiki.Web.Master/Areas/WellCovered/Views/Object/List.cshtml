@@ -8,8 +8,8 @@
     <div class="well well-sm">
         <div class="btn-group">
             @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
-            @{ 
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) ||  bool.Parse(Request.Params["active"]))
+            @{
+                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
                 {
                     @Html.ActionLink("Show Inactive", "List", new { active = false }, new { @class = "btn btn-default" })
                 }
@@ -21,11 +21,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-1">
-            Objects
-        </div>
-        <div class="col-md-11">
-            @Html.DropDownList(Yumiki.Entity.WellCovered.TB_Object.FieldName.AppName, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+        <div class="col-md-6">
+            @using (Html.BeginForm("List", "Object", FormMethod.Get))
+            {
+                @Html.Hidden("active", true);
+                <div class="form-group">
+                    @Html.Label("Applications");
+                    @Html.DropDownList("appID", (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker", @onchange = "this.form.submit();" })
+                </div>
+            }
         </div>
     </div>
     <div class="row">
@@ -57,7 +61,7 @@
                                 @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString() }, new { })
                             </td>
                             <td>
-                                @{ 
+                                @{
                                     string objectName = string.Format("{0} - Display Name: {1}", item.ObjectName, item.DisplayName);
                                 }
                                 @Html.DisplayFor(modelItem => objectName)
@@ -81,7 +85,7 @@
                                 }
                             </td>
                         </tr>
-                    }
+                                    }
 
                 </table>
             </div>

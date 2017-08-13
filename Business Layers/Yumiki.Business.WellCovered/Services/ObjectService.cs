@@ -21,10 +21,16 @@ namespace Yumiki.Business.WellCovered.Services
         /// <returns>List of all active Objects.</returns>
         public IEnumerable<TB_Object> GetAllObjects(bool showInactive, string appID)
         {
-            Guid convertedID = Guid.Empty;
-            Guid.TryParse(appID, out convertedID);
+            Guid? convertedAppID = null;
 
-            return Repository.GetAllObjects(showInactive, convertedID);
+            if (!string.IsNullOrWhiteSpace(appID))
+            {
+                Guid convertedID = Guid.Empty;
+                Guid.TryParse(appID, out convertedID);
+                convertedAppID = convertedID;
+            }
+
+            return Repository.GetAllObjects(showInactive, convertedAppID);
         }
 
         /// <summary>
