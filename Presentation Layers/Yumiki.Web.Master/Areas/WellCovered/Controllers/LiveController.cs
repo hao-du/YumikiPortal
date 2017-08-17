@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Yumiki.Business.WellCovered.Interfaces;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Entity.WellCovered;
 using Yumiki.Web.Base;
@@ -41,6 +42,12 @@ namespace Yumiki.Web.WellCovered.Controllers
             try
             {
                 fields = BusinessService.GetFields(objectID).Select(c => new MD_Field(c));
+
+                MD_Field isActiveField = fields.Where(c => c.ApiName.Equals(CommonProperties.IsActive, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                if(isActiveField != null)
+                {
+                    isActiveField.Value = true;
+                }
 
                 InitDataSource(fields);
             }
@@ -227,7 +234,7 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         // POST:
         [HttpPost]
-        public ActionResult PublishObject(string objectID)
+        public ActionResult PublishObject(string appID, string objectID)
         {
             try
             {
@@ -240,7 +247,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            return RedirectToAction("List", "Object", new { active = true });
+            return RedirectToAction("List", "Object", new { active = true, appID = appID });
         }
 
         private void InitDataSource(IEnumerable<MD_Field> fields)

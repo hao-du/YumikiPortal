@@ -30,7 +30,14 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                @if (field.FieldLength > 100)
+                                {
+                                    @Html.TextArea(field.ApiName, field.Value == null ? string.Empty : field.Value.ToString(), new { @class = "form-control", @rows = 5 })
+                                }
+                                else
+                                {
+                                    @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                }
                             </div>
                         </div>
                     </div>

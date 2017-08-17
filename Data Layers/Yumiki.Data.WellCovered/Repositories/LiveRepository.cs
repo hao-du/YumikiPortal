@@ -67,6 +67,9 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="obj">Object need to be gone live.</param>
         private void PublishObject(TB_Object obj)
         {
+            AddSystemFields(obj);
+
+            //Publish Object
             Logger.Debug(string.Format("Publishing '{0}' object.", obj.ObjectName));
             if (obj != null)
             {
@@ -80,6 +83,61 @@ namespace Yumiki.Data.WellCovered.Repositories
                     Logger.Debug(string.Format("'{0}' is new.", obj.ObjectName));
                     CreateTable(obj);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Add system fields which are able to edit. E.g IsActive, Descriptions
+        /// </summary>
+        /// <param name="obj">Object need to add the system fields</param>
+        private void AddSystemFields(TB_Object obj)
+        {
+            bool areSystemFieldsAdded = false;
+            //Publish System Editable Fields: IsActive, Description
+            if (!obj.Fields.Any(c => c.ApiName.Equals(CommonProperties.IsActive, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                TB_Field field = new TB_Field()
+                {
+                    FieldName = CommonProperties.IsActive,
+                    ApiName = CommonProperties.IsActive,
+                    DisplayName = "Is Active",
+                    ObjectID = obj.ID,
+                    IsRequired = true,
+                    FieldType = EN_DataType.E_BOOL,
+                    UserID = obj.UserID,
+                    Descriptions = "Field is managed by system",
+                    IsSystemField = true,
+                    IsDisplayable = false,
+                    FieldOrder = 3000
+                };
+                Context.TB_Field.Add(field);
+                areSystemFieldsAdded = true;
+            }
+
+            if (!obj.Fields.Any(c => c.ApiName.Equals(CommonProperties.Descriptions, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                TB_Field field = new TB_Field()
+                {
+                    FieldName = CommonProperties.Descriptions,
+                    ApiName = CommonProperties.Descriptions,
+                    DisplayName = CommonProperties.Descriptions,
+                    ObjectID = obj.ID,
+                    IsRequired = false,
+                    FieldType = EN_DataType.E_STRING,
+                    FieldLength = 255,
+                    UserID = obj.UserID,
+                    Descriptions = "Field is managed by system",
+                    IsSystemField = true,
+                    IsDisplayable = false,
+                    FieldOrder = 4000
+                };
+                Context.TB_Field.Add(field);
+                areSystemFieldsAdded = true;
+            }
+
+            if (areSystemFieldsAdded)
+            {
+                Save();
             }
         }
 
@@ -111,8 +169,6 @@ namespace Yumiki.Data.WellCovered.Repositories
             }
 
             sqlBuilder.AppendFormat("{0} UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, ", CommonProperties.ID);
-            sqlBuilder.AppendFormat("{0} VARCHAR(255) NULL, ", CommonProperties.Descriptions);
-            sqlBuilder.AppendFormat("{0} BIT NOT NULL, ", CommonProperties.IsActive);
             sqlBuilder.AppendFormat("{0} DATETIME NOT NULL, ", CommonProperties.CreateDate);
             sqlBuilder.AppendFormat("{0} DATETIME NULL", CommonProperties.LastUpdateDate);
 
@@ -235,7 +291,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 return null;
             }
 
-            foreach (TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsDisplayable && c.IsActive).OrderBy(c => c.FieldOrder))
             {
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
@@ -373,12 +429,10 @@ namespace Yumiki.Data.WellCovered.Repositories
             List<SqlParameter> pamameters = new List<SqlParameter>();
 
             sqlInsertBuilder.AppendFormat(" INSERT INTO {0} ", obj.ApiName);
-            sqlInsertBuilder.AppendFormat(" ([{0}], [{1}], [{2}], [{3}], [{4}] ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
+            sqlInsertBuilder.AppendFormat(" ([{0}], [{1}], [{2}] ", CommonProperties.ID, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
 
-            sqlValueBuilder.AppendFormat(" VALUES (@{0}, @{1}, @{2}, @{3}, @{4} ", CommonProperties.ID, CommonProperties.Descriptions, CommonProperties.IsActive, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
+            sqlValueBuilder.AppendFormat(" VALUES (@{0}, @{1}, @{2} ", CommonProperties.ID, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = Guid.NewGuid(), SqlDbType = SqlDbType.UniqueIdentifier });
-            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.Descriptions), Value = string.Empty, SqlDbType = SqlDbType.NVarChar });
-            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.IsActive), Value = true, SqlDbType = SqlDbType.Bit });
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.CreateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
 

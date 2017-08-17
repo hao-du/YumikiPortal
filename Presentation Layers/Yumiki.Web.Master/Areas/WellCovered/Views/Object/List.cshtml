@@ -81,11 +81,12 @@
                                 @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
                                     @Html.Hidden("objectID", item.ID.ToString())
-                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
+                                    @Html.Hidden("appID", Request.QueryString["appID"])
+                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');">Publish</a>
                                 }
                             </td>
                         </tr>
-                                    }
+                    }
 
                 </table>
             </div>

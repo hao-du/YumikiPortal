@@ -142,6 +142,40 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Order")]
+        public int? FieldOrder
+        {
+            get
+            {
+                return _interalItem.FieldOrder;
+            }
+            set
+            {
+                _interalItem.FieldOrder = value;
+            }
+        }
+
+        [Display(Name = "Is Displayable")]
+        public bool IsDisplayable
+        {
+            get
+            {
+                return _interalItem.IsDisplayable;
+            }
+            set
+            {
+                _interalItem.IsDisplayable = value;
+            }
+        }
+
+        public bool IsSystemField
+        {
+            get
+            {
+                return _interalItem.IsSystemField;
+            }
+        }
+
         public object Value
         {
             get

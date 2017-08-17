@@ -27,6 +27,19 @@ namespace Yumiki.Entity.WellCovered
         public string Descriptions { get; set; }
         public Guid UserID { get; set; }
         public bool IsActive { get; set; }
+        public bool IsSystemField { get; set; }
+        public int? FieldOrder { get; set; }
+        public bool IsDisplayable { get; set; }
+
+        /// <summary>
+        /// Make the field searchable by add it to search index.
+        /// </summary>
+        public bool CanIndex { get; set; }
+        /// <summary>
+        /// To tokenize the field's value to temrs or search as it is.
+        /// </summary>
+        public int? Analyzer { get; set; }
+
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public virtual TB_Object Object { get; set; }
