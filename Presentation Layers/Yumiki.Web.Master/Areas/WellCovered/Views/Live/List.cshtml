@@ -10,7 +10,7 @@
             @Html.ActionLink("Add", "Create", new { objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
 
             @{
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
+                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
                 {
                     @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-default" })
                 }

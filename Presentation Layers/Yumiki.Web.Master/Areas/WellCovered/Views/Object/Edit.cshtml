@@ -12,11 +12,12 @@
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.ApiName)
+        @Html.Hidden(Constants.AppID, Request.Params[Constants.AppID])
 
         <div class="well well-sm">
             <div class="btn-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back", "List", new { }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Back", "List", new { appID = Request.Params[Constants.AppID }, new { @class = "btn btn-primary" })
             </div>
         </div>
 

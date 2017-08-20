@@ -35,7 +35,7 @@ namespace Yumiki.Web.WellCovered.Controllers
         }
 
         // GET: App/Create
-        public ActionResult Create()
+        public ActionResult Create(string appID)
         {
             InitDatasource(null);
 
@@ -44,7 +44,7 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         // POST: App/Create
         [HttpPost]
-        public ActionResult Create(MD_Object obj)
+        public ActionResult Create(MD_Object obj, string appID)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 {
                     BusinessService.Save(obj.ToObject());
 
-                    return RedirectToAction("List", new { active = true });
+                    return RedirectToAction("List", new { active = true, appID = appID });
                 }
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Yumiki.Web.WellCovered.Controllers
         }
 
         // GET: App/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, string appID)
         {
             MD_Object app = null;
             try
@@ -85,7 +85,7 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         // POST: App/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, MD_Object obj)
+        public ActionResult Edit(string id, MD_Object obj, string appID)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 {
                     BusinessService.Save(obj.ToObject());
 
-                    return RedirectToAction("List", new { active = true });
+                    return RedirectToAction("List", new { active = true, appID = appID });
                 }
             }
             catch (Exception ex)

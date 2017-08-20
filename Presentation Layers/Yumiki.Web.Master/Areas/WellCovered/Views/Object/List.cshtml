@@ -7,15 +7,15 @@
     <h2>@ViewBag.Title</h2>
     <div class="well well-sm">
         <div class="btn-group">
-            @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Add", "Create", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
             @{
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
+                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
                 {
-                    @Html.ActionLink("Show Inactive", "List", new { active = false }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Show Inactive", "List", new { active = false, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-default" })
                 }
                 else
                 {
-                    @Html.ActionLink("Show Active", "List", new { active = true }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Show Active", "List", new { active = true, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-default" })
                 }
             }
         </div>
@@ -24,10 +24,10 @@
         <div class="col-md-6">
             @using (Html.BeginForm("List", "Object", FormMethod.Get))
             {
-                @Html.Hidden("active", true);
+                @Html.Hidden(Constants.Active, true);
                 <div class="form-group">
                     @Html.Label("Applications");
-                    @Html.DropDownList("appID", (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker", @onchange = "this.form.submit();" })
+                    @Html.DropDownList(Constants.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker", @onchange = "this.form.submit();" })
                 </div>
             }
         </div>
@@ -56,9 +56,9 @@
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID, appID = Request.Params[Constants.AppID] })
                                 <span class="yumiki-separator-vbar"></span>
-                                @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString() }, new { })
+                                @Html.ActionLink("Fields", "List", "Field", new { active = true, objectID = item.ID.ToString(), appID = Request.Params[Constants.AppID] }, new { target = "_blank" })
                             </td>
                             <td>
                                 @{
@@ -76,12 +76,12 @@
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
                             </td>
                             <td>
-                                @Html.ActionLink("View Data", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { })
+                                @Html.ActionLink("View Data", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { target = "_blank" })
                                 <span class="yumiki-separator-vbar"></span>
                                 @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
                                     @Html.Hidden("objectID", item.ID.ToString())
-                                    @Html.Hidden("appID", Request.QueryString["appID"])
+                                    @Html.Hidden(Constants.AppID, Request.QueryString[Constants.AppID])
                                     <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');">Publish</a>
                                 }
                             </td>

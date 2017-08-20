@@ -10,7 +10,7 @@
             @Html.ActionLink("Add", "Create", new { }, new { @class = "btn btn-primary" })
 
             @{ 
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) ||  bool.Parse(Request.Params["active"]))
+                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) ||  bool.Parse(Request.Params[Constants.Active]))
                 {
                     @Html.ActionLink("Show Inactive", "List", new { active = false }, new { @class = "btn btn-default" })
                 }
@@ -50,7 +50,7 @@
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID })
                                 <span class="yumiki-separator-vbar"></span>
-                                @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { })
+                                @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { target = "_blank" })
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.AppName)
@@ -70,7 +70,7 @@
                             <td>
                                 @using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
                                 {
-                                    @Html.Hidden("appID", item.ID.ToString())
+                                    @Html.Hidden(Constants.AppID, item.ID.ToString())
                                     <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
                                 }
                             </td>

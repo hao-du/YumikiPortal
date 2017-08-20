@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YUMIKI PORTAL</title>
+    <title>@(string.IsNullOrWhiteSpace(ViewBag.Title) ? string.Empty : string.Format("{0} - ", ViewBag.Title))YUMIKI PORTAL</title>
     <!--3rd Libraries-->
     @MvcHtmlString.Create(
         Bundle.Css()

@@ -81,6 +81,11 @@ namespace Yumiki.Business.WellCovered.Services
                 throw new YumikiException(ExceptionCode.E_DUPLICATED, "Api Name have already been used.", Logger);
             }
 
+            if(obj.AppID == Guid.Empty)
+            {
+                obj.AppID = null;
+            }
+
             Repository.Save(obj);
         }
 
