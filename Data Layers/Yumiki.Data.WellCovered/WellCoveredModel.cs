@@ -16,6 +16,7 @@ namespace Yumiki.Entity.WellCovered
         public virtual DbSet<TB_Field> TB_Field { get; set; }
         public virtual DbSet<TB_Object> TB_Object { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
+        public virtual DbSet<TB_LiveIndex> TB_LiveIndex { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -60,6 +61,9 @@ namespace Yumiki.Entity.WellCovered
 
             modelBuilder.Entity<TB_Field>()
                 .Ignore(e => e.Value);
+
+            modelBuilder.Entity<TB_LiveIndex>()
+                .Ignore(e => e.Rank);
         }
     }
 }

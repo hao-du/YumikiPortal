@@ -66,7 +66,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 TB_App dbApp = Context.TB_App.Single(c => c.ID == app.ID);
                 dbApp.AppName = app.AppName;
                 dbApp.UserID = app.UserID;
-                dbApp.IsShareable = app.IsShareable;
+                dbApp.IsShareable = false;
                 dbApp.Descriptions = app.Descriptions;
                 dbApp.IsActive = app.IsActive;
             }

@@ -31,7 +31,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="objectID">Id of App need to be gone live.</param>
         public void PublishApp(Guid appID)
         {
-            IEnumerable<TB_Object> objects = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.AppID == appID).ToList();
+            IEnumerable<TB_Object> objects = Context.TB_Object.Include(TB_Object.FieldName.App).Include(TB_Object.FieldName.Fields).Where(c => c.AppID == appID).ToList();
 
             Logger.Debug(string.Format("Publishing app with ID '{0}' with {1} objects.", appID.ToString(), objects.Count()));
 
@@ -57,7 +57,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="objectID">Id of Object need to be gone live.</param>
         public void PublishObject(Guid objectID)
         {
-            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.App).Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
             PublishObject(obj);
         }
 
@@ -73,7 +73,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             Logger.Debug(string.Format("Publishing '{0}' object.", obj.ObjectName));
             if (obj != null)
             {
-                if (CheckExist(obj.ApiName))
+                if (CheckTableExist(obj.ApiName))
                 {
                     Logger.Debug(string.Format("'{0}' existed in DB.", obj.ObjectName));
                     AlterTable(obj);
@@ -84,6 +84,8 @@ namespace Yumiki.Data.WellCovered.Repositories
                     CreateTable(obj);
                 }
             }
+
+            RebuildIndex(obj);
         }
 
         /// <summary>
@@ -146,9 +148,64 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         /// <param name="tableName">Table need to be checked</param>
         /// <returns>True if Existed</returns>
-        private bool CheckExist(string tableName)
+        private bool CheckTableExist(string tableName)
         {
             return Context.Database.SqlQuery<int?>(@"SELECT 1 FROM sys.tables WHERE name = @tableName", new SqlParameter("@tableName", tableName)).Any();
+        }
+
+        /// <summary>
+        /// Rebuild Search Index after Publishing App or Object.
+        /// </summary>
+        /// <param name="obj">Table (object) need to be rebuilt.</param>
+        private void RebuildIndex(TB_Object obj)
+        {
+            //Remove all records belong to table need to be rebuilt.
+            Context.TB_LiveIndex.RemoveRange(Context.TB_LiveIndex.Where(c => c.ObjectID == obj.ID).ToList());
+
+            StringBuilder displayContents = new StringBuilder();
+            StringBuilder fullTextIndex = new StringBuilder();
+            fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
+            fullTextIndex.AppendFormat("{0} ", obj.AppName);
+
+            MD_Live live = FetchViewObjectData(obj.ID, true);
+
+            bool isActive = false;
+            IEnumerable<TB_Field> fields = obj.Fields.OrderBy(c => c.FieldOrder);
+
+            foreach (DataRow row in live.Datasource)
+            {
+                foreach (TB_Field field in fields)
+                {
+                    object value = row[field.DisplayName];
+
+                    if (field.IsDisplayable)
+                    {
+                        displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
+                    }
+                    if (field.CanIndex)
+                    {
+                        fullTextIndex.AppendFormat("{0} ", value);
+                    }
+
+                    if (field.ApiName == CommonProperties.IsActive)
+                    {
+                        isActive = (bool)value;
+
+                        //If isActive == false, skip build index for row.
+                        if (!isActive)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (isActive)
+                {
+                    SaveIndex(obj, (Guid)row[CommonProperties.ID], fullTextIndex.ToString(), displayContents.ToString());
+                }
+            }
+
+            Save();
         }
 
         /// <summary>
@@ -422,7 +479,9 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="record"></param>
         public void Add(Guid objectID, IEnumerable<TB_Field> record)
         {
-            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.App).Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            Guid liveID = Guid.NewGuid();
 
             StringBuilder sqlInsertBuilder = new StringBuilder();
             StringBuilder sqlValueBuilder = new StringBuilder();
@@ -432,11 +491,18 @@ namespace Yumiki.Data.WellCovered.Repositories
             sqlInsertBuilder.AppendFormat(" ([{0}], [{1}], [{2}] ", CommonProperties.ID, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
 
             sqlValueBuilder.AppendFormat(" VALUES (@{0}, @{1}, @{2} ", CommonProperties.ID, CommonProperties.CreateDate, CommonProperties.LastUpdateDate);
-            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = Guid.NewGuid(), SqlDbType = SqlDbType.UniqueIdentifier });
+            pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = liveID, SqlDbType = SqlDbType.UniqueIdentifier });
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.CreateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
 
-            foreach (TB_Field field in obj.Fields)
+            StringBuilder displayContents = new StringBuilder();
+
+            StringBuilder fullTextIndex = new StringBuilder();
+            fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
+            fullTextIndex.AppendFormat("{0} ", obj.AppName);
+
+            bool isActive = false;
+            foreach (TB_Field field in obj.Fields.OrderBy(c => c.FieldOrder))
             {
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
@@ -444,12 +510,28 @@ namespace Yumiki.Data.WellCovered.Repositories
                 object value = record.Where(c => c.ApiName == field.ApiName).First().Value;
 
                 pamameters.Add(PrepareParameter(field, value));
+
+                if (field.IsDisplayable)
+                {
+                    displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
+                }
+                if (field.CanIndex)
+                {
+                    fullTextIndex.AppendFormat("{0} ", value);
+                }
+
+                if (field.ApiName == CommonProperties.IsActive)
+                {
+                    isActive = (bool)value;
+                }
             }
 
             sqlInsertBuilder.Append(" ) ");
             sqlValueBuilder.Append(" ) ");
 
             ExecuteCommand(sqlInsertBuilder.Append(sqlValueBuilder.ToString()).ToString(), pamameters.ToArray());
+
+            SaveIndex(obj, liveID, isActive ? fullTextIndex.ToString() : string.Empty, displayContents.ToString(), true);
         }
 
         /// <summary>
@@ -458,7 +540,13 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="record"></param>
         public void Update(Guid objectID, Guid recordID, IEnumerable<TB_Field> record)
         {
-            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+            TB_Object obj = Context.TB_Object.Include(TB_Object.FieldName.App).Include(TB_Object.FieldName.Fields).Where(c => c.ID == objectID).SingleOrDefault();
+
+            //For Full Text Search
+            StringBuilder displayContents = new StringBuilder();
+            StringBuilder fullTextIndex = new StringBuilder();
+            fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
+            fullTextIndex.AppendFormat("{0} ", obj.AppName);
 
             StringBuilder sqlUpdateBuilder = new StringBuilder();
             StringBuilder sqlSetBuilder = new StringBuilder();
@@ -477,12 +565,71 @@ namespace Yumiki.Data.WellCovered.Repositories
                 object value = record.Where(c => c.ApiName == field.ApiName).First().Value;
 
                 pamameters.Add(PrepareParameter(field, value));
+
+                if (field.IsDisplayable)
+                {
+                    displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
+                }
+                if (field.CanIndex)
+                {
+                    fullTextIndex.AppendFormat("{0} ", value);
+                }
             }
 
             sqlWhereBuilder.AppendFormat(" WHERE [{0}] = @{1} ", CommonProperties.ID, CommonProperties.ID);
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.ID), Value = recordID, SqlDbType = SqlDbType.UniqueIdentifier });
 
             ExecuteCommand(string.Format(" {0} {1} {2} ", sqlUpdateBuilder.ToString(), sqlSetBuilder.ToString(), sqlWhereBuilder.ToString()), pamameters.ToArray());
+
+            SaveIndex(obj, recordID, fullTextIndex.ToString(), displayContents.ToString(), true);
+        }
+
+        /// <summary>
+        /// Save index for full text search
+        /// </summary>
+        private void SaveIndex(TB_Object obj, Guid liveID, string fullTextIndex, string displayContents, bool saveImmediately = false)
+        {
+            //Modify field in Index
+            TB_LiveIndex liveIndex = Context.TB_LiveIndex.SingleOrDefault(c => c.LiveID == liveID);
+
+            if (liveIndex == null)
+            {
+                if (!string.IsNullOrWhiteSpace(fullTextIndex))
+                {   
+                    //Add field to Index
+                    liveIndex = new TB_LiveIndex()
+                    {
+                        LiveID = liveID,
+                        ObjectID = obj.ID,
+                        AppID = obj.AppID,
+                        FullTextIndex = fullTextIndex.ToString(),
+                        DisplayContents = displayContents.ToString(),
+                        UserID = obj.UserID
+                    };
+
+                    Context.TB_LiveIndex.Add(liveIndex);
+                }
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(fullTextIndex))
+                {
+                    Context.TB_LiveIndex.Remove(liveIndex);
+                }
+                else
+                {
+                    liveIndex.ObjectID = obj.ID;
+                    liveIndex.AppID = obj.AppID;
+                    liveIndex.FullTextIndex = fullTextIndex;
+                    liveIndex.DisplayContents = displayContents;
+                    liveIndex.UserID = obj.UserID;
+                }
+            }
+
+            if (saveImmediately)
+            {
+                Save();
+            }
         }
 
         private SqlParameter PrepareParameter(TB_Field field, object value)
