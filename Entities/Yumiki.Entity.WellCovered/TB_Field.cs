@@ -35,10 +35,6 @@ namespace Yumiki.Entity.WellCovered
         /// Make the field searchable by add it to search index.
         /// </summary>
         public bool CanIndex { get; set; }
-        /// <summary>
-        /// To tokenize the field's value to temrs or search as it is.
-        /// </summary>
-        public int? Analyzer { get; set; }
 
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }

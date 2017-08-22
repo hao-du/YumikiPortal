@@ -7,7 +7,7 @@ using Yumiki.Entity.Base;
 
 namespace Yumiki.Entity.WellCovered
 {
-    public partial class TB_LiveIndex: IEntity
+    public partial class TB_Index: IEntity
     {
         public Guid ID { get; set; }
 

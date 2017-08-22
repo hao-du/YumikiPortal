@@ -34,7 +34,7 @@
                                 @Html.Label(field.DisplayName)
                                 @if (field.FieldLength > 100)
                                 {
-                                    @Html.TextArea(field.ApiName, field.Value.ToString(), new { @class = "form-control", @rows = 5 })
+                                    @Html.TextArea(field.ApiName, field.Value == null? string.Empty : field.Value.ToString(), new { @class = "form-control", @rows = 5 })
                                 }
                                 else
                                 {

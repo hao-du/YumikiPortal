@@ -25,6 +25,7 @@
             @Html.HiddenFor(model => model.ApiName)
             @Html.HiddenFor(model => model.ApiName)
             @Html.HiddenFor(model => model.FieldOrder)
+            @Html.HiddenFor(model => model.CanIndex)
         }
 
         <div class="well well-sm">
@@ -81,6 +82,16 @@
                         <span class="checkbox">
                             @Html.EditorFor(model => model.IsDisplayable)
                             @Html.LabelFor(model => model.IsDisplayable)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="form-group">
+                        <span class="checkbox">
+                            @Html.EditorFor(model => model.CanIndex)
+                            @Html.LabelFor(model => model.CanIndex)
                         </span>
                     </div>
                 </div>

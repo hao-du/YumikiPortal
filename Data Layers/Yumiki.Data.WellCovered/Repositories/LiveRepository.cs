@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
+using Yumiki.Entity.Base;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Repositories
@@ -160,8 +161,8 @@ namespace Yumiki.Data.WellCovered.Repositories
         private void RebuildIndex(TB_Object obj)
         {
             //Remove all records belong to table need to be rebuilt.
-            Context.TB_LiveIndex.RemoveRange(Context.TB_LiveIndex.Where(c => c.ObjectID == obj.ID).ToList());
-
+            Context.TB_Index.RemoveRange(Context.TB_Index.Where(c => c.ObjectID == obj.ID).ToList());
+            
             StringBuilder displayContents = new StringBuilder();
             StringBuilder fullTextIndex = new StringBuilder();
             fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
@@ -178,14 +179,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 {
                     object value = row[field.DisplayName];
 
-                    if (field.IsDisplayable)
-                    {
-                        displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
-                    }
-                    if (field.CanIndex)
-                    {
-                        fullTextIndex.AppendFormat("{0} ", value);
-                    }
+                    PrepareIndex(fullTextIndex, displayContents, field.DisplayName, field.FieldType, value, field.IsDisplayable, field.CanIndex);
 
                     if (field.ApiName == CommonProperties.IsActive)
                     {
@@ -511,14 +505,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                 pamameters.Add(PrepareParameter(field, value));
 
-                if (field.IsDisplayable)
-                {
-                    displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
-                }
-                if (field.CanIndex)
-                {
-                    fullTextIndex.AppendFormat("{0} ", value);
-                }
+                PrepareIndex(fullTextIndex, displayContents, field.DisplayName, field.FieldType, value, field.IsDisplayable, field.CanIndex);
 
                 if (field.ApiName == CommonProperties.IsActive)
                 {
@@ -566,14 +553,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                 pamameters.Add(PrepareParameter(field, value));
 
-                if (field.IsDisplayable)
-                {
-                    displayContents.AppendFormat("{0}:{1} - ", field.DisplayName, value);
-                }
-                if (field.CanIndex)
-                {
-                    fullTextIndex.AppendFormat("{0} ", value);
-                }
+                PrepareIndex(fullTextIndex, displayContents, field.DisplayName, field.FieldType, value, field.IsDisplayable, field.CanIndex);
             }
 
             sqlWhereBuilder.AppendFormat(" WHERE [{0}] = @{1} ", CommonProperties.ID, CommonProperties.ID);
@@ -585,19 +565,70 @@ namespace Yumiki.Data.WellCovered.Repositories
         }
 
         /// <summary>
+        /// Prepare index and contents to insert to LiveIndex table.
+        /// </summary>
+        private void PrepareIndex(StringBuilder fullTextIndex, StringBuilder displayContents, string fieldName, EN_DataType fieldType ,object value, bool isDisplayable, bool canIndex)
+        {
+            string valueAsString = string.Empty;
+            switch (fieldType)
+            {
+                case EN_DataType.E_INT:
+                case EN_DataType.E_BOOL:
+                    valueAsString = value.ToString();
+                    break;
+                case EN_DataType.E_STRING:
+                case EN_DataType.E_DATASOURCE:
+                    valueAsString = value as string;
+                    break;
+                case EN_DataType.E_DATE:
+                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDate);
+                    break;
+                case EN_DataType.E_DATETIME:
+                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDateTime2); 
+                    break;
+                case EN_DataType.E_TIME:
+                    valueAsString = (new DateTime(((TimeSpan)value).Ticks).ToString(Formats.DateTime.Hour));
+                    break;
+                case EN_DataType.E_DECIMAL:
+                    valueAsString = ((decimal)value).ToString(Formats.Number.Decimal);
+                    break;
+                default:
+                    break;
+            }
+
+            if (isDisplayable)
+            {
+                displayContents.AppendFormat("{0}:{1} - ", fieldName, valueAsString);
+            }
+            if (canIndex)
+            {
+                fullTextIndex.AppendFormat("{0} ", valueAsString);
+            }
+        }
+
+        /// <summary>
         /// Save index for full text search
         /// </summary>
         private void SaveIndex(TB_Object obj, Guid liveID, string fullTextIndex, string displayContents, bool saveImmediately = false)
         {
             //Modify field in Index
-            TB_LiveIndex liveIndex = Context.TB_LiveIndex.SingleOrDefault(c => c.LiveID == liveID);
+            TB_Index liveIndex = null;
+
+            //In RebuildIndex(), if existing record state is delete, create new record.
+            if(!context.ChangeTracker.Entries()
+                                    .Where(c=>c.State == System.Data.Entity.EntityState.Deleted)
+                                    .Select(c=> (TB_Index)c.Entity)
+                                    .Any(c=>c.LiveID == liveID))
+            {
+                liveIndex = Context.TB_Index.SingleOrDefault(c => c.LiveID == liveID);
+            }
 
             if (liveIndex == null)
             {
                 if (!string.IsNullOrWhiteSpace(fullTextIndex))
                 {   
                     //Add field to Index
-                    liveIndex = new TB_LiveIndex()
+                    liveIndex = new TB_Index()
                     {
                         LiveID = liveID,
                         ObjectID = obj.ID,
@@ -607,14 +638,14 @@ namespace Yumiki.Data.WellCovered.Repositories
                         UserID = obj.UserID
                     };
 
-                    Context.TB_LiveIndex.Add(liveIndex);
+                    Context.TB_Index.Add(liveIndex);
                 }
             }
             else
             {
                 if (string.IsNullOrWhiteSpace(fullTextIndex))
                 {
-                    Context.TB_LiveIndex.Remove(liveIndex);
+                    Context.TB_Index.Remove(liveIndex);
                 }
                 else
                 {
@@ -636,7 +667,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         {
             SqlParameter parameter = new SqlParameter();
             parameter.ParameterName = string.Format("@{0}", field.ApiName);
-            parameter.Value = value;
+            parameter.Value = value?? DBNull.Value;
 
             switch (field.FieldType)
             {

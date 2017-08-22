@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yumiki.Entity.WellCovered
 {
-    public partial class TB_LiveIndex
+    public partial class TB_Index
     {
         public string Rank { get; set; }
 

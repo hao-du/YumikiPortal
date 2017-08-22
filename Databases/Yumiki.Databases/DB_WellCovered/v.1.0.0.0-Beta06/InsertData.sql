@@ -14,9 +14,6 @@ ALTER TABLE [TB_Field]
 ALTER TABLE [TB_Field]
 	ADD [CanIndex] BIT
 
-ALTER TABLE [TB_Field]
-	ADD [Analyzer] INT
-
 GO
 
 UPDATE [TB_Field]
@@ -36,3 +33,37 @@ ALTER TABLE [TB_Field]
 	ALTER COLUMN CanIndex BIT NOT NULL
 
 GO
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE [dbo].[TB_Index](
+	[ID] [uniqueidentifier] NOT NULL,
+	[AppID] [uniqueidentifier] NULL,
+	[ObjectID] [uniqueidentifier] NOT NULL,
+	[LiveID] [uniqueidentifier] NOT NULL,
+	[FullTextIndex] [ntext] NOT NULL,
+	[DisplayContents] [ntext] NULL,
+	[UserID] [uniqueidentifier] NOT NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_Index] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+/****** Object:  FullTextCatalog [FTS_WellCovered]    Script Date: 8/22/2017 9:57:02 PM ******/
+CREATE FULLTEXT CATALOG [FTS_WellCovered]WITH ACCENT_SENSITIVITY = ON
+GO
+ 
+CREATE FULLTEXT INDEX ON [dbo].[TB_Index]  
+(   
+  [FullTextIndex] Language 1033     
+)   
+  KEY INDEX [PK_TB_Index] ON [FTS_WellCovered];   
+GO  

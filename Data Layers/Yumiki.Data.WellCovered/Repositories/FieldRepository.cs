@@ -65,7 +65,6 @@ namespace Yumiki.Data.WellCovered.Repositories
                 dbField.IsDisplayable = field.IsDisplayable;
                 dbField.FieldOrder = field.FieldOrder;
                 dbField.CanIndex = field.CanIndex;
-                dbField.Analyzer = field.Analyzer;
 
                 dbField.FieldType = field.FieldType;
                 dbField.IsRequired = field.IsRequired;

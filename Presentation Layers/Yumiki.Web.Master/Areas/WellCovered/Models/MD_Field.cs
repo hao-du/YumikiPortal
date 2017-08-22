@@ -168,6 +168,19 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Is Seachable")]
+        public bool CanIndex
+        {
+            get
+            {
+                return _interalItem.CanIndex;
+            }
+            set
+            {
+                _interalItem.CanIndex = value;
+            }
+        }
+
         public bool IsSystemField
         {
             get
