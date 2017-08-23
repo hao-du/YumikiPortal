@@ -29,6 +29,7 @@
         .Add("~/third-party-clients/scripts/angular-ui-bootstrap.min.js")
         .Add("~/third-party-clients/scripts/moment.min.js")
         .Add("~/third-party-clients/scripts/bootstrap-datetimepicker.min.js")
+        .Add("~/third-party-clients/scripts/jquery.mark.min.js")
         .Add("~/clients/scripts/yumiki.js")
         .Add("~/clients/scripts/yumiki-webform.js")
         .Add("~/clients/scripts/yumiki-angular.js")

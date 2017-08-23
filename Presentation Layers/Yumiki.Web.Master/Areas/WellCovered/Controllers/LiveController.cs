@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Yumiki.Business.WellCovered.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Settings;
 using Yumiki.Entity.WellCovered;
 using Yumiki.Web.Base;
 using Yumiki.Web.WellCovered.Models;
@@ -45,7 +46,7 @@ namespace Yumiki.Web.WellCovered.Controllers
             IEnumerable<MD_Index> indexes = new List<MD_Index>();
             try
             {
-                indexes = BusinessService.Search(keywords).Select(c => new MD_Index(c));
+                indexes = BusinessService.Search(keywords, CurrentUser.UserID.ToString()).Select(c => new MD_Index(c));
             }
             catch (Exception ex)
             {

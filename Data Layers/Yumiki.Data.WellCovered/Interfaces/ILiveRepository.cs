@@ -18,7 +18,7 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        IEnumerable<TB_Index> Search(string keywords);
+        IEnumerable<TB_Index> Search(string keywords, Guid userID);
 
         /// <summary>
         /// Get fields from ObjectID

@@ -66,4 +66,4 @@ CREATE FULLTEXT INDEX ON [dbo].[TB_Index]
   [FullTextIndex] Language 1033     
 )   
   KEY INDEX [PK_TB_Index] ON [FTS_WellCovered];   
-GO  
+GO 

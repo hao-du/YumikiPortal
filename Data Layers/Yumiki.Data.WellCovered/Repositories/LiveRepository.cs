@@ -163,13 +163,6 @@ namespace Yumiki.Data.WellCovered.Repositories
             //Remove all records belong to table need to be rebuilt.
             Context.TB_Index.RemoveRange(Context.TB_Index.Where(c => c.ObjectID == obj.ID).ToList());
 
-            StringBuilder displayContents = new StringBuilder();
-            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1} - ", obj.DisplayName, obj.AppName);
-
-            StringBuilder fullTextIndex = new StringBuilder();
-            fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
-            fullTextIndex.AppendFormat("{0} ", obj.AppName);
-
             MD_Live live = FetchViewObjectData(obj.ID, true);
 
             bool isActive = false;
@@ -177,6 +170,13 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             foreach (DataRow row in live.Datasource)
             {
+                StringBuilder displayContents = new StringBuilder();
+                displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
+
+                StringBuilder fullTextIndex = new StringBuilder();
+                fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
+                fullTextIndex.AppendFormat("{0} ", obj.AppName);
+
                 foreach (TB_Field field in fields)
                 {
                     object value = row[field.DisplayName];
@@ -322,9 +322,9 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        public IEnumerable<TB_Index> Search(string keywords)
+        public IEnumerable<TB_Index> Search(string keywords, Guid userID)
         {
-            return Context.TB_Index.SqlQuery("PROC_PerformSearch", keywords).ToList();
+            return Context.TB_Index.SqlQuery("PROC_PerformSearch @keywords, @userID", new SqlParameter("@keywords", keywords), new SqlParameter("@userID", userID)).ToList();
         }
 
         /// <summary>
@@ -522,7 +522,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
 
             StringBuilder displayContents = new StringBuilder();
-            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1} - ", obj.DisplayName, obj.AppName);
+            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
 
             StringBuilder fullTextIndex = new StringBuilder();
             fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
@@ -564,7 +564,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             //For Full Text Search
             StringBuilder displayContents = new StringBuilder();
-            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1} - ", obj.DisplayName, obj.AppName);
+            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
 
             StringBuilder fullTextIndex = new StringBuilder();
             fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);

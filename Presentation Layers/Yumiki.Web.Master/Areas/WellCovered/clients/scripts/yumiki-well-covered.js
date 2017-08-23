@@ -40,13 +40,21 @@
             }
         },
 
-        initSearchEvent: function (searchBoxName, searchButtonName) {
+        initSearchEvent: function (searchBoxName, searchButtonName, formName) {
+            $(".y-search-item").mark(
+                $('#' + searchBoxName).val(),
+                {
+                    separateWordSearch: true,
+                    diacritics : true
+                }
+            );
+
             $('#' + searchBoxName)
             .on({
                 'keypress': function (e) {
                     if (e.which == 13) {
                         if ($('#' + searchBoxName).val()) {
-                            yumiki.wellCovered.onListSubmit(searchButtonName);
+                            yumiki.wellCovered.onListSubmit(formName);
                         }
                     }
                 }
@@ -58,7 +66,7 @@
 
             $('#' + searchButtonName).click(function () {
                 if ($('#' + searchBoxName).val()) {
-                    yumiki.wellCovered.onListSubmit(searchButtonName);
+                    yumiki.wellCovered.onListSubmit(formName);
                 }
             });
         }

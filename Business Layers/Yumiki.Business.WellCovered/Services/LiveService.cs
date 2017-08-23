@@ -21,14 +21,21 @@ namespace Yumiki.Business.WellCovered.Services
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        public IEnumerable<TB_Index> Search(string keywords)
+        public IEnumerable<TB_Index> Search(string keywords, string userID)
         {
+            Guid convertedUserID = Guid.Empty;
+            Guid.TryParse(userID, out convertedUserID);
+            if (convertedUserID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
+            }
+
             if (string.IsNullOrWhiteSpace(keywords))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Keywords must not be empty.", Logger);
             }
 
-            return Repository.Search(keywords);
+            return Repository.Search(keywords, convertedUserID);
         }
 
         /// <summary>

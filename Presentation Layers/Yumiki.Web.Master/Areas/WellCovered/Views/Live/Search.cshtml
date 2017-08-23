@@ -3,38 +3,59 @@
 @{
     ViewBag.Title = "Search";
 }
+<style type="text/css">
+    mark {
+        background-color: yellow;
+        border-radius: 10px;
+    }
+</style>
 <div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="row">
         <div class="col-md-6">
-            @using (Html.BeginForm("Search", "Live", FormMethod.Get))
+            @using (Html.BeginForm("Search", "Live", FormMethod.Get, new { id = "frmLiveSearch" }))
             {
                 <div class="input-group">
                     @Html.TextBox("keywords", null, new { placeholder = "Search for...", @class = "form-control", id = "txtSearchBox" })
                     <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" id="btnSearch">Search</a>
+                        <button type="button" class="btn btn-default" id="btnSearch">Search</button>
                     </span>
                 </div>
             }
         </div>
     </div>
-    <div class="row">
-        @foreach (var item in Model)
+    @if (Model != null)
+    {
+        <hr />
+        <div class="row">
+            @foreach (var item in Model)
             {
-            <div class="col-md-8">
-               <div>
-                   @Html.DisplayFor(modelItem => item.DisplayContents)
-               </div>
-            </div>
+                <div class="col-md-8">
+                    <div class="y-search-item">
+                        @Html.Raw(item.DisplayContents)
+                    </div>
+                    <div>
+                        @Html.ActionLink("Go to Object List...", "List", "Live", new { objectID = item.ObjectID, active = true }, new { target = "_blank" })
+                        @Html.ActionLink("View details...", "Edit", "Live", new { objectID = item.ObjectID, recordID = item.LiveID }, new { target = "_blank" })
+                    </div>
+                    <hr />
+                </div>
+            }
+        </div>
+        if (Model.Count() == 0)
+        {
+            <i>
+                @Html.Raw("No results found.")
+            </i>
         }
-    </div>
+    }
 </div>
 @section Script{
     @Html.Partial("_WellCoveredInclude")
 
     <script type="text/javascript">
         $(document).ready(function () {
-            yumiki.wellCovered.initSearchEvent('txtSearchBox', 'btnSearch');
+            yumiki.wellCovered.initSearchEvent('txtSearchBox', 'btnSearch', 'frmLiveSearch');
         });
     </script>
 }

@@ -22,6 +22,14 @@ namespace Yumiki.Web.WellCovered.Models
             _internalItem = index;
         }
 
+        public Guid ObjectID
+        {
+            get
+            {
+                return _internalItem.ObjectID;
+            }
+        }
+
         public Guid LiveID
         {
             get
