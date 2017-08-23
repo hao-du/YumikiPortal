@@ -45,7 +45,9 @@
                 $('#' + searchBoxName).val(),
                 {
                     separateWordSearch: true,
-                    diacritics : true
+                    diacritics: true,
+                    accuracy: "complementary",
+                    wildcards: "enabled"
                 }
             );
 
