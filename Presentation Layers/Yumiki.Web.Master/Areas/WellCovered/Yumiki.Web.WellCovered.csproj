@@ -113,6 +113,7 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\LiveController.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
+    <Compile Include="Models\MD_Index.cs" />
     <Compile Include="Models\MD_App.cs" />
     <Compile Include="Models\MD_Field.cs" />
     <Compile Include="Models\MD_Object.cs" />
@@ -181,6 +182,7 @@
     <Content Include="Views\Live\Create.cshtml" />
     <Content Include="Views\Live\Edit.cshtml" />
     <Content Include="Views\Shared\_WellCoveredInclude.cshtml" />
+    <Content Include="Views\Live\Search.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

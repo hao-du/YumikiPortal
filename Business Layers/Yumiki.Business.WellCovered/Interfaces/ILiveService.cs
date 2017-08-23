@@ -8,6 +8,13 @@ namespace Yumiki.Business.WellCovered.Interfaces
     public interface ILiveService
     {
         /// <summary>
+        /// Perform Full text search for all content.
+        /// </summary>
+        /// <param name="keywords">Search keywords like google.</param>
+        /// <returns>List of search result in TB_Index format.</returns>
+        IEnumerable<TB_Index> Search(string keywords);
+
+        /// <summary>
         /// Get fields from ObjectID
         /// </summary>
         IEnumerable<TB_Field> GetFields(string objectID);

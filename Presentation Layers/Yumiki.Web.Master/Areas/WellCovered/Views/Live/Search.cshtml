@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Index>
+
+@{
+    ViewBag.Title = "Search";
+}
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Search", "Live", FormMethod.Get))
+            {
+                <div class="input-group">
+                    @Html.TextBox("keywords", null, new { placeholder = "Search for...", @class = "form-control", id = "txtSearchBox" })
+                    <span class="input-group-btn">
+                        <a href="#" class="btn btn-default" id="btnSearch">Search</a>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var item in Model)
+            {
+            <div class="col-md-8">
+               <div>
+                   @Html.DisplayFor(modelItem => item.DisplayContents)
+               </div>
+            </div>
+        }
+    </div>
+</div>
+@section Script{
+    @Html.Partial("_WellCoveredInclude")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            yumiki.wellCovered.initSearchEvent('txtSearchBox', 'btnSearch');
+        });
+    </script>
+}

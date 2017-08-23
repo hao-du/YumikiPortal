@@ -35,6 +35,26 @@ namespace Yumiki.Web.WellCovered.Controllers
             return View(live);
         }
 
+        public ActionResult Search(string keywords)
+        {
+            if (string.IsNullOrWhiteSpace(keywords))
+            {
+                return View();
+            }
+
+            IEnumerable<MD_Index> indexes = new List<MD_Index>();
+            try
+            {
+                indexes = BusinessService.Search(keywords).Select(c => new MD_Index(c));
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return View(indexes);
+        }
+
         // GET: App/Create
         public ActionResult Create(string objectID)
         {

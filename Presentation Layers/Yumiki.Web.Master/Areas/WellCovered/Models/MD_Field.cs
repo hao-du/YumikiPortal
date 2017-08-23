@@ -14,12 +14,12 @@ namespace Yumiki.Web.WellCovered.Models
     {
         public MD_Field()
         {
-            this._interalItem = new TB_Field();
+            this._internalItem = new TB_Field();
         }
 
         public MD_Field(TB_Field field)
         {
-            _interalItem = field;
+            _internalItem = field;
         }
 
         [Display(Name = "Field Name")]
@@ -28,11 +28,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.FieldName;
+                return _internalItem.FieldName;
             }
             set
             {
-                _interalItem.FieldName = value;
+                _internalItem.FieldName = value;
             }
         }
 
@@ -42,11 +42,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.DisplayName;
+                return _internalItem.DisplayName;
             }
             set
             {
-                _interalItem.DisplayName = value;
+                _internalItem.DisplayName = value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.ApiName;
+                return _internalItem.ApiName;
             }
             set
             {
-                _interalItem.ApiName = value;
+                _internalItem.ApiName = value;
             }
         }
 
@@ -68,11 +68,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.ObjectID;
+                return _internalItem.ObjectID;
             }
             set
             {
-                _interalItem.ObjectID = value;
+                _internalItem.ObjectID = value;
             }
         }
 
@@ -80,11 +80,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.Object;
+                return _internalItem.Object;
             }
             set
             {
-                _interalItem.Object = value;
+                _internalItem.Object = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.FieldType;
+                return _internalItem.FieldType;
             }
             set
             {
-                _interalItem.FieldType = value;
+                _internalItem.FieldType = value;
             }
         }
 
@@ -108,11 +108,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.FieldLength;
+                return _internalItem.FieldLength;
             }
             set
             {
-                _interalItem.FieldLength = value;
+                _internalItem.FieldLength = value;
             }
         }
 
@@ -121,11 +121,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.IsRequired;
+                return _internalItem.IsRequired;
             }
             set
             {
-                _interalItem.IsRequired = value;
+                _internalItem.IsRequired = value;
             }
         }
         
@@ -134,11 +134,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.Datasource;
+                return _internalItem.Datasource;
             }
             set
             {
-                _interalItem.Datasource = value;
+                _internalItem.Datasource = value;
             }
         }
 
@@ -147,11 +147,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.FieldOrder;
+                return _internalItem.FieldOrder;
             }
             set
             {
-                _interalItem.FieldOrder = value;
+                _internalItem.FieldOrder = value;
             }
         }
 
@@ -160,11 +160,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.IsDisplayable;
+                return _internalItem.IsDisplayable;
             }
             set
             {
-                _interalItem.IsDisplayable = value;
+                _internalItem.IsDisplayable = value;
             }
         }
 
@@ -173,11 +173,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.CanIndex;
+                return _internalItem.CanIndex;
             }
             set
             {
-                _interalItem.CanIndex = value;
+                _internalItem.CanIndex = value;
             }
         }
 
@@ -185,7 +185,7 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.IsSystemField;
+                return _internalItem.IsSystemField;
             }
         }
 
@@ -193,11 +193,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.Value;
+                return _internalItem.Value;
             }
             set
             {
-                _interalItem.Value = value;
+                _internalItem.Value = value;
             }
         }
 
@@ -205,14 +205,14 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.LastUpdateDateUI;
+                return _internalItem.LastUpdateDateUI;
             }
         }
 
 
         public override TB_Field ToObject()
         {
-            _interalItem.UserID = CurrentUser.UserID;
+            _internalItem.UserID = CurrentUser.UserID;
 
             return base.ToObject();
         }

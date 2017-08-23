@@ -14,12 +14,12 @@ namespace Yumiki.Web.WellCovered.Models
     {
         public MD_App()
         {
-            this._interalItem = new TB_App();
+            this._internalItem = new TB_App();
         }
 
         public MD_App(TB_App app)
         {
-            _interalItem = app;
+            _internalItem = app;
         }
 
         [Display(Name = "Application Name")]
@@ -28,11 +28,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.AppName;
+                return _internalItem.AppName;
             }
             set
             {
-                _interalItem.AppName = value;
+                _internalItem.AppName = value;
             }
         }
 
@@ -41,11 +41,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.IsShareable;
+                return _internalItem.IsShareable;
             }
             set
             {
-                _interalItem.IsShareable = value;
+                _internalItem.IsShareable = value;
             }
         }
 
@@ -53,14 +53,14 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.LastUpdateDateUI;
+                return _internalItem.LastUpdateDateUI;
             }
         }
 
 
         public override TB_App ToObject()
         {
-            _interalItem.UserID = CurrentUser.UserID;
+            _internalItem.UserID = CurrentUser.UserID;
 
             return base.ToObject();
         }

@@ -17,6 +17,21 @@ namespace Yumiki.Business.WellCovered.Services
     public class LiveService : BaseService<ILiveRepository>, ILiveService
     {
         /// <summary>
+        /// Perform Full text search for all content.
+        /// </summary>
+        /// <param name="keywords">Search keywords like google.</param>
+        /// <returns>List of search result in TB_Index format.</returns>
+        public IEnumerable<TB_Index> Search(string keywords)
+        {
+            if (string.IsNullOrWhiteSpace(keywords))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Keywords must not be empty.", Logger);
+            }
+
+            return Repository.Search(keywords);
+        }
+
+        /// <summary>
         /// Get fields from ObjectID
         /// </summary>
         public IEnumerable<TB_Field> GetFields(string objectID)

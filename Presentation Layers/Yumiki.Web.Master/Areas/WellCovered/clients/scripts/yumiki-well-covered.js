@@ -39,5 +39,28 @@
                 });
             }
         },
+
+        initSearchEvent: function (searchBoxName, searchButtonName) {
+            $('#' + searchBoxName)
+            .on({
+                'keypress': function (e) {
+                    if (e.which == 13) {
+                        if ($('#' + searchBoxName).val()) {
+                            yumiki.wellCovered.onListSubmit(searchButtonName);
+                        }
+                    }
+                }
+                , 'focus': function () {
+                    this.selectionStart = 0;
+                    this.selectionEnd = this.value.length;
+                }
+            });
+
+            $('#' + searchButtonName).click(function () {
+                if ($('#' + searchBoxName).val()) {
+                    yumiki.wellCovered.onListSubmit(searchButtonName);
+                }
+            });
+        }
     }
 }(window, document, jQuery, yumiki));
