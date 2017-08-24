@@ -67,6 +67,7 @@
     <Compile Include="Entities\MappingValue.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Settings\SystemSettings.cs" />
     <Compile Include="Settings\YumikiConfigLoader.cs" />
     <Compile Include="Dictionaries\CommonProperties.cs" />
