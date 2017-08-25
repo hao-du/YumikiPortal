@@ -655,50 +655,54 @@ namespace Yumiki.Data.WellCovered.Repositories
         private void PrepareIndex(StringBuilder fullTextIndex, StringBuilder displayContents, TB_Field field, object value)
         {
             string valueAsString = string.Empty;
-            switch (field.FieldType)
+
+            if (value != null)
             {
-                case EN_DataType.E_INT:
-                case EN_DataType.E_BOOL:
-                    valueAsString = value.ToString();
-                    break;
-                case EN_DataType.E_STRING:
-                    valueAsString = value as string;
-                    break;
-                case EN_DataType.E_DATASOURCE:
-                    //Format: Link DisplayField=API_Field_Name>>API_Object_Name
-                    string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-
-                        string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-                        MD_Datasource dataSource = GetDataSourceByID(datasourceFormat[1], displayField, value as string);
-                        if(dataSource != null)
-                        {
-                            valueAsString = dataSource.DisplayText;
-                        }
-                    }
-                    else
-                    {
+                switch (field.FieldType)
+                {
+                    case EN_DataType.E_INT:
+                    case EN_DataType.E_BOOL:
+                        valueAsString = value.ToString();
+                        break;
+                    case EN_DataType.E_STRING:
                         valueAsString = value as string;
-                    }
-                    break;
-                case EN_DataType.E_DATE:
-                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDate);
-                    break;
-                case EN_DataType.E_DATETIME:
-                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDateTime2);
-                    break;
-                case EN_DataType.E_TIME:
-                    valueAsString = (new DateTime(((TimeSpan)value).Ticks).ToString(Formats.DateTime.Hour));
-                    break;
-                case EN_DataType.E_DECIMAL:
-                    valueAsString = ((decimal)value).ToString(Formats.Number.Decimal);
-                    break;
-                default:
-                    break;
+                        break;
+                    case EN_DataType.E_DATASOURCE:
+                        //Format: Link DisplayField=API_Field_Name>>API_Object_Name
+                        string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+                            string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+                            MD_Datasource dataSource = GetDataSourceByID(datasourceFormat[1], displayField, value as string);
+                            if (dataSource != null)
+                            {
+                                valueAsString = dataSource.DisplayText;
+                            }
+                        }
+                        else
+                        {
+                            valueAsString = value as string;
+                        }
+                        break;
+                    case EN_DataType.E_DATE:
+                        valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDate);
+                        break;
+                    case EN_DataType.E_DATETIME:
+                        valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDateTime2);
+                        break;
+                    case EN_DataType.E_TIME:
+                        valueAsString = (new DateTime(((TimeSpan)value).Ticks).ToString(Formats.DateTime.Hour));
+                        break;
+                    case EN_DataType.E_DECIMAL:
+                        valueAsString = ((decimal)value).ToString(Formats.Number.Decimal);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             if (field.IsDisplayable)
