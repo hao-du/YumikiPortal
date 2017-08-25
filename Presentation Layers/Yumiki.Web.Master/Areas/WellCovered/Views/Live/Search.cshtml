@@ -24,7 +24,7 @@
             }
         </div>
     </div>
-    @if (Model.Records != null)
+    @if (Model != null && Model.Records != null)
     {
         <hr />
         <div class="row">
@@ -48,26 +48,30 @@
                 @Html.Raw("No results found.")
             </i>
         }
-    }
-
-    <ul class="pagination">
-        @if(Model.StartPage > 1){
-            <li>
-                @Html.ActionLink("&laquo;", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { })
-            </li>
-        }
-        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        else if(Model.StartPage != Model.EndPage)
         {
-            <li class="@(i == Model.CurrentPage ? "active" : string.Empty)">
-                @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { })
-            </li>
+            <ul class="pagination">
+                @if (Model.StartPage > 1)
+                {
+                    <li>
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "glyphicon glyphicon-fast-backward" })
+                    </li>
+                }
+                @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+                {
+                    <li class="@(i == Model.CurrentPage ? "active" : string.Empty)">
+                        @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { })
+                    </li>
+                }
+                @if (Model.EndPage != Model.TotalPages)
+                {
+                    <li>
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "glyphicon glyphicon-fast-forward" })
+                    </li>
+                }
+            </ul>
         }
-        @if(Model.EndPage == Model.TotalPages){
-        <li>
-            @Html.ActionLink("&raquo;", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { })
-        </li>
-        }
-    </ul>
+    }
 </div>
 @section Script{
     @Html.Partial("_WellCoveredInclude")

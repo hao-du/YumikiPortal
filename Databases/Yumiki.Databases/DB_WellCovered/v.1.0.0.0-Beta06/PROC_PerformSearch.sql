@@ -1,7 +1,7 @@
 ﻿USE [DB_WellCovered]
 GO
 
-ALTER PROCEDURE PROC_PerformSearch
+CREATE PROCEDURE PROC_PerformSearch
 	@keywords		NVARCHAR(255),
 	@userID			UNIQUEIDENTIFIER,
 	@currentPage	INT,
@@ -52,6 +52,7 @@ BEGIN
 
 	-- Retrieve records with paging
 	SELECT		IndexTable.ID, IndexTable.AppID, IndexTable.ObjectID, IndexTable.LiveID, IndexTable.FullTextIndex, IndexTable.DisplayContents
+					, IndexTable.UserID, IndexTable.Descriptions, IndexTable.IsActive, IndexTable.CreateDate, IndexTable.LastUpdateDate
 	FROM		#TempTable IndexTable
 	ORDER BY	[Rank] DESC
 	OFFSET		@offSetRows ROWS       -- skip rows

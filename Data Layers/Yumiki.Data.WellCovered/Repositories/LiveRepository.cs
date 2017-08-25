@@ -170,7 +170,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             MD_Live live = FetchViewObjectData(obj.ID, true);
 
             bool isActive = false;
-            IEnumerable<TB_Field> fields = obj.Fields.OrderBy(c => c.FieldOrder);
+            IEnumerable<TB_Field> fields = obj.Fields.Where(c => c.IsActive).OrderBy(c => c.FieldOrder);
 
             foreach (DataRow row in live.Datasource)
             {
@@ -216,18 +216,18 @@ namespace Yumiki.Data.WellCovered.Repositories
         {
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.AppendFormat("CREATE TABLE {0} (", obj.ApiName);
-            foreach (TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsActive))
             {
                 string fieldName = field.ApiName;
                 string fieldType = EnumHelper.GetMappingValue(field.FieldType);
                 string fieldLength = GetFieldLength(field);
 
-                sqlBuilder.AppendFormat("{0} {1}{2} NULL, ", fieldName, fieldType, fieldLength);
+                sqlBuilder.AppendFormat("[{0}] {1}{2} NULL, ", fieldName, fieldType, fieldLength);
             }
 
-            sqlBuilder.AppendFormat("{0} UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, ", CommonProperties.ID);
-            sqlBuilder.AppendFormat("{0} DATETIME NOT NULL, ", CommonProperties.CreateDate);
-            sqlBuilder.AppendFormat("{0} DATETIME NULL", CommonProperties.LastUpdateDate);
+            sqlBuilder.AppendFormat("[{0}] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, ", CommonProperties.ID);
+            sqlBuilder.AppendFormat("[{0}] DATETIME NOT NULL, ", CommonProperties.CreateDate);
+            sqlBuilder.AppendFormat("[{0}] DATETIME NULL", CommonProperties.LastUpdateDate);
 
             sqlBuilder.Append(")");
 
@@ -266,8 +266,12 @@ namespace Yumiki.Data.WellCovered.Repositories
                 }
                 else
                 {
+                    if (!field.IsActive)
+                    {
+                        sqlBuilder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", obj.ApiName, fieldName);
+                    }
                     //If field type is changed
-                    if (fieldType != row.Field<string>(DataType))
+                    else if (fieldType != row.Field<string>(DataType))
                     {
                         sqlBuilder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", obj.ApiName, fieldName);
                         sqlBuilder.AppendFormat("ALTER TABLE {0} ADD {1} {2}{3} NULL;", obj.ApiName, fieldName, fieldType, fieldLength);
@@ -329,10 +333,10 @@ namespace Yumiki.Data.WellCovered.Repositories
         public GetSearchIndexResponse Search(GetSearchIndexRequest request)
         {
             GetSearchIndexResponse response = new GetSearchIndexResponse();
-
-            using (var command = context.Database.Connection.CreateCommand())
+            response.CurrentPage = request.CurrentPage;
+            using (var command = Context.Database.Connection.CreateCommand())
             {
-                command.CommandText = "EXEC PROC_PerformSearch @keywords, @userID @currentPage @pageSize";
+                command.CommandText = "PROC_PerformSearch @keywords, @userID, @currentPage, @pageSize";
                 if (command.Connection.State != ConnectionState.Open)
                 {
                     command.Connection.Open();
@@ -359,9 +363,12 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                 using (var dataReader = command.ExecuteReader())
                 {
-                    response.TotalItems = ((IObjectContextAdapter)Context).ObjectContext.Translate<int>(dataReader, "TotalCount", MergeOption.AppendOnly).First();
+                    response.TotalItems = ((IObjectContextAdapter)Context).ObjectContext.Translate<int>(dataReader).First();
 
-                    response.Records = ((IObjectContextAdapter)Context).ObjectContext.Translate<TB_Index>(dataReader, "TotalCount", MergeOption.AppendOnly);
+                    if (dataReader.NextResult())
+                    {
+                        response.Records = ((IObjectContextAdapter)Context).ObjectContext.Translate<TB_Index>(dataReader).ToList();
+                    }
                 }
 
                 PagingHelper<TB_Index>.Paging(response);
@@ -425,7 +432,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 return null;
             }
 
-            foreach (TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive))
             {
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
@@ -454,7 +461,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             int aliasUniqueID = 1;
 
-            foreach (TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive))
             {
                 bool hasDatasource = false;
                 if (field.FieldType == EN_DataType.E_DATASOURCE)
@@ -472,16 +479,16 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                             string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-                            sqlSelectBuilder.AppendFormat(" , [{0}].{1} as [{2}]", aliasUniqueID, displayField, field.DisplayName);
+                            sqlSelectBuilder.AppendFormat(" , [{0}].[{1}] as [{2}]", aliasUniqueID, displayField, field.DisplayName);
 
-                            sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS [{1}] ON [0].{2} = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
+                            sqlFromBuilder.AppendFormat(" LEFT JOIN {0} AS [{1}] ON [0].[{2}] = [{1}].ID ", datasourceFormat[1], aliasUniqueID, field.ApiName);
                         }
                     }
                 }
 
                 if (!hasDatasource)
                 {
-                    sqlSelectBuilder.AppendFormat(" ,[0].{0} as [{1}] ", field.ApiName, field.DisplayName);
+                    sqlSelectBuilder.AppendFormat(" ,[0].[{0}] as [{1}] ", field.ApiName, field.DisplayName);
                 }
 
                 aliasUniqueID++;
@@ -572,7 +579,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             fullTextIndex.AppendFormat("{0} ", obj.AppName);
 
             bool isActive = false;
-            foreach (TB_Field field in obj.Fields.OrderBy(c => c.FieldOrder))
+            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive).OrderBy(c => c.FieldOrder))
             {
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
@@ -623,7 +630,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
 
-            foreach (TB_Field field in obj.Fields)
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsActive))
             {
                 sqlSetBuilder.AppendFormat(" , [{0}] = @{1} ", field.ApiName, field.ApiName);
 
