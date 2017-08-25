@@ -64,5 +64,26 @@ namespace Yumiki.Entity.Base
                 return TotalItems / ItemsPerPage;
             }
         }
+
+        private int _pagingItemSize;
+        public int PagingItemSize
+        {
+            get
+            {
+                if (_pagingItemSize <= 0)
+                {
+                    _pagingItemSize = 10;
+                }
+                return _pagingItemSize;
+            }
+            set
+            {
+                _pagingItemSize = value;
+            }
+        }
+
+
+        public int StartPage { get; set; }
+        public int EndPage { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Data.WellCovered.Repositories;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Business.WellCovered.Services
@@ -21,21 +22,15 @@ namespace Yumiki.Business.WellCovered.Services
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        public IEnumerable<TB_Index> Search(string keywords, string userID)
+        public GetSearchIndexResponse Search(GetSearchIndexRequest request)
         {
-            Guid convertedUserID = Guid.Empty;
-            Guid.TryParse(userID, out convertedUserID);
-            if (convertedUserID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
-            }
 
-            if (string.IsNullOrWhiteSpace(keywords))
+            if (string.IsNullOrWhiteSpace(request.Keywords))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Keywords must not be empty.", Logger);
             }
 
-            return Repository.Search(keywords, convertedUserID);
+            return Repository.Search(request);
         }
 
         /// <summary>

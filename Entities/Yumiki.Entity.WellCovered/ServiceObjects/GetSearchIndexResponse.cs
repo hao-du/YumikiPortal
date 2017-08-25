@@ -10,5 +10,9 @@ namespace Yumiki.Entity.MoneyTrace.ServiceObjects
 {
     public class GetSearchIndexResponse : PagingEntity<TB_Index>
     {
+        public GetSearchIndexResponse()
+        {
+            Records = new List<TB_Index>();
+        }
     }
 }

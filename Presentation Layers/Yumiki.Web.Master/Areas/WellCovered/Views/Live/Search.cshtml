@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Index>
+﻿@model Yumiki.Entity.MoneyTrace.ServiceObjects.GetSearchIndexResponse
 
 @{
     ViewBag.Title = "Search";
@@ -24,11 +24,11 @@
             }
         </div>
     </div>
-    @if (Model != null)
+    @if (Model.Records != null)
     {
         <hr />
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var item in Model.Records)
             {
                 <div class="col-md-8">
                     <div class="y-search-item">
@@ -42,13 +42,32 @@
                 </div>
             }
         </div>
-        if (Model.Count() == 0)
+        if (Model.TotalItems == 0)
         {
             <i>
                 @Html.Raw("No results found.")
             </i>
         }
     }
+
+    <ul class="pagination">
+        @if(Model.StartPage > 1){
+            <li>
+                @Html.ActionLink("&laquo;", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { })
+            </li>
+        }
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            <li class="@(i == Model.CurrentPage ? "active" : string.Empty)">
+                @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { })
+            </li>
+        }
+        @if(Model.EndPage == Model.TotalPages){
+        <li>
+            @Html.ActionLink("&raquo;", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { })
+        </li>
+        }
+    </ul>
 </div>
 @section Script{
     @Html.Partial("_WellCoveredInclude")

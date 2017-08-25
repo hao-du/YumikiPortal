@@ -8,7 +8,7 @@ using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Entity.MoneyTrace.ServiceObjects
 {
-    public class GetSearchIndexRequest<T> : PagingEntity<TB_Index>
+    public class GetSearchIndexRequest : PagingEntity<TB_Index>
     {
         public string Keywords { get; set; }
         public Guid UserID { get; set; }

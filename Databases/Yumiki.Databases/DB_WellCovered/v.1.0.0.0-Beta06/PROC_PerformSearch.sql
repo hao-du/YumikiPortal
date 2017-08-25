@@ -48,11 +48,11 @@ BEGIN
 	WHERE		TEMP.ID IS NULL
 
 	-- Retrieve total count
-	SELECT COUNT(*) As TotalCount FROM #TempTable
+	SELECT COUNT(*) As TotalCount FROM #TempTable TotalCount
 
 	-- Retrieve records with paging
-	SELECT		T.ID, T.AppID, T.ObjectID, T.LiveID, T.FullTextIndex, T.DisplayContents
-	FROM		#TempTable T
+	SELECT		IndexTable.ID, IndexTable.AppID, IndexTable.ObjectID, IndexTable.LiveID, IndexTable.FullTextIndex, IndexTable.DisplayContents
+	FROM		#TempTable IndexTable
 	ORDER BY	[Rank] DESC
 	OFFSET		@offSetRows ROWS       -- skip rows
 	FETCH NEXT	@pageSize ROWS ONLY; -- take rows

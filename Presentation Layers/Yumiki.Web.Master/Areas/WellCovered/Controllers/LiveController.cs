@@ -8,6 +8,7 @@ using Yumiki.Business.WellCovered.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Settings;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 using Yumiki.Web.Base;
 using Yumiki.Web.WellCovered.Models;
@@ -36,24 +37,36 @@ namespace Yumiki.Web.WellCovered.Controllers
             return View(live);
         }
 
-        public ActionResult Search(string keywords)
+        public ActionResult Search(string keywords, int? pageIndex)
         {
             if (string.IsNullOrWhiteSpace(keywords))
             {
                 return View();
             }
 
-            IEnumerable<MD_Index> indexes = new List<MD_Index>();
+            if (!pageIndex.HasValue)
+            {
+                pageIndex = 1;
+            }
+
+            GetSearchIndexResponse response = new GetSearchIndexResponse();
             try
             {
-                indexes = BusinessService.Search(keywords, CurrentUser.UserID.ToString()).Select(c => new MD_Index(c));
+                GetSearchIndexRequest request = new GetSearchIndexRequest()
+                {
+                    Keywords = keywords,
+                    UserID = CurrentUser.UserID,
+                    CurrentPage = pageIndex.Value
+                };
+
+                response = BusinessService.Search(request);
             }
             catch (Exception ex)
             {
                 SendError(ex);
             }
 
-            return View(indexes);
+            return View(response);
         }
 
         // GET: App/Create

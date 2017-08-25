@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Base;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Interfaces
@@ -18,7 +19,7 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        IEnumerable<TB_Index> Search(string keywords, Guid userID);
+        GetSearchIndexResponse Search(GetSearchIndexRequest request);
 
         /// <summary>
         /// Get fields from ObjectID

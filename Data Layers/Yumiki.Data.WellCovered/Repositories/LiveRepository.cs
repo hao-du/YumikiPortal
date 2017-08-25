@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -9,6 +12,7 @@ using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Entity.Base;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Repositories
@@ -322,9 +326,48 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         /// <param name="keywords">Search keywords like google.</param>
         /// <returns>List of search result in TB_Index format.</returns>
-        public IEnumerable<TB_Index> Search(string keywords, Guid userID)
+        public GetSearchIndexResponse Search(GetSearchIndexRequest request)
         {
-            return Context.TB_Index.SqlQuery("PROC_PerformSearch @keywords, @userID", new SqlParameter("@keywords", keywords), new SqlParameter("@userID", userID)).ToList();
+            GetSearchIndexResponse response = new GetSearchIndexResponse();
+
+            using (var command = context.Database.Connection.CreateCommand())
+            {
+                command.CommandText = "EXEC PROC_PerformSearch @keywords, @userID @currentPage @pageSize";
+                if (command.Connection.State != ConnectionState.Open)
+                {
+                    command.Connection.Open();
+                }
+                DbParameter paramKeyword = command.CreateParameter();
+                paramKeyword.ParameterName = "@keywords";
+                paramKeyword.Value = request.Keywords;
+                command.Parameters.Add(paramKeyword);
+
+                DbParameter paramUserID = command.CreateParameter();
+                paramUserID.ParameterName = "@userID";
+                paramUserID.Value = request.UserID;
+                command.Parameters.Add(paramUserID);
+
+                DbParameter paramCurrentPage = command.CreateParameter();
+                paramCurrentPage.ParameterName = "@currentPage";
+                paramCurrentPage.Value = request.CurrentPage;
+                command.Parameters.Add(paramCurrentPage);
+
+                DbParameter paramPageSize = command.CreateParameter();
+                paramPageSize.ParameterName = "@pageSize";
+                paramPageSize.Value = request.ItemsPerPage;
+                command.Parameters.Add(paramPageSize);
+
+                using (var dataReader = command.ExecuteReader())
+                {
+                    response.TotalItems = ((IObjectContextAdapter)Context).ObjectContext.Translate<int>(dataReader, "TotalCount", MergeOption.AppendOnly).First();
+
+                    response.Records = ((IObjectContextAdapter)Context).ObjectContext.Translate<TB_Index>(dataReader, "TotalCount", MergeOption.AppendOnly);
+                }
+
+                PagingHelper<TB_Index>.Paging(response);
+
+                return response;
+            }
         }
 
         /// <summary>
