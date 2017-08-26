@@ -45,12 +45,21 @@
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control", @type = "number" })
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number", step = "0.01" })
                             </div>
                         </div>
                     </div>
