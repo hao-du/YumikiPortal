@@ -44,7 +44,7 @@
                 //Reset object in new mode.
                 $scope.resetTrace = function () {
                     $scope.exchangeTraceForm.$setPristine();
-                    return defaultObject;
+                    return angular.copy(defaultObject);
                 }
 
                 //Save new or update object

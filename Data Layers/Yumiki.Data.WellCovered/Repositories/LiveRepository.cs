@@ -266,12 +266,8 @@ namespace Yumiki.Data.WellCovered.Repositories
                 }
                 else
                 {
-                    if (!field.IsActive)
-                    {
-                        sqlBuilder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", obj.ApiName, fieldName);
-                    }
                     //If field type is changed
-                    else if (fieldType != row.Field<string>(DataType))
+                    if (fieldType != row.Field<string>(DataType))
                     {
                         sqlBuilder.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", obj.ApiName, fieldName);
                         sqlBuilder.AppendFormat("ALTER TABLE {0} ADD {1} {2}{3} NULL;", obj.ApiName, fieldName, fieldType, fieldLength);
