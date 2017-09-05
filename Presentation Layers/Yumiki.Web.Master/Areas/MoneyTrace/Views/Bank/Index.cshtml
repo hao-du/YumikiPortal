@@ -12,7 +12,6 @@
         Bundle.JavaScript()
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank.js")
-        .ForceRelease()
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
@@ -56,7 +55,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="bank in banks">
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(bank.@CommonProperties.ID);">Edit</a></td>
+                                <td><a href="#" id="btnEdit" ng-click="showDialog(bank.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                                 <td>{{ bank.@TB_Bank.FieldName.BankName }}</td>
                                 <td>{{ bank.@CommonProperties.Descriptions }}</td>
                                 <td><input type="checkbox" ng-checked="{{ bank.@TB_Bank.FieldName.IsShareable }}" disabled="disabled" /></td>

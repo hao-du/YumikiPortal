@@ -12,7 +12,7 @@
             getAllBankWithShareableItemsUrl, getAllCurrencyWithShareableItemsUrl,
             infoLogType, errorLogType, longDateFormat
         ) {
-            var app = angular.module('bankAccount', ['ui.bootstrap']);
+            var app = angular.module('bankAccount', ['ui.bootstrap', 'yumiki-module']);
 
             yumiki.moneyTrace.bankAccount.initService(app,
                 getAllBankAccountUrl, getBankAccountByIdUrl,

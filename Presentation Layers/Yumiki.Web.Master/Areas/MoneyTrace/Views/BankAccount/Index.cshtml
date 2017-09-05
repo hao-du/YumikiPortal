@@ -25,7 +25,6 @@
         Bundle.JavaScript()
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-bank-account.js")
-        .ForceRelease()
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
@@ -80,8 +79,8 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="bankAccount in bankAccounts">
-                                <td class="text-align-right ">
-                                    <a href="#" id="btnEdit" ng-click="showDialog(bankAccount.@CommonProperties.ID);">Edit</a>
+                                <td>
+                                    <a href="#" id="btnEdit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
                                 </td>
                                 <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
                                 <td>{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
@@ -123,10 +122,10 @@
 
                                 <div class="form-group">
                                     <label>Withdraw Date</label>
-                                    <div datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" class='input-group date input-datepicker' ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate">
-                                        <input id='dtpWithdrawDate' type="text" name="withdrawDate" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate" class="form-control" />
+                                    <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate">
+                                        <input type="text" name="withdrawDate" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate" class="form-control"/>
                                         <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-list-alt"></span>
+                                            <span class="fa fa-calendar"></span>
                                         </span>
                                     </div>
                                 </div>

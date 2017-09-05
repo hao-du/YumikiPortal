@@ -527,7 +527,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         private MD_Datasource GetDataSourceByID(string tableName, string displayFieldName, string recordID)
         {
-            string sql = string.Format(" SELECT ID AS {0}, {1} AS {2} FROM {3} WHERE {0} = {4} ", MD_Datasource.FieldNames.ID, displayFieldName, MD_Datasource.FieldNames.DisplayText, tableName, recordID);
+            string sql = string.Format(" SELECT ID AS {0}, {1} AS {2} FROM {3} WHERE {0} = '{4}' ", MD_Datasource.FieldNames.ID, displayFieldName, MD_Datasource.FieldNames.DisplayText, tableName, recordID);
 
             DataRow row = GetDynamicRecords(sql).AsEnumerable().FirstOrDefault();
 

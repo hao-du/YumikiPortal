@@ -18,7 +18,7 @@
                 <div class="input-group">
                     @Html.TextBox("keywords", null, new { placeholder = "Search for...", @class = "form-control", id = "txtSearchBox" })
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" id="btnSearch">Search</button>
+                        <button type="button" class="btn btn-default" id="btnSearch"><span class="fa fa-search"></span></button>
                     </span>
                 </div>
             }
@@ -36,6 +36,7 @@
                     </div>
                     <div>
                         @Html.ActionLink("Go to Object List...", "List", "Live", new { objectID = item.ObjectID, active = true }, new { target = "_blank" })
+                        <span class="yumiki-separator-vbar"></span>
                         @Html.ActionLink("View details...", "Edit", "Live", new { objectID = item.ObjectID, recordID = item.LiveID }, new { target = "_blank" })
                     </div>
                     <hr />

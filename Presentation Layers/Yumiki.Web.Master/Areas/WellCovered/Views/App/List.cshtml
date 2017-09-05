@@ -42,15 +42,20 @@
                         <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
                         </th>
-                        <th></th>
                     </tr>
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                                @Html.ActionLink(" ", "Edit", new { id = item.ID }, new { @class = "fa fa-edit" })
                                 <span class="yumiki-separator-vbar"></span>
-                                @Html.ActionLink("Objects", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { target = "_blank" })
+                                @Html.ActionLink(" ", "List", "Object", new { active = true, appID = item.ID.ToString() }, new { @class = "fa fa-database", target = "_blank" })
+                                <span class="yumiki-separator-vbar"></span>
+                                @using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()), @class = "ymk-form" }))
+                                {
+                                    @Html.Hidden(Constants.AppID, item.ID.ToString())
+                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');"><span class="fa fa-cubes"></span></a>
+                                }
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.AppName)
@@ -66,13 +71,6 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
-                            </td>
-                            <td>
-                                @using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()) }))
-                                {
-                                    @Html.Hidden(Constants.AppID, item.ID.ToString())
-                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');">Publish</a>
-                                }
                             </td>
                         </tr>
                     }

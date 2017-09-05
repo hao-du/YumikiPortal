@@ -13,23 +13,23 @@
     <asp:PlaceHolder runat="server">
         <!--3rd Libraries-->
         <%= Bundle.Css()
-        .Add("~/third-party-clients/styles/jquery-ui.min.css")
-        .Add("~/third-party-clients/styles/bootstrap.min.css")
-        .Add("~/third-party-clients/styles/bootstrap-datetimepicker.min.css")
+        .Add("~/third-party-clients/jquery-3.2.1/jquery-ui.min.css")
+        .Add("~/third-party-clients/bootstrap-3.3.7/css/bootstrap.min.css")
+        .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.css")
+        .Add("~/third-party-clients/font-awesome-4.7.0/css/font-awesome.min.css")
         .Add("~/clients/styles/site.less")
-        .ForceRelease()
         .Render("~/cache/yumiki_#.css")
         %>
 
         <%= Bundle.JavaScript()
-        .Add("~/third-party-clients/scripts/jquery.min.js")
-        .Add("~/third-party-clients/scripts/angular.min.js")
-        .Add("~/third-party-clients/scripts/jquery-ui.min.js")
-        .Add("~/third-party-clients/scripts/bootstrap.min.js")
-        .Add("~/third-party-clients/scripts/angular-ui-bootstrap.min.js")
-        .Add("~/third-party-clients/scripts/moment.min.js")
-        .Add("~/third-party-clients/scripts/bootstrap-datetimepicker.min.js")
-        .Add("~/third-party-clients/scripts/jquery.mark.min.js")
+        .Add("~/third-party-clients/jquery-3.2.1/jquery.min.js")
+        .Add("~/third-party-clients/jquery-3.2.1/jquery-ui.min.js")
+        .Add("~/third-party-clients/angular-js-1.6.5/angular.min.js")
+        .Add("~/third-party-clients/bootstrap-3.3.7/js/bootstrap.min.js")
+        .Add("~/third-party-clients/angular-ui-bootstrap-2.5.0/angular-ui-bootstrap.min.js")
+        .Add("~/third-party-clients/moment-js-2.18.1/moment.min.js")
+        .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.js")
+        .Add("~/third-party-clients/mark-js-8.9.1/jquery.mark.min.js")
         .Add("~/clients/scripts/yumiki.js")
         .Add("~/clients/scripts/yumiki-webform.js")
         .Add("~/clients/scripts/yumiki-angular.js")
@@ -38,7 +38,6 @@
         .Add("~/clients/scripts/yumiki-message.js")
         .Add("~/clients/scripts/yumiki-side-bar.js")
         .Add("~/clients/scripts/init.js")
-        .ForceRelease()
         .Render("~/cache/yumiki_#.js")
         %>
     </asp:PlaceHolder>
@@ -69,12 +68,12 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <p class="navbar-text">
-                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="fa fa-user-circle-o"></span>
                                 <asp:Literal runat="server" ID="lblUserName" Text=""></asp:Literal>
                             </p>
                         </li>
                         <li runat="server" id="liLogoutSection">
-                            <asp:LinkButton runat="server" ID="lnkLogout" Text="Log out" OnClick="lnkLogout_Click"></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="lnkLogout" Text="" OnClick="lnkLogout_Click" CssClass="fa fa-sign-out"></asp:LinkButton>
                         </li>
                     </ul>
                 </div>
@@ -93,7 +92,7 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </button>
                     <a href="#" class="navbar-btn btn pull-left" onclick="yumiki.sideBar.openNav()">
-                        <span class="glyphicon glyphicon-th-large"></span>
+                        <span class="fa fa-windows"></span>
                     </a>
                     <p class="navbar-text">
                         &nbsp;©
@@ -128,7 +127,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-body">
-                                Loading... <i class="glyphicon glyphicon-repeat gly-spin"></i>
+                                Loading... <i class="fa fa-hourglass-o gly-spin"></i>
                             </div>
                         </div>
                     </div>

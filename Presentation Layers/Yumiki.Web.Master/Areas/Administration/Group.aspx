@@ -46,7 +46,7 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <td>
-                                                    <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                                    <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                                 </td>
                                                 <td>
                                                     <asp:LinkButton ID="btnShowOtherTabs" runat="server" CssClass="btn-link" Text='<%# Eval(Yumiki.Entity.Administration.TB_Group.FieldName.GroupName) %>' OnClick="btnShowOtherTabs_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString().ToString()%>' CausesValidation="false"></asp:LinkButton>
