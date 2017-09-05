@@ -64,7 +64,7 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        MD_Live FetchViewObjectData(Guid objectID, bool isActive);
+        MD_Live FetchViewObjectData(Guid objectID, bool isActive, bool getLinkDisplayName = true);
 
         /// <summary>
         /// Fetch record from Object by ID

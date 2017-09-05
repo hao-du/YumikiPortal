@@ -167,7 +167,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             //Remove all records belong to table need to be rebuilt.
             Context.TB_Index.RemoveRange(Context.TB_Index.Where(c => c.ObjectID == obj.ID).ToList());
 
-            MD_Live live = FetchViewObjectData(obj.ID, true);
+            MD_Live live = FetchViewObjectData(obj.ID, true, false);
 
             bool isActive = false;
             IEnumerable<TB_Field> fields = obj.Fields.Where(c => c.IsActive).OrderBy(c => c.FieldOrder);
@@ -386,7 +386,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        public MD_Live FetchViewObjectData(Guid objectID, bool isActive)
+        public MD_Live FetchViewObjectData(Guid objectID, bool isActive, bool getLinkDisplayName = true)
         {
             MD_Live live = new MD_Live();
 
@@ -405,7 +405,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            live.Datasource = GetDynamicRecords(PrepareQueryStament(obj, isActive)).AsEnumerable();
+            live.Datasource = GetDynamicRecords(PrepareQueryStament(obj, isActive, getLinkDisplayName)).AsEnumerable();
 
             return live;
         }
