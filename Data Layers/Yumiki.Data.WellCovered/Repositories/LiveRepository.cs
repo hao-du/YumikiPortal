@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Commons.Dictionaries;
+using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Entity.Base;
@@ -453,7 +454,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
 
             StringBuilder sqlFromBuilder = new StringBuilder();
-            sqlFromBuilder.AppendFormat(" FROM {0} AS [0] ", obj.ApiName);
+            sqlFromBuilder.AppendFormat(" FROM [{0}] AS [0] ", obj.ApiName);
 
             int aliasUniqueID = 1;
 
@@ -470,6 +471,8 @@ namespace Yumiki.Data.WellCovered.Repositories
                         if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
                         {
                             hasDatasource = true;
+
+                            datasourceFormat[1] = GenerateObjectNameFromDatasource(datasourceFormat[1]);
 
                             string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -504,6 +507,8 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         public IEnumerable<MD_Datasource> GetDataSource(string tableName, string displayFieldName)
         {
+            tableName = GenerateObjectNameFromDatasource(tableName);
+
             string sql = string.Format(" SELECT ID AS {0}, {1} AS {2} FROM {3} WHERE {4} = 1 ", MD_Datasource.FieldNames.ID, displayFieldName, MD_Datasource.FieldNames.DisplayText, tableName, CommonProperties.IsActive);
 
             EnumerableRowCollection<DataRow> rows = GetDynamicRecords(sql).AsEnumerable();
@@ -527,6 +532,8 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         private MD_Datasource GetDataSourceByID(string tableName, string displayFieldName, string recordID)
         {
+            tableName = GenerateObjectNameFromDatasource(tableName);
+
             string sql = string.Format(" SELECT ID AS {0}, {1} AS {2} FROM {3} WHERE {0} = '{4}' ", MD_Datasource.FieldNames.ID, displayFieldName, MD_Datasource.FieldNames.DisplayText, tableName, recordID);
 
             DataRow row = GetDynamicRecords(sql).AsEnumerable().FirstOrDefault();
@@ -543,6 +550,35 @@ namespace Yumiki.Data.WellCovered.Repositories
                     DisplayText = row[MD_Datasource.FieldNames.DisplayText].ToString()
                 };
             }
+        }
+
+        /// <summary>
+        /// Generate object name from Datasource
+        /// </summary>
+        /// <returns>
+        /// [DBName].[dbo].[TableName] if objectname has (.). E.g. DB_Administrator.[dbo].TB_Group
+        /// [TableName] if object is from WellCovered DB
+        /// </returns>
+        private string GenerateObjectNameFromDatasource(string objectName)
+        {
+            //In case of query datasource from table in another DB. E.g DB_Administrator.TB_group
+            if (objectName.Contains('.'))
+            {
+                string[] tableWithDatabaseName = objectName.Split('.');
+
+                if (tableWithDatabaseName.Count() > 2)
+                {
+                    throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Too many period (.) in object name", Logger);
+                }
+
+                objectName = string.Format("[{0}].[dbo].[{1}]", tableWithDatabaseName[0], tableWithDatabaseName[1]);
+            }
+            else
+            {
+                objectName = string.Format("[{0}]", objectName);
+            }
+
+            return objectName;
         }
 
         /// <summary>
