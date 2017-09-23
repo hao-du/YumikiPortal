@@ -79,7 +79,7 @@
                     @if (!string.IsNullOrWhiteSpace(@ViewBag.UserName))
                     {
                         <li>
-                            @Html.ActionLink(" ", "Logout", "Home", new { area = "" }, new { @class= "fa fa-sign-out" })
+                            @Html.ActionLink(" ", "Logout", "Home", new { area = "" }, new { @class= "fa fa-sign-out", title="Log Out" })
                         </li>
                     }
                 </ul>

@@ -55,7 +55,7 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <td>
-                                                    <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                                    <asp:LinkButton ID="btnEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                                 </td>
                                                 <td>
                                                     <asp:Literal runat="server" ID="lblUserName" Text='<%# Eval("UserLoginName") %>'></asp:Literal>
@@ -165,17 +165,20 @@
                                                             <table class="table table-striped table-bordered">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th></th>
                                                                         <th>Contact Detail</th>
                                                                         <th>Primary Contact</th>
                                                                         <th>Descriptions</th>
                                                                         <th>Modify Date</th>
-                                                                        <th></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <tr>
+                                                            <td>
+                                                                <asp:LinkButton ID="btAddressEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" OnClick="btnEditContact_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                                            </td>
                                                             <td>
                                                                 <asp:Literal runat="server" Text='<%# Eval("UserAddress") %>'></asp:Literal>
                                                             </td>
@@ -187,9 +190,6 @@
                                                             </td>
                                                             <td>
                                                                 <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                                            </td>
-                                                            <td>
-                                                                <asp:LinkButton ID="btAddressEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEditContact_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>

@@ -80,7 +80,7 @@
                         <tbody>
                             <tr ng-repeat="bankAccount in bankAccounts">
                                 <td>
-                                    <a href="#" id="btnEdit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                                    <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
                                 </td>
                                 <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
                                 <td>{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>

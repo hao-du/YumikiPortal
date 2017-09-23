@@ -57,7 +57,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="currency in currencyList">
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                                <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(currency.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>

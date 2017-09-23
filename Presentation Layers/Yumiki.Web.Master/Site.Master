@@ -73,7 +73,7 @@
                             </p>
                         </li>
                         <li runat="server" id="liLogoutSection">
-                            <asp:LinkButton runat="server" ID="lnkLogout" Text="" OnClick="lnkLogout_Click" CssClass="fa fa-sign-out"></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="lnkLogout" Text="" OnClick="lnkLogout_Click" ToolTip="Log Out" CssClass="fa fa-sign-out"></asp:LinkButton>
                         </li>
                     </ul>
                 </div>

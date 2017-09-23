@@ -96,7 +96,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="trace in traceList" ng-class="{'table-alternative-row' : trace.@TB_Trace.FieldName.IsLogTrace}">
-                                    <td><a href="#" id="btnEdit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace"><span class="fa fa-edit"></span></a></td>
+                                    <td><a href="#" id="btnEdit" title="Edit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace"><span class="fa fa-edit"></span></a></td>
                                     <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
                                     <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
                                     <td class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>

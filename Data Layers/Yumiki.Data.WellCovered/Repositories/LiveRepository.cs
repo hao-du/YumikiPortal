@@ -428,7 +428,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 return null;
             }
 
-            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive))
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsActive))
             {
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
@@ -457,7 +457,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             int aliasUniqueID = 1;
 
-            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive))
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsActive))
             {
                 bool hasDatasource = false;
                 if (field.FieldType == EN_DataType.E_DATASOURCE)
@@ -531,7 +531,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             DataRow row = GetDynamicRecords(sql).AsEnumerable().FirstOrDefault();
 
-            if(row == null)
+            if (row == null)
             {
                 return null;
             }
@@ -575,7 +575,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             fullTextIndex.AppendFormat("{0} ", obj.AppName);
 
             bool isActive = false;
-            foreach (TB_Field field in obj.Fields.Where(c=>c.IsActive).OrderBy(c => c.FieldOrder))
+            foreach (TB_Field field in obj.Fields.Where(c => c.IsActive).OrderBy(c => c.FieldOrder))
             {
                 sqlInsertBuilder.AppendFormat(" ,[{0}] ", field.ApiName);
                 sqlValueBuilder.AppendFormat(" ,@{0} ", field.ApiName);
@@ -650,55 +650,57 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         private void PrepareIndex(StringBuilder fullTextIndex, StringBuilder displayContents, TB_Field field, object value)
         {
+            if (value == null || value == System.DBNull.Value)
+            {
+                return;
+            }
+
             string valueAsString = string.Empty;
 
-            if (value != null)
+            switch (field.FieldType)
             {
-                switch (field.FieldType)
-                {
-                    case EN_DataType.E_INT:
-                    case EN_DataType.E_BOOL:
-                        valueAsString = value.ToString();
-                        break;
-                    case EN_DataType.E_STRING:
+                case EN_DataType.E_INT:
+                case EN_DataType.E_BOOL:
+                    valueAsString = value.ToString();
+                    break;
+                case EN_DataType.E_STRING:
+                    valueAsString = value as string;
+                    break;
+                case EN_DataType.E_DATASOURCE:
+                    //Format: Link DisplayField=API_Field_Name>>API_Object_Name
+                    string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+
+                        MD_Datasource dataSource = GetDataSourceByID(datasourceFormat[1], displayField, value as string);
+                        if (dataSource != null)
+                        {
+                            valueAsString = dataSource.DisplayText;
+                        }
+                    }
+                    else
+                    {
                         valueAsString = value as string;
-                        break;
-                    case EN_DataType.E_DATASOURCE:
-                        //Format: Link DisplayField=API_Field_Name>>API_Object_Name
-                        string[] datasourceFormat = field.Datasource.Split(new string[] { ">>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                        if (datasourceFormat[0].StartsWith("Link", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            string[] parameters = datasourceFormat[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-
-                            string displayField = parameters[1].Split(new string[] { "DisplayField=" }, StringSplitOptions.RemoveEmptyEntries)[0];
-
-                            MD_Datasource dataSource = GetDataSourceByID(datasourceFormat[1], displayField, value as string);
-                            if (dataSource != null)
-                            {
-                                valueAsString = dataSource.DisplayText;
-                            }
-                        }
-                        else
-                        {
-                            valueAsString = value as string;
-                        }
-                        break;
-                    case EN_DataType.E_DATE:
-                        valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDate);
-                        break;
-                    case EN_DataType.E_DATETIME:
-                        valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDateTime2);
-                        break;
-                    case EN_DataType.E_TIME:
-                        valueAsString = (new DateTime(((TimeSpan)value).Ticks).ToString(Formats.DateTime.Hour));
-                        break;
-                    case EN_DataType.E_DECIMAL:
-                        valueAsString = ((decimal)value).ToString(Formats.Number.Decimal);
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                    break;
+                case EN_DataType.E_DATE:
+                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDate);
+                    break;
+                case EN_DataType.E_DATETIME:
+                    valueAsString = ((DateTime)value).ToString(Formats.DateTime.LongDateTime2);
+                    break;
+                case EN_DataType.E_TIME:
+                    valueAsString = (new DateTime(((TimeSpan)value).Ticks).ToString(Formats.DateTime.Hour));
+                    break;
+                case EN_DataType.E_DECIMAL:
+                    valueAsString = ((decimal)value).ToString(Formats.Number.Decimal);
+                    break;
+                default:
+                    break;
             }
 
             if (field.IsDisplayable)

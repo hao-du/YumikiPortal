@@ -40,7 +40,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.ActionLink(" ", "Edit", new { objectID = Model.ObjectID.ToString(), recordID = item[Yumiki.Commons.Dictionaries.CommonProperties.ID].ToString() }, new { @class = "fa fa-edit" })
+                                    @Html.ActionLink(" ", "Edit", new { objectID = Model.ObjectID.ToString(), recordID = item[Yumiki.Commons.Dictionaries.CommonProperties.ID].ToString() }, new { @class = "fa fa-edit", title = "Edit" })
                                 </td>
                                 @foreach (KeyValuePair<string, Yumiki.Entity.WellCovered.EN_DataType> columnName in Model.ColumnNames)
                                 {

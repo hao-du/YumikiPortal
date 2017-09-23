@@ -55,7 +55,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="bank in banks">
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(bank.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                                <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bank.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                                 <td>{{ bank.@TB_Bank.FieldName.BankName }}</td>
                                 <td>{{ bank.@CommonProperties.Descriptions }}</td>
                                 <td><input type="checkbox" ng-checked="{{ bank.@TB_Bank.FieldName.IsShareable }}" disabled="disabled" /></td>
