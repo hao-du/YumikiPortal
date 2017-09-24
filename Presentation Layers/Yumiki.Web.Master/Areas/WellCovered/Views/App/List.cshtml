@@ -56,7 +56,7 @@
                                     using (Html.BeginForm("PublishApp", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()), @class = "ymk-form" }))
                                     {
                                         @Html.Hidden(Constants.AppID, item.ID.ToString())
-                                        <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');" title="Publish All Objects"><span class="fa fa-cubes"></span></a>
+                                        <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString()) ');" title="Publish All Objects"><span class="fa fa-cloud-upload"></span></a>
                                     }
                                 }
                             </td>
