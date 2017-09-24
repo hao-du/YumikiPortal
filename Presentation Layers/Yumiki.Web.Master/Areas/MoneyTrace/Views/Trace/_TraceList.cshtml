@@ -72,7 +72,7 @@
                     <div class="input-group date" datetimepicker datetimeformat="'@Formats.DateTime.MonthYear'" ng-model="monthFilter" ng-show="!isDisplayedAll">
                         <input type="text" id="txtMonthFilter" name="traceDate" ng-model="monthFilter" class="form-control" />
                         <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-list-alt"></span>
+                            <span class="fa fa-calendar"></span>
                         </span>
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-primary" ng-click="loadData();">Go</button>
@@ -96,7 +96,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="trace in traceList" ng-class="{'table-alternative-row' : trace.@TB_Trace.FieldName.IsLogTrace}">
-                                    <td><a href="#" id="btnEdit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace">Edit</a></td>
+                                    <td><a href="#" id="btnEdit" title="Edit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace"><span class="fa fa-edit"></span></a></td>
                                     <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
                                     <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
                                     <td class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>

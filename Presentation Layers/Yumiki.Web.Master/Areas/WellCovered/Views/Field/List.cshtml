@@ -14,7 +14,7 @@
 
                 @Html.ActionLink("Add", "Create", new { objectID = ViewBag.ObjectID }, new { @class = "btn btn-primary" })
 
-                if (string.IsNullOrWhiteSpace(Request.Params["active"]) || bool.Parse(Request.Params["active"]))
+                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
                 {
                     @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = "btn btn-default" })
                 }
@@ -42,18 +42,24 @@
                             @Html.DisplayNameFor(model => model.FieldType)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.IsDisplayable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FieldOrder)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.LastUpdateDateUI)
                         </th>
                     </tr>
 
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.OrderBy(c => c.FieldOrder))
                     {
                         <tr>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID, objectID = item.ObjectID })
+                                @Html.ActionLink(" ", "Edit", new { id = item.ID, objectID = item.ObjectID }, new { @class = "fa fa-edit", title = "Edit" })
                             </td>
                             <td>
-                                @{ 
+                                @{
                                     string fieldName = string.Format("{0} - Display Name: {1}", item.FieldName, item.DisplayName);
                                 }
                                 @Html.DisplayFor(modelItem => fieldName)
@@ -79,6 +85,12 @@
                                     }
                                 }
                                 @Html.DisplayFor(modelItem => description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsDisplayable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FieldOrder)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.LastUpdateDateUI)

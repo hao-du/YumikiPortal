@@ -18,7 +18,6 @@
         .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js")
         .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js")
         .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js")
-        .ForceRelease()
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 

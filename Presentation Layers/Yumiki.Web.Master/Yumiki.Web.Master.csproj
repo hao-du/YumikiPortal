@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yumiki.Web.Master</RootNamespace>
     <AssemblyName>Yumiki.Web.Master</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -24,6 +24,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +78,7 @@
     <Reference Include="SquishIt.Less, Version=0.9.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SquishIt.Less.0.9.9\lib\SquishIt.Less.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -87,8 +90,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers">
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -122,13 +123,13 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WebActivatorEx.2.1.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
@@ -146,28 +147,31 @@
     <Content Include="clients\scripts\yumiki-menu.js" />
     <Content Include="clients\scripts\yumiki-message.js" />
     <Content Include="clients\scripts\yumiki-side-bar.js" />
-    <Content Include="third-party-clients\styles\bootstrap-datetimepicker.min.css" />
-    <Content Include="third-party-clients\styles\bootstrap-select.min.css" />
-    <Content Include="third-party-clients\styles\bootstrap.min.css" />
-    <Content Include="third-party-clients\styles\datatable.min.css" />
-    <Content Include="third-party-clients\styles\jquery-ui.min.css" />
-    <Content Include="third-party-clients\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="third-party-clients\scripts\angular.min.js" />
-    <Content Include="third-party-clients\scripts\bootstrap-datetimepicker.min.js" />
-    <Content Include="third-party-clients\scripts\bootstrap-select.min.js" />
-    <Content Include="third-party-clients\scripts\dataTables.bootstrap.js" />
-    <Content Include="third-party-clients\scripts\jquery-ui.min.js" />
-    <Content Include="third-party-clients\scripts\jquery.dataTables.js" />
-    <Content Include="third-party-clients\scripts\moment.min.js" />
     <Content Include="clients\scripts\yumiki.js" />
-    <Content Include="third-party-clients\scripts\angular-ui-bootstrap.min.js" />
     <Content Include="deployment-tool.js" />
     <Content Include="Global.asax" />
-    <Content Include="third-party-clients\scripts\bootstrap.min.js" />
     <Content Include="clients\styles\site.less" />
-    <Content Include="third-party-clients\scripts\jquery.min.js" />
     <Content Include="Pages\Security\TestLogin.aspx" />
     <Content Include="Pages\Security\Login.aspx" />
+    <Content Include="third-party-clients\angular-js-1.6.5\angular.min.js" />
+    <Content Include="third-party-clients\angular-ui-bootstrap-2.5.0\angular-ui-bootstrap.min.js" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\css\bootstrap-theme.min.css" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\css\bootstrap.min.css" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\js\bootstrap.min.js" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\js\npm.js" />
+    <Content Include="third-party-clients\bootstrap-datetimepicker-4.17.43\bootstrap-datetimepicker.min.css" />
+    <Content Include="third-party-clients\bootstrap-datetimepicker-4.17.43\bootstrap-datetimepicker.min.js" />
+    <Content Include="third-party-clients\bootstrap-select-1.12.4\bootstrap-select.min.css" />
+    <Content Include="third-party-clients\bootstrap-select-1.12.4\bootstrap-select.min.js" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="third-party-clients\jquery-3.2.1\jquery-ui.min.css" />
+    <Content Include="third-party-clients\jquery-3.2.1\jquery-ui.min.js" />
+    <Content Include="third-party-clients\jquery-3.2.1\jquery.min.js" />
+    <Content Include="third-party-clients\mark-js-8.9.1\jquery.mark.min.js" />
+    <Content Include="third-party-clients\mark-js-8.9.1\mark.min.js" />
+    <Content Include="third-party-clients\moment-js-2.18.1\moment.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -218,16 +222,21 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Areas\SampleArea\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SampleArea\Views\Sample\Index.cshtml" />
-    <Content Include="third-party-clients\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="third-party-clients\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="third-party-clients\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\Home\GetMenu.cshtml" />
     <Content Include="App_Config\Unity.config" />
     <Content Include="App_Config\Yumiki.config" />
     <Content Include="App_Config\NLog.config" />
     <Content Include="packages.config" />
-    <None Include="third-party-clients\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\ConnectionString.config" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
+    <Content Include="third-party-clients\font-awesome-4.7.0\fonts\FontAwesome.otf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

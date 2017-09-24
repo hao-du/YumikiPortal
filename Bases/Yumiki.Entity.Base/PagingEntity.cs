@@ -20,14 +20,14 @@ namespace Yumiki.Entity.Base
             get; set;
         }
 
-        private int _itemsPerPage = int.MaxValue;
+        private int _itemsPerPage = 10;
         public int ItemsPerPage
         {
             get
             {
                 if (_itemsPerPage < 0)
                 {
-                    _itemsPerPage = int.MaxValue;
+                    _itemsPerPage = 10;
                 }
                 return _itemsPerPage;
             }
@@ -61,8 +61,29 @@ namespace Yumiki.Entity.Base
         {
             get
             {
-                return TotalItems / ItemsPerPage;
+                return (TotalItems % ItemsPerPage) != 0 ? TotalItems / ItemsPerPage + 1 : TotalItems / ItemsPerPage;
             }
         }
+
+        private int _pagingItemSize = 10;
+        public int PagingItemSize
+        {
+            get
+            {
+                if (_pagingItemSize <= 0)
+                {
+                    _pagingItemSize = 10;
+                }
+                return _pagingItemSize;
+            }
+            set
+            {
+                _pagingItemSize = value;
+            }
+        }
+
+
+        public int StartPage { get; set; }
+        public int EndPage { get; set; }
     }
 }

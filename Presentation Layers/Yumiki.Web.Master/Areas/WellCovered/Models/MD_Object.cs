@@ -13,12 +13,12 @@ namespace Yumiki.Web.WellCovered.Models
     {
         public MD_Object()
         {
-            this._interalItem = new TB_Object();
+            this._internalItem = new TB_Object();
         }
 
         public MD_Object(TB_Object obj)
         {
-            _interalItem = obj;
+            _internalItem = obj;
         }
 
         [Display(Name = "Object Name")]
@@ -27,11 +27,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.ObjectName;
+                return _internalItem.ObjectName;
             }
             set
             {
-                _interalItem.ObjectName = value;
+                _internalItem.ObjectName = value;
             }
         }
 
@@ -41,11 +41,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.DisplayName;
+                return _internalItem.DisplayName;
             }
             set
             {
-                _interalItem.DisplayName = value;
+                _internalItem.DisplayName = value;
             }
         }
 
@@ -55,11 +55,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.ApiName;
+                return _internalItem.ApiName;
             }
             set
             {
-                _interalItem.ApiName = value;
+                _internalItem.ApiName = value;
             }
         }
 
@@ -67,11 +67,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.AppID;
+                return _internalItem.AppID;
             }
             set
             {
-                _interalItem.AppID = value;
+                _internalItem.AppID = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.App;
+                return _internalItem.App;
             }
             set
             {
-                _interalItem.App = value;
+                _internalItem.App = value;
             }
         }
 
@@ -92,7 +92,7 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.AppName;
+                return _internalItem.AppName;
             }
         }
 
@@ -100,14 +100,14 @@ namespace Yumiki.Web.WellCovered.Models
         {
             get
             {
-                return _interalItem.LastUpdateDateUI;
+                return _internalItem.LastUpdateDateUI;
             }
         }
 
 
         public override TB_Object ToObject()
         {
-            _interalItem.UserID = CurrentUser.UserID;
+            _internalItem.UserID = CurrentUser.UserID;
 
             return base.ToObject();
         }

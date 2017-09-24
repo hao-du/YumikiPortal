@@ -35,7 +35,7 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link fa fa-edit" ToolTip="Edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                         </td>
                                         <td>
                                             <asp:Literal runat="server" ID="lblContactTypeName" Text='<%# Eval("ContactTypeName") %>'></asp:Literal>

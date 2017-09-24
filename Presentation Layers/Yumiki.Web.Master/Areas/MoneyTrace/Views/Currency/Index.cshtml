@@ -12,7 +12,6 @@
         Bundle.JavaScript()
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
         .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-currency.js")
-        .ForceRelease()
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
@@ -58,7 +57,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="currency in currencyList">
-                                <td><a href="#" id="btnEdit" ng-click="showDialog(currency.@CommonProperties.ID);">Edit</a></td>
+                                <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(currency.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
                                 <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
                                 <td>{{ currency.@CommonProperties.Descriptions }}</td>

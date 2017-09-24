@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yumiki.Data.WellCovered</RootNamespace>
     <AssemblyName>Yumiki.Data.WellCovered</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
       <Project>{04117f61-b63a-4414-a95d-63e6288449c6}</Project>
       <Name>Yumiki.Data.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
+      <Name>Yumiki.Entity.Base</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7c58deb3-e136-4086-b9a5-44c5cb28b269}</Project>

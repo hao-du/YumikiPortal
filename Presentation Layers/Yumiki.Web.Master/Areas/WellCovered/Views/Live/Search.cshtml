@@ -1,0 +1,85 @@
+﻿@model Yumiki.Entity.MoneyTrace.ServiceObjects.GetSearchIndexResponse
+
+@{
+    ViewBag.Title = "Search";
+}
+<style type="text/css">
+    mark {
+        background-color: yellow;
+        border-radius: 10px;
+    }
+</style>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Search", "Live", FormMethod.Get, new { id = "frmLiveSearch" }))
+            {
+                <div class="input-group">
+                    @Html.TextBox("keywords", null, new { placeholder = "Search for...", @class = "form-control", id = "txtSearchBox" })
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" id="btnSearch"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+    @if (Model != null && Model.Records != null)
+    {
+        <hr />
+        <div class="row">
+            @foreach (var item in Model.Records)
+            {
+                <div class="col-md-8">
+                    <div class="y-search-item">
+                        @Html.Raw(item.DisplayContents)
+                    </div>
+                    <div>
+                        @Html.ActionLink("Go to Object List...", "List", "Live", new { objectID = item.ObjectID, active = true }, new { target = "_blank" })
+                        <span class="yumiki-separator-vbar"></span>
+                        @Html.ActionLink("View details...", "Edit", "Live", new { objectID = item.ObjectID, recordID = item.LiveID }, new { target = "_blank" })
+                    </div>
+                    <hr />
+                </div>
+            }
+        </div>
+        if (Model.TotalItems == 0)
+        {
+            <i>
+                @Html.Raw("No results found.")
+            </i>
+        }
+        else if(Model.StartPage != Model.EndPage)
+        {
+            <ul class="pagination">
+                @if (Model.StartPage > 1)
+                {
+                    <li>
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "glyphicon glyphicon-fast-backward" })
+                    </li>
+                }
+                @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+                {
+                    <li class="@(i == Model.CurrentPage ? "active" : string.Empty)">
+                        @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { })
+                    </li>
+                }
+                @if (Model.EndPage != Model.TotalPages)
+                {
+                    <li>
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "glyphicon glyphicon-fast-forward" })
+                    </li>
+                }
+            </ul>
+        }
+    }
+</div>
+@section Script{
+    @Html.Partial("_WellCoveredInclude")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            yumiki.wellCovered.initSearchEvent('txtSearchBox', 'btnSearch', 'frmLiveSearch');
+        });
+    </script>
+}

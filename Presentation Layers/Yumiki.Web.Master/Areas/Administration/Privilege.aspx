@@ -45,7 +45,7 @@
                                 <ItemTemplate>
                                     <tr>
                                         <td>
-                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link" Text="Edit" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                            <asp:LinkButton ID="btnEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
                                         </td>
                                         <td>
                                             <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString() + Yumiki.Commons.Dictionaries.CommonValues.SeparateCharUnique +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>

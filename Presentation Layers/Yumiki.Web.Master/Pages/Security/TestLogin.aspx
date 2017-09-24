@@ -40,7 +40,7 @@
         <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" />
         <asp:Button ID="btnLogin" runat="server" Text="Sign In" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
         <hr />
-        <h1>Testing Account</h1>
+        <h1>Testing Accounts:</h1>
         <ul>
             <asp:Repeater runat="server" ID="rptUserNames">
                 <ItemTemplate>

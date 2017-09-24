@@ -9,17 +9,17 @@ namespace Yumiki.Entity.Base
 {
     public abstract class Model<T> where T : IEntity
     {
-        protected T _interalItem;
+        protected T _internalItem;
 
         public Guid ID
         {
             get
             {
-                return _interalItem.ID;
+                return _internalItem.ID;
             }
             set
             {
-                _interalItem.ID = value;
+                _internalItem.ID = value;
             }
         }
 
@@ -27,11 +27,11 @@ namespace Yumiki.Entity.Base
         {
             get
             {
-                return _interalItem.Descriptions;
+                return _internalItem.Descriptions;
             }
             set
             {
-                _interalItem.Descriptions = value;
+                _internalItem.Descriptions = value;
             }
         }
 
@@ -40,11 +40,11 @@ namespace Yumiki.Entity.Base
         {
             get
             {
-                return _interalItem.IsActive;
+                return _internalItem.IsActive;
             }
             set
             {
-                _interalItem.IsActive = value;
+                _internalItem.IsActive = value;
             }
         }
 
@@ -55,10 +55,10 @@ namespace Yumiki.Entity.Base
         {
             if (ID == Guid.Empty)
             {
-                _interalItem.IsActive = true;
+                _internalItem.IsActive = true;
             }
 
-            return _interalItem;
+            return _internalItem;
         } 
     }
 }

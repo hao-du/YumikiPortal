@@ -243,3 +243,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+Presentation Layers/Yumiki.Web.Master/cache/

@@ -10,12 +10,29 @@ using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Data.WellCovered.Repositories;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Business.WellCovered.Services
 {
     public class LiveService : BaseService<ILiveRepository>, ILiveService
     {
+        /// <summary>
+        /// Perform Full text search for all content.
+        /// </summary>
+        /// <param name="keywords">Search keywords like google.</param>
+        /// <returns>List of search result in TB_Index format.</returns>
+        public GetSearchIndexResponse Search(GetSearchIndexRequest request)
+        {
+
+            if (string.IsNullOrWhiteSpace(request.Keywords))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Keywords must not be empty.", Logger);
+            }
+
+            return Repository.Search(request);
+        }
+
         /// <summary>
         /// Get fields from ObjectID
         /// </summary>

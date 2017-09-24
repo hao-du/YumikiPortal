@@ -17,7 +17,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <returns>List of all active Fields.</returns>
         public IEnumerable<TB_Field> GetAllFields(bool showInactive, Guid objectID)
         {
-            IEnumerable<TB_Field> fields = Context.TB_Field.Where(c => c.IsActive == !showInactive && c.ObjectID == objectID).ToList();
+            IEnumerable<TB_Field> fields = Context.TB_Field.Where(c => c.IsActive == !showInactive && c.ObjectID == objectID).OrderBy(c=>c.FieldOrder).ToList();
 
             return fields;
         }
@@ -50,6 +50,8 @@ namespace Yumiki.Data.WellCovered.Repositories
         {
             if (field.ID == Guid.Empty)
             {
+                field.IsSystemField = false;
+
                 Context.TB_Field.Add(field);
             }
             else
@@ -59,6 +61,10 @@ namespace Yumiki.Data.WellCovered.Repositories
                 dbField.DisplayName = field.DisplayName;
                 dbField.ApiName = field.ApiName;
                 dbField.ObjectID = field.ObjectID;
+
+                dbField.IsDisplayable = field.IsDisplayable;
+                dbField.FieldOrder = field.FieldOrder;
+                dbField.CanIndex = field.CanIndex;
 
                 dbField.FieldType = field.FieldType;
                 dbField.IsRequired = field.IsRequired;

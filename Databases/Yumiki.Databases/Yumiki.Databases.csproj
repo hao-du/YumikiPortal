@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yumiki.Databases</RootNamespace>
     <AssemblyName>Yumiki.Databases</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DB_Administration\InsertData.sql" />
+    <Content Include="DB_Administration\v.1.0.0.0-Beta06\InsertData.sql" />
+    <Content Include="DB_WellCovered\Release-008\PROC_PerformSearch.sql" />
+    <Content Include="DB_WellCovered\v.1.0.0.0-Beta06\PROC_PerformSearch.sql" />
+    <Content Include="DB_WellCovered\v.1.0.0.0-Beta06\InsertData.sql" />
     <None Include="DB_WellCovered\CreateDatabase.sql" />
     <None Include="DB_MoneyTrace\v.1.0.0.0-Beta04\CreateDatabase.sql" />
     <None Include="DB_MoneyTrace\v.1.0.0.0-Beta03\CreateDatabase.sql" />

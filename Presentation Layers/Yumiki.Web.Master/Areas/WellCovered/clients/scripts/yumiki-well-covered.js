@@ -39,5 +39,38 @@
                 });
             }
         },
+
+        initSearchEvent: function (searchBoxName, searchButtonName, formName) {
+            $(".y-search-item").mark(
+                $('#' + searchBoxName).val(),
+                {
+                    separateWordSearch: true,
+                    diacritics: true,
+                    accuracy: "complementary",
+                    wildcards: "enabled"
+                }
+            );
+
+            $('#' + searchBoxName)
+            .on({
+                'keypress': function (e) {
+                    if (e.which == 13) {
+                        if ($('#' + searchBoxName).val()) {
+                            yumiki.wellCovered.onListSubmit(formName);
+                        }
+                    }
+                }
+                , 'focus': function () {
+                    this.selectionStart = 0;
+                    this.selectionEnd = this.value.length;
+                }
+            });
+
+            $('#' + searchButtonName).click(function () {
+                if ($('#' + searchBoxName).val()) {
+                    yumiki.wellCovered.onListSubmit(formName);
+                }
+            });
+        }
     }
 }(window, document, jQuery, yumiki));

@@ -5,7 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Yumiki.Business.WellCovered.Interfaces;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Settings;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 using Yumiki.Web.Base;
 using Yumiki.Web.WellCovered.Models;
@@ -34,6 +37,38 @@ namespace Yumiki.Web.WellCovered.Controllers
             return View(live);
         }
 
+        public ActionResult Search(string keywords, int? pageIndex)
+        {
+            if (string.IsNullOrWhiteSpace(keywords))
+            {
+                return View();
+            }
+
+            if (!pageIndex.HasValue)
+            {
+                pageIndex = 1;
+            }
+
+            GetSearchIndexResponse response = new GetSearchIndexResponse();
+            try
+            {
+                GetSearchIndexRequest request = new GetSearchIndexRequest()
+                {
+                    Keywords = keywords,
+                    UserID = CurrentUser.UserID,
+                    CurrentPage = pageIndex.Value
+                };
+
+                response = BusinessService.Search(request);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return View(response);
+        }
+
         // GET: App/Create
         public ActionResult Create(string objectID)
         {
@@ -41,6 +76,12 @@ namespace Yumiki.Web.WellCovered.Controllers
             try
             {
                 fields = BusinessService.GetFields(objectID).Select(c => new MD_Field(c));
+
+                MD_Field isActiveField = fields.Where(c => c.ApiName.Equals(CommonProperties.IsActive, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                if(isActiveField != null)
+                {
+                    isActiveField.Value = true;
+                }
 
                 InitDataSource(fields);
             }
@@ -227,7 +268,7 @@ namespace Yumiki.Web.WellCovered.Controllers
 
         // POST:
         [HttpPost]
-        public ActionResult PublishObject(string objectID)
+        public ActionResult PublishObject(string appID, string objectID)
         {
             try
             {
@@ -240,7 +281,7 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            return RedirectToAction("List", "Object", new { active = true });
+            return RedirectToAction("List", "Object", new { active = true, appID = appID });
         }
 
         private void InitDataSource(IEnumerable<MD_Field> fields)

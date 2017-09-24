@@ -7,12 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Base;
+using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Entity.WellCovered;
 
 namespace Yumiki.Data.WellCovered.Interfaces
 {
     public interface ILiveRepository
     {
+        /// <summary>
+        /// Perform Full text search for all content.
+        /// </summary>
+        /// <param name="keywords">Search keywords like google.</param>
+        /// <returns>List of search result in TB_Index format.</returns>
+        GetSearchIndexResponse Search(GetSearchIndexRequest request);
+
         /// <summary>
         /// Get fields from ObjectID
         /// </summary>
@@ -56,7 +64,7 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// Fetch all data from Object
         /// </summary>
         /// <param name="objectID">Object ID need to fetch data</param>
-        MD_Live FetchViewObjectData(Guid objectID, bool isActive);
+        MD_Live FetchViewObjectData(Guid objectID, bool isActive, bool getLinkDisplayName = true);
 
         /// <summary>
         /// Fetch record from Object by ID

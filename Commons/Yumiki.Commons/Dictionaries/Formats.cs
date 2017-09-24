@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Yumiki.Commons.Dictionaries
+﻿namespace Yumiki.Commons.Dictionaries
 {
     public class Formats
     {
@@ -24,7 +18,8 @@ namespace Yumiki.Commons.Dictionaries
 
         public class Number
         {
-            public const string Decimal = "0.##";
+            public const string Integer = "#,##0.##";
+            public const string Decimal = "#,##0.##";
         }
     }
 }

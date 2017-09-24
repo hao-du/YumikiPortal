@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yumiki.Entity.WellCovered</RootNamespace>
     <AssemblyName>Yumiki.Entity.WellCovered</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,9 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomFields\TB_Field.cs" />
+    <Compile Include="CustomFields\TB_LiveIndex.cs" />
     <Compile Include="CustomFields\TB_Object.cs" />
     <Compile Include="MD_Datasource.cs" />
     <Compile Include="MD_Live.cs" />
+    <Compile Include="ServiceObjects\GetSearchIndexRequest.cs" />
+    <Compile Include="ServiceObjects\GetSearchIndexResponse.cs" />
+    <Compile Include="TB_LiveIndex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EN_DataType.cs" />
     <Compile Include="CustomFields\TB_App.cs" />

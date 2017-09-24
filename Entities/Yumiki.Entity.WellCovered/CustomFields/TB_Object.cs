@@ -29,6 +29,7 @@ namespace Yumiki.Entity.WellCovered
             public const string ObjectName = "ObjectName";
             public const string DisplayName = "DisplayName";
             public const string ApiName = "ApiName";
+            public const string App = "App";
             public const string AppName = "AppName";
             public const string Fields = "Fields";
 

@@ -51,6 +51,34 @@
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
+                    @Html.LabelFor(model => model.FieldOrder)
+                    @Html.EditorFor(model => model.FieldOrder, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.IsDisplayable)
+                        @Html.LabelFor(model => model.IsDisplayable)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
+                    <span class="checkbox">
+                        @Html.EditorFor(model => model.CanIndex)
+                        @Html.LabelFor(model => model.CanIndex)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
                     @Html.LabelFor(model => model.FieldType)
                     @Html.DropDownListFor(model => model.FieldType
                                                 , (SelectList)ViewBag.DataTypeDatasource

@@ -30,18 +30,34 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                @if (field.FieldLength > 100)
+                                {
+                                    @Html.TextArea(field.ApiName, field.Value == null ? string.Empty : field.Value.ToString(), new { @class = "form-control", @rows = 5 })
+                                }
+                                else
+                                {
+                                    @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control" })
+                                }
                             </div>
                         </div>
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="form-group">
+                                @Html.Label(field.DisplayName)
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number" })
+                            </div>
+                        </div>
+                    </div>
+                    break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control", @type = "number" })
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number", step="0.01" })
                             </div>
                         </div>
                     </div>
@@ -66,7 +82,7 @@
                                 <div class="input-group date yumiki-control-date">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDate) : string.Empty , new { @class = "form-control" })
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                        <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
                             </div>
@@ -81,7 +97,7 @@
                                 <div class="input-group date yumiki-control-datetime">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDateTime2) : string.Empty, new { @class = "form-control" })
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                        <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
                             </div>
@@ -96,7 +112,7 @@
                                 <div class="input-group date yumiki-control-time">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? new DateTime(((TimeSpan)field.Value).Ticks).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.Hour) : string.Empty, new { @class = "form-control" })
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                        <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
                             </div>
