@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.ExtensionMethods;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.WellCovered.Interfaces;
 using Yumiki.Entity.Base;
@@ -745,7 +746,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             }
             if (field.CanIndex)
             {
-                fullTextIndex.AppendFormat("{0} ", valueAsString);
+                fullTextIndex.AppendFormat(" {0} {1} ", valueAsString, valueAsString.NormalizeUnicode());
             }
         }
 

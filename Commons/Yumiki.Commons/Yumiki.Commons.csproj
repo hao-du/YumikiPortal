@@ -66,6 +66,7 @@
     <Compile Include="Entities\ExtendEnum.cs" />
     <Compile Include="Entities\MappingValue.cs" />
     <Compile Include="Entities\Message.cs" />
+    <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Settings\SystemSettings.cs" />
