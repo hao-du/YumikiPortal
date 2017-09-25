@@ -7,6 +7,7 @@ using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Settings;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
@@ -281,6 +282,12 @@ namespace Yumiki.Business.MoneyTrace.Services
                 || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMaxDate())
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.");
+            }
+
+            if (bankAccount.WithdrawDate.Value.Date > DateTimeExtension.GetUserCurrentDatetime(CurrentUser.TimeZone))
+            {
+                throw new YumikiException(ExceptionCode.E_INVALID_VALUE
+                                        , string.Format("You cannot withdraw money on {0}.", bankAccount.WithdrawDate.Value.ToString(Formats.DateTime.LongDate)));
             }
 
             if (interestTraceRequest != null && bankAccount.Interest < decimal.Zero)

@@ -19,6 +19,11 @@ namespace Yumiki.Commons.Helpers
             return DateTime.Now;
         }
 
+        public static DateTime GetUserCurrentDatetime(SystemTimeZone userTimezone)
+        {
+            return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, userTimezone.ID);
+        }
+
         public static DateTime GetSystemMinDate()
         {
             return DateTime.MinValue;
