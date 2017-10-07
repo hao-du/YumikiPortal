@@ -14,8 +14,16 @@ using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Business.MoneyTrace.Services
 {
-    public class ReportService : BaseService<ITraceRepository>, IReportService
+    public class ReportService : BaseService<IReportRepository>, IReportService
     {
-        
+        /// <summary>
+        /// Get Trace Report
+        /// </summary>
+        /// <param name="request">Request contains filters</param>
+        /// <returns>Report result with label/value</returns>
+        public GetReportResponse GetTraceReport(GetReportRequest request)
+        {
+            return Repository.GetTraceReport(request);
+        }
     }
 }

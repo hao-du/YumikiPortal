@@ -32,5 +32,7 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string TraceGetTags = "TraceGetTags";
         public const string TraceSave = "TraceSave";
         public const string SaveBankingWithdrawingTrace = "SaveBankingWithdrawingTrace";
+
+        public const string ReportGet = "ReportGet";
     }
 }

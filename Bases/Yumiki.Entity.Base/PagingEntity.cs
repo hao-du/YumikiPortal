@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yumiki.Entity.Base
 {
-    public abstract class PagingEntity<T> where T : IEntity
+    public abstract class PagingEntity<T>
     {
         public bool EnablePaging { get; set; } = true;
 
