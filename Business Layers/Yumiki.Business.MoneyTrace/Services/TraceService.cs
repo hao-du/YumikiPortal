@@ -141,6 +141,9 @@ namespace Yumiki.Business.MoneyTrace.Services
                     traceID = SaveTrace(trace, true);
                     break;
                 //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
+                //Example for creating a Banking transaction:
+                //Deposite to ABC Bank 3000$ --> Create E_BANKING transaction 3000$ and E_OUTCOME -3000$
+                //Withdraw from ABC Bank 3000$ --> Create E_BANKING transaction -3000$ and E_INCOME 3000$
                 case EN_TransactionType.E_BANKING:
                     if (!trace.BankID.HasValue || trace.BankID.Value == Guid.Empty)
                     {

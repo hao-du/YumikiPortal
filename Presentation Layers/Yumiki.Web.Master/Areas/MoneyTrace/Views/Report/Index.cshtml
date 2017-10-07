@@ -4,7 +4,7 @@
 @using SquishIt.Framework
 
 @{
-    ViewBag.Title = "Report";
+    ViewBag.Title = "Report (Beta)";
 }
 
 @section Script{
@@ -16,7 +16,21 @@
         .Render("~/cache/yumiki_#.js"))
 
     <script type="text/javascript">
-
+        yumiki.moneyTrace.report.initReport(
+            'cvReportChart',
+            '@Url.HttpRouteUrl(RouteNames.ReportGet, null)',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        )
     </script>
 }
 
+<div ng-app="report">
+    <div class="container" ng-controller="reportController" ng-init="loadData();">
+        <h2>Trace Report</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <canvas id="cvReportChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

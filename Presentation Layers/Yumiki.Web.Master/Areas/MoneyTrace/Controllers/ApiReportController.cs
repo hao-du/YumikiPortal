@@ -24,6 +24,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             {
                 GetReportRequest request = new GetReportRequest()
                 {
+                    UserID = CurrentUser.UserID,
+                    CurrencyID = new Guid("952C1959-E645-4B72-A122-F325675DDB15"),
                     ReportType = EN_ReportPeriodType.E_MONTH
                 };
 

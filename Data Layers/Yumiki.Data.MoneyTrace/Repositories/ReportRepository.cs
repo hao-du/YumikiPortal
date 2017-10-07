@@ -19,6 +19,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Report result with label/value</returns>
         public GetReportResponse GetTraceReport(GetReportRequest request)
         {
+            IEnumerable<TraceReport> report = new List<TraceReport>();
             switch (request.ReportType)
             {
                 case EN_ReportPeriodType.E_YEAR:
@@ -26,12 +27,28 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 case EN_ReportPeriodType.E_PERIOD:
                     break;
                 case EN_ReportPeriodType.E_MONTH:
-                default:
-
+                    report = Context.TB_Trace.Where(c => c.IsActive
+                                            && c.UserID == request.UserID
+                                            && c.CurrencyID == request.CurrencyID
+                                            && (
+                                                    //Only INCOME, OUTCOME AND TRANSFER IS ACTUAL MONNEY
+                                                    c.TransactionType == EN_TransactionType.E_INCOME
+                                                    || c.TransactionType == EN_TransactionType.E_OUTCOME
+                                                    || c.TransactionType == EN_TransactionType.E_TRANSFER
+                                                ))
+                                    .AsEnumerable()
+                                    .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
+                                    .OrderBy(c=>c.Key)
+                                    .Select(c => new TraceReport() { Label = c.First().TraceDate.ToString(Formats.DateTime.ServerShortMonthYear)
+                                                                    , Value = c.Sum(d=>d.Amount)
+                                                                    });
                     break;
             }
 
-            return null;
+            return new GetReportResponse()
+            {
+                Records = report
+            };
         }
     }
 }

@@ -11,7 +11,9 @@
             public const string LongDateTime2 = "dd MMM yyyy HH:mm";
             public const string ClientMomentLongDateTime = "DD MMM YYYY HH:mm";
             public const string ClientMomentLongDate = "DD MMM YYYY";
-            public const string MonthYear = "MM-YYYY";
+            public const string ClientShortMonthYear = "MM-YYYY";
+            public const string ServerShortMonthYear = "MM-yyyy";
+            public const string ServerShortYearMonth = "yyyy-MM";
             public const string Hour = "HH:ss";
            
         }

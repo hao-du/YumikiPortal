@@ -35,7 +35,7 @@
                 traceSaveUrl : '@Url.HttpRouteUrl(RouteNames.TraceSave, null)'
             },
             '@ViewBag.CurrentDate',
-            '@Formats.DateTime.MonthYear',
+            '@Formats.DateTime.ClientShortMonthYear',
             '@Formats.DateTime.ClientMomentLongDate',
             {
                 income: '@((int)EN_TransactionType.E_INCOME)',
@@ -47,7 +47,7 @@
             '@Yumiki.Commons.Logging.LogLevel.ERROR'
         );
 
-        yumiki.moneyTrace.trace.controls.init('@ViewBag.CurrentDate', '@Formats.DateTime.MonthYear', '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)');
+        yumiki.moneyTrace.trace.controls.init('@ViewBag.CurrentDate', '@Formats.DateTime.ClientShortMonthYear', '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)');
 
         yumiki.moneyTrace.trace.normal.init(
             {
