@@ -164,6 +164,7 @@
     <Content Include="third-party-clients\bootstrap-datetimepicker-4.17.43\bootstrap-datetimepicker.min.js" />
     <Content Include="third-party-clients\bootstrap-select-1.12.4\bootstrap-select.min.css" />
     <Content Include="third-party-clients\bootstrap-select-1.12.4\bootstrap-select.min.js" />
+    <Content Include="third-party-clients\chart-js-2.7.0\chart.min.js" />
     <Content Include="third-party-clients\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="third-party-clients\jquery-3.2.1\jquery-ui.min.css" />

@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,6 +130,7 @@
     <Content Include="clients\scripts\trace\yumiki-money-trace-trace-normal.js" />
     <Content Include="clients\scripts\trace\yumiki-money-trace-trace-list.js" />
     <Content Include="clients\scripts\trace\yumiki-money-trace-trace.js" />
+    <Content Include="clients\scripts\yumiki-money-trace-report.js" />
     <Content Include="clients\scripts\yumiki-money-trace-currency.js" />
     <Content Include="clients\scripts\yumiki-money-trace-bank-account.js" />
     <Content Include="clients\scripts\yumiki-money-trace-bank.js" />
@@ -147,17 +149,20 @@
     <Content Include="Views\Trace\_ExchangeTrace.cshtml" />
     <Content Include="Views\Trace\_TransferTrace.cshtml" />
     <Content Include="Views\Trace\_TraceList.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
     <Compile Include="Controllers\ApiBankAccountController.cs" />
+    <Compile Include="Controllers\ApiReportController.cs" />
     <Compile Include="Controllers\ApiUserController.cs" />
     <Compile Include="Controllers\ApiBankController.cs" />
     <Compile Include="Controllers\ApiTraceController.cs" />
     <Compile Include="Controllers\ApiCurrencyController.cs" />
     <Compile Include="Controllers\BankAccountController.cs" />
     <Compile Include="Controllers\BankController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\TraceController.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

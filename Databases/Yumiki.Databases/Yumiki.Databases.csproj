@@ -45,6 +45,7 @@
   <ItemGroup>
     <Content Include="DB_Administration\InsertData.sql" />
     <Content Include="DB_Administration\v.1.0.0.0-Beta06\InsertData.sql" />
+    <Content Include="DB_MoneyTrace\Release-008\InsertData.sql" />
     <Content Include="DB_WellCovered\Release-008\PROC_PerformSearch.sql" />
     <Content Include="DB_WellCovered\v.1.0.0.0-Beta06\PROC_PerformSearch.sql" />
     <Content Include="DB_WellCovered\v.1.0.0.0-Beta06\InsertData.sql" />
