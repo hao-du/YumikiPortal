@@ -1,10 +1,10 @@
 ﻿(function (win, doc, $, yumiki) {
     yumiki.moneyTrace.report = {
         errorLogType: '',
-        chart : null,
+        chart: null,
 
         //reportControlID: canvas for chart.js
-        initReport: function (reportControlID, getTraceReporttUrl, errorLogType) {
+        initReport: function (reportControlID, requestParameterObject, serviceUrls, errorLogType) {
             yumiki.moneyTrace.report.reportControlID = reportControlID;
             yumiki.moneyTrace.report.errorLogType = errorLogType;
 
@@ -12,47 +12,100 @@
 
             var app = angular.module('report', ['ui.bootstrap', 'yumiki-module']);
 
-            yumiki.moneyTrace.report.initService(app, getTraceReporttUrl);
-            yumiki.moneyTrace.report.initReportController(app);
+            yumiki.moneyTrace.report.initService(app, serviceUrls);
+            yumiki.moneyTrace.report.initReportController(app, requestParameterObject);
         },
 
         //Service to communicate with Server.
-        initService: function (app, getTraceReporttUrl) {
+        initService: function (app, serviceUrls) {
             app.service('DataService', function ($http) {
-                this.getReport = function () {
-                    return $http.get(getTraceReporttUrl);
+                this.generateReport = function (requestObject) {
+                    return $http.post(serviceUrls.reportGetReportUrl, requestObject);
+                };
+
+                this.getReportTypes = function () {
+                    return $http.get(serviceUrls.reportGetReportTypesUrl);
+                };
+
+                this.getCurrencyList = function () {
+                    return $http.get(serviceUrls.currencyGetAllWithShareableItemsUrl, { params: { 'showInactive': false } });
                 };
             });
         },
 
         //Controller to display report
-        initReportController: function (app) {
+        initReportController: function (app, requestParameterObject) {
             app.controller('reportController', function ($scope, $http, DataService) {
-                //Load active or inactive list.
+
+                $scope.requestObject = requestParameterObject;
+
                 $scope.loadData = function () {
-                    DataService.getReport().then(
-                        function success(response) {
-                            var results = response.data.Records;
+                    yumiki.message.displayLoadingDialog(true);
 
-                            var data, labels;
-                            data = [];
-                            labels = [];
+                    var isCurrencyLoaded, isReportTypeLoaded;
+                    isCurrencyLoaded = isReportTypeLoaded = false;
 
-                            results.forEach(function (result) {
-                                data.push(result.Value);
-                                labels.push(result.Label);
-                            });
+                    //Load Currencies to DropdownList
+                    DataService.getCurrencyList().then(
+                        function mySucces(response) {
+                            $scope.currencyList = response.data;
 
-                            if (yumiki.moneyTrace.report.chart) {
-                                yumiki.moneyTrace.report.chart.config.data.datasets[0].data = data;
-                                yumiki.moneyTrace.report.chart.data.labels = labels;
-                                yumiki.moneyTrace.report.chart.update();
+                            isCurrencyLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+
+                        }, function myError(response) {
+                            isCurrencyLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.errorLog);
+                        }
+                    );
+
+                    //Load Report Types to DropdownList
+                    DataService.getReportTypes().then(
+                        function mySucces(response) {
+                            $scope.reportTypes = response.data;
+
+                            isReportTypeLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+
+                        }, function myError(response) {
+                            isReportTypeLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.errorLog);
+                        }
+                    );
+                };
+
+                $scope.getReport = function (isValid) {
+                    if (isValid) {
+                        yumiki.message.displayLoadingDialog(true);
+
+                        DataService.generateReport($scope.requestObject).then(
+                            function success(response) {
+                                var results = response.data.Records;
+
+                                var data, labels;
+                                data = [];
+                                labels = [];
+                                results.forEach(function (result) {
+                                    data.push(result.Value);
+                                    labels.push(result.Label);
+                                });
+
+                                if (yumiki.moneyTrace.report.chart) {
+                                    yumiki.moneyTrace.report.chart.config.data.datasets[0].data = data;
+                                    yumiki.moneyTrace.report.chart.data.labels = labels;
+                                    yumiki.moneyTrace.report.chart.update();
+                                }
+
+                            }, function error(response) {
+                                yumiki.message.displayLoadingDialog(false);
+                                yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLogType);
                             }
-
-                        }, function error(response) {
-                            yumiki.message.displayLoadingDialog(false);
-                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLogType);
-                        });
+                        );
+                    }
                 };
             });
         },
@@ -105,6 +158,12 @@
                 },
                 options: Chart.helpers.merge(options)
             });
+        },
+
+        closeLoadingDialog: function (canClose) {
+            if (canClose) {
+                yumiki.message.displayLoadingDialog(false);
+            }
         },
     };
 }(window, document, jQuery, yumiki));

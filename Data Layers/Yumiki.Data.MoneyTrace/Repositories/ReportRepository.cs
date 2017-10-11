@@ -22,11 +22,11 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             IEnumerable<TraceReport> report = new List<TraceReport>();
             switch (request.ReportType)
             {
-                case EN_ReportPeriodType.E_YEAR:
+                case EN_ReportType.E_YEAR:
                     break;
-                case EN_ReportPeriodType.E_PERIOD:
+                case EN_ReportType.E_PERIOD:
                     break;
-                case EN_ReportPeriodType.E_MONTH:
+                case EN_ReportType.E_MONTH:
                     report = Context.TB_Trace.Where(c => c.IsActive
                                             && c.UserID == request.UserID
                                             && c.CurrencyID == request.CurrencyID

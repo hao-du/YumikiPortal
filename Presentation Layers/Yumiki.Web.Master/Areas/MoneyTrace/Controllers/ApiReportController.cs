@@ -10,25 +10,36 @@ using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
+using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Entities;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
     [RoutePrefix("api/report")]
     public class ApiReportController : ApiBaseController<IReportService>
     {
-        [Route("get", Name = RouteNames.ReportGet)]
+        [Route("getReportTypes", Name = RouteNames.ReportGetReportTypes)]
         [HttpGet()]
-        public IHttpActionResult Get()
+        public IHttpActionResult GetReportTypes()
         {
             try
             {
-                GetReportRequest request = new GetReportRequest()
-                {
-                    UserID = CurrentUser.UserID,
-                    CurrencyID = new Guid("952C1959-E645-4B72-A122-F325675DDB15"),
-                    ReportType = EN_ReportPeriodType.E_MONTH
-                };
+                List<ExtendEnum> reportType = EnumHelper.GetDatasource<EN_ReportType>();
+                return Ok(reportType);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
 
+        [Route("generateReport", Name = RouteNames.ReportGenerateReport)]
+        [HttpPost()]
+        public IHttpActionResult Get([FromBody] GetReportRequest request)
+        {
+            try
+            {
+                request = CurrentUser.UserID;
 
                 GetReportResponse resonse = BusinessService.GetTraceReport(request);
                 return Ok(resonse);

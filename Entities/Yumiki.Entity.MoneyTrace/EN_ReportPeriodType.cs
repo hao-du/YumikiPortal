@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Yumiki.Entity.MoneyTrace
 {
-    public enum EN_ReportPeriodType
+    public enum EN_ReportType
     {
         [Description("Month")]
         E_MONTH,

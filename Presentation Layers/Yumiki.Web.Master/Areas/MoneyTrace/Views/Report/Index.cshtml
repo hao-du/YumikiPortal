@@ -1,6 +1,7 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants
 @using Yumiki.Commons.Dictionaries;
-@using Yumiki.Entity.MoneyTrace;
+@using Yumiki.Commons.Entities;
+@using Yumiki.Entity.MoneyTrace.ServiceObjects;
 @using SquishIt.Framework
 
 @{
@@ -18,7 +19,11 @@
     <script type="text/javascript">
         yumiki.moneyTrace.report.initReport(
             'cvReportChart',
-            '@Url.HttpRouteUrl(RouteNames.ReportGet, null)',
+            {
+                currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
+                reportGetReportTypesUrl: '@Url.HttpRouteUrl(RouteNames.ReportGetReportTypes, null)',
+                reportGenerateReportUrl: '@Url.HttpRouteUrl(RouteNames.ReportGenerateReport, null)'
+            },
             '@Yumiki.Commons.Logging.LogLevel.ERROR'
         )
     </script>
@@ -27,6 +32,46 @@
 <div ng-app="report">
     <div class="container" ng-controller="reportController" ng-init="loadData();">
         <h2>Trace Report</h2>
+        <form name="reportForm" ng-submit="getReport(reportForm.$valid)" novalidate>
+            <div class="well well-sm">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" ng-disabled="reportForm.$invalid">Report</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{ 'has-error' : reportForm.reportType.$invalid }">
+                        <label>Report Type</label>
+                        <select class="form-control selectpicker" name="reportType" ng-required="true"
+                                ng-model="report.@GetReportRequest.FieldName.ReportType"
+                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes">
+                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                        </select>
+                        <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="help-block">Report Type is required.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group" ng-class="{ 'has-error' : reportForm.reportType.$invalid }">
+                        <label>Currency</label>
+                        <select class="form-control selectpicker" name="currency" ng-required="true"
+                                ng-model="report.@GetReportRequest.FieldName.CurrencyID"
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                        </select>
+                        <p ng-show="reportForm.currency.$error.required && reportForm.currency.$dirty" class="help-block">Currency is required.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+        </form>
         <div class="row">
             <div class="col-md-12">
                 <canvas id="cvReportChart"></canvas>
