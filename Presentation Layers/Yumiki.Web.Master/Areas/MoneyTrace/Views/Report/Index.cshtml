@@ -2,7 +2,8 @@
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Commons.Entities;
 @using Yumiki.Entity.MoneyTrace.ServiceObjects;
-@using SquishIt.Framework
+@using SquishIt.Framework;
+@using Yumiki.Entity.MoneyTrace;
 
 @{
     ViewBag.Title = "Report (Beta)";
@@ -20,10 +21,27 @@
         yumiki.moneyTrace.report.initReport(
             'cvReportChart',
             {
+                '@GetReportRequest.FieldName.ReportType': @((int)EN_ReportType.E_MONTH),
+                '@GetReportRequest.FieldName.CurrencyID': undefined,
+                '@GetReportRequest.FieldName.StartDate': '@ViewBag.CurrentDate',
+                '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
+                '@GetReportRequest.FieldName.Tags': '',
+                '@GetReportRequest.FieldName.TransactionType': '@CommonValues.EmptyValue'
+            },
+            {
                 currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
                 reportGetReportTypesUrl: '@Url.HttpRouteUrl(RouteNames.ReportGetReportTypes, null)',
-                reportGenerateReportUrl: '@Url.HttpRouteUrl(RouteNames.ReportGenerateReport, null)'
+                reportGetTransactionTypes: '@Url.HttpRouteUrl(RouteNames.ReportGetTransactionTypes, null)',
+                reportGenerateReportUrl: '@Url.HttpRouteUrl(RouteNames.ReportGenerateReport, null)',
+                getTagUrl : '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)'
             },
+            {
+                month: @((int)EN_ReportType.E_MONTH),
+                period: @((int)EN_ReportType.E_PERIOD),
+                year: @((int)EN_ReportType.E_YEAR)
+            },
+            '@ViewBag.CurrentDate',
+            '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate',
             '@Yumiki.Commons.Logging.LogLevel.ERROR'
         )
     </script>
@@ -44,18 +62,18 @@
                     <div class="form-group" ng-class="{ 'has-error' : reportForm.reportType.$invalid }">
                         <label>Report Type</label>
                         <select class="form-control selectpicker" name="reportType" ng-required="true"
-                                ng-model="report.@GetReportRequest.FieldName.ReportType"
-                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes">
-                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                                ng-model="requestObject.@GetReportRequest.FieldName.ReportType"
+                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes"
+                                ng-change="updateDates()">
                         </select>
                         <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="help-block">Report Type is required.</p>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group" ng-class="{ 'has-error' : reportForm.reportType.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-error' : reportForm.currency.$invalid }">
                         <label>Currency</label>
                         <select class="form-control selectpicker" name="currency" ng-required="true"
-                                ng-model="report.@GetReportRequest.FieldName.CurrencyID"
+                                ng-model="requestObject.@GetReportRequest.FieldName.CurrencyID"
                                 ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
@@ -65,14 +83,48 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    
+                    <div class="form-group">
+                        <label>{{startDateLabel}}</label>
+                        <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" ng-change="updateDates()">
+                            <input type="text" name="startDate" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" class="form-control"/>
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+ 
+                    </div>
                 </div>
                 <div class="col-md-6">
-
+                    <div class="form-group" ng-show="isEndDateVisible">
+                        <label>End Date</label>
+                        <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.EndDate">
+                            <input type="text" name="endDate" ng-model="requestObject.@GetReportRequest.FieldName.EndDate" class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tags (with ',' separator)</label>
+                        <textarea ng-model="requestObject.@GetReportRequest.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Transaction Type</label>
+                        <select class="form-control selectpicker" name="transactionType" multiple
+                                ng-model="requestObject.@GetReportRequest.FieldName.TransactionType"
+                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in transactionTypes">
+                        </select>
+                    </div>
                 </div>
             </div>
         </form>
-        <div class="row">
+        <div class="row" ng-show="showReport">
             <div class="col-md-12">
                 <canvas id="cvReportChart"></canvas>
             </div>

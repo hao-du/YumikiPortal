@@ -33,13 +33,29 @@ namespace Yumiki.Web.MoneyTrace.Controllers
             }
         }
 
-        [Route("generateReport", Name = RouteNames.ReportGenerateReport)]
+        [Route("getTransactionTypes", Name = RouteNames.ReportGetTransactionTypes)]
+        [HttpGet()]
+        public IHttpActionResult GetTransactionTypes()
+        {
+            try
+            {
+                List<ExtendEnum> transactionTypes = EnumHelper.GetDatasource<EN_TransactionType>();
+                return Ok(transactionTypes);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        
+
+       [Route("generateReport", Name = RouteNames.ReportGenerateReport)]
         [HttpPost()]
         public IHttpActionResult Get([FromBody] GetReportRequest request)
         {
             try
             {
-                request = CurrentUser.UserID;
+                request.UserID = CurrentUser.UserID;
 
                 GetReportResponse resonse = BusinessService.GetTraceReport(request);
                 return Ok(resonse);

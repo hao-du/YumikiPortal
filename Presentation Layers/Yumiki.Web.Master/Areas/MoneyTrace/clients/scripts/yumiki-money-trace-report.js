@@ -2,12 +2,20 @@
     yumiki.moneyTrace.report = {
         errorLogType: '',
         chart: null,
+        reportType: {},
+        currentDate : '',
+        longDateFormat : '',
 
         //reportControlID: canvas for chart.js
-        initReport: function (reportControlID, requestParameterObject, serviceUrls, errorLogType) {
+        initReport: function (reportControlID, requestParameterObject, serviceUrls, reportType, currentDate, longDateFormat, errorLogType) {
             yumiki.moneyTrace.report.reportControlID = reportControlID;
             yumiki.moneyTrace.report.errorLogType = errorLogType;
+            yumiki.moneyTrace.report.reportType = reportType;
 
+            yumiki.moneyTrace.report.currentDate = currentDate;
+            yumiki.moneyTrace.report.longDateFormat = longDateFormat;
+
+            yumiki.moneyTrace.report.initTagAutocomplete(serviceUrls.getTagUrl);
             yumiki.moneyTrace.report.initReportChart(reportControlID);
 
             var app = angular.module('report', ['ui.bootstrap', 'yumiki-module']);
@@ -20,11 +28,15 @@
         initService: function (app, serviceUrls) {
             app.service('DataService', function ($http) {
                 this.generateReport = function (requestObject) {
-                    return $http.post(serviceUrls.reportGetReportUrl, requestObject);
+                    return $http.post(serviceUrls.reportGenerateReportUrl, requestObject);
                 };
 
                 this.getReportTypes = function () {
                     return $http.get(serviceUrls.reportGetReportTypesUrl);
+                };
+
+                this.getTransactionTypes = function () {
+                    return $http.get(serviceUrls.reportGetTransactionTypes);
                 };
 
                 this.getCurrencyList = function () {
@@ -36,14 +48,15 @@
         //Controller to display report
         initReportController: function (app, requestParameterObject) {
             app.controller('reportController', function ($scope, $http, DataService) {
+                $scope.showReport = false;
 
                 $scope.requestObject = requestParameterObject;
 
                 $scope.loadData = function () {
                     yumiki.message.displayLoadingDialog(true);
 
-                    var isCurrencyLoaded, isReportTypeLoaded;
-                    isCurrencyLoaded = isReportTypeLoaded = false;
+                    var isCurrencyLoaded, isReportTypeLoaded, isTransactionTypeLoaded;
+                    isCurrencyLoaded = isReportTypeLoaded = isTransactionTypeLoaded = false;
 
                     //Load Currencies to DropdownList
                     DataService.getCurrencyList().then(
@@ -51,13 +64,13 @@
                             $scope.currencyList = response.data;
 
                             isCurrencyLoaded = true;
-                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
 
                         }, function myError(response) {
                             isCurrencyLoaded = true;
-                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
 
-                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.errorLog);
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLog);
                         }
                     );
 
@@ -67,15 +80,64 @@
                             $scope.reportTypes = response.data;
 
                             isReportTypeLoaded = true;
-                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
+
+                            $scope.updateDates();
 
                         }, function myError(response) {
                             isReportTypeLoaded = true;
-                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded);
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
 
-                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.errorLog);
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLog);
                         }
                     );
+
+                    //Load Transaction Types to DropdownList
+                    DataService.getTransactionTypes().then(
+                        function mySucces(response) {
+                            $scope.transactionTypes = response.data;
+
+                            isTransactionTypeLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
+
+                        }, function myError(response) {
+                            isTransactionTypeLoaded = true;
+                            yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
+
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLog);
+                        }
+                    );
+                };
+
+                //Update Start Date and End Date
+                $scope.updateDates = function () {
+                    $scope.isEndDateVisible = false;
+                    $scope.startDateLabel = "Start Date";
+
+                    if (!$scope.requestObject.StartDate) {
+                        $scope.requestObject.StartDate = yumiki.moneyTrace.report.currentDate;
+                    }
+
+                    switch ($scope.requestObject.ReportType) {
+                        case yumiki.moneyTrace.report.reportType.month:
+                            $scope.startDateLabel = "Month";
+
+                            $scope.requestObject.StartDate = moment($scope.requestObject.StartDate).startOf('month').format(yumiki.moneyTrace.report.longDateFormat);
+                            $scope.requestObject.EndDate = moment($scope.requestObject.EndDate).endOf('month').format(yumiki.moneyTrace.report.longDateFormat);
+                            break;
+                        case yumiki.moneyTrace.report.reportType.period:
+                            $scope.isEndDateVisible = true;
+
+                            $scope.requestObject.EndDate = moment($scope.requestObject.StartDate).endOf('month').format(yumiki.moneyTrace.report.longDateFormat);
+                            break;
+                        case yumiki.moneyTrace.report.reportType.year:
+                            $scope.startDateLabel = "Year";
+
+                            $scope.requestObject.StartDate = moment($scope.requestObject.StartDate).startOf('year').format(yumiki.moneyTrace.report.longDateFormat);
+                            $scope.requestObject.EndDate = moment($scope.requestObject.EndDate).endOf('year').format(yumiki.moneyTrace.report.longDateFormat);
+
+                            break;
+                    }
                 };
 
                 $scope.getReport = function (isValid) {
@@ -100,15 +162,25 @@
                                     yumiki.moneyTrace.report.chart.update();
                                 }
 
+                                $scope.showReport = true;
+
+                                yumiki.message.displayLoadingDialog(false);
+
                             }, function error(response) {
                                 yumiki.message.displayLoadingDialog(false);
                                 yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.report.errorLogType);
+
+                                $scope.showReport = false;
                             }
                         );
                     }
                 };
             });
         },
+
+        initTagAutocomplete: function (getTagUrl) {
+            yumiki.jquery.autocomplete('.auto-complete', getTagUrl);
+        }, 
 
         initReportChart: function (reportControlID) {
             var options = {

@@ -12,7 +12,7 @@ namespace Yumiki.Entity.MoneyTrace.ServiceObjects
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Tags { get; set; }
-        public EN_TransactionType TransactionType { get; set; }
+        public EN_TransactionType[] TransactionType { get; set; }
         public Guid UserID { get; set; }
         public Guid CurrencyID { get; set; }
 

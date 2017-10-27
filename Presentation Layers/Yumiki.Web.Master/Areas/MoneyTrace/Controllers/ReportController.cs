@@ -15,6 +15,8 @@ namespace Yumiki.Web.MoneyTrace.Controllers
         // GET: Report
         public ActionResult Index()
         {
+            ViewBag.CurrentDate = DateTimeExtension.GetSystemDatetime().ToString(Formats.DateTime.LongDate);
+
             return View();
         }
     }
