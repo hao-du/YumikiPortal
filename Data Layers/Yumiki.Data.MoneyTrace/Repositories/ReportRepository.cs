@@ -19,7 +19,21 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Report result with label/value</returns>
         public GetReportResponse GetTraceReport(GetReportRequest request)
         {
-            IEnumerable<TraceReport> report = new List<TraceReport>();
+            IQueryable<TB_Trace> reportData = Context.TB_Trace.Where(c => c.IsActive 
+                                                                        && c.UserID == request.UserID
+                                                                        && c.CurrencyID == request.CurrencyID
+                                                                        && (request.StartDate < c.TraceDate && c.TraceDate < request.EndDate));
+
+            if(!string.IsNullOrWhiteSpace(request.Tags))
+            {
+                PredicateBuilder
+
+                foreach(string tag in request.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    reportData = reportData.Where(c=>c.)
+                }
+            }
+
             switch (request.ReportType)
             {
                 case EN_ReportType.E_YEAR:

@@ -96,5 +96,25 @@ namespace Yumiki.Commons.Helpers
         {
             return GetStartDateOfMonth(value).AddMonths(1).AddMilliseconds(-1);
         }
+
+        public static DateTime GetStartDateOfYear(this DateTime value)
+        {
+            return new DateTime(value.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        }
+
+        public static DateTime GetEndDateOfYear(this DateTime value)
+        {
+            return GetStartDateOfMonth(value).AddYears(1).AddMilliseconds(-1);
+        }
+
+        public static DateTime GetDateWithBeginOfDayTime(this DateTime value)
+        {
+            return new DateTime(value.Year, value.Month, value.Day, 0, 0, 0);
+        }
+
+        public static DateTime GetDateWithEndOfDayTime(this DateTime value)
+        {
+            return new DateTime(value.Year, value.Month, value.Day, 23, 59, 59);
+        }
     }
 }

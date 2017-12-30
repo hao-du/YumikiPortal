@@ -23,6 +23,32 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <returns>Report result with label/value</returns>
         public GetReportResponse GetTraceReport(GetReportRequest request)
         {
+            if(request.CurrencyID != Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
+            }
+
+            if(request.StartDate < request.EndDate)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be smaller than End Date.");
+            }
+
+            switch (request.ReportType)
+            {
+                case EN_ReportType.E_MONTH:
+                    request.StartDate = request.StartDate.GetStartDateOfMonth();
+                    request.EndDate = request.StartDate.GetEndDateOfMonth();
+                    break;
+                case EN_ReportType.E_YEAR:
+                    request.StartDate = request.StartDate.GetStartDateOfYear();
+                    request.EndDate = request.StartDate.GetEndDateOfYear();
+                    break;
+                case EN_ReportType.E_PERIOD:
+                    request.StartDate = request.StartDate.GetDateWithBeginOfDayTime();
+                    request.EndDate = request.StartDate.GetDateWithEndOfDayTime();
+                    break;
+            }
+
             return Repository.GetTraceReport(request);
         }
     }

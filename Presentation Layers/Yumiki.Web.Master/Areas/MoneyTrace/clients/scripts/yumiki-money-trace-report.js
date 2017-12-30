@@ -82,7 +82,7 @@
                             isReportTypeLoaded = true;
                             yumiki.moneyTrace.report.closeLoadingDialog(isCurrencyLoaded && isReportTypeLoaded && isTransactionTypeLoaded);
 
-                            $scope.updateDates();
+                            $scope.updateReportType();
 
                         }, function myError(response) {
                             isReportTypeLoaded = true;
@@ -109,8 +109,29 @@
                     );
                 };
 
-                //Update Start Date and End Date
-                $scope.updateDates = function () {
+                //Update Start Date and End Date on DateTime Input Changed
+                $scope.updateDates = function (index) {
+                    let startTime = moment($scope.requestObject.StartDate);
+                    let endTime = moment($scope.requestObject.EndDate);
+
+                    switch (index) {
+                        //Start Time Changed
+                        case 0:
+                            if (startTime > endTime) {
+                                $scope.requestObject.EndDate = moment($scope.requestObject.StartDate).endOf('month').format(yumiki.moneyTrace.report.longDateFormat);
+                            }
+                            break;
+                        //End Time Changed
+                        case 1:
+                            if (startTime > endTime) {
+                                $scope.requestObject.StartDate = moment($scope.requestObject.EndDate).startOf('month').format(yumiki.moneyTrace.report.longDateFormat);
+                            }
+                            break;
+                    }
+                }
+
+                //Update Start Date and End Date on Report Type Changed
+                $scope.updateReportType = function (type) {
                     $scope.isEndDateVisible = false;
                     $scope.startDateLabel = "Start Date";
 
