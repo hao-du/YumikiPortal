@@ -23,7 +23,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         /// <returns>Report result with label/value</returns>
         public GetReportResponse GetTraceReport(GetReportRequest request)
         {
-            if(request.CurrencyID != Guid.Empty)
+            if(request.CurrencyID == Guid.Empty)
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
             }
@@ -45,7 +45,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                     break;
                 case EN_ReportType.E_PERIOD:
                     request.StartDate = request.StartDate.GetDateWithBeginOfDayTime();
-                    request.EndDate = request.StartDate.GetDateWithEndOfDayTime();
+                    request.EndDate = request.EndDate.GetDateWithEndOfDayTime();
                     break;
             }
 

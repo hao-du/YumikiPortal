@@ -7,6 +7,9 @@ using Yumiki.Commons.Helpers;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
+using System.Linq.Expressions;
+using Yumiki.Commons.Database;
+using LinqKit;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
 {
@@ -19,50 +22,46 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         /// <returns>Report result with label/value</returns>
         public GetReportResponse GetTraceReport(GetReportRequest request)
         {
-            IQueryable<TB_Trace> reportData = Context.TB_Trace.Where(c => c.IsActive 
+            IQueryable<TB_Trace> reportData = Context.TB_Trace.Where(c => c.IsActive
                                                                         && c.UserID == request.UserID
                                                                         && c.CurrencyID == request.CurrencyID
-                                                                        && (request.StartDate < c.TraceDate && c.TraceDate < request.EndDate));
+                                                                        && (request.StartDate < c.TraceDate && c.TraceDate < request.EndDate))
+                                                              .AsExpandable();
 
-            if(!string.IsNullOrWhiteSpace(request.Tags))
+            if (!string.IsNullOrWhiteSpace(request.Tags))
             {
-                PredicateBuilder
+                //http://www.albahari.com/nutshell/predicatebuilder.aspx
+                //Use false for Or, true for And
+                Expression<Func<TB_Trace, bool>> tagExpression = PredicateBuilder.New<TB_Trace>(false);
 
-                foreach(string tag in request.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string tag in request.Tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    reportData = reportData.Where(c=>c.)
+                    tagExpression = tagExpression.Or(c => c.Tags.Contains(tag));
                 }
+
+                reportData = reportData.Where(tagExpression);
             }
 
-            switch (request.ReportType)
+            if(request.TransactionTypes != null && request.TransactionTypes.Any())
             {
-                case EN_ReportType.E_YEAR:
-                    break;
-                case EN_ReportType.E_PERIOD:
-                    break;
-                case EN_ReportType.E_MONTH:
-                    report = Context.TB_Trace.Where(c => c.IsActive
-                                            && c.UserID == request.UserID
-                                            && c.CurrencyID == request.CurrencyID
-                                            && (
-                                                    //Only INCOME, OUTCOME AND TRANSFER IS ACTUAL MONNEY
-                                                    c.TransactionType == EN_TransactionType.E_INCOME
-                                                    || c.TransactionType == EN_TransactionType.E_OUTCOME
-                                                    || c.TransactionType == EN_TransactionType.E_TRANSFER
-                                                ))
-                                    .AsEnumerable()
-                                    .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
-                                    .OrderBy(c=>c.Key)
-                                    .Select(c => new TraceReport() { Label = c.First().TraceDate.ToString(Formats.DateTime.ServerShortMonthYear)
-                                                                    , Value = c.Sum(d=>d.Amount)
-                                                                    });
-                    break;
+                Expression<Func<TB_Trace, bool>> transactionTypeExpression = PredicateBuilder.New<TB_Trace>(false);
+
+                foreach (EN_TransactionType transaction in request.TransactionTypes)
+                {
+                    transactionTypeExpression = transactionTypeExpression.Or(c => c.TransactionType == transaction);
+                }
+
+                reportData = reportData.Where(transactionTypeExpression);
             }
 
             return new GetReportResponse()
             {
-                Records = report
-            };
+                Records = reportData
+                                .AsEnumerable()
+                                .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
+                                .OrderBy(c => c.Key)
+                                .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount)))
+        };
         }
     }
 }

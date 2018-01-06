@@ -6,7 +6,7 @@
 @using Yumiki.Entity.MoneyTrace;
 
 @{
-    ViewBag.Title = "Report (Beta)";
+    ViewBag.Title = "Report";
 }
 
 @section Script{
@@ -26,7 +26,7 @@
                 '@GetReportRequest.FieldName.StartDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.Tags': '',
-                '@GetReportRequest.FieldName.TransactionType': '@CommonValues.EmptyValue'
+                '@GetReportRequest.FieldName.TransactionTypes': '@CommonValues.EmptyValue'
             },
             {
                 currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
@@ -117,7 +117,7 @@
                     <div class="form-group">
                         <label>Transaction Type</label>
                         <select class="form-control selectpicker" name="transactionType" multiple
-                                ng-model="requestObject.@GetReportRequest.FieldName.TransactionType"
+                                ng-model="requestObject.@GetReportRequest.FieldName.TransactionTypes"
                                 ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in transactionTypes">
                         </select>
                     </div>

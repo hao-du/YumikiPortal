@@ -55,7 +55,9 @@
     <Compile Include="Services\TraceService.cs" />
     <Compile Include="Services\CurrencyService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
       <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>

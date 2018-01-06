@@ -9,7 +9,13 @@ namespace Yumiki.Entity.MoneyTrace
 {
     public class TraceReport
     {
-        public string Label { get; set; }
-        public decimal Value { get; set; }
+        public TraceReport(string label, decimal value)
+        {
+            Label = label;
+            Value = value;
+        }
+
+        public string Label { get; private set; }
+        public decimal Value { get; private set; }
     }
 }

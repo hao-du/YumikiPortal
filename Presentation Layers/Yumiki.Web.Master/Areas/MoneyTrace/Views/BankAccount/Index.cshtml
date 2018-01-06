@@ -71,10 +71,11 @@
                             <tr>
                                 <th></th>
                                 <th>Bank</th>
-                                <th>Account Number</th>
-                                <th>Deposit Date</th>
+                                <th class="text-align-right">Account Number</th>
+                                <th class="text-align-right">Deposit Date</th>
+                                <th class="text-align-right">Withdraw Date</th>
+                                <th class="text-align-right">Amount</th>
                                 <th>Currency</th>
-                                <th>Descriptions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,9 +84,10 @@
                                     <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
                                 </td>
                                 <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
-                                <td>{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
-                                <td>{{ bankAccount.@TB_BankAccount.FieldName.DepositDateUI }}</td>
-                                <td>{{ bankAccount.@TB_BankAccount.FieldName.Amount | number:2 }}</td>
+                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
+                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.DepositDateUI }}</td>
+                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.WithdrawDateUI }}</td>
+                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.Amount | number:2 }}</td>
                                 <td>{{ bankAccount.@TB_Currency.FieldName.CurrencyShortName }}</td>
                             </tr>
                         </tbody>
