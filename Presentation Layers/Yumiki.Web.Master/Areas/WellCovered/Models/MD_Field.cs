@@ -181,6 +181,19 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
+        [Display(Name = "Allow Adding Attachments")]
+        public bool HasAttachments
+        {
+            get
+            {
+                return _internalItem.HasAttachments;
+            }
+            set
+            {
+                _internalItem.HasAttachments = value;
+            }
+        }
+
         public bool IsSystemField
         {
             get

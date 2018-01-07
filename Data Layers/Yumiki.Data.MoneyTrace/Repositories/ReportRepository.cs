@@ -61,7 +61,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                 .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
                                 .OrderBy(c => c.Key)
                                 .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount)))
-        };
+            };
         }
     }
 }
