@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
+﻿@model  Yumiki.Web.WellCovered.Models.MD_LiveRecord
 
 @{
     ViewBag.Title = "Edit Object";
@@ -10,8 +10,8 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        string objectID = ViewBag.ObjectID;
-        string recordID = ViewBag.RecordID;
+        string objectID = Model.ObjectID;
+        string recordID = Model.LiveRecordID;
 
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.ObjectID, objectID)
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.RecordID, recordID)
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model)
+        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model.Fields)
         {
             switch (field.FieldType)
             {
@@ -34,7 +34,7 @@
                                 @Html.Label(field.DisplayName)
                                 @if (field.FieldLength > 100)
                                 {
-                                    @Html.TextArea(field.ApiName, field.Value == null? string.Empty : field.Value.ToString(), new { @class = "form-control", @rows = 5 })
+                                    @Html.TextArea(field.ApiName, field.Value == null ? string.Empty : field.Value.ToString(), new { @class = "form-control", @rows = 5 })
                                 }
                                 else
                                 {
@@ -132,6 +132,42 @@
                     </div>
                     break;
             }
+        }
+    }
+
+    @using (Html.BeginForm("Upload", "Attachment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
+        <input name="objectID" type="hidden" value="@Model.ObjectID" />
+        <input name="file" type="file" />
+
+        <button type="submit" class="btn btn-link yumiki-btn-link">
+            <i class="fa fa-upload"></i>
+        </button>
+    }
+
+    @if (Model.Attachments != null)
+    {
+        foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model.Attachments)
+        {
+            <div class="row">
+                <div class="col-sm-1 col-sm-offset-3">
+                    @using (Html.BeginForm("Delete", "Attachment", FormMethod.Post))
+                    {
+                        <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />
+                        <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
+                        <input name="objectID" type="hidden" value="@Model.ObjectID" />
+                        <input name="attachmentID" type="hidden" value="@attachment.ID.ToString()" />
+
+                        <button type="submit" class="btn btn-link yumiki-btn-link">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                    }
+                </div>
+                <div class="col-sm-5">
+                    @attachment.AttachmentName
+                </div>
+            </div>
         }
     }
 </div>

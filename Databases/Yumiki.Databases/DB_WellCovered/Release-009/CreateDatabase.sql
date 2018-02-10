@@ -2,7 +2,7 @@
 	[ID] [uniqueidentifier] NOT NULL,
 	[AttachmentName] [nvarchar](50) NOT NULL,
 	[AttachmentPath] [ntext] NOT NULL,
-	[ReferenceObjectID] [uniqueidentifier] NOT NULL,
+	[LiveRecordID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,

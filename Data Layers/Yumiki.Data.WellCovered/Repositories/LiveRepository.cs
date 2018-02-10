@@ -843,5 +843,14 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             return parameter;
         }
+
+        /// <summary>
+        /// Get all attachments of a live record
+        /// </summary>
+        public IEnumerable<TB_Attachment> GetAttachments(Guid recordID)
+        {
+            IAttachmentRepository attachmentRepository = this.GetAlternativeRepository<IAttachmentRepository>();
+            return attachmentRepository.GetAllAttachments(recordID);
+        }
     }
 }

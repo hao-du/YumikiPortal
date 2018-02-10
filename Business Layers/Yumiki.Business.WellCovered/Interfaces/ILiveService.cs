@@ -63,5 +63,10 @@ namespace Yumiki.Business.WellCovered.Interfaces
         /// </summary>
         /// <param name="record"></param>
         void Update(string objectID, string recordID, Dictionary<string, string> inputFields);
+
+        /// <summary>
+        /// Get all attachments of a Live record
+        /// </summary>
+        IEnumerable<TB_Attachment> GetAttachments(string liveRecordID);
     }
 }

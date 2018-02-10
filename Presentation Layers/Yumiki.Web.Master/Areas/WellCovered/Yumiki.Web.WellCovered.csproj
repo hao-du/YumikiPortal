@@ -109,10 +109,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\LiveController.cs" />
     <Compile Include="Controllers\ObjectController.cs" />
+    <Compile Include="Models\MD_LiveRecord.cs" />
+    <Compile Include="Models\MD_Attachment.cs" />
     <Compile Include="Models\MD_Index.cs" />
     <Compile Include="Models\MD_App.cs" />
     <Compile Include="Models\MD_Field.cs" />

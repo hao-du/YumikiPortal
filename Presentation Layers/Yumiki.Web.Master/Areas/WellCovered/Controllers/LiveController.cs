@@ -72,27 +72,27 @@ namespace Yumiki.Web.WellCovered.Controllers
         // GET: App/Create
         public ActionResult Create(string objectID)
         {
-            IEnumerable<MD_Field> fields = new List<MD_Field>();
+            MD_LiveRecord liveRecord = new MD_LiveRecord();
             try
             {
-                fields = BusinessService.GetFields(objectID).Select(c => new MD_Field(c));
+                liveRecord.Fields = BusinessService.GetFields(objectID).Select(c => new MD_Field(c));
 
-                MD_Field isActiveField = fields.Where(c => c.ApiName.Equals(CommonProperties.IsActive, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+                MD_Field isActiveField = liveRecord.Fields.Where(c => c.ApiName.Equals(CommonProperties.IsActive, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                 if(isActiveField != null)
                 {
                     isActiveField.Value = true;
                 }
 
-                InitDataSource(fields);
+                InitDataSource(liveRecord.Fields);
             }
             catch (Exception ex)
             {
                 SendError(ex);
             }
 
-            ViewBag.ObjectID = objectID;
+            liveRecord.ObjectID = objectID;
 
-            return View(fields);
+            return View(liveRecord);
         }
 
         // POST: App/Create
@@ -121,34 +121,38 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            ViewBag.ObjectID = objectID;
+            MD_LiveRecord liveRecord = new MD_LiveRecord();
 
-            IEnumerable<MD_Field> fields = SetFieldValues(formCollection);
+            liveRecord.ObjectID = objectID;
 
-            InitDataSource(fields);
+            liveRecord.Fields = SetFieldValues(formCollection);
+            InitDataSource(liveRecord.Fields);
 
-            return View(fields);
+            return View(liveRecord);
         }
 
         // GET: App/Edit
         public ActionResult Edit(string objectID, string recordID)
         {
-            IEnumerable<MD_Field> fields = new List<MD_Field>();
+            MD_LiveRecord liveRecord = new MD_LiveRecord();
+
             try
             {
-                fields = BusinessService.GetFieldsByID(objectID, recordID).Select(c => new MD_Field(c));
+                liveRecord.ObjectID = objectID;
+                liveRecord.LiveRecordID = recordID;
 
-                InitDataSource(fields);
+                liveRecord.Fields = BusinessService.GetFieldsByID(objectID, recordID).Select(c => new MD_Field(c));
+                InitDataSource(liveRecord.Fields);
+
+                //Get all attachments from object
+                liveRecord.Attachments = BusinessService.GetAttachments(recordID).Select(c => new MD_Attachment(c));
             }
             catch (Exception ex)
             {
                 SendError(ex);
             }
 
-            ViewBag.ObjectID = objectID;
-            ViewBag.RecordID = recordID;
-
-            return View(fields);
+            return View(liveRecord);
         }
 
         // POST: App/Edit
@@ -179,14 +183,18 @@ namespace Yumiki.Web.WellCovered.Controllers
                 SendError(ex);
             }
 
-            ViewBag.ObjectID = objectID;
-            ViewBag.RecordID = recordID;
+            MD_LiveRecord liveRecord = new MD_LiveRecord();
 
-            IEnumerable<MD_Field> fields = SetFieldValues(formCollection);
+            liveRecord.ObjectID = objectID;
+            liveRecord.LiveRecordID = recordID;
 
-            InitDataSource(fields);
+            liveRecord.Fields = SetFieldValues(formCollection);
+            InitDataSource(liveRecord.Fields);
 
-            return View(fields);
+            //Get all attachments from object
+            liveRecord.Attachments = BusinessService.GetAttachments(recordID).Select(c => new MD_Attachment(c));
+
+            return View(liveRecord);
         }
 
         /// <summary>

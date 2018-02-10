@@ -28,9 +28,9 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
             }
 
-            if(request.StartDate < request.EndDate)
+            if(request.StartDate > request.EndDate)
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be smaller than End Date.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.");
             }
 
             switch (request.ReportType)
