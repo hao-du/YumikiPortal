@@ -21,10 +21,16 @@ namespace Yumiki.Commons.Dictionaries
             public const string Path = "path";
         }
 
-        public class Pages
+        public class RouteNames
         {
             public const string WebFormMasterPrefix = "Pages";
             public const string WebFormAreaPrefix = "Apps";
+            public const string WebHandlerAreaPrefix = "Handlers";
+        }
+
+        public class Pages
+        {
+            public const string Downloader = "Downloader";
         }
     }
 }

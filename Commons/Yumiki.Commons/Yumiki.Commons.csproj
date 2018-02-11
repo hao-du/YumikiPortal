@@ -95,6 +95,7 @@
     <Compile Include="Security\Crypto.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\CurrentUser.cs" />
+    <Compile Include="Storage\FileSystem.cs" />
     <Compile Include="Unity\Dependency.cs" />
   </ItemGroup>
   <ItemGroup>

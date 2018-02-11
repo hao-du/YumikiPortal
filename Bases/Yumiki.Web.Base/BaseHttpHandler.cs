@@ -1,21 +1,29 @@
-﻿using Yumiki.Commons.Dictionaries;
+﻿using System;
+using System.Collections;
+using System.Text;
+using System.Web.UI;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Logging;
-using Yumiki.Commons.Settings;
 using Yumiki.Commons.Unity;
+using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Settings;
+using System.Web;
+using System.Web.Routing;
+using System.Web.Compilation;
 
 namespace Yumiki.Web.Base
 {
     /// <summary>
-    /// Parent class for all ASP.NET Webform master pages.
+    /// Parent class for all ASP.NET Webform pages.
     /// </summary>
-    public class MasterBasePage<T> : System.Web.UI.MasterPage
+    public class HttpHandler<T> : IHttpHandler
     {
         private Logger _logger;
         public Logger Logger
         {
             get
             {
-                if (_logger == null)
+                if(_logger == null)
                 {
                     _logger = new Logger(GetType());
                 }
@@ -47,26 +55,34 @@ namespace Yumiki.Web.Base
                 if (_service == null)
                 {
                     // Get domain name which contains the current page such as "SampleWebsite" in "Yumiki.Web.SampleWebsite" (index = 2)
-                    string containerName = this.GetType().BaseType.FullName.Split('.')[2];
+                    string containerName = this.GetType().FullName.Split('.')[2];
                     _service = Dependency.GetService(containerName);
                 }
                 return _service;
             }
         }
 
-        /// <summary>
-        /// Redirect to login page
-        /// </summary>
-        protected void RedirectToLoginPage(bool hasQueryString = true)
+        public bool IsReusable
         {
-            if (hasQueryString)
+            get
             {
-                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.RouteNames.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
+                return false;
             }
-            else
+        }
+
+        public void ProcessRequest(HttpContext context)
+        {
+            if (!CurrentUser.IsAuthenticated)
             {
-                Response.Redirect(string.Format("/{0}{1}", HttpConstants.RouteNames.WebFormMasterPrefix, SystemSettings.LoginPage));
+                throw new YumikiException(ExceptionCode.E_NO_SESSION, "No Authentication sufficient.");
             }
+
+            StartProcess(context);
+        }
+
+        public virtual void StartProcess(HttpContext context)
+        {
+
         }
     }
 }

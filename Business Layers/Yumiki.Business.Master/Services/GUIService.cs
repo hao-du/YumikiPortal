@@ -56,7 +56,7 @@ namespace Yumiki.Business.Master.Services
                     path = string.Format("/{0}", path);
                 }
                 //Append URL Prefix such as "/Apps/ApplicationName/PageName/[Action]", prefix is mandatory for URL Routing.
-                string urlPrefix = string.Format("/{0}", HttpConstants.Pages.WebFormAreaPrefix);
+                string urlPrefix = string.Format("/{0}", HttpConstants.RouteNames.WebFormAreaPrefix);
                 if (!path.ToLowerInvariant().StartsWith(urlPrefix.ToLowerInvariant()))
                 {
                     path = string.Format("{0}{1}", urlPrefix, path);

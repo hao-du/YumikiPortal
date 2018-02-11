@@ -121,6 +121,9 @@
     <Compile Include="Models\MD_Field.cs" />
     <Compile Include="Models\MD_Object.cs" />
     <Compile Include="Validations\IsRequiredWithDependencyAttribute.cs" />
+    <Compile Include="WellCoveredDownloader.ashx.cs">
+      <DependentUpon>WellCoveredDownloader.ashx</DependentUpon>
+    </Compile>
     <Compile Include="WellCoveredAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -186,6 +189,7 @@
     <Content Include="Views\Live\Edit.cshtml" />
     <Content Include="Views\Shared\_WellCoveredInclude.cshtml" />
     <Content Include="Views\Live\Search.cshtml" />
+    <Content Include="WellCoveredDownloader.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

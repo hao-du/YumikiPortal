@@ -18,6 +18,13 @@ namespace Yumiki.Data.WellCovered.Interfaces
         IEnumerable<TB_Attachment> GetAllAttachments(Guid recordID);
 
         /// <summary>
+        /// Return specific attachment by id
+        /// </summary>
+        /// <param name="id">TB_Attachment Guid ID</param>
+        /// <returns>Result with TB_Attachment type</returns>
+        TB_Attachment GetAttachmentByID(Guid id);
+
+        /// <summary>
         /// Save attachment to DB
         /// </summary>
         /// <param name="attachment">

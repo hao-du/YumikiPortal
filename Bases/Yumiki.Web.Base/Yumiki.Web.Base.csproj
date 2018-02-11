@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="BaseApiController.cs" />
     <Compile Include="BaseController.cs" />
+    <Compile Include="HttpHandlerRoute.cs" />
+    <Compile Include="BaseHttpHandler.cs" />
     <Compile Include="BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -137,13 +137,21 @@
 
     @using (Html.BeginForm("Upload", "Attachment", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
-        <input name="objectID" type="hidden" value="@Model.ObjectID" />
-        <input name="file" type="file" />
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
+                <input name="objectID" type="hidden" value="@Model.ObjectID" />
 
-        <button type="submit" class="btn btn-link yumiki-btn-link">
-            <i class="fa fa-upload"></i>
-        </button>
+                <div class="input-group">
+                    <input name="file" type="file" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-link">
+                            <i class="fa fa-upload"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
     }
 
     @if (Model.Attachments != null)
@@ -159,13 +167,13 @@
                         <input name="objectID" type="hidden" value="@Model.ObjectID" />
                         <input name="attachmentID" type="hidden" value="@attachment.ID.ToString()" />
 
-                        <button type="submit" class="btn btn-link yumiki-btn-link">
+                        <button type="submit" class="btn btn-link">
                             <i class="fa fa-remove"></i>
                         </button>
                     }
                 </div>
                 <div class="col-sm-5">
-                    @attachment.AttachmentName
+                    <a class="btn btn-link" href='@string.Format("/{0}/{1}/{2}?id={3}", Yumiki.Commons.Dictionaries.HttpConstants.RouteNames.WebHandlerAreaPrefix, "WellCovered", Yumiki.Commons.Dictionaries.HttpConstants.Pages.Downloader, @attachment.ID)'>@attachment.AttachmentName</a>
                 </div>
             </div>
         }

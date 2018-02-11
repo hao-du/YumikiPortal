@@ -23,6 +23,16 @@ namespace Yumiki.Data.WellCovered.Repositories
         }
 
         /// <summary>
+        /// Return specific attachment by id
+        /// </summary>
+        /// <param name="id">TB_Attachment Guid ID</param>
+        /// <returns>Result with TB_Attachment type</returns>
+        public TB_Attachment GetAttachmentByID(Guid id)
+        {
+            return Context.TB_Attachment.SingleOrDefault(c => c.ID == id);
+        }
+
+        /// <summary>
         /// Save attachment to DB
         /// </summary>
         /// <param name="attachment">
@@ -31,25 +41,19 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </param>
         public void Save(TB_Attachment attachment)
         {
-            if (attachment.ID == Guid.Empty)
+            TB_Attachment dbAttachment = Context.TB_Attachment.SingleOrDefault(c => c.ID == attachment.ID);
+
+            if (dbAttachment == null)
             {
                 Context.TB_Attachment.Add(attachment);
             }
-            else
+            else if (!attachment.IsActive)
             {
-                TB_Attachment dbAttachment = Context.TB_Attachment.Single(c => c.ID == attachment.ID);
+                //Assing missing value to let caller handle.
+                attachment.AttachmentName = dbAttachment.AttachmentName;
+                attachment.AttachmentPath = dbAttachment.AttachmentPath;
 
-                if (!attachment.IsActive)
-                {
-                    Context.TB_Attachment.Remove(dbAttachment);
-                }
-                else
-                {
-                    dbAttachment.AttachmentName = attachment.AttachmentName;
-                    dbAttachment.AttachmentPath = attachment.AttachmentPath;
-                    dbAttachment.LiveRecordID = attachment.LiveRecordID;
-                    dbAttachment.Descriptions = attachment.Descriptions;
-                }
+                Context.TB_Attachment.Remove(dbAttachment);
             }
 
             Save();

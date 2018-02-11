@@ -19,10 +19,9 @@ namespace Yumiki.Web.WellCovered.Controllers
             {
                 MD_Attachment attachment = new MD_Attachment();
                 attachment.AttachmentName = file.FileName;
-                attachment.FilePath = file.FileName;
                 attachment.LiveRecordID = Guid.Parse(recordID);
 
-                BusinessService.Save(attachment.ToObject());
+                BusinessService.Save(attachment.ToObject(), SystemSettings.DefaultUploadFolderPath, file.InputStream);
             }
             catch (Exception ex)
             {
@@ -39,9 +38,8 @@ namespace Yumiki.Web.WellCovered.Controllers
             {
                 MD_Attachment attachment = new MD_Attachment();
                 attachment.ID = Guid.Parse(attachmentID);
-                attachment.IsActive = false;
 
-                BusinessService.Save(attachment.ToObject());
+                BusinessService.Delete(attachment.ToObject(), SystemSettings.DefaultUploadFolderPath);
             }
             catch (Exception ex)
             {

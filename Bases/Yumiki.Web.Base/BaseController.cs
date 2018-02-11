@@ -99,11 +99,11 @@ namespace Yumiki.Web.Base
         {
             if (hasQueryString)
             {
-                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
+                return Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.RouteNames.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Url));
             }
             else
             {
-                return Redirect(string.Format("/{0}{1}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage));
+                return Redirect(string.Format("/{0}{1}", HttpConstants.RouteNames.WebFormMasterPrefix, SystemSettings.LoginPage));
             }
         }
 
