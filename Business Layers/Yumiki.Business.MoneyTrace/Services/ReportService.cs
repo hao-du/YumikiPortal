@@ -28,11 +28,6 @@ namespace Yumiki.Business.MoneyTrace.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
             }
 
-            if(request.StartDate > request.EndDate)
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.");
-            }
-
             switch (request.ReportType)
             {
                 case EN_ReportType.E_MONTH:
@@ -47,6 +42,11 @@ namespace Yumiki.Business.MoneyTrace.Services
                     request.StartDate = request.StartDate.GetDateWithBeginOfDayTime();
                     request.EndDate = request.EndDate.GetDateWithEndOfDayTime();
                     break;
+            }
+
+            if (request.StartDate > request.EndDate)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.");
             }
 
             return Repository.GetTraceReport(request);
