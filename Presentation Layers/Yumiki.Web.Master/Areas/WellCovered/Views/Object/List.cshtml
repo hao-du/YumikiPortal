@@ -63,7 +63,7 @@
                                 {
                                     @Html.Hidden("objectID", item.ID.ToString())
                                     @Html.Hidden(Constants.AppID, Request.QueryString[Constants.AppID])
-                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');" title="Publish"><span class="fa fa-cubes"></span></a>
+                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');" title="Publish"><span class="fa fa-cloud-upload"></span></a>
                                 }
                                 <span class="yumiki-separator-vbar"></span>
                                 @Html.ActionLink(" ", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { target = "_blank", @class = "fa fa-dashboard", title = "View Dashboard" })

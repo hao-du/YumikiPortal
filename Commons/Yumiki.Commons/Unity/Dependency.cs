@@ -1,11 +1,12 @@
-﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+﻿using CommonServiceLocator;
 using Microsoft.Practices.Unity.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
+using Unity.ServiceLocation;
 
 namespace Yumiki.Commons.Unity
 {

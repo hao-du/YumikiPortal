@@ -36,6 +36,8 @@ namespace Yumiki.Entity.WellCovered
         /// </summary>
         public bool CanIndex { get; set; }
 
+        public bool HasAttachments { get; set; }
+
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public virtual TB_Object Object { get; set; }

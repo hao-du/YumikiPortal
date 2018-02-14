@@ -135,6 +135,9 @@
                 $scope.bankAccountID = undefined;
                 $scope.isActiveCheckboxDisabled = false;
 
+                //Check whether Account to withdraw time to enable "Withdraw" button.
+                $scope.isWithdrawDisabled = false;
+
                 //Used to be called by other controllers.
                 $rootScope.$on('OnLoad', function (event, bankAccountID) {
                     $('#dlgBankAccount').modal({ backdrop: 'static' });
@@ -151,6 +154,9 @@
                                 $scope.bankAccount = response.data;
 
                                 $scope.bankAccount.WithdrawDate = moment($scope.bankAccount.WithdrawDate).format(longDateFormat);
+
+                                //Check if WithdrawDate is equal to today
+                                $scope.isWithdrawDisabled = !moment($scope.bankAccount.WithdrawDate).isSameOrBefore(moment(), 'day');
 
                                 yumiki.message.displayLoadingDialog(false);
 

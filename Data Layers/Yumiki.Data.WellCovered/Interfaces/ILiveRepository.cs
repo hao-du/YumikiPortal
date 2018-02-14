@@ -83,5 +83,10 @@ namespace Yumiki.Data.WellCovered.Interfaces
         /// </summary>
         /// <param name="record"></param>
         void Update(Guid objectID, Guid recordID, IEnumerable<TB_Field> record);
+
+        /// <summary>
+        /// Get all attachments of a live record
+        /// </summary>
+        IEnumerable<TB_Attachment> GetAttachments(Guid recordID);
     }
 }

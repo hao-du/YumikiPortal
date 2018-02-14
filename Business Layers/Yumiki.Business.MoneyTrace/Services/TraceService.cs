@@ -7,6 +7,7 @@ using Yumiki.Business.MoneyTrace.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
+using Yumiki.Commons.Settings;
 using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
@@ -140,6 +141,9 @@ namespace Yumiki.Business.MoneyTrace.Services
                     traceID = SaveTrace(trace, true);
                     break;
                 //Two way transaction, withdraw money from personal wallet and deposite to Bank, save 2 records with GroupTokenId to reconize the trace relationship.
+                //Example for creating a Banking transaction:
+                //Deposite to ABC Bank 3000$ --> Create E_BANKING transaction 3000$ and E_OUTCOME -3000$
+                //Withdraw from ABC Bank 3000$ --> Create E_BANKING transaction -3000$ and E_INCOME 3000$
                 case EN_TransactionType.E_BANKING:
                     if (!trace.BankID.HasValue || trace.BankID.Value == Guid.Empty)
                     {
@@ -281,6 +285,12 @@ namespace Yumiki.Business.MoneyTrace.Services
                 || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMaxDate())
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.");
+            }
+
+            if (bankAccount.WithdrawDate.Value.Date > DateTimeExtension.GetUserCurrentDatetime(CurrentUser.TimeZone))
+            {
+                throw new YumikiException(ExceptionCode.E_INVALID_VALUE
+                                        , string.Format("You cannot withdraw money on {0}.", bankAccount.WithdrawDate.Value.ToString(Formats.DateTime.LongDate)));
             }
 
             if (interestTraceRequest != null && bankAccount.Interest < decimal.Zero)

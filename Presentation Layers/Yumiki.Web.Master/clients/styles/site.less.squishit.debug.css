@@ -59,6 +59,9 @@ table thead tr {
 .yumiki-separator-vbar:before {
   content: "|";
 }
+.yumiki-btn-link {
+  padding: 0;
+}
 .ui-front {
   z-index: 2048 !important;
 }

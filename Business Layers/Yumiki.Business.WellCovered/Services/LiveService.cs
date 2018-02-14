@@ -272,5 +272,20 @@ namespace Yumiki.Business.WellCovered.Services
 
             return dbFields;
         }
+
+        /// <summary>
+        /// Get all attachments of a Live record
+        /// </summary>
+        public IEnumerable<TB_Attachment> GetAttachments(string liveRecordID)
+        {
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(liveRecordID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Object ID must be GUID type.", Logger);
+            }
+
+            return Repository.GetAttachments(convertedID);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
+﻿@model  Yumiki.Web.WellCovered.Models.MD_LiveRecord
 
 @{
     ViewBag.Title = "Create Object";
@@ -10,7 +10,7 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        string objectID = ViewBag.ObjectID;
+        string objectID = Model.ObjectID;
 
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.ObjectID, objectID)
 
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model)
+        foreach (Yumiki.Web.WellCovered.Models.MD_Field field in Model.Fields)
         {
             switch (field.FieldType)
             {

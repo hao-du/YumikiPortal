@@ -17,7 +17,7 @@ namespace Yumiki.Web.MoneyTrace
         {
             context.MapRoute(
                 "MoneyTrace_default",
-                string.Format("{0}/{1}/{2}", HttpConstants.Pages.WebFormAreaPrefix, AreaName, "{controller}/{action}/{id}"),
+                string.Format("{0}/{1}/{2}", HttpConstants.RouteNames.WebFormAreaPrefix, AreaName, "{controller}/{action}/{id}"),
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

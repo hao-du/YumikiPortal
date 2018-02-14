@@ -94,17 +94,21 @@ namespace Yumiki.Data.Base
         /// </summary>
         /// <param name="entity">EF object</param>
         /// <param name="isNew">Base on this condition to determine the appropriate values for new/exiting values</param>
-        protected void AssginBaseProperties(IEntity entity)
+        protected void AssginBaseProperties(IEntity entity, EntityState state)
         {
-            if (entity.ID == Guid.Empty)
+            switch (state)
             {
-                entity.ID = Guid.NewGuid();
-                entity.LastUpdateDate = entity.CreateDate = DateTimeExtension.GetSystemDatetime();
-                entity.IsActive = true;
-            }
-            else
-            {
-                entity.LastUpdateDate = DateTimeExtension.GetSystemDatetime();
+                case EntityState.Added:
+                    if (entity.ID == Guid.Empty)
+                    {
+                        entity.ID = Guid.NewGuid();
+                    }
+                    entity.LastUpdateDate = entity.CreateDate = DateTimeExtension.GetSystemDatetime();
+                    entity.IsActive = true;
+                    break;
+                case EntityState.Modified:
+                    entity.LastUpdateDate = DateTimeExtension.GetSystemDatetime();
+                    break;
             }
         }
 
@@ -120,7 +124,7 @@ namespace Yumiki.Data.Base
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
                 {
                     IEntity entity = (IEntity)entry.Entity;
-                    AssginBaseProperties(entity);
+                    AssginBaseProperties(entity, entry.State);
                 }
             }
 

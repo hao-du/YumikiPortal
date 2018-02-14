@@ -17,6 +17,7 @@ namespace Yumiki.Entity.WellCovered
         public virtual DbSet<TB_Object> TB_Object { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
         public virtual DbSet<TB_Index> TB_Index { get; set; }
+        public virtual DbSet<TB_Attachment> TB_Attachment { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

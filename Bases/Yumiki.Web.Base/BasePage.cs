@@ -170,7 +170,7 @@ namespace Yumiki.Web.Base
             if (!CurrentUser.IsAuthenticated)   
             {
                 this.Logger.Infomation(string.Format("No Session from IP: {0}, Browser: {1}, Website URL: {2}.", Request.UserHostAddress, Request.UserAgent, Request.Url));
-                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.Pages.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
+                Response.Redirect(string.Format("/{0}{1}?{2}={3}", HttpConstants.RouteNames.WebFormMasterPrefix, SystemSettings.LoginPage, HttpConstants.QueryStrings.Path, Request.Path));
             }
         }
     }

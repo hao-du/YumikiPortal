@@ -12,5 +12,6 @@ namespace Yumiki.Commons.Settings
     public class SystemSettings
     {
         public static string LoginPage { get; set; }
+        public static string DefaultUploadFolderPath { get; set; }
     }
 }

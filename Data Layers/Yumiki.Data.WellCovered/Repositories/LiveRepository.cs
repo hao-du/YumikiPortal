@@ -177,7 +177,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             foreach (DataRow row in live.Datasource)
             {
                 StringBuilder displayContents = new StringBuilder();
-                displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
+                displayContents.AppendFormat("<b>App Name</b>:{0}<br/><b>Object Name</b>:{1}", obj.AppName, obj.DisplayName);
 
                 StringBuilder fullTextIndex = new StringBuilder();
                 fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
@@ -605,7 +605,7 @@ namespace Yumiki.Data.WellCovered.Repositories
             pamameters.Add(new SqlParameter() { ParameterName = string.Format("@{0}", CommonProperties.LastUpdateDate), Value = DateTimeExtension.GetSystemDatetime(), SqlDbType = SqlDbType.DateTime });
 
             StringBuilder displayContents = new StringBuilder();
-            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
+            displayContents.AppendFormat("<b>App Name</b>:{0}<br/><b>Object Name</b>:{1}", obj.AppName, obj.DisplayName);
 
             StringBuilder fullTextIndex = new StringBuilder();
             fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
@@ -647,7 +647,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             //For Full Text Search
             StringBuilder displayContents = new StringBuilder();
-            displayContents.AppendFormat("<b>App Name</b>:{0} - <b>Object Name</b>:{1}<br/>", obj.AppName, obj.DisplayName);
+            displayContents.AppendFormat("<b>App Name</b>:{0}<br/><b>Object Name</b>:{1}", obj.AppName, obj.DisplayName);
 
             StringBuilder fullTextIndex = new StringBuilder();
             fullTextIndex.AppendFormat("{0} {1} {2} ", obj.ObjectName, obj.DisplayName, obj.ApiName);
@@ -742,7 +742,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             if (field.IsDisplayable)
             {
-                displayContents.AppendFormat("<b>{0}</b>:{1} - ", field.FieldName, valueAsString);
+                displayContents.AppendFormat("<br/><b>{0}</b>:{1}", field.FieldName, valueAsString);
             }
             if (field.CanIndex)
             {
@@ -842,6 +842,15 @@ namespace Yumiki.Data.WellCovered.Repositories
             }
 
             return parameter;
+        }
+
+        /// <summary>
+        /// Get all attachments of a live record
+        /// </summary>
+        public IEnumerable<TB_Attachment> GetAttachments(Guid recordID)
+        {
+            IAttachmentRepository attachmentRepository = this.GetAlternativeRepository<IAttachmentRepository>();
+            return attachmentRepository.GetAllAttachments(recordID);
         }
     }
 }

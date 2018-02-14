@@ -30,6 +30,7 @@
         .Add("~/third-party-clients/moment-js-2.18.1/moment.min.js")
         .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.js")
         .Add("~/third-party-clients/mark-js-8.9.1/jquery.mark.min.js")
+        .Add("~/third-party-clients/chart-js-2.7.0/chart.min.js")
         .Add("~/clients/scripts/yumiki.js")
         .Add("~/clients/scripts/yumiki-webform.js")
         .Add("~/clients/scripts/yumiki-angular.js")
