@@ -237,7 +237,7 @@
             };
 
             yumiki.moneyTrace.report.chart = new Chart(reportControlID, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: [],
                     datasets: [{

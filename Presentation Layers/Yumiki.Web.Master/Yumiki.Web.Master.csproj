@@ -164,7 +164,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\SampleArea\Sample.aspx" />
     <Content Include="clients\scripts\init.js" />
     <Content Include="clients\scripts\yumiki-webform.js" />
     <Content Include="clients\scripts\yumiki-webform-validation.js" />
@@ -205,15 +204,6 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\SampleArea\Controllers\SampleController.cs" />
-    <Compile Include="Areas\SampleArea\Sample.aspx.cs">
-      <DependentUpon>Sample.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Areas\SampleArea\Sample.aspx.designer.cs">
-      <DependentUpon>Sample.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\SampleArea\SampleAreaAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -243,21 +233,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="Areas\SampleArea\Views\web.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Site.Master" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Areas\SampleArea\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\SampleArea\Views\Sample\Index.cshtml" />
     <Content Include="Views\Home\GetMenu.cshtml" />
     <Content Include="App_Config\Unity.config" />
     <Content Include="App_Config\Yumiki.config">
       <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
     </Content>
     <Content Include="App_Config\NLog.config" />
     <Content Include="packages.config" />
-    <Content Include="App_Config\ConnectionString.config" />
+    <Content Include="App_Config\ConnectionString.config">
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
     <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff" />
@@ -267,6 +257,24 @@
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.woff2" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\FontAwesome.otf" />
+    <None Include="App_Config\ConnectionString.Debug.config">
+      <DependentUpon>ConnectionString.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App_Config\ConnectionString.Release.config">
+      <DependentUpon>ConnectionString.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App_Config\Yumiki.Debug.config">
+      <DependentUpon>Yumiki.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App_Config\Yumiki.Release.config">
+      <DependentUpon>Yumiki.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="Properties\PublishProfiles\Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -275,7 +283,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\SampleArea\Models\" />
+    <Folder Include="Areas\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Web.Base\Yumiki.Web.Base.csproj">
@@ -326,7 +334,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets'))" />
   </Target>
+  <Import Project="..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

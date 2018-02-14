@@ -44,6 +44,11 @@ namespace Yumiki.Business.MoneyTrace.Services
                     break;
             }
 
+            if(request.TransactionTypes == null || !request.TransactionTypes.Any())
+            {
+                request.TransactionTypes = new EN_TransactionType[] { EN_TransactionType.E_INCOME, EN_TransactionType.E_OUTCOME, EN_TransactionType.E_TRANSFER  };
+            }
+
             if (request.StartDate > request.EndDate)
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.");

@@ -15,6 +15,7 @@ namespace Yumiki.Entity.MoneyTrace.ServiceObjects
         public EN_TransactionType[] TransactionTypes { get; set; }
         public Guid UserID { get; set; }
         public Guid CurrencyID { get; set; }
+        public bool CalculateTotal { get; set; }
 
         public class FieldName
         {
@@ -24,6 +25,7 @@ namespace Yumiki.Entity.MoneyTrace.ServiceObjects
             public const string Tags = "Tags";
             public const string TransactionTypes = "TransactionTypes";
             public const string CurrencyID = "CurrencyID";
+            public const string CalculateTotal = "CalculateTotal";
         }
     }
 }

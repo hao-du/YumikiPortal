@@ -159,7 +159,7 @@
         foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model.Attachments)
         {
             <div class="row">
-                <div class="col-sm-1 col-sm-offset-3">
+                <div class="col-xs-1 col-sm-offset-3">
                     @using (Html.BeginForm("Delete", "Attachment", FormMethod.Post))
                     {
                         <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />
@@ -172,7 +172,7 @@
                         </button>
                     }
                 </div>
-                <div class="col-sm-5">
+                <div class="col-xs-5">
                     <a class="btn btn-link" href='@string.Format("/{0}/{1}/{2}?id={3}", Yumiki.Commons.Dictionaries.HttpConstants.RouteNames.WebHandlerAreaPrefix, "WellCovered", Yumiki.Commons.Dictionaries.HttpConstants.Pages.Downloader, @attachment.ID)'>@attachment.AttachmentName</a>
                 </div>
             </div>

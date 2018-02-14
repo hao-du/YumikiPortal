@@ -17,7 +17,7 @@
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
-    <script type="text/javascript">
+<script type="text/javascript">
         yumiki.moneyTrace.report.initReport(
             'cvReportChart',
             {
@@ -26,7 +26,8 @@
                 '@GetReportRequest.FieldName.StartDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.Tags': '',
-                '@GetReportRequest.FieldName.TransactionTypes': '@CommonValues.EmptyValue'
+                '@GetReportRequest.FieldName.TransactionTypes': '@CommonValues.EmptyValue',
+                '@GetReportRequest.FieldName.CalculateTotal': false
             },
             {
                 currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
@@ -44,7 +45,7 @@
             '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate',
             '@Yumiki.Commons.Logging.LogLevel.ERROR'
         )
-    </script>
+</script>
 }
 
 <div ng-app="report">
@@ -64,8 +65,7 @@
                         <select class="form-control selectpicker" name="reportType" ng-required="true"
                                 ng-model="requestObject.@GetReportRequest.FieldName.ReportType"
                                 ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes"
-                                ng-change="updateReportType()">
-                        </select>
+                                ng-change="updateReportType()"></select>
                         <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="help-block">Report Type is required.</p>
                     </div>
                 </div>
@@ -86,12 +86,12 @@
                     <div class="form-group">
                         <label>{{startDateLabel}}</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" ng-change="updateDates(0)">
-                            <input type="text" name="startDate" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" class="form-control"/>
+                            <input type="text" name="startDate" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" class="form-control" />
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
                         </div>
- 
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -118,13 +118,25 @@
                         <label>Transaction Type</label>
                         <select class="form-control selectpicker" name="transactionType" multiple
                                 ng-model="requestObject.@GetReportRequest.FieldName.TransactionTypes"
-                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in transactionTypes">
-                        </select>
+                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in transactionTypes"></select>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span class="checkbox">
+                            <input type="checkbox" ng-model="requestObject.@GetReportRequest.FieldName.CalculateTotal" ng-checked="requestObject.@GetReportRequest.FieldName.CalculateTotal" />
+                            <label><b>Calculate Only Total Amount</b></label>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
                 </div>
             </div>
         </form>
         <div class="row" ng-show="showReport">
+            <hr />
             <div class="col-md-12">
                 <canvas id="cvReportChart"></canvas>
             </div>

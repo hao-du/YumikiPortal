@@ -48,10 +48,40 @@ namespace Yumiki.Data.MoneyTrace.Repositories
 
                 foreach (EN_TransactionType transaction in request.TransactionTypes)
                 {
-                    transactionTypeExpression = transactionTypeExpression.Or(c => c.TransactionType == transaction);
+                    switch (transaction)
+                    {
+                        case EN_TransactionType.E_BANKING:
+                            transactionTypeExpression = transactionTypeExpression.Or(c => c.TransactionType == EN_TransactionType.E_INCOME
+                                                                                        && c.BankID != null
+                                                                                        && c.GroupTokenID != null
+                                                                                    );
+                            break;
+                        case EN_TransactionType.E_EXCHANGE:
+                            transactionTypeExpression = transactionTypeExpression.Or(c => (c.TransactionType == EN_TransactionType.E_INCOME || c.TransactionType == EN_TransactionType.E_OUTCOME)
+                                                                                        && c.BankID == null
+                                                                                        && c.GroupTokenID != null
+                                                                                    );
+                            break;
+                        default:
+                            transactionTypeExpression = transactionTypeExpression.Or(c => c.TransactionType == transaction);
+                            break;
+                    }
                 }
 
                 reportData = reportData.Where(transactionTypeExpression);
+            }
+
+            if (request.CalculateTotal)
+            {
+                decimal totalAmount = reportData.Sum(c => c.Amount);
+
+                List<TraceReport> summaryRecord = new List<TraceReport>();
+                summaryRecord.Add(new TraceReport(request.StartDate.ToString(Formats.DateTime.ServerShortYearMonth), totalAmount));
+
+                return new GetReportResponse()
+                {
+                    Records = summaryRecord
+                };
             }
 
             return new GetReportResponse()
@@ -60,7 +90,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                 .AsEnumerable()
                                 .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
                                 .OrderBy(c => c.Key)
-                                .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount)))
+                                .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount))).ToList()
             };
         }
     }
