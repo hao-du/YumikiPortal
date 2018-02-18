@@ -2,16 +2,16 @@
 
 ## OVERVIEW: ##
 
-Yumiki Portal is an web application which is able to integrate multiple kinds of sub-applications into a signle project with well design partern.
+Yumiki Portal is a web portal which is able to integrate multiple kinds of applications into a single project with well design partern.
 
 ## SYSTEM PRE-REQUISITES: ##
-* Visual Studio 2017.1
-* SQL Server 2016
+* Visual Studio 2017 15.5
+* SQL Server 2016 or above
 
 ## TECHNICAL NOTES: ##
-* ASP.NET 4.6.1 Hybrid Webform & MVC
-* 3 Layers for Module Architecture
-* AngularJS 1
+* ASP.NET 4.7 Hybrid Webform & MVC
+* Union 3 layers with Module Architecture
+* AngularJS, Jquery
 * Unity IoC
 * Entity Framework 6
 * Bootstrap 3
