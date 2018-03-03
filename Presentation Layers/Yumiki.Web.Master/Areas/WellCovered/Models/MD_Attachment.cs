@@ -23,7 +23,7 @@ namespace Yumiki.Web.WellCovered.Models
         }
 
         [Required]
-        public string AttachmentName
+        public string FileName
         {
             get
             {

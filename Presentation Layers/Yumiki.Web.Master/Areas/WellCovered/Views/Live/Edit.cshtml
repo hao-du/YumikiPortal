@@ -173,7 +173,7 @@
                     }
                 </div>
                 <div class="col-xs-5">
-                    <a class="btn btn-link" href='@string.Format("/{0}/{1}/{2}?id={3}", Yumiki.Commons.Dictionaries.HttpConstants.RouteNames.WebHandlerAreaPrefix, "WellCovered", Yumiki.Commons.Dictionaries.HttpConstants.Pages.Downloader, @attachment.ID)'>@attachment.AttachmentName</a>
+                    @Html.ActionLink(attachment.FileName, "Download", "Attachment", new { id = attachment.ID.ToString() }, new { })
                 </div>
             </div>
         }

@@ -63,7 +63,7 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
-        public Guid? AppID
+        public Guid? ApplicationID
         {
             get
             {

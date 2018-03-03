@@ -17,7 +17,8 @@ namespace Yumiki.Web.WellCovered
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
-            context.Routes.Add(new Route($"{HttpConstants.RouteNames.WebHandlerAreaPrefix}/{AreaName}/{HttpConstants.Pages.Downloader}", new HttpHandlerRoute($"~/Areas/{AreaName}/WellCoveredDownloader.ashx")));
+            //This rount is no longer used as it impact to the main routes in Global.asax
+            //context.Routes.Add(new Route($"{HttpConstants.RouteNames.WebHandlerAreaPrefix}/{AreaName}/{HttpConstants.Pages.Downloader}", new HttpHandlerRoute($"~/Areas/{AreaName}/WellCoveredDownloader.ashx")));
 
             context.MapRoute(
                 "WellCovered_default",

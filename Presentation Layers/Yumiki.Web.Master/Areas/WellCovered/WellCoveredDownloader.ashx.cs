@@ -13,6 +13,7 @@ namespace Yumiki.Web.WellCovered
     /// <summary>
     /// Summary description for WellCoverDownloader
     /// </summary>
+    [Obsolete("This class is no longer used. Just for reference.")]
     public class WellCoveredDownloader : HttpHandler<IAttachmentService>
     {
         public override void StartProcess(HttpContext context)
