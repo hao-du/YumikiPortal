@@ -173,7 +173,7 @@
                     }
                 </div>
                 <div class="col-xs-5">
-                    @Html.ActionLink(attachment.FileName, "Download", "Attachment", new { id = attachment.ID.ToString() }, new { })
+                    @Html.ActionLink(attachment.FileName, "Download", "Attachment", new { id = attachment.ID.ToString() }, new { @class = "btn btn-link" })
                 </div>
             </div>
         }
