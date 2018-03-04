@@ -59,6 +59,14 @@
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
+                    @Html.LabelFor(model => model.DataSortByOrder)
+                    @Html.EditorFor(model => model.DataSortByOrder, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="form-group">
                     <span class="checkbox">
                         @Html.EditorFor(model => model.IsDisplayable)
                         @Html.LabelFor(model => model.IsDisplayable)
@@ -81,14 +89,14 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.FieldType)
                     @Html.DropDownListFor(model => model.FieldType
-                                                , (SelectList)ViewBag.DataTypeDatasource
-                                                , Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown
-                                                , new
-                                                {
-                                                    @class = "form-control selectpicker"
-                                                        ,
-                                                    onchange = string.Format("yumiki.wellCovered.onFormSubmit('{0}')", Yumiki.Web.WellCovered.Controllers.FieldController.PostDropdownList)
-                                                })
+                                                     , (SelectList)ViewBag.DataTypeDatasource
+                                                     , Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown
+                                                     , new
+                                                     {
+                                                         @class = "form-control selectpicker"
+                                                             ,
+                                                         onchange = string.Format("yumiki.wellCovered.onFormSubmit('{0}')", Yumiki.Web.WellCovered.Controllers.FieldController.PostDropdownList)
+                                                     })
                     @Html.ValidationMessageFor(model => model.FieldType, "", new { @class = "text-danger" })
                 </div>
             </div>

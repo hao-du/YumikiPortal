@@ -407,7 +407,9 @@ namespace Yumiki.Data.WellCovered.Repositories
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            live.Datasource = GetDynamicRecords(PrepareQueryStament(obj, isActive, getLinkDisplayName)).AsEnumerable();
+            string sqlStament = PrepareQueryStament(obj, isActive, true, getLinkDisplayName);
+
+            live.Datasource = GetDynamicRecords(sqlStament).AsEnumerable();
 
             return live;
         }
@@ -435,7 +437,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            string sqlStament = PrepareQueryStament(obj, null, false);
+            string sqlStament = PrepareQueryStament(obj, null, false, false);
 
             string whereStament = string.Format(" WHERE [0].ID = '{0}' ", recordID.ToString());
 
@@ -450,7 +452,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="obj"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        private string PrepareQueryStament(TB_Object obj, bool? isActive, bool getLinkDisplayName = true)
+        private string PrepareQueryStament(TB_Object obj, bool? isActive, bool orderBy, bool getLinkDisplayName = true)
         {
             StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
 
@@ -459,6 +461,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
             int aliasUniqueID = 1;
 
+            //SELECT & FROM
             foreach (TB_Field field in obj.Fields.Where(c => c.IsActive))
             {
                 bool hasDatasource = false;
@@ -494,13 +497,37 @@ namespace Yumiki.Data.WellCovered.Repositories
                 aliasUniqueID++;
             }
 
+            //WHERE
             StringBuilder sqlWhereBuilder = new StringBuilder();
             if (isActive.HasValue)
             {
                 sqlWhereBuilder.AppendFormat(" WHERE [0].IsActive = {0} ", isActive.Value ? 1 : 0);
             }
 
-            return string.Format("{0}{1}{2}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString());
+            //ORDER BY
+            //TODO: Currently, can't sort by Datasource
+            StringBuilder sqlOrderByBuilder = new StringBuilder(string.Empty);
+            if (orderBy)
+            {
+                foreach (TB_Field field in obj.Fields.Where(c => c.IsActive && c.DataSortByPriority > 0).OrderBy(c => c.DataSortByPriority))
+                {
+                    if (sqlOrderByBuilder.Length <= 0)
+                    {
+                        sqlOrderByBuilder.AppendFormat(" ORDER BY [0].[{0}]", field.ApiName);
+                    }
+                    else
+                    {
+                        sqlOrderByBuilder.AppendFormat(", [0].[{0}]", field.ApiName);
+                    }
+
+                    if (!field.DataSortByASC)
+                    {
+                        sqlOrderByBuilder.Append(" DESC");
+                    }
+                }
+            }
+
+            return string.Format("{0}{1}{2}{3}", sqlSelectBuilder.ToString(), sqlFromBuilder.ToString(), sqlWhereBuilder.ToString(), sqlOrderByBuilder.ToString());
         }
 
         /// <summary>

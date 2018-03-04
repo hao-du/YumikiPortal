@@ -181,16 +181,16 @@ namespace Yumiki.Web.WellCovered.Models
             }
         }
 
-        [Display(Name = "Allow Adding Attachments")]
-        public bool HasAttachments
+        [Display(Name = "Sort Data Priority")]
+        public int? DataSortByOrder
         {
             get
             {
-                return _internalItem.HasAttachments;
+                return _internalItem.DataSortByOrder;
             }
             set
             {
-                _internalItem.HasAttachments = value;
+                _internalItem.DataSortByOrder = value;
             }
         }
 

@@ -56,7 +56,7 @@
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApplicationName)
-                    @Html.DropDownListFor(model => model.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
+                    @Html.DropDownListFor(model => model.ApplicationID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
                 </div>
             </div>
         </div>
