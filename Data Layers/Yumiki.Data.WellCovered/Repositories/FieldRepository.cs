@@ -64,6 +64,7 @@ namespace Yumiki.Data.WellCovered.Repositories
 
                 dbField.IsDisplayable = field.IsDisplayable;
                 dbField.FieldOrder = field.FieldOrder;
+                dbField.DataSortByOrder = field.DataSortByOrder;
                 dbField.CanIndex = field.CanIndex;
 
                 dbField.FieldType = field.FieldType;

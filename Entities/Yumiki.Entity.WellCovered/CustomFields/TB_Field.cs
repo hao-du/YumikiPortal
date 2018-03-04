@@ -20,6 +20,25 @@ namespace Yumiki.Entity.WellCovered
             get; set;
         }
 
+        public bool DataSortByASC {
+            get
+            {
+                if(this.DataSortByOrder < 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        public int DataSortByPriority
+        {
+            get
+            {
+                return Math.Abs(this.DataSortByOrder.HasValue ? this.DataSortByOrder.Value : 0);
+            }
+        }
+
         public class FieldNames
         {
             public const string FieldType = "FieldType";

@@ -28,6 +28,10 @@ namespace Yumiki.Entity.WellCovered
         public Guid UserID { get; set; }
         public bool IsActive { get; set; }
         public bool IsSystemField { get; set; }
+
+        /// <summary>
+        /// Sort Fields to display them in table column
+        /// </summary>
         public int? FieldOrder { get; set; }
         public bool IsDisplayable { get; set; }
 
@@ -36,7 +40,12 @@ namespace Yumiki.Entity.WellCovered
         /// </summary>
         public bool CanIndex { get; set; }
 
-        public bool HasAttachments { get; set; }
+        /// <summary>
+        /// Sort Data to display in table row
+        /// If < 0, it is DESC
+        /// > 0, ASC
+        /// </summary>
+        public int? DataSortByOrder { get; set; }
 
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }

@@ -61,7 +61,9 @@ namespace Yumiki.Entity.WellCovered
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Field>()
-                .Ignore(e => e.Value);
+                .Ignore(e => e.Value)
+                .Ignore(e => e.DataSortByASC)
+                .Ignore(e => e.DataSortByPriority);
 
             modelBuilder.Entity<TB_Index>()
                 .Ignore(e => e.Rank);
