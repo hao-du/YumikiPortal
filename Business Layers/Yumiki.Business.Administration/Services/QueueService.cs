@@ -43,10 +43,15 @@ namespace Yumiki.Business.Administration.Services
                         Repository.SetQueueFlag(queue.ID, false);
                         flagSet = true;
 
-                        var psi = new ProcessStartInfo("shutdown", "/s /f /t 0");
-                        psi.CreateNoWindow = true;
-                        psi.UseShellExecute = false;
-                        Process.Start(psi);
+                        ShutdownServer();
+                        break;
+                    case EN_QueueType.E_BACKUP_SERVER:
+
+                        //Shutdown after backup
+                        if(queue.Value1 == "1")
+                        {
+                            ShutdownServer();
+                        }
                         break;
                 }
 
@@ -61,6 +66,14 @@ namespace Yumiki.Business.Administration.Services
             {
                 Logger.Infomation(string.Format("No Queue to be executed at {0}", DateTimeExtension.GetLocalSystemDatetime()));
             }
+        }
+
+        private void ShutdownServer()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo("shutdown", "/s /f /t 0");
+            psi.CreateNoWindow = true;
+            psi.UseShellExecute = false;
+            Process.Start(psi);
         }
     }
 }
