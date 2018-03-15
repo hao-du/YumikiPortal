@@ -25,7 +25,7 @@ namespace Yumiki.Business.MoneyTrace.Services
         {
             if(request.CurrencyID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.", Logger);
             }
 
             switch (request.ReportType)
@@ -51,7 +51,7 @@ namespace Yumiki.Business.MoneyTrace.Services
 
             if (request.StartDate > request.EndDate)
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.", Logger);
             }
 
             return Repository.GetTraceReport(request);

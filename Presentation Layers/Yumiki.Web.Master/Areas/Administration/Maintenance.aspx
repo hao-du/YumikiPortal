@@ -22,6 +22,21 @@
                 <asp:Button runat="server" ID="btnShutdownServer" OnClick="btnShutdownServer_Click" CssClass="hidden" />
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <asp:Button runat="server" ID="btnBackupServer" OnClick="btnBackupServer_Click"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <asp:TextBox ID="txtDatabases" runat="server" TextMode="MultiLine" Text="DB_Administration,DB_Master,DB_MoneyTrace,DB_WellCovered"></asp:TextBox>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <asp:TextBox ID="txtBackupMediaZipName" runat="server" Text="MediaFiles.zip"></asp:TextBox>
+            </div>
+        </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SubContentContainer" runat="server">

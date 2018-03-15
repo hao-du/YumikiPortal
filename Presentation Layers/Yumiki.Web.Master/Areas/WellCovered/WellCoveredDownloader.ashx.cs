@@ -44,7 +44,7 @@ namespace Yumiki.Web.WellCovered
                 }
                 else
                 {
-                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Attachment does not exist.");
+                    throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Attachment does not exist.", Logger);
                 }
             }
             catch (Exception ex)

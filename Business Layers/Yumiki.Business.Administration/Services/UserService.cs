@@ -89,7 +89,7 @@ namespace Yumiki.Business.Administration.Services
             List<string> passwords = Repository.GetPasswords(maxRecord, convertedID);
             if (passwords.Contains(newPassword))
             {
-                throw new YumikiException(ExceptionCode.E_DUPLICATED, string.Format("New password cannot be the same value with {0} previous password.", maxRecord), null);
+                throw new YumikiException(ExceptionCode.E_DUPLICATED, string.Format("New password cannot be the same value with {0} previous password.", maxRecord), Logger);
             }
 
             Repository.ResetPassword(convertedID, newPassword);

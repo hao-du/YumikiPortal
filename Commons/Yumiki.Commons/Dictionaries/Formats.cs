@@ -15,7 +15,7 @@
             public const string ServerShortMonthYear = "MM-yyyy";
             public const string ServerShortYearMonth = "yyyy-MM";
             public const string Hour = "HH:ss";
-           
+            public const string yyyyMMdd = "yyyyMMdd";
         }
 
         public class Number

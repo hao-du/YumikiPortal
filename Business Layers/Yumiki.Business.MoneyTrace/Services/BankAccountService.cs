@@ -55,12 +55,12 @@ namespace Yumiki.Business.MoneyTrace.Services
         {
             if (bankAccount.Amount == decimal.Zero)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.");
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.", Logger);
             }
 
             if (bankAccount.Interest.HasValue && bankAccount.Interest.Value < decimal.Zero)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must be greater than zero.");
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must be greater than zero.", Logger);
             }
 
             if (bankAccount.DepositDate == DateTimeExtension.GetSystemMinDate())

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.SqlServer.Management.Smo;
+using System;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using System.IO.Compression;
 using Yumiki.Business.Administration.Interfaces;
 using Yumiki.Business.Base;
+using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
-using Yumiki.Commons.Security;
+using Yumiki.Commons.Settings;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
 
@@ -36,22 +38,20 @@ namespace Yumiki.Business.Administration.Services
             {
                 Logger.Infomation(string.Format("Start executing Queue: ID: {0} - Type: {1} - Value1: {2} - Value2: {3} - Value3: {4}", queue.ID, queue.QueueType.ToString(), queue.Value1, queue.Value2, queue.Value3));
 
+                //Set Active Flag to false before shutdown server.
+                Repository.SetQueueFlag(queue.ID, false);
+                flagSet = true;
+
                 switch (queue.QueueType)
                 {
                     case EN_QueueType.E_SHUTDOWN_SERVER:
-                        //Set Active Flag to false before shutdown server.
-                        Repository.SetQueueFlag(queue.ID, false);
-                        flagSet = true;
-
                         ShutdownServer();
                         break;
                     case EN_QueueType.E_BACKUP_SERVER:
-
-                        //Shutdown after backup
-                        if(queue.Value1 == "1")
-                        {
-                            ShutdownServer();
-                        }
+                        //Value1 contains database names with ','
+                        BackupDatabses(queue.Value1);
+                        //Values2 contains media file zip name.
+                        BackupMediaFiles(queue.Value2);
                         break;
                 }
 
@@ -74,6 +74,82 @@ namespace Yumiki.Business.Administration.Services
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             Process.Start(psi);
+        }
+
+        /// <summary>
+        /// Backup Databases
+        /// </summary>
+        /// <param name="databaseNames">List of DatabaseName with ',' separator.</param>
+        private void BackupDatabses(string databaseNames)
+        {
+            if (string.IsNullOrWhiteSpace(databaseNames))
+            {
+                Logger.Infomation($"No Database to back up.");
+                return;
+            }
+
+            Logger.Infomation($"Start to back up databases:{databaseNames}.");
+
+            string backupPath = Path.Combine(AppSettings.BackupFolderPath, DateTime.Now.ToString(Formats.DateTime.yyyyMMdd));
+            if (!Directory.Exists(backupPath))
+            {
+                Directory.CreateDirectory(backupPath);
+            }
+
+            foreach (string database in databaseNames.Split(','))
+            {
+                try
+                {
+                    Logger.Infomation($"Backing up database:{database}...");
+
+                    string backupFullFilePath = Path.Combine(backupPath, $"{database}.bak");
+
+                    //Open local sql server
+                    Server server = new Server();
+                    Backup backup = new Backup();
+                    backup.Devices.AddDevice(backupFullFilePath, DeviceType.File);
+                    backup.Database = database;
+                    backup.Action = BackupActionType.Database;
+                    backup.Initialize = true;
+                    backup.SqlBackup(server);
+
+                    if (!File.Exists(backupFullFilePath))
+                    {
+                        throw new YumikiException(ExceptionCode.E_ERROR, $"Cannot back up {database}", Logger);
+                    }
+
+                    Logger.Infomation($"Database {database} was backed up successfully at {backupFullFilePath}.");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Error during backing up database:{database}.", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Zip the media file folder and move it to backup folder
+        /// </summary>
+        /// <param name="zipFileName">Contains media file zip name.</param>
+        private void BackupMediaFiles(string zipFileName)
+        {
+            if (string.IsNullOrWhiteSpace(zipFileName))
+            {
+                Logger.Infomation($"No given zip name to back up.");
+                return;
+            }
+
+            try
+            {
+                ZipFile.CreateFromDirectory(AppSettings.UploadFolderPath
+                                        , Path.Combine(AppSettings.BackupFolderPath, zipFileName)
+                                        , CompressionLevel.Optimal
+                                        , true);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error during backing up media file's folder.", ex);
+            }
         }
     }
 }

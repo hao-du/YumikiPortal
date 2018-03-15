@@ -8,6 +8,7 @@ namespace Yumiki.Commons.Exceptions
 {
     public enum ExceptionCode
     {
+        E_ERROR,
         E_EMPTY_VALUE,
         E_WRONG_TYPE,
         E_HTTP_ERROR,
