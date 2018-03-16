@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Management.Smo;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -104,14 +103,7 @@ namespace Yumiki.Business.Administration.Services
 
                     string backupFullFilePath = Path.Combine(backupPath, $"{database}.bak");
 
-                    //Open local sql server
-                    Server server = new Server();
-                    Backup backup = new Backup();
-                    backup.Devices.AddDevice(backupFullFilePath, DeviceType.File);
-                    backup.Database = database;
-                    backup.Action = BackupActionType.Database;
-                    backup.Initialize = true;
-                    backup.SqlBackup(server);
+                    Repository.BackupServer(database, backupFullFilePath);
 
                     if (!File.Exists(backupFullFilePath))
                     {
@@ -141,10 +133,22 @@ namespace Yumiki.Business.Administration.Services
 
             try
             {
-                ZipFile.CreateFromDirectory(AppSettings.UploadFolderPath
-                                        , Path.Combine(AppSettings.BackupFolderPath, zipFileName)
+                string sourceFolder = AppSettings.UploadFolderPath;
+                string archiveFile = Path.Combine(AppSettings.BackupFolderPath, zipFileName);
+
+                Logger.Infomation($"Backing up mefia folder:{sourceFolder} to {archiveFile}...");
+
+                if(File.Exists(archiveFile))
+                {
+                    File.Delete(archiveFile);
+                }
+
+                ZipFile.CreateFromDirectory(sourceFolder
+                                        , archiveFile
                                         , CompressionLevel.Optimal
                                         , true);
+
+                Logger.Infomation($"Backing up mefia folder successfully.");
             }
             catch (Exception ex)
             {

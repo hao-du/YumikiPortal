@@ -88,7 +88,7 @@
       <Name>Yumiki.Business.Administration</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
-      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Project>{7c58deb3-e136-4086-b9a5-44c5cb28b269}</Project>
       <Name>Yumiki.Commons</Name>
     </ProjectReference>
   </ItemGroup>
