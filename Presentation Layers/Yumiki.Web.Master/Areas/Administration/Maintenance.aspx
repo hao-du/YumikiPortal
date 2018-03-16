@@ -16,10 +16,31 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <div class="container">
         <h2>Maintenance</h2>
-        <div class="row">
-            <div class="col-md-12">
-                <button type="button" onclick="confirmation()" class="btn btn-danger">Shutdown Server...</button>
-                <asp:Button runat="server" ID="btnShutdownServer" OnClick="btnShutdownServer_Click" CssClass="hidden" />
+        <div class="panel-group">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Shutdown server...</div>
+                <div class="panel-body">
+                    <button type="button" onclick="confirmation()" class="btn btn-danger">Shutdown Server...</button>
+                    <asp:Button runat="server" ID="btnShutdownServer" OnClick="btnShutdownServer_Click" CssClass="hidden" />
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">Backup Database...</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Database Names</label>
+                        <asp:TextBox ID="txtDatabases" runat="server" TextMode="MultiLine" CssClass="form-control form-area" Text="DB_Administration,DB_Master,DB_MoneyTrace,DB_WellCovered"></asp:TextBox>
+                        <asp:RequiredFieldValidator runat="server" ValidationGroup="valBackup" ControlToValidate="txtDatabases" Display="Dynamic" ErrorMessage="Database Name is required." />
+                    </div>
+                    <div class="form-group">
+                        <label>Backup Media Folder Zip Names</label>
+                        <asp:TextBox ID="txtBackupMediaZipName" runat="server" CssClass="form-control" Text="MediaFiles.zip"></asp:TextBox>
+                        <asp:RequiredFieldValidator runat="server" ValidationGroup="valBackup" ControlToValidate="txtBackupMediaZipName" Display="Dynamic" ErrorMessage="Zip name is required." />
+                    </div>
+
+                    <asp:Button runat="server" ID="btnBackupServer" OnClick="btnBackupServer_Click" Text="Backup" class="btn btn-primary" ValidationGroup="valBackup" />
+                </div>
             </div>
         </div>
     </div>

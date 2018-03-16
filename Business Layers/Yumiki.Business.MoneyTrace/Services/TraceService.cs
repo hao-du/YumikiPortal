@@ -56,14 +56,14 @@ namespace Yumiki.Business.MoneyTrace.Services
         {
             if (string.IsNullOrWhiteSpace(traceID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace cannot be empty.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace cannot be empty.", Logger);
             }
 
             Guid convertedTraceID = Guid.Empty;
             Guid.TryParse(traceID, out convertedTraceID);
             if (convertedTraceID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Trace ID must be GUID type.");
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Trace ID must be GUID type.", Logger);
             }
 
             TB_Trace trace = Repository.GetTrace(convertedTraceID);
@@ -72,7 +72,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 //Cannot get the back log traces.
                 if(trace.GroupTokenID.HasValue && (trace.TransactionType == EN_TransactionType.E_INCOME || trace.TransactionType == EN_TransactionType.E_OUTCOME))
                 {
-                    throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Cannot get the back log trace.");
+                    throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Cannot get the back log trace.", Logger);
                 }
 
                 if (trace.TransactionType == EN_TransactionType.E_EXCHANGE)
@@ -110,17 +110,17 @@ namespace Yumiki.Business.MoneyTrace.Services
             Guid traceID = Guid.Empty;
             if (trace.Amount == decimal.Zero)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.");
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be zero.", Logger);
             }
 
             if (trace.CurrencyID == Guid.Empty)
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.", Logger);
             }
 
             if (trace.TraceDate == DateTime.MinValue)
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace Date is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Trace Date is required.", Logger);
             }
 
             switch (trace.TransactionType)
@@ -129,14 +129,14 @@ namespace Yumiki.Business.MoneyTrace.Services
                 case EN_TransactionType.E_INCOME:
                     if (trace.Amount < decimal.Zero)
                     {
-                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.");
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be negative number with Income type.", Logger);
                     }
                     traceID = SaveTrace(trace, true);
                     break;
                 case EN_TransactionType.E_OUTCOME:
                     if (trace.Amount > decimal.Zero)
                     {
-                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Outcome type.");
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Outcome type.", Logger);
                     }
                     traceID = SaveTrace(trace, true);
                     break;
@@ -147,7 +147,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 case EN_TransactionType.E_BANKING:
                     if (!trace.BankID.HasValue || trace.BankID.Value == Guid.Empty)
                     {
-                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank is required.");
+                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Bank is required.", Logger);
                     }
 
                     if (!trace.GroupTokenID.HasValue)
@@ -179,17 +179,17 @@ namespace Yumiki.Business.MoneyTrace.Services
                 case EN_TransactionType.E_EXCHANGE:
                     if (trace.Amount > decimal.Zero)
                     {
-                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Exchange type.");
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Amount cannot be positive number with Exchange type.", Logger);
                     }
 
                     if (trace.ExchangeAmount < decimal.Zero)
                     {
-                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Exchange Amount cannot be negative number with Exchange type.");
+                        throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Exchange Amount cannot be negative number with Exchange type.", Logger);
                     }
 
                     if (!trace.ExchangeCurrencyID.HasValue)
                     {
-                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Exchange Currency is required.");
+                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Exchange Currency is required.", Logger);
                     }
 
                     if (!trace.GroupTokenID.HasValue)
@@ -236,7 +236,7 @@ namespace Yumiki.Business.MoneyTrace.Services
                 case EN_TransactionType.E_TRANSFER:
                     if(!trace.TransferredUserID.HasValue)
                     {
-                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Transferred User is required.");
+                        throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Transferred User is required.", Logger);
                     }
 
                     traceID = SaveTrace(trace, true);
@@ -284,18 +284,18 @@ namespace Yumiki.Business.MoneyTrace.Services
                 || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMinDate()
                 || bankAccount.WithdrawDate == DateTimeExtension.GetSystemMaxDate())
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.");
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Withdraw Date is required.", Logger);
             }
 
             if (bankAccount.WithdrawDate.Value.Date > DateTimeExtension.GetUserCurrentDatetime(CurrentUser.TimeZone))
             {
                 throw new YumikiException(ExceptionCode.E_INVALID_VALUE
-                                        , string.Format("You cannot withdraw money on {0}.", bankAccount.WithdrawDate.Value.ToString(Formats.DateTime.LongDate)));
+                                        , string.Format("You cannot withdraw money on {0}.", bankAccount.WithdrawDate.Value.ToString(Formats.DateTime.LongDate)), Logger);
             }
 
             if (interestTraceRequest != null && bankAccount.Interest < decimal.Zero)
             {
-                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must greater than zero.");
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Interest must greater than zero.", Logger);
             }
 
             IEnumerable<TB_Trace> traces = Repository.GetAllTraces(bankingTraceRequest).Records;

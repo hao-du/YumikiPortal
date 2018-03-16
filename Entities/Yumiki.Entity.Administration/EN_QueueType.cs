@@ -8,6 +8,7 @@ namespace Yumiki.Entity.Administration
 {
     public enum EN_QueueType
     {
-        E_SHUTDOWN_SERVER
+        E_SHUTDOWN_SERVER,
+        E_BACKUP_SERVER
     }
 }

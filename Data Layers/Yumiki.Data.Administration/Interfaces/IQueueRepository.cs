@@ -27,5 +27,12 @@ namespace Yumiki.Data.Administration.Interfaces
         /// </summary>
         /// <returns>Signle Queue returned after sorting by create date.</returns>
         TB_Queue GetQueue();
+
+        /// <summary>
+        /// Back up database to bak file
+        /// </summary>
+        /// <param name="database">Name of DB need to be backd up.</param>
+        /// <param name="backupPath">Backup file path.</param>
+        void BackupServer(string database, string backupPath);
     }
 }

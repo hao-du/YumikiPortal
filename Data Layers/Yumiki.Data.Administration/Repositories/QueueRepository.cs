@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
+using System;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yumiki.Data.Administration.Interfaces;
 using Yumiki.Entity.Administration;
 
@@ -55,6 +55,28 @@ namespace Yumiki.Data.Administration.Repositories
         public TB_Queue GetQueue()
         {
             return Context.TB_Queue.Where(c => c.IsActive).OrderBy(c => c.CreateDate).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Back up database to bak file
+        /// </summary>
+        /// <param name="database">Name of DB need to be backd up.</param>
+        /// <param name="backupPath">Backup file path.</param>
+        public void BackupServer(string database, string backupPath)
+        {
+            ServerConnection serverConnection = new ServerConnection((SqlConnection)Context.Database.Connection);
+
+            //Open sql server instance
+            Server server = new Server(serverConnection);
+
+            //Create backup settings
+            Backup backup = new Backup();
+            backup.Devices.AddDevice(backupPath, DeviceType.File);
+            backup.Database = database;
+            backup.Action = BackupActionType.Database;
+            backup.Initialize = true;
+
+            backup.SqlBackup(server);
         }
     }
 }

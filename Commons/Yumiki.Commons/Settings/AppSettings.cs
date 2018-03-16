@@ -49,6 +49,9 @@ namespace Yumiki.Commons.Settings
             }
         }
 
+        /// <summary>
+        /// For only SyncService to get all store procedures need to be executed.
+        /// </summary>
         public static string ExecutionListPath
         {
             get
@@ -57,6 +60,38 @@ namespace Yumiki.Commons.Settings
                 if (!string.IsNullOrWhiteSpace(executionListPath))
                 {
                     return executionListPath;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// To get the Default Folder Path in server. E.g. D:\Database\MediaFiles
+        /// </summary>
+        public static string UploadFolderPath
+        {
+            get
+            {
+                string uploadFolderPath = System.Configuration.ConfigurationManager.AppSettings[SettingNames.UploadFolderPath];
+                if (!string.IsNullOrWhiteSpace(uploadFolderPath))
+                {
+                    return uploadFolderPath;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Backup Database Folder Path. E.g. D:\Database\Backup
+        /// </summary>
+        public static string BackupFolderPath
+        {
+            get
+            {
+                string backupFolderPath = System.Configuration.ConfigurationManager.AppSettings[SettingNames.BackupFolderPath];
+                if (!string.IsNullOrWhiteSpace(backupFolderPath))
+                {
+                    return backupFolderPath;
                 }
                 return null;
             }

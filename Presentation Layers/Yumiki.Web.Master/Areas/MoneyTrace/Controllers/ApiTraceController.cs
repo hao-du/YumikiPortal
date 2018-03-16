@@ -112,7 +112,7 @@ namespace Yumiki.Web.MoneyTrace.Controllers
                 //This cannot be in Service Layer as this is a very specific rule.
                 if (item.TransactionType == EN_TransactionType.E_BANKING && item.Amount < decimal.Zero)
                 {
-                    throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Banking Trace's Amount cannot be less than zero.");
+                    throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Banking Trace's Amount cannot be less than zero.", Logger);
                 }
 
                 item.UserID = CurrentUser.UserID;

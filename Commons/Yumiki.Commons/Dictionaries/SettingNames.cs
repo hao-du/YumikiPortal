@@ -11,5 +11,7 @@ namespace Yumiki.Commons.Dictionaries
         public const string Interval = "Interval";
         public const string ConnectionString = "ConnectionString";
         public const string ExecutionListPath = "ExecutionListPath";
+        public const string UploadFolderPath = "UploadFolderPath";
+        public const string BackupFolderPath = "BackupFolderPath";
     }
 }
