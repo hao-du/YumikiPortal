@@ -178,7 +178,6 @@
     <Content Include="clients\styles\site.less" />
     <Content Include="Pages\Security\TestLogin.aspx" />
     <Content Include="Pages\Security\Login.aspx" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="third-party-clients\angular-js-1.6.5\angular.min.js" />
     <Content Include="third-party-clients\angular-ui-bootstrap-2.5.0\angular-ui-bootstrap.min.js" />
     <Content Include="third-party-clients\bootstrap-3.3.7\css\bootstrap-theme.min.css" />
