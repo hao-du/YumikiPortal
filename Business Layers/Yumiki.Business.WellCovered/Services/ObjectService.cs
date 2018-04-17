@@ -19,7 +19,7 @@ namespace Yumiki.Business.WellCovered.Services
         /// </summary>
         /// <param name="showInactive">Show list of inactive Objects or active Objects.</param>
         /// <returns>List of all active Objects.</returns>
-        public IEnumerable<TB_Object> GetAllObjects(bool showInactive, string appID)
+        public IEnumerable<TB_Object> GetAllObjects(bool showInactive, Guid userID, string appID)
         {
             Guid? convertedAppID = null;
 
@@ -30,7 +30,7 @@ namespace Yumiki.Business.WellCovered.Services
                 convertedAppID = convertedID;
             }
 
-            return Repository.GetAllObjects(showInactive, convertedAppID);
+            return Repository.GetAllObjects(showInactive, userID, convertedAppID);
         }
 
         /// <summary>

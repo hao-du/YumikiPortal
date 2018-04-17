@@ -37,6 +37,8 @@
         .Add("~/clients/scripts/init.js")
         .Render("~/cache/yumiki_#.js"))
 
+    @RenderSection("HeadScript", required: false)
+
     <script type="text/javascript">
         //Overide NoSession variable
         yumiki.noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
@@ -48,7 +50,7 @@
                 {
                     Yumiki.Commons.Entities.Message message = (Yumiki.Commons.Entities.Message)ViewBag.Message;
                     <text>
-            yumiki.message.clientMessage('@message.Msg', '@message.Details', '@message.LogType');
+                        yumiki.message.clientMessage('@message.Msg', '@message.Details', '@message.LogType');
                     </text>
                 }
             }
@@ -155,6 +157,6 @@
         <a href="#">Clients</a>
         <a href="#">Contact</a>
     </div>
-    @RenderSection("Script", required: false)
+    @RenderSection("BottomScript", required: false)
 </body>
 </html>
