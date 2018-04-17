@@ -22,7 +22,7 @@ namespace Yumiki.Web.WellCovered.Controllers
             {
                 if(!active == null) { active = true; }
 
-                objects = BusinessService.GetAllObjects(!active.Value, appID).Select(c => new MD_Object(c));
+                objects = BusinessService.GetAllObjects(!active.Value, CurrentUser.UserID, appID).Select(c => new MD_Object(c));
 
                 InitDatasource(appID, true);
             }

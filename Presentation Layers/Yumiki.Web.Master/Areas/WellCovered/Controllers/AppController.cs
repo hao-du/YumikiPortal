@@ -18,7 +18,7 @@ namespace Yumiki.Web.WellCovered.Controllers
             IEnumerable<MD_App> apps = new List<MD_App>();
             try
             {
-                apps = BusinessService.GetAllApps(!active, CurrentUser.UserID, true).Select(c => new MD_App(c));
+                apps = BusinessService.GetAllApps(!active, CurrentUser.UserID, false).Select(c => new MD_App(c));
             }
             catch (Exception ex)
             {
