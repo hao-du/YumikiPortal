@@ -15,9 +15,9 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// </summary>
         /// <param name="showInactive">Show list of inactive Objects or active Objects.</param>
         /// <returns>List of all active Objects.</returns>
-        public IEnumerable<TB_Object> GetAllObjects(bool showInactive, Guid? appID)
+        public IEnumerable<TB_Object> GetAllObjects(bool showInactive, Guid userID, Guid? appID)
         {
-            IQueryable<TB_Object> objectQueryable = Context.TB_Object.Where(c => c.IsActive == !showInactive && (c.App == null || c.App.IsActive));
+            IQueryable<TB_Object> objectQueryable = Context.TB_Object.Where(c => c.IsActive == !showInactive && (c.App == null || c.App.IsActive) && c.UserID == userID);
 
             if(appID.HasValue)
             {
