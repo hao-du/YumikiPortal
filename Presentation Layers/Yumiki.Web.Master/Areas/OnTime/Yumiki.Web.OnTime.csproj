@@ -109,10 +109,6 @@
     <Compile Include="OnTimeAreaRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\app.component.js" />
-    <Content Include="app\app.module.js" />
-    <Content Include="app\main.js" />
-    <Content Include="systemjs-angular-loader.js" />
     <Content Include="systemjs.config.js" />
     <Content Include="Views\web.config" />
     <Content Include="package.json" />

@@ -1,7 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from '/areas/ontime/app/app.component.js';
+import { AppComponent } from './app.component.js';
 
 @NgModule({
   imports:      [ BrowserModule ],
