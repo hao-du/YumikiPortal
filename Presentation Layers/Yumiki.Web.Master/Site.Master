@@ -47,7 +47,7 @@
     <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body class="modal-open">
+<body>
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
