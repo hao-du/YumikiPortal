@@ -56,7 +56,7 @@
                 @if (Model.StartPage > 1)
                 {
                     <li>
-                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "glyphicon glyphicon-fast-backward" })
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "fa fa-step-backward" })
                     </li>
                 }
                 @for (int i = Model.StartPage; i <= Model.EndPage; i++)
@@ -68,7 +68,7 @@
                 @if (Model.EndPage != Model.TotalPages)
                 {
                     <li>
-                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "glyphicon glyphicon-fast-forward" })
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "fa fa-step-backward" })
                     </li>
                 }
             </ul>

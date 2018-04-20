@@ -37,21 +37,21 @@ namespace Yumiki.Business.Master.Services
         /// <summary>
         /// Scan all children of Menu Parent node
         /// </summary>
-        /// <param name="parent">Parent need to be scanned to get all child.</param>
+        /// <param name="node">Parent need to be scanned to get all child.</param>
         /// <param name="privileges">The list must contain all child of Parent node.</param>
         /// <returns>HTML Format for all child.</returns>
-        private string ScanChildrenNodes(VW_Privilege parent, List<VW_Privilege> privileges)
+        private string ScanChildrenNodes(VW_Privilege node, List<VW_Privilege> privileges)
         {
             StringBuilder menu = new StringBuilder();
 
             string path = CommonValues.HashTag.ToString();
             //If the page is Displayable, add a URL to path. Otherwise, user cannot navigate to actual page.
-            if (parent.IsDisplayable)
+            if (node.IsDisplayable)
             {
-                path = parent.PagePath;
+                path = node.PagePath;
 
                 //URL Path must be "/ApplicationName/PageName/[Action]", has 'slash' char at the first of path.
-                if (!path.Equals(CommonValues.HashTag) && !parent.PagePath.First().Equals('/'))
+                if (!path.Equals(CommonValues.HashTag) && !node.PagePath.First().Equals('/'))
                 {
                     path = string.Format("/{0}", path);
                 }
@@ -63,26 +63,50 @@ namespace Yumiki.Business.Master.Services
                 }
             }
 
-           
+            IEnumerable<VW_Privilege> children = privileges.Where(c => c.ParentPrivilegeID == node.ID);
 
-            IEnumerable<VW_Privilege> children = privileges.Where(c => c.ParentPrivilegeID == parent.ID);
-
-            if (children.Count() == 0)
+            //Bootstrap 4 have the difference of class name for first menu and sub-menu.
+            //Render menu level 2...n
+            if (node.ParentPrivilegeID.HasValue)
             {
-                menu.AppendFormat("<li><a href=\"{0}\">{1}</a></li>", path, parent.PrivilegeName);
+                if (children.Count() == 0)
+                {
+                    menu.AppendFormat("<li><a class='dropdown-item' href='{0}'>{1}</a></li>", path, node.PrivilegeName);
+                }
+                else
+                {
+                    menu.Append("<li>");
+                    menu.AppendFormat("<a class='dropdown-item dropdown-toggle' href='{0}'>{1}</a>", path, node.PrivilegeName);
+                    menu.Append("<ul class='dropdown-menu'>");
+
+                    foreach (VW_Privilege child in children)
+                    {
+                        menu.Append(ScanChildrenNodes(child, privileges));
+                    }
+
+                    menu.Append("</ul></li>");
+                }
             }
+            //Render root items
             else
             {
-                menu.Append("<li>");
-                menu.AppendFormat("<a href=\"{0}\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">{1}<span class=\"caret\"></span></a>",  path, parent.PrivilegeName);
-                menu.Append("<ul class=\"dropdown-menu\">");
-
-                foreach (VW_Privilege child in children)
+                if (children.Count() == 0)
                 {
-                    menu.Append(ScanChildrenNodes(child, privileges));
+                    menu.AppendFormat("<li class='nav-item'><a class='nav-link' href='{0}'>{1}</a></li>", path, node.PrivilegeName);
                 }
+                else
+                {
+                    menu.Append("<li class='nav-item dropdown'>");
+                    menu.AppendFormat("<a class='nav-link dropdown-toggle' href='{0}' id='dropdown-menu-{1}' data-toggle='dropdown'>{2}</a>", path, node.ID, node.PrivilegeName);
+                    menu.AppendFormat("<ul class='dropdown-menu' aria-labelledby='dropdown-menu-{0}'>", node.ID);
 
-                menu.Append("</ul></li>");
+                    foreach (VW_Privilege child in children)
+                    {
+                        menu.Append(ScanChildrenNodes(child, privileges));
+                    }
+
+                    menu.Append("</ul></li>");
+                }
             }
 
             return menu.ToString();

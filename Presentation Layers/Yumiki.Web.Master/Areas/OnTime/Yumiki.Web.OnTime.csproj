@@ -109,6 +109,7 @@
     <Compile Include="OnTimeAreaRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ontime-clients\views\project.welcome.html" />
     <Content Include="systemjs.config.js" />
     <Content Include="Views\web.config" />
     <Content Include="package.json" />
@@ -142,9 +143,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="app\app.component.ts" />
-    <TypeScriptCompile Include="app\app.module.ts" />
-    <TypeScriptCompile Include="app\main.ts" />
+    <TypeScriptCompile Include="ontime-clients\app.component.ts" />
+    <TypeScriptCompile Include="ontime-clients\app.module.ts" />
+    <TypeScriptCompile Include="ontime-clients\main.ts" />
+    <TypeScriptCompile Include="ontime-clients\models\project.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

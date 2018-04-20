@@ -15,7 +15,7 @@ namespace Yumiki.Web.Master
             {
                 LoadMenu();
 
-                liLogoutSection.Visible = false;
+                ulLogoutSection.Visible = false;
                 lblUserName.Text = lblTimeZoneInfo.Text = string.Empty;
 
                 lblReleaseYear.Text = DateTimeExtension.GetSystemDatetime().Year.ToString();
@@ -24,7 +24,7 @@ namespace Yumiki.Web.Master
                 {
                     lblUserName.Text = CurrentUser.UserLoginName;
                     lblTimeZoneInfo.Text = CurrentUser.TimeZone.ToString();
-                    liLogoutSection.Visible = true;
+                    ulLogoutSection.Visible = true;
                 }
             }
         }

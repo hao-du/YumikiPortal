@@ -63,6 +63,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LibSass.NET, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\libsassnet.3.3.7\lib\net40\LibSass.NET.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -80,8 +83,8 @@
     <Reference Include="SquishIt.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SquishIt.Framework.1.0.0\lib\SquishIt.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="SquishIt.Less, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SquishIt.Less.1.0.0\lib\SquishIt.Less.dll</HintPath>
+    <Reference Include="SquishIt.Sass, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SquishIt.Sass.1.0.0\lib\SquishIt.Sass.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
@@ -175,16 +178,13 @@
     <Content Include="clients\scripts\yumiki.js" />
     <Content Include="deployment-tool.js" />
     <Content Include="Global.asax" />
-    <Content Include="clients\styles\site.less" />
+    <None Include="clients\styles\site.scss" />
     <Content Include="Pages\Security\TestLogin.aspx" />
     <Content Include="Pages\Security\Login.aspx" />
-    <Content Include="third-party-clients\angular-js-1.6.5\angular.min.js" />
+    <Content Include="third-party-clients\angular-js-1.6.9\angular.min.js" />
     <Content Include="third-party-clients\angular-ui-bootstrap-2.5.0\angular-ui-bootstrap.min.js" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\css\bootstrap-theme.min.css" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\css\bootstrap.min.css" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\js\bootstrap.min.js" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\js\npm.js" />
+    <Content Include="third-party-clients\bootstrap-4.1.0\css\bootstrap.min.css" />
+    <Content Include="third-party-clients\bootstrap-4.1.0\js\bootstrap.min.js" />
     <Content Include="third-party-clients\bootstrap-datetimepicker-4.17.43\bootstrap-datetimepicker.min.css" />
     <Content Include="third-party-clients\bootstrap-datetimepicker-4.17.43\bootstrap-datetimepicker.min.js" />
     <Content Include="third-party-clients\bootstrap-select-1.12.4\bootstrap-select.min.css" />
@@ -192,9 +192,9 @@
     <Content Include="third-party-clients\chart-js-2.7.0\chart.min.js" />
     <Content Include="third-party-clients\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
-    <Content Include="third-party-clients\jquery-3.2.1\jquery-ui.min.css" />
-    <Content Include="third-party-clients\jquery-3.2.1\jquery-ui.min.js" />
-    <Content Include="third-party-clients\jquery-3.2.1\jquery.min.js" />
+    <Content Include="third-party-clients\jquery-3.3.1\jquery-ui.min.css" />
+    <Content Include="third-party-clients\jquery-3.3.1\jquery-ui.min.js" />
+    <Content Include="third-party-clients\jquery-3.3.1\jquery.min.js" />
     <Content Include="third-party-clients\mark-js-8.9.1\jquery.mark.min.js" />
     <Content Include="third-party-clients\mark-js-8.9.1\mark.min.js" />
     <Content Include="third-party-clients\moment-js-2.18.1\moment.min.js" />
@@ -247,10 +247,6 @@
     <Content Include="App_Config\ConnectionString.config">
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
-    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="third-party-clients\bootstrap-3.3.7\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
     <Content Include="third-party-clients\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
@@ -334,8 +330,10 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets'))" />
+    <Error Condition="!Exists('..\..\packages\libsassnet.3.3.7\build\libsassnet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\libsassnet.3.3.7\build\libsassnet.targets'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets" Condition="Exists('..\..\packages\Microsoft.VisualStudio.SlowCheetah.3.0.61\build\Microsoft.VisualStudio.SlowCheetah.targets')" />
+  <Import Project="..\..\packages\libsassnet.3.3.7\build\libsassnet.targets" Condition="Exists('..\..\packages\libsassnet.3.3.7\build\libsassnet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
