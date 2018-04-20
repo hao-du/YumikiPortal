@@ -101,12 +101,12 @@
         </nav>
         <asp:UpdateProgress runat="server" ID="UpdateProgress1">
             <ProgressTemplate>
-                <div class="modal-backdrop"></div>
-                <div id="dlgLoadingBar" class="modal show">
-                    <div class="modal-dialog">
+                <div class="modal-backdrop show"></div>
+                <div id="dlgLoadingBar" class="modal d-block">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-body">
-                                Loading... <i class="fa fa-hourglass-o gly-spin"></i>
+                            <div class="modal-body text-center">
+                                Now Loading... <i class="fa fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -114,22 +114,22 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
 
-        <div id="dlgMessageDialog" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+        <div id="dlgMessageDialog" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="txtDialogTitle"></h4>
                     </div>
                     <div class="modal-body">
                         <div id="txtMessage"></div>
-                        <div id="txtDetails" class="panel panel-default collapse">
-                            <div class="panel-heading">Details...</div>
-                            <div id="txtMessageDetails" class="panel-body yumiki-panel">
+                        <div id="txtDetails" class="card collapse">
+                            <div class="card-header">Details...</div>
+                            <div id="txtMessageDetails" class="card-body">
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnMessageDetails" class="btn btn-default" data-toggle="collapse" data-target="#txtDetails">Details...</button>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" id="btnMessageDetails" class="btn btn-primary" data-toggle="collapse" data-target="#txtDetails">Details...</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

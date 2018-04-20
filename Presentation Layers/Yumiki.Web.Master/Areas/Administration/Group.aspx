@@ -7,7 +7,7 @@
     <asp:UpdatePanel runat="server" ID="upnlGroup">
         <ContentTemplate>
             <div class="container">
-                <h1>Group Management</h1>
+                <h1>Group</h1>
                 <!--hdnGlobalGroupID: To keep group id for User Assignment tab-->
                 <asp:HiddenField ID="hdnGlobalGroupID" runat="server" Value="" />
                 <ul class="nav nav-tabs">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive-md">
+                        <div class="table-responsive-lg">
                             <asp:Repeater runat="server" ID="rptGroup">
                                 <HeaderTemplate>
                                     <table id="tblGroup" class="table table-striped table-bordered table-hover">
@@ -84,7 +84,7 @@
                                 </h4>
                             </div>
                         </div>
-                        <div class="table-responsive-md">
+                        <div class="table-responsive-lg">
                             <asp:Repeater runat="server" ID="rptUser">
                                 <HeaderTemplate>
                                     <table id="tblUser" class="table table-striped table-bordered table-hover">
@@ -190,7 +190,7 @@
                                 <div class="form-group">
                                     <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
                                 </div>
-                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                             </div>
                             <div class="modal-footer bg-dark">
                                 <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />

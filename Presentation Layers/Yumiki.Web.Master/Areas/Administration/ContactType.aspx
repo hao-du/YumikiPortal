@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ContactType.aspx.cs" Inherits="Yumiki.Web.Administration.ContactType" %>
+﻿<%@ page title="" language="C#" masterpagefile="~/Site.Master" autoeventwireup="true" codebehind="ContactType.aspx.cs" inherits="Yumiki.Web.Administration.ContactType" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
     <script src="/clients/scripts/yumiki-webform-validation.js"></script>
@@ -7,68 +7,65 @@
     <asp:UpdatePanel runat="server" ID="upnlContactType">
         <ContentTemplate>
             <div class="container">
-                <h2>Contact Type Management</h2>
-
-                <div class="well well-sm">
-                    <div class="btn-group">
-                        <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
-                        <asp:Button ID="btnDisplayInactiveContactTypes" runat="server" CssClass="btn btn-default" Text="Show Inactive ContactTypes" OnClick="btnDisplayInactiveContactTypes_Click" CausesValidation="false" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <asp:Repeater runat="server" ID="rptContactType">
-                                <HeaderTemplate>
-                                    <table id="tblContactType" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Contact Type Name</th>
-                                                <th>Descriptions</th>
-                                                <th>Active Status</th>
-                                                <th>Modify Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr>
-                                        <td>
-                                            <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link fa fa-edit" ToolTip="Edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
-                                        </td>
-                                        <td>
-                                            <asp:Literal runat="server" ID="lblContactTypeName" Text='<%# Eval("ContactTypeName") %>'></asp:Literal>
-                                        </td>
-                                        <td>
-                                            <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
-                                        </td>
-                                        <td>
-                                            <asp:CheckBox runat="server" ID="ckbIsActive" Checked='<%# (bool)Eval(Yumiki.Commons.Dictionaries.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
-                                        </td>
-                                        <td>
-                                            <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                        </td>
-                                    </tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    </tbody>
-                            </table>
-                                </FooterTemplate>
-                            </asp:Repeater>
+                <h1>Contact Type</h1>
+                <div class="card bg-secondary">
+                    <div class="card-body">
+                        <div class="btn-group">
+                            <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
+                            <asp:Button ID="btnDisplayInactiveContactTypes" runat="server" CssClass="btn btn-default" Text="Show Inactive ContactTypes" OnClick="btnDisplayInactiveContactTypes_Click" CausesValidation="false" />
                         </div>
                     </div>
                 </div>
+                <div class="table-responsive-lg">
+                    <asp:Repeater runat="server" ID="rptContactType">
+                        <HeaderTemplate>
+                            <table id="tblContactType" class="table table-striped table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th></th>
+                                        <th>Contact Type Name</th>
+                                        <th>Descriptions</th>
+                                        <th>Active Status</th>
+                                        <th>Modify Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        </HeaderTemplate>
+                        <ItemTemplate>
+                            <tr>
+                                <td>
+                                    <asp:LinkButton ID="btnEdit" runat="server" CssClass="btn-link fa fa-edit" ToolTip="Edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                </td>
+                                <td>
+                                    <asp:Literal runat="server" ID="lblContactTypeName" Text='<%# Eval("ContactTypeName") %>'></asp:Literal>
+                                </td>
+                                <td>
+                                    <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
+                                </td>
+                                <td>
+                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked='<%# (bool)Eval(Yumiki.Commons.Dictionaries.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
+                                </td>
+                                <td>
+                                    <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            </tbody>
+                            </table>
+                        </FooterTemplate>
+                    </asp:Repeater>
+                </div>
             </div>
             <asp:Panel runat="server" ID="pnlContactTypeDialog" Visible="false">
-                <div class="modal-backdrop"></div>
-                <div id="dlgContactType" class="modal show" role="dialog">
-                    <div class=" modal-dialog">
+                <div class="modal-backdrop show"></div>
+                <div id="dlgContactType" class="modal d-block">
+                    <div class=" modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">
+                                <h5 class="modal-title">
                                     <asp:Literal runat="server" ID="lblContactTypeDialogHeader"></asp:Literal>
-                                </h4>
+                                </h5>
                                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
                             </div>
                             <div class="modal-body">
@@ -79,15 +76,15 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Descriptions</label>
-                                    <asp:TextBox runat="server" TextMode="MultiLine" ID="txtDescription" CssClass="form-control form-area"></asp:TextBox>
+                                    <asp:TextBox runat="server" TextMode="MultiLine" Rows="5" ID="txtDescription" CssClass="form-control"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
+                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
                                 </div>
-                                <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger"/>
+                                <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false" />
                             </div>
                         </div>
