@@ -15,96 +15,96 @@
         <ContentTemplate>
             <div class="container">
                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
-                <h2>User Management</h2>
+                <h2>Users</h2>
                 <ul class="nav nav-tabs">
-                    <li runat="server" id="liUserList">
+                    <li runat="server" id="liUserList" class="nav-link">
                         <asp:LinkButton runat="server" ID="btnUserListTab" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
-                    <li runat="server" id="liUserProcess" visible="false">
+                    <li runat="server" id="liUserProcess" class="nav-link" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserProcessTab" Text="Add/Edit User" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
-                    <li runat="server" id="liUserDetails" visible="false">
+                    <li runat="server" id="liUserDetails" class="nav-link" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserDetailsTab" Text="More Infomation" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
-                    <li runat="server" id="liResetPassword" visible="false">
+                    <li runat="server" id="liResetPassword" class="nav-link" visible="false">
                         <asp:LinkButton runat="server" ID="btnResetPasswordTab" Text="Reset Password" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
                 </ul>
                 <asp:MultiView runat="server" ID="mtvUserTabs" ActiveViewIndex="0">
                     <asp:View ID="vwListTab" runat="server">
-                        <div class="well well-sm">
-                            <div class="btn-group">
-                                <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
-                                <asp:Button ID="btnDisplayInactiveUsers" runat="server" CssClass="btn btn-default" Text="Show Inactive Users" OnClick="btnDisplayInactiveUsers_Click" CausesValidation="false" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <asp:Repeater runat="server" ID="rptUser">
-                                        <HeaderTemplate>
-                                            <table id="tblUser" class="table table-striped table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Login Name</th>
-                                                        <th>Full Name</th>
-                                                        <th>Descriptions</th>
-                                                        <th>Active Status</th>
-                                                        <th>Modify Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                        </HeaderTemplate>
-                                        <ItemTemplate>
-                                            <tr>
-                                                <td>
-                                                    <asp:LinkButton ID="btnEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
-                                                </td>
-                                                <td>
-                                                    <asp:Literal runat="server" ID="lblUserName" Text='<%# Eval("UserLoginName") %>'></asp:Literal>
-                                                </td>
-                                                <td>
-                                                    <asp:Literal runat="server" ID="Literal1" Text='<%# Eval("FullName") %>'></asp:Literal>
-                                                </td>
-                                                <td>
-                                                    <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
-                                                </td>
-                                                <td>
-                                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked='<%# (bool)Eval(Yumiki.Commons.Dictionaries.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
-                                                </td>
-                                                <td>
-                                                    <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                                </td>
-                                            </tr>
-                                        </ItemTemplate>
-                                        <FooterTemplate>
-                                            </tbody>
-                            </table>
-                                        </FooterTemplate>
-                                    </asp:Repeater>
+                        <div class="card bg-secondary">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
+                                    <asp:Button ID="btnDisplayInactiveUsers" runat="server" CssClass="btn btn-default" Text="Show Inactive Users" OnClick="btnDisplayInactiveUsers_Click" CausesValidation="false" />
                                 </div>
                             </div>
                         </div>
+                        <div class="table-responsive-lg">
+                            <asp:Repeater runat="server" ID="rptUser">
+                                <HeaderTemplate>
+                                    <table id="tblUser" class="table table-striped table-bordered table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th></th>
+                                                <th>Login Name</th>
+                                                <th>Full Name</th>
+                                                <th>Descriptions</th>
+                                                <th>Active Status</th>
+                                                <th>Modify Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <tr>
+                                        <td>
+                                            <asp:LinkButton ID="btnEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" Text="" OnClick="btnEdit_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                        </td>
+                                        <td>
+                                            <asp:Literal runat="server" ID="lblUserName" Text='<%# Eval("UserLoginName") %>'></asp:Literal>
+                                        </td>
+                                        <td>
+                                            <asp:Literal runat="server" ID="Literal1" Text='<%# Eval("FullName") %>'></asp:Literal>
+                                        </td>
+                                        <td>
+                                            <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
+                                        </td>
+                                        <td>
+                                            <asp:CheckBox runat="server" ID="ckbIsActive" Checked='<%# (bool)Eval(Yumiki.Commons.Dictionaries.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
+                                        </td>
+                                        <td>
+                                            <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </tbody>
+                            </table>
+                                </FooterTemplate>
+                            </asp:Repeater>
+                        </div>
                     </asp:View>
                     <asp:View runat="server" ID="vwAddEditTab">
-                        <div class="well well-sm">
-                            <div class="btn-group">
-                                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnUserSave_Click" CausesValidation="true" />
+                        <div class="card bg-secondary">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="User" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnUserSave_Click" CausesValidation="true" />
+                                </div>
                             </div>
                         </div>
-                        <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                        <asp:ValidationSummary ID="vsUserValidationSummary" ValidationGroup="User" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg">
                                 <div class="form-group">
                                     <label>Login Name</label>
                                     <asp:TextBox runat="server" ID="txtUserLoginName" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserLoginName" Display="None" ErrorMessage="User Name is required." />
+                                    <asp:RequiredFieldValidator runat="server" ValidationGroup="User" ControlToValidate="txtUserLoginName" Display="None" ErrorMessage="User Name is required." />
                                 </div>
 
                                 <div class="form-group">
                                     <label>Time Zone</label>
                                     <asp:DropDownList runat="server" ID="ddlSystemTimeZone" CssClass="form-control select-picker"></asp:DropDownList>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlSystemTimeZone" Display="None" ErrorMessage="Time Zone is required." />
+                                    <asp:RequiredFieldValidator runat="server" ValidationGroup="User" ControlToValidate="ddlSystemTimeZone" Display="None" ErrorMessage="Time Zone is required." />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg">
                                 <div class="form-group">
                                     <label>First Name</label>
                                     <asp:TextBox runat="server" ID="txtFirstName" CssClass="form-control"></asp:TextBox>
@@ -117,111 +117,119 @@
                         </div>
                         <asp:Panel runat="server" ID="pnlPasswordSection">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-lg">
                                     <div class="form-group">
                                         <label>Password</label>
                                         <asp:TextBox runat="server" ID="txtPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
-                                        <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPassword" Display="None" ErrorMessage="Password is required." />
+                                        <asp:RequiredFieldValidator runat="server" ValidationGroup="User" ControlToValidate="txtPassword" Display="None" ErrorMessage="Password is required." />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-lg">
                                     <div class="form-group">
                                         <label>Confirm Password</label>
                                         <asp:TextBox runat="server" ID="txtConfirmPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
-                                        <asp:RequiredFieldValidator runat="server" ControlToValidate="txtConfirmPassword" Display="None" ErrorMessage="Confirm Password is required." />
-                                        <asp:CompareValidator runat="server" ID="cmpPasswordCompare" ControlToValidate="txtPassword" ControlToCompare="txtConfirmPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None" />
+                                        <asp:RequiredFieldValidator runat="server" ValidationGroup="User" ControlToValidate="txtConfirmPassword" Display="None" ErrorMessage="Confirm Password is required." />
+                                        <asp:CompareValidator runat="server" ID="cmpPasswordCompare" ValidationGroup="User" ControlToValidate="txtPassword" ControlToCompare="txtConfirmPassword" Operator="Equal" Type="String" ErrorMessage="Confirm Password must be the same password." Display="None" />
                                     </div>
                                 </div>
                             </div>
                         </asp:Panel>
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <asp:TextBox runat="server" TextMode="MultiLine" ID="txtDescription" CssClass="form-control form-area"></asp:TextBox>
+                        <div class="row">
+                            <div class="col-lg">
+                                <div class="form-group">
+                                    <label>Descriptions</label>
+                                    <asp:TextBox runat="server" TextMode="MultiLine" Rows="5" ID="txtDescription" CssClass="form-control"></asp:TextBox>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
+                        <div class="row">
+                            <div class="col-lg">
+                                <div class="form-group">
+                                    <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
+                                </div>
+                            </div>
                         </div>
                     </asp:View>
                     <asp:View runat="server" ID="vwUserDetailsTab">
-                        <div class="well well-sm">
-                            <div class="btn-group">
-                                <asp:Button ID="btnAddContact" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAddContact_Click" CausesValidation="false" />
+                        <div class="card bg-secondary">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <asp:Button ID="btnAddContact" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAddContact_Click" CausesValidation="false" />
+                                </div>
                             </div>
                         </div>
                         <asp:Repeater runat="server" ID="rptContactType">
                             <ItemTemplate>
-                                <div class="panel-group">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" href='#<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>'><%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.ContactTypeName) %></a>
-                                            </h4>
-                                        </div>
-                                        <div id='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' class="panel-collapse collapse in">
-                                            <div class="panel-body">
-                                                <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
-                                                    <HeaderTemplate>
-                                                        <div class="table-responsive">
-                                                            <table class="table table-striped table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th></th>
-                                                                        <th>Contact Detail</th>
-                                                                        <th>Primary Contact</th>
-                                                                        <th>Descriptions</th>
-                                                                        <th>Modify Date</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <tr>
-                                                            <td>
-                                                                <asp:LinkButton ID="btAddressEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" OnClick="btnEditContact_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
-                                                            </td>
-                                                            <td>
-                                                                <asp:Literal runat="server" Text='<%# Eval("UserAddress") %>'></asp:Literal>
-                                                            </td>
-                                                            <td>
-                                                                <asp:CheckBox runat="server" Checked='<%# (bool)Eval("IsPrimary") ? true : false %>' Enabled="false" />
-                                                            </td>
-                                                            <td>
-                                                                <asp:Literal runat="server" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
-                                                            </td>
-                                                            <td>
-                                                                <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                    <FooterTemplate>
-                                                        </tbody>
+                                <div class="card">
+                                    <div class="card-header bg-info">
+                                        <h5>
+                                            <%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.ContactTypeName) %></a>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
+                                            <HeaderTemplate>
+                                                <div class="table-responsive-lg">
+                                                    <table class="table table-striped table-bordered table-hover">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Contact Detail</th>
+                                                                <th>Primary Contact</th>
+                                                                <th>Descriptions</th>
+                                                                <th>Modify Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                            </HeaderTemplate>
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td>
+                                                        <asp:LinkButton ID="btAddressEdit" runat="server" ToolTip="Edit" CssClass="btn-link fa fa-edit" OnClick="btnEditContact_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID) %>' CausesValidation="false"></asp:LinkButton>
+                                                    </td>
+                                                    <td>
+                                                        <asp:Literal runat="server" Text='<%# Eval("UserAddress") %>'></asp:Literal>
+                                                    </td>
+                                                    <td>
+                                                        <asp:CheckBox runat="server" Checked='<%# (bool)Eval("IsPrimary") ? true : false %>' Enabled="false" />
+                                                    </td>
+                                                    <td>
+                                                        <asp:Literal runat="server" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
+                                                    </td>
+                                                    <td>
+                                                        <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                </tbody>
                                                         </table>
                                                         </div>
-                                                    </FooterTemplate>
-                                                </asp:Repeater>
-                                            </div>
-                                        </div>
+                                            </FooterTemplate>
+                                        </asp:Repeater>
                                     </div>
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
                     </asp:View>
                     <asp:View runat="server" ID="vwResetPassword">
-                        <div class="well well-sm">
-                            <div class="btn-group">
-                                <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                        <div class="card bg-secondary">
+                            <div class="card-body">
+                                <div class="btn-group">
+                                    <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnResetPassword_Click" CausesValidation="true" />
+                                </div>
                             </div>
                         </div>
-                        <asp:ValidationSummary ID="vsResetPasswordValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                        <asp:ValidationSummary ID="vsResetPasswordValidationSummary" ValidationGroup="ResetPassword" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg">
                                 <div class="form-group">
                                     <label>Password</label>
                                     <asp:TextBox runat="server" ID="txtResetPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtResetPassword" Display="None" ErrorMessage="Password is required." />
+                                    <asp:RequiredFieldValidator runat="server" ValidationGroup="ResetPassword" ControlToValidate="txtResetPassword" Display="None" ErrorMessage="Password is required." />
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg">
                                 <div class="form-group">
                                     <label>Confirm Password</label>
                                     <asp:TextBox runat="server" ID="txtConfirmResetPassword" TextMode="Password" CssClass="form-control"></asp:TextBox>
@@ -234,41 +242,41 @@
                 </asp:MultiView>
             </div>
             <asp:Panel runat="server" ID="pnlUserAddressDialog" Visible="false">
-                <div class="modal-backdrop"></div>
-                <div id="dlgGroup" class="modal show" role="dialog">
-                    <div class=" modal-dialog">
+                <div class="modal-backdrop show"></div>
+                <div id="dlgGroup" class="modal d-block">
+                    <div class=" modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">
+                                <h5 class="modal-title">
                                     <asp:Literal runat="server" ID="lblUserAddressDialogHeader"></asp:Literal>
-                                </h4>
+                                </h5>
                                 <asp:HiddenField ID="hdnUserAddressID" runat="server" Value="" />
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label>Contact Details</label>
                                     <asp:TextBox runat="server" ID="txtUserAddress" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserAddress" Display="None" ErrorMessage="Contact Details is required." />
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtUserAddress" Display="None" ErrorMessage="Contact Details is required." ValidationGroup="ContactDetails"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Contact Type</label>
                                     <asp:DropDownList runat="server" ID="ddlContactType" CssClass="form-control select-picker"></asp:DropDownList>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlContactType" Display="None" ErrorMessage="Contact Type is required." />
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="ddlContactType" Display="None" ErrorMessage="Contact Type is required." ValidationGroup="ContactDetails"/>
                                 </div>
                                 <div class="form-group">
-                                    <asp:CheckBox runat="server" ID="ckbIsPrimary" Checked="true" Text="Is Primary" CssClass="checkbox" />
+                                    <asp:CheckBox runat="server" ID="ckbIsPrimary" Checked="true" Text="Is Primary" />
                                 </div>
                                 <div class="form-group">
                                     <label>Descriptions</label>
-                                    <asp:TextBox runat="server" TextMode="MultiLine" ID="txtUserAddressDescriptions" CssClass="form-control form-area"></asp:TextBox>
+                                    <asp:TextBox runat="server" TextMode="MultiLine" Rows="5" ID="txtUserAddressDescriptions" CssClass="form-control"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <asp:CheckBox runat="server" ID="ckbUserAddressIsActive" Checked="true" Text="Is Active" CssClass="checkbox" />
+                                    <asp:CheckBox runat="server" ID="ckbUserAddressIsActive" Checked="true" Text="Is Active" />
                                 </div>
-                                <asp:ValidationSummary ID="vsGroupValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                                <asp:ValidationSummary ID="vsGroupValidationSummary" ValidationGroup="ContactDetails" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                             </div>
                             <div class="modal-footer">
-                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-default" OnClientClick="startUserValidation()" OnClick="btnDialogUserContactSave_Click" CausesValidation="true" />
+                                <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="ContactDetails" OnClientClick="startUserValidation()" OnClick="btnDialogUserContactSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogUserContactClose_Click" CausesValidation="false" />
                             </div>
                         </div>

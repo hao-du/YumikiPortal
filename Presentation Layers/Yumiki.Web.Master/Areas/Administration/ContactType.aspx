@@ -7,7 +7,7 @@
     <asp:UpdatePanel runat="server" ID="upnlContactType">
         <ContentTemplate>
             <div class="container">
-                <h1>Contact Type</h1>
+                <h1>Contact Types</h1>
                 <div class="card bg-secondary">
                     <div class="card-body">
                         <div class="btn-group">

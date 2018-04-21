@@ -7,17 +7,17 @@
     <asp:UpdatePanel runat="server" ID="upnlGroup">
         <ContentTemplate>
             <div class="container">
-                <h1>Group</h1>
+                <h1>Groups</h1>
                 <!--hdnGlobalGroupID: To keep group id for User Assignment tab-->
                 <asp:HiddenField ID="hdnGlobalGroupID" runat="server" Value="" />
                 <ul class="nav nav-tabs">
-                    <li runat="server" id="liGroupList" class="nav-item">
+                    <li runat="server" id="liGroupList" class="nav-link">
                         <asp:LinkButton runat="server" ID="btnGroupListTab" Text="Group List" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton>
                     </li>
-                    <li runat="server" id="liUserAssignment" class="nav-item" visible="false">
+                    <li runat="server" id="liUserAssignment" class="nav-link" visible="false">
                         <asp:LinkButton runat="server" ID="btnUserAssignmentTab" Text="User Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton>
                     </li>
-                    <li runat="server" id="liPrivilegeAssignment" class="nav-item" visible="false">
+                    <li runat="server" id="liPrivilegeAssignment" class="nav-link" visible="false">
                         <asp:LinkButton runat="server" ID="btnPrivilegeAssignmentTab" Text="Privilege Assignment" CausesValidation="false" OnClick="linkButton_Click"></asp:LinkButton>
                     </li>
                 </ul>

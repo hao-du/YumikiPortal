@@ -17,7 +17,7 @@
     <asp:UpdatePanel runat="server" ID="upnlPrivilege">
         <ContentTemplate>
             <div class="container">
-                <h1>Privilege</h1>
+                <h1>Privileges</h1>
                 <div class="card bg-secondary">
                     <div class="card-body">
                         <div class="btn-group">

@@ -349,10 +349,10 @@ namespace Yumiki.Web.Administration
             }
 
             mtvUserTabs.ActiveViewIndex = listTabIndex;
-            liUserList.Attributes.Remove("class");
-            liUserProcess.Attributes.Remove("class");
-            liUserDetails.Attributes.Remove("class");
-            liResetPassword.Attributes.Remove("class");
+            liUserList.Attributes["class"] =
+            liUserProcess.Attributes["class"] =
+            liUserDetails.Attributes["class"] =
+            liResetPassword.Attributes["class"] = "nav-link";
 
             liUserProcess.Visible = false;
             liUserDetails.Visible = false;
@@ -361,7 +361,7 @@ namespace Yumiki.Web.Administration
             if (((LinkButton)sender).ID == btnUserListTab.ID)
             {
                 mtvUserTabs.ActiveViewIndex = listTabIndex;
-                liUserList.Attributes.Add("class", "active");
+                liUserList.Attributes["class"] = "nav-link active";
             }
             else
             {
@@ -378,17 +378,17 @@ namespace Yumiki.Web.Administration
                 if (((LinkButton)sender).ID == btnUserProcessTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = addEditTabIndex;
-                    liUserProcess.Attributes.Add("class", "active");
+                    liUserProcess.Attributes["class"] = "nav-link active";
                 }
                 else if (((LinkButton)sender).ID == btnUserDetailsTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = moreDetailTabIndex;
-                    liUserDetails.Attributes.Add("class", "active");
+                    liUserDetails.Attributes["class"] = "nav-link active";
                 }
                 else if (((LinkButton)sender).ID == btnResetPasswordTab.ID)
                 {
                     mtvUserTabs.ActiveViewIndex = resetPasswordTabIndex;
-                    liResetPassword.Attributes.Add("class", "active");
+                    liResetPassword.Attributes["class"] = "nav-link active";
                 }
             }
         }
