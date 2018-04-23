@@ -1,11 +1,11 @@
 ﻿@model  Yumiki.Web.WellCovered.Models.MD_LiveRecord
 
 @{
-    ViewBag.Title = "Edit Object";
+    ViewBag.Title = "Edit object";
 }
 
 <div class="container">
-    <h2>@ViewBag.Title</h2>
+    <h1>@ViewBag.Title</h1>
 
     @using (Html.BeginForm())
     {
@@ -16,10 +16,12 @@
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.ObjectID, objectID)
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.RecordID, recordID)
 
-        <div class="well well-sm">
-            <div class="btn-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-primary" })
+        <div class="card bg-secondary">
+            <div class="card-body">
+                <div class="btn-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-primary" })
+                </div>
             </div>
         </div>
 
@@ -29,7 +31,7 @@
             {
                 case Yumiki.Entity.WellCovered.EN_DataType.E_STRING:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 @if (field.FieldLength > 100)
@@ -46,46 +48,46 @@
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_INT:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number" })
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-right", @type = "number" })
                             </div>
                         </div>
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DECIMAL:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
-                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-align-right", @type = "number", step = "0.01" })
+                                @Html.TextBox(field.ApiName, field.Value, new { @class = "form-control text-right", @type = "number", step = "0.01" })
                             </div>
                         </div>
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_BOOL:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <span class="checkbox">
-                                    @Html.CheckBox(field.ApiName, field.Value == null || string.IsNullOrWhiteSpace(field.Value.ToString()) ? false : bool.Parse(field.Value.ToString()))
-                                    @Html.Label(field.ApiName)
-                                </span>
+                                @Html.CheckBox(field.ApiName, field.Value == null || string.IsNullOrWhiteSpace(field.Value.ToString()) ? false : bool.Parse(field.Value.ToString()))
+                                @Html.Label(field.ApiName)
                             </div>
                         </div>
                     </div>
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATE:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-date">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDate) : string.Empty, new { @class = "form-control" })
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,14 +95,16 @@
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATETIME:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-datetime">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? ((DateTime)field.Value).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.LongDateTime2) : string.Empty, new { @class = "form-control" })
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,14 +112,16 @@
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_TIME:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 <div class="input-group date yumiki-control-time">
                                     @Html.TextBox(field.ApiName, field.Value != null && !string.IsNullOrWhiteSpace(field.Value.ToString()) ? new DateTime(((TimeSpan)field.Value).Ticks).ToString(Yumiki.Commons.Dictionaries.Formats.DateTime.Hour) : string.Empty, new { @class = "form-control" })
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </span>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +129,7 @@
                     break;
                 case Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE:
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 @Html.Label(field.DisplayName)
                                 @Html.DropDownList(field.ApiName, ((Dictionary<string, SelectList>)ViewBag.Datasources)[field.ApiName], Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
@@ -138,17 +144,17 @@
     @using (Html.BeginForm("Upload", "Attachment", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
                 <input name="objectID" type="hidden" value="@Model.ObjectID" />
 
                 <div class="input-group">
                     <input name="file" type="file" class="form-control" />
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-link">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
                             <i class="fa fa-upload"></i>
                         </button>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,7 +165,7 @@
         foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model.Attachments)
         {
             <div class="row">
-                <div class="col-xs-1 col-sm-offset-3">
+                <div class="col-xs-1">
                     @using (Html.BeginForm("Delete", "Attachment", FormMethod.Post))
                     {
                         <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />

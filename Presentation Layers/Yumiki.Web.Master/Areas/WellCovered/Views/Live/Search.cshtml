@@ -5,21 +5,22 @@
 }
 <style type="text/css">
     mark {
-        background-color: yellow;
-        border-radius: 10px;
+        background-color: #ffc107;
+        border-radius: 5px;
+        padding:.1em;
     }
 </style>
 <div class="container">
-    <h2>@ViewBag.Title</h2>
+    <h1>@ViewBag.Title</h1>
     <div class="row">
         <div class="col-md-6">
             @using (Html.BeginForm("Search", "Live", FormMethod.Get, new { id = "frmLiveSearch" }))
             {
                 <div class="input-group">
                     @Html.TextBox("keywords", null, new { placeholder = "Search for...", @class = "form-control", id = "txtSearchBox" })
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" id="btnSearch"><span class="fa fa-search"></span></button>
-                    </span>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" id="btnSearch"><span class="fa fa-search"></span></button>
+                    </div>
                 </div>
             }
         </div>
@@ -31,12 +32,11 @@
             @foreach (var item in Model.Records)
             {
                 <div class="col-md-8">
-                    <div class="y-search-item">
+                    <div class="yumiki-search-item">
                         @Html.Raw(item.DisplayContents)
                     </div>
                     <div>
                         @Html.ActionLink("Go to Object List...", "List", "Live", new { objectID = item.ObjectID, active = true }, new { target = "_blank" })
-                        <span class="yumiki-separator-vbar"></span>
                         @Html.ActionLink("View details...", "Edit", "Live", new { objectID = item.ObjectID, recordID = item.LiveID }, new { target = "_blank" })
                     </div>
                     <hr />
@@ -49,26 +49,27 @@
                 @Html.Raw("No results found.")
             </i>
         }
+
         //Paging
         else if(Model.StartPage != Model.EndPage)
         {
             <ul class="pagination">
                 @if (Model.StartPage > 1)
                 {
-                    <li>
-                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "fa fa-step-backward" })
+                    <li class="page-item">
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = 1 }, new { @class = "page-link fa fa-step-backward" })
                     </li>
                 }
                 @for (int i = Model.StartPage; i <= Model.EndPage; i++)
                 {
-                    <li class="@(i == Model.CurrentPage ? "active" : string.Empty)">
-                        @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { })
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : string.Empty)">
+                        @Html.ActionLink(i.ToString(), "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = i }, new { @class= "page-link" })
                     </li>
                 }
                 @if (Model.EndPage != Model.TotalPages)
                 {
-                    <li>
-                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "fa fa-step-backward" })
+                    <li class="page-item">
+                        @Html.ActionLink(" ", "Search", "Live", new { keywords = Request.QueryString["keywords"], pageIndex = Model.TotalPages }, new { @class = "page-link fa fa-step-backward" })
                     </li>
                 }
             </ul>

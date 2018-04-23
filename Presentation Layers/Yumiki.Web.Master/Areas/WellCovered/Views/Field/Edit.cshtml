@@ -1,10 +1,10 @@
 ﻿@model Yumiki.Web.WellCovered.Models.MD_Field
 
 @{
-    ViewBag.Title = "Edit Field";
+    ViewBag.Title = $"Edit {Model.FieldName} field";
 }
 <div class="container">
-    <h2>@ViewBag.Title</h2>
+    <h1>@ViewBag.Title</h1>
 
     @using (Html.BeginForm())
     {
@@ -26,16 +26,18 @@
             @Html.HiddenFor(model => model.FieldOrder)
         }
 
-        <div class="well well-sm">
-            <div class="btn-group">
-                <input type="button" value="Save" class="btn btn-primary" onclick="yumiki.wellCovered.onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
-                @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
+        <div class="card bg-secondary">
+            <div class="card-body">
+                <div class="btn-group">
+                    <input type="button" value="Save" class="btn btn-primary" onclick="yumiki.wellCovered.onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
+                    @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
+                </div>
             </div>
         </div>
         if (!Model.IsSystemField)
         {
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.FieldName)
                         @Html.EditorFor(model => model.FieldName, new { htmlAttributes = new { @class = "form-control" } })
@@ -44,7 +46,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.DisplayName)
                         @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
@@ -54,7 +56,7 @@
             </div>
         }
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApiName)
                     @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
@@ -67,7 +69,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.FieldOrder)
                     @Html.EditorFor(model => model.FieldOrder, new { htmlAttributes = new { @class = "form-control" } })
@@ -75,7 +77,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.DataSortByOrder)
                     @Html.EditorFor(model => model.DataSortByOrder, new { htmlAttributes = new { @class = "form-control" } })
@@ -86,29 +88,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <span class="checkbox">
-                        @Html.EditorFor(model => model.IsDisplayable)
-                        @Html.LabelFor(model => model.IsDisplayable)
-                    </span>
+                    @Html.EditorFor(model => model.IsDisplayable)
+                    @Html.LabelFor(model => model.IsDisplayable)
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <span class="checkbox">
-                        @Html.EditorFor(model => model.CanIndex)
-                        @Html.LabelFor(model => model.CanIndex)
-                    </span>
+                    @Html.EditorFor(model => model.CanIndex)
+                    @Html.LabelFor(model => model.CanIndex)
                 </div>
             </div>
         </div>
         if (!Model.IsSystemField)
         {
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6">
                     <div class="form-group">
                         @Html.LabelFor(model => model.FieldType)
                         @Html.DropDownListFor(model => model.FieldType
@@ -127,7 +125,7 @@
             if (Model.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
             {
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.FieldLength)
                             @Html.EditorFor(model => model.FieldLength, new { htmlAttributes = new { @class = "form-control" } })
@@ -139,7 +137,7 @@
             if (Model.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
             {
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3">
+                    <div class="col-md-6">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Datasource)
                             @Html.EditorFor(model => model.Datasource, new { htmlAttributes = new { @class = "form-control" } })
@@ -155,18 +153,16 @@
                 </div>
             }
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <span class="checkbox">
-                            @Html.EditorFor(model => model.IsRequired)
-                            @Html.LabelFor(model => model.IsRequired)
-                        </span>
+                        @Html.EditorFor(model => model.IsRequired)
+                        @Html.LabelFor(model => model.IsRequired)
                     </div>
                 </div>
             </div>
         }
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descriptions)
                     @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
@@ -176,12 +172,10 @@
         if (!Model.IsSystemField)
         {
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <span class="checkbox">
-                            @Html.EditorFor(model => model.IsActive)
-                            @Html.LabelFor(model => model.IsActive)
-                        </span>
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.LabelFor(model => model.IsActive)
                     </div>
                 </div>
             </div>

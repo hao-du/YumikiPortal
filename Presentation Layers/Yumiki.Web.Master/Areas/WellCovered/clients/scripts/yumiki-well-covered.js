@@ -41,7 +41,7 @@
         },
 
         initSearchEvent: function (searchBoxName, searchButtonName, formName) {
-            $(".y-search-item").mark(
+            $(".yumiki-search-item").mark(
                 $('#' + searchBoxName).val(),
                 {
                     separateWordSearch: true,
