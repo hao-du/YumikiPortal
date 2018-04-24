@@ -12,7 +12,7 @@
                     <h4 class="modal-title">{{ dialogTitle }}</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" ng-class="{ 'has-error' : traceForm.traceDate.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-danger' : traceForm.traceDate.$invalid }">
                         <label>Trace Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
                             <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
@@ -20,24 +20,24 @@
                                 <span class="fa fa-calendar"></span>
                             </span>
                         </div>
-                        <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        <p ng-show="traceForm.traceDate.$error.required && traceForm.traceDate.$dirty" class="text-danger">Trace Date is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : traceForm.amount.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-danger' : traceForm.amount.$invalid }">
                         <label>Amount</label>
                         <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
                         <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                        <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        <p ng-show="traceForm.amount.$error.required && traceForm.amount.$dirty" class="text-danger">Amount is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : traceForm.currency.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-danger' : traceForm.currency.$invalid }">
                         <label>Currency</label>
                         <select class="form-control selectpicker" name="currency" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.CurrencyID"
                                 ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="text-danger">Currency is required.</p>
                     </div>
 
                     <div class="form-group">

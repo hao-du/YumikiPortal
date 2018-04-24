@@ -83,7 +83,7 @@
                                 </div>
                                 <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-dark">
                                 <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />
                                 <asp:Button ID="btnDialogClose" runat="server" Text="Close" CssClass="btn btn-default" OnClick="btnDialogClose_Click" CausesValidation="false" />
                             </div>

@@ -114,7 +114,7 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
 
-        <div id="dlgMessageDialog" class="modal fade">
+        <div id="dlgMessageDialog" class="modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

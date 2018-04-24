@@ -5,10 +5,10 @@
         //Validation for asp.net controls on client side.
         var startUserValidation = function () {
             var isValid = true;
-            //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
+            //Reset all form group css by removing "has-danger" to fix issue "One control has many validators"
             for (i = 0; i < Page_Validators.length; i++) {
                 var control = Page_Validators[i];
-                $(control).closest(".form-group").removeClass("has-error has-feedback");
+                $(control).closest(".form-group").removeClass("has-danger");
             }
 
             for (i = 0; i < Page_Validators.length; i++) {
@@ -16,7 +16,7 @@
                 ValidatorValidate(control);
                 if (!control.isvalid) {
                     isValid = false;
-                    $(control).closest(".form-group").addClass("has-error has-feedback");
+                    $(control).closest(".form-group").addClass("has-danger");
                 }
             }
 

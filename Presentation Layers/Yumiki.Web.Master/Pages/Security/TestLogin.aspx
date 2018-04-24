@@ -8,7 +8,7 @@
         //Validation for asp.net controls on client side.
         var startUserValidation = function () {
             var isValid = true;
-            //Reset all form group css by removing "has-error has-feedback" to fix issue "One control has many validators"
+            //Reset all form group css by removing "has-error" to fix issue "One control has many validators"
             for (i = 0; i < Page_Validators.length; i++) {
                 var control = Page_Validators[i];
             }

@@ -4,7 +4,7 @@
 @using SquishIt.Framework;
 
 @{
-    ViewBag.Title = "Currency";
+    ViewBag.Title = "Currencies";
 }
 
 @section BottomScript{
@@ -33,87 +33,83 @@
 }
 <div ng-app="currency">
     <div class="container" ng-controller="currencyController" ng-init="loadData();">
-        <h2>Currency</h2>
-        <div class="well well-sm">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
-                <button type="button" class="btn btn-default" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table id="tblCurrency" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Currency Name</th>
-                                <th>Short Name</th>
-                                <th>Descriptions</th>
-                                <th>Shareable</th>
-                                <th>Active Status</th>
-                                <th>Modify Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="currency in currencyList">
-                                <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(currency.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                                <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
-                                <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
-                                <td>{{ currency.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ currency.@TB_Currency.FieldName.IsShareable }}" disabled="disabled" /></td>
-                                <td><input type="checkbox" ng-checked="{{ currency.@CommonProperties.IsActive }}" disabled="disabled" /></td>
-                                <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <h1>Currency</h1>
+        <div class="card bg-secondary">
+            <div class="card-body">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                    <button type="button" class="btn btn-default" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
                 </div>
             </div>
+        </div>
+        <div class="table-responsive-lg">
+            <table id="tblCurrency" class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Currency Name</th>
+                        <th>Short Name</th>
+                        <th>Descriptions</th>
+                        <th>Shareable</th>
+                        <th>Active Status</th>
+                        <th>Modify Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="currency in currencyList">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(currency.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ currency.@TB_Currency.FieldName.CurrencyName }}</td>
+                        <td>{{ currency.@TB_Currency.FieldName.CurrencyShortName }}</td>
+                        <td>{{ currency.@CommonProperties.Descriptions }}</td>
+                        <td><input type="checkbox" ng-checked="{{ currency.@TB_Currency.FieldName.IsShareable }}" disabled="disabled" /></td>
+                        <td><input type="checkbox" ng-checked="{{ currency.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                        <td>{{ currency.@CommonProperties.LastUpdateDateUI }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <!-- Modal -->
     <div id="dlgCurrency" class="modal fade" role="dialog" ng-controller="currencyDialogController">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <!-- Modal content-->
             <div class="modal-content">
                 <form name="currencyForm" ng-submit="save(currencyForm.$valid)" novalidate>
                     <div class="modal-header">
-                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyName.$invalid }">
+                        <div class="form-group">
                             <label>Currency Name</label>
-                            <input type="text" name="currencyName" ng-model="currency.@TB_Currency.FieldName.CurrencyName" class="form-control" ng-required="true" />
-                            <p ng-show="currencyForm.currencyName.$error.required && currencyForm.currencyName.$dirty" class="help-block">Currency Name is required.</p>
-                        </div>
-                        <div class="form-group" ng-class="{ 'has-error' : currencyForm.currencyShortName.$invalid }">
-                            <label>Currency Short Name</label>
-                            <input type="text" name="currencyShortName" ng-model="currency.@TB_Currency.FieldName.CurrencyShortName" class="form-control" ng-required="true" ng-minlength="3" ng-maxlength="4" />
-                            <p ng-show="currencyForm.currencyShortName.$error.required && currencyForm.currencyShortName.$dirty" class="help-block">Currency Short Name is required.</p>
-                            <p ng-show="currencyForm.currencyShortName.$error.minlength" class="help-block">Currency Short Name needs at least 3 characters.</p>
-                            <p ng-show="currencyForm.currencyShortName.$error.maxlength" class="help-block">Currency Short Name exceeds maximum 4 characters.</p>
+                            <input type="text" name="currencyName" ng-model="currency.@TB_Currency.FieldName.CurrencyName" class="form-control" ng-class="{ 'border-danger' : currencyForm.currencyName.$invalid && currencyForm.currencyName.$dirty }" ng-required="true" />
+                            <p ng-show="currencyForm.currencyName.$error.required && currencyForm.currencyName.$dirty" class="text-danger">Currency Name is required.</p>
                         </div>
                         <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="currency.@TB_Currency.FieldName.IsShareable" ng-checked="currency.@TB_Currency.FieldName.IsShareable" />
-                                <label>Is Shareable</label>
-                            </span>
+                            <label>Currency Short Name</label>
+                            <input type="text" name="currencyShortName" ng-model="currency.@TB_Currency.FieldName.CurrencyShortName" class="form-control" ng-class="{ 'border-danger' : currencyForm.currencyShortName.$invalid && currencyForm.currencyShortName.$dirty }" ng-required="true" ng-minlength="3" ng-maxlength="4" />
+                            <p ng-show="currencyForm.currencyShortName.$error.required && currencyForm.currencyShortName.$dirty" class="text-danger">Currency Short Name is required.</p>
+                            <p ng-show="currencyForm.currencyShortName.$error.minlength" class="text-danger">Currency Short Name needs at least 3 characters.</p>
+                            <p ng-show="currencyForm.currencyShortName.$error.maxlength" class="text-danger">Currency Short Name exceeds maximum 4 characters.</p>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="currency.@TB_Currency.FieldName.IsShareable" ng-checked="currency.@TB_Currency.FieldName.IsShareable" /> Is Shareable
+                            </label>
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>
                             <textarea ng-model="currency.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
                         </div>
-                        <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="currency.@CommonProperties.IsActive" ng-checked="currency.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
-                                <label>Is Active</label>
-                            </span>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="currency.@CommonProperties.IsActive" ng-checked="currency.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active
+                            </label>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="currencyForm.$invalid">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="currencyForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>

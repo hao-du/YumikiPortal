@@ -57,57 +57,56 @@
 
 <div ng-app="bankAccount">
     <div class="container" ng-controller="bankAccountController" ng-init="loadData();">
-        <h2>Bank Account</h2>
-        <div class="well well-sm">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table id="tblBankAccount" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Bank</th>
-                                <th class="text-align-right">Account Number</th>
-                                <th class="text-align-right">Deposit Date</th>
-                                <th class="text-align-right">Withdraw Date</th>
-                                <th class="text-align-right">Amount</th>
-                                <th>Currency</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="bankAccount in bankAccounts">
-                                <td>
-                                    <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
-                                </td>
-                                <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
-                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
-                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.DepositDateUI }}</td>
-                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.WithdrawDateUI }}</td>
-                                <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.Amount | number:2 }}</td>
-                                <td>{{ bankAccount.@TB_Currency.FieldName.CurrencyShortName }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <h1>Bank Account</h1>
+        <div class="card bg-secondary">
+            <div class="card-body">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
                 </div>
             </div>
-            <div class="col-md-12">
-                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
+        </div>
+        <div class="table-responsive-lg">
+            <table id="tblBankAccount" class="table table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Bank</th>
+                        <th class="text-align-right">Account Number</th>
+                        <th class="text-align-right">Deposit Date</th>
+                        <th class="text-align-right">Withdraw Date</th>
+                        <th class="text-align-right">Amount</th>
+                        <th>Currency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="bankAccount in bankAccounts">
+                        <td>
+                            <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bankAccount.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                        </td>
+                        <td>{{ bankAccount.@TB_Bank.FieldName.BankName }}</td>
+                        <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.AccountNumber }}</td>
+                        <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.DepositDateUI }}</td>
+                        <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.WithdrawDateUI }}</td>
+                        <td class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.Amount | number:2 }}</td>
+                        <td>{{ bankAccount.@TB_Currency.FieldName.CurrencyShortName }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
             </div>
         </div>
-
         <!-- Modal -->
         <div ng-controller="bankAccountDialogController" ng-init="bindControls();">
             <div id="dlgBankAccount" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
                     <!-- Modal content-->
                     <div class="modal-content">
                         <form name="bankAccountForm" ng-submit="save(bankAccountForm.$valid)" novalidate>
                             <div class="modal-header">
-                                <h4 class="modal-title">{{ dialogTitle }}</h4>
+                                <h5 class="modal-title">{{ dialogTitle }}</h5>
                             </div>
                             <div class="modal-body">
                                 <p class="text-left text-uppercase"><h4><strong><ins>Basic Info:</ins></strong></h4></p>
@@ -125,17 +124,19 @@
                                 <div class="form-group">
                                     <label>Withdraw Date</label>
                                     <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate">
-                                        <input type="text" name="withdrawDate" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate" class="form-control"/>
-                                        <span class="input-group-addon">
-                                            <span class="fa fa-calendar"></span>
-                                        </span>
+                                        <input type="text" name="withdrawDate" ng-model="bankAccount.@TB_BankAccount.FieldName.WithdrawDate" class="form-control" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Interest</label>
-                                    <input type="text" name="interest" ng-model="bankAccount.@TB_BankAccount.FieldName.Interest" class="form-control text-align-right" />
-                                    <div class="text-align-right">{{ bankAccount.@TB_BankAccount.FieldName.Interest | number:2 }}</div>
+                                    <input type="text" name="interest" ng-model="bankAccount.@TB_BankAccount.FieldName.Interest" class="form-control text-right" />
+                                    <div class="text-right">{{ bankAccount.@TB_BankAccount.FieldName.Interest | number:2 }}</div>
                                 </div>
 
                                 <div class="form-group">
@@ -143,17 +144,16 @@
                                     <textarea ng-model="bankAccount.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
                                 </div>
 
-                                <div class="form-group">
-                                    <span class="checkbox">
-                                        <input type="checkbox" ng-model="bankAccount.@CommonProperties.IsActive" ng-checked="bankAccount.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" />
-                                        <label>Is Active</label>
-                                    </span>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" ng-model="bankAccount.@CommonProperties.IsActive" ng-checked="bankAccount.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active
+                                    </label>
                                 </div>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-dark">
                                 <button type="button" class="btn btn-warning" ng-disabled="isWithdrawDisabled || bankAccountForm.$invalid" ng-click="openWithdrawMessageDialog()">Withdraw</button>
-                                <button type="submit" class="btn btn-default" ng-disabled="bankAccountForm.$invalid">Save</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" ng-disabled="bankAccountForm.$invalid">Save</button>
+                                <button type="button" class="btn" data-dismiss="modal">Close</button>
                             </div>
                         </form>
                     </div>
@@ -162,15 +162,15 @@
 
             <!--Message Dialog-->
             <div id="dlgWithdrawMessageDialog" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
                             <p class="text-left">Are you sure to create/update withdraw trace?</p>
                             <p class="text-left text-uppercase"><em><strong>*Notice 1:</strong> System will also create <strong>Income trace</strong> if <strong>Interest</strong> field has values. (must > 0)</em></p>
                             <p class="text-left text-uppercase"><em><strong>*Notice 2:</strong> <strong>Save</strong> all changes before withdrawing ammount.</em></p>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" ng-click="withdraw()">Yes</button>
+                        <div class="modal-footer bg-dark">
+                            <button type="button" class="btn btn-primary" ng-click="withdraw()">Yes</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
