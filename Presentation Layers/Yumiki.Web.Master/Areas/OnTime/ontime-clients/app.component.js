@@ -15,14 +15,14 @@ var AppComponent = (function () {
     function AppComponent() {
         this.project = new project_js_1.Project('Test Project', 'This is test project.');
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: '/areas/ontime/ontime-clients/views/project.welcome.html',
-        }),
-        __metadata("design:paramtypes", [])
-    ], AppComponent);
     return AppComponent;
 }());
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        templateUrl: '/areas/ontime/ontime-clients/views/project.welcome.html',
+    }),
+    __metadata("design:paramtypes", [])
+], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map
