@@ -92,7 +92,7 @@
                         <label>{{startDateLabel}}</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" ng-change="updateDates(0)">
                             <input type="text" name="startDate" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" class="form-control" />
-                            <div class="input-group-append">
+                            <div class="input-group-append input-group-calendar">
                                 <span class="input-group-text">
                                     <span class="fa fa-calendar"></span>
                                 </span>
@@ -106,7 +106,7 @@
                         <label>End Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.EndDate" ng-change="updateDates(1)">
                             <input type="text" name="endDate" ng-model="requestObject.@GetReportRequest.FieldName.EndDate" class="form-control" />
-                            <div class="input-group-append">
+                            <div class="input-group-append input-group-calendar">
                                 <span class="input-group-text">
                                     <span class="fa fa-calendar"></span>
                                 </span>

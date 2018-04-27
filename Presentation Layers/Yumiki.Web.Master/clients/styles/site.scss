@@ -11,3 +11,8 @@
     /* bootstrap 4 default modal doesnot have v-scrollbar */
     overflow-y:auto;
 }
+
+.ui-front {
+    //Auto-complete on Jquery z-index: 100;
+    z-index:1060;
+}

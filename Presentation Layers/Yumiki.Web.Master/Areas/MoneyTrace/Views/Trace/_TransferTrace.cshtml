@@ -4,50 +4,54 @@
  
 <!-- Transfer Trace Modal -->
 <div id="dlgTransferTrace" class="modal fade" role="dialog" ng-controller="transferTraceDialogController" ng-init="bindControls();">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
             <form name="transferTraceForm" ng-submit="save(transferTraceForm.$valid)" novalidate>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    <h5 class="modal-title">{{ dialogTitle }}</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" ng-class="{ 'has-danger' : transferTraceForm.traceDate.$invalid }">
+                    <div class="form-group">
                         <label>Trace Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
-                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : transferTraceForm.traceDate.$invalid && transferTraceForm.traceDate.$dirty }" />
+                            <div class="input-group-append input-group-calendar">
+                                <span class="input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                         <p ng-show="transferTraceForm.traceDate.$error.required && transferTraceForm.traceDate.$dirty" class="text-danger">Trace Date is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-danger' : traceForm.amount.$invalid }">
+                    <div class="form-group">
                         <label>Amount</label>
-                        <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                        <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                        <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : transferTraceForm.amount.$invalid && transferTraceForm.amount.$dirty }" ng-required="true" />
+                        <div class="text-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
                         <p ng-show="transferTraceForm.amount.$error.required && transferTraceForm.amount.$dirty" class="text-danger">Amount is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-danger' : transferTraceForm.transferredUser.$invalid }">
+                    <div class="form-group">
                         <label>Transferred User</label>
                         <select class="form-control selectpicker" name="transferredUser" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.TransferredUserID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_User.FieldName.FullName for item in userList">
+                                ng-options="item.@CommonProperties.ID as item.@TB_User.FieldName.FullName for item in userList"
+                                ng-class="{ 'border-danger' : transferTraceForm.transferredUser.$invalid && transferTraceForm.transferredUser.$dirty }">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
                         <p ng-show="transferTraceForm.transferredUser.$error.required && transferTraceForm.transferredUser.$dirty" class="text-danger">Transferred User is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-danger' : traceForm.currency.$invalid }">
+                    <div class="form-group">
                         <label>Currency</label>
                         <select class="form-control selectpicker" name="currency" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList"
+                                ng-class="{ 'border-danger' : transferTraceForm.currency.$invalid && transferTraceForm.currency.$dirty }">
+                            <option value="@CommonValues.EmptyValue" selected="selected">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="traceForm.currency.$error.required && traceForm.currency.$dirty" class="text-danger">Currency is required.</p>
+                        <p ng-show="transferTraceForm.currency.$error.required && transferTraceForm.currency.$dirty" class="text-danger">Currency is required.</p>
                     </div>
 
                     <div class="form-group">
@@ -60,16 +64,15 @@
                         <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <span class="checkbox">
-                            <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                            <label>Is Active</label>
-                        </span>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
+                        </label>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-default" ng-disabled="transferTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer bg-dark">
+                    <button type="submit" class="btn btn-primary" ng-disabled="transferTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>

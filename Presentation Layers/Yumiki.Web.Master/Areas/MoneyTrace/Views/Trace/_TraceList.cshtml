@@ -1,34 +1,39 @@
 ﻿@using Yumiki.Web.MoneyTrace.Constants;
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Entity.MoneyTrace;
- 
+
 <div class="container-fruid" ng-controller="traceController" ng-init="loadData();">
     <h2>Trace</h2>
-    <div class="well well-sm">
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
-            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
-            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
-            <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_TRANSFER)');">Transfer</button>
-            <!--<button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>-->
+    <div class="card bg-secondary">
+        <div class="card-body">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_INCOME)');">Trace</button>
+                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_BANKING)');">Banking</button>
+                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_EXCHANGE)');">Exchange</button>
+                <button type="button" class="btn btn-primary" ng-click="showTraceDialog(null, '@((int)EN_TransactionType.E_TRANSFER)');">Transfer</button>
+                <!--<button type="button" class="btn btn-primary" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>-->
+            </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">Total Amount by Currency</div>
-                <div class="panel-body">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    Total Amount by Currency
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tblSummary" class="table table-striped table-bordered">
-                            <thead>
+                        <table id="tblSummary" class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="text-align-right">Total</th>
+                                    <th class="text-right">Total</th>
                                     <th>Currency</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="trace in traceTotalSummaryList">
-                                    <td class="text-align-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
+                                    <td class="text-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
                                     <td>{{ trace.@TraceSummary.FieldName.CurrencyShortName }}</td>
                                 </tr>
                             </tbody>
@@ -36,15 +41,17 @@
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">Banking Summary</div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    Banking Summary
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tblBankingSummary" class="table table-striped table-bordered">
-                            <thead>
+                        <table id="tblBankingSummary" class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Bank Name</th>
-                                    <th class="text-align-right">Total</th>
+                                    <th class="text-right">Total</th>
                                     <th>Currency</th>
                                 </tr>
                             </thead>
@@ -60,46 +67,49 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-3">
+        <div class="col-lg-9">
+            <div class="row justify-content-between">
+                <div class="col">
                     <span class="checkbox">
                         <input type="checkbox" ng-model="isDisplayedAll" ng-checked="isDisplayedAll" ng-change="isDisplayAllChange();" />
                         <label>Show All Records</label>
                     </span>
                 </div>
-                <div class="col-md-4 col-md-offset-5">
+                <div class="col">
                     <div class="input-group date" datetimepicker datetimeformat="'@Formats.DateTime.ClientShortMonthYear'" ng-model="monthFilter" ng-show="!isDisplayedAll">
                         <input type="text" id="txtMonthFilter" name="traceDate" ng-model="monthFilter" class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="fa fa-calendar"></span>
-                        </span>
-                        <span class="input-group-btn">
+                        <div class="input-group-append input-group-calendar">
+                            <span class="input-group-text">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                        <span class="input-group-append">
                             <button type="button" class="btn btn-primary" ng-click="loadData();">Go</button>
                         </span>
                     </div>
                 </div>
             </div>
+            <hr />
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
                     <div class="table-responsive">
-                        <table id="tblTrace" class="table table-striped table-bordered">
-                            <thead>
+                        <table id="tblTrace" class="table table-striped table-bordered table-hover">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th></th>
                                     <th>Date</th>
                                     <th>Transaction</th>
-                                    <th class="text-align-right">Amount</th>
+                                    <th class="text-right">Amount</th>
                                     <th>Currency</th>
                                     <th>Descriptions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="trace in traceList" ng-class="{'table-alternative-row' : trace.@TB_Trace.FieldName.IsLogTrace}">
+                                <tr ng-repeat="trace in traceList" ng-class="{'table-warning' : trace.@TB_Trace.FieldName.IsLogTrace}">
                                     <td><a href="#" id="btnEdit" title="Edit" ng-click="showTraceDialog(trace.@CommonProperties.ID, trace.@TB_Trace.FieldName.TransactionType);" ng-hide="trace.@TB_Trace.FieldName.IsLogTrace"><span class="fa fa-edit"></span></a></td>
                                     <td>{{ trace.@TB_Trace.FieldName.TraceDateUI }}</td>
                                     <td>{{ trace.@TB_Trace.FieldName.TransactionTypeName }}</td>
-                                    <td class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
+                                    <td class="text-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</td>
                                     <td>{{ trace.@TB_Trace.FieldName.CurrencyName }}</td>
                                     <td>{{ trace.@CommonProperties.Descriptions }}</td>
                                 </tr>
@@ -107,8 +117,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="pagingIndexChange();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage">></ul>
+                <div class="col-12">
+                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="pagingIndexChange();" class="pagination" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
                 </div>
             </div>
         </div>
