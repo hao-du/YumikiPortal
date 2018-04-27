@@ -68,6 +68,22 @@ namespace Yumiki.Commons.Settings
             }
         }
 
+        public static string UserFullName
+        {
+            get
+            {
+                if (Session == null && Session[HttpConstants.Session.UserLoginName] == null)
+                {
+                    return null;
+                }
+                return Session[HttpConstants.Session.UserLoginName].ToString();
+            }
+            set
+            {
+                Session[HttpConstants.Session.UserLoginName] = value;
+            }
+        }
+
         public static DateTime LastLoginTime
         {
             get

@@ -98,13 +98,18 @@
             © @DateTimeExtension.GetSystemDatetime().Year.ToString() - Yumiki Portal.
         </span>
         <div class="collapse navbar-collapse" id="navbarBottomDropdown">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <span class="navbar-text">
-                        <b>Your Time Zone</b>: @ViewBag.TimeZone
-                    </span>
-                </li>
-            </ul>
+            @if (!string.IsNullOrWhiteSpace(@ViewBag.TimeZone))
+            {
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            <b>Your Time Zone</b>: @ViewBag.TimeZone
+                        </span>
+                    </li>
+                </ul>
+
+            }
         </div>
     </nav>
     <!--Loading Progress Bar-->

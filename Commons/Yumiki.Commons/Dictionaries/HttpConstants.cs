@@ -11,6 +11,7 @@ namespace Yumiki.Commons.Dictionaries
         public class Session
         {
             public const string UserLoginName = "UserLoginName";
+            public const string UserFullName = "UserFullName";
             public const string UserID = "UserID";
             public const string LastLoginTime = "LastLoginTime";
             public const string TimeZone = "TimeZone";

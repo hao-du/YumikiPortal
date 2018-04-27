@@ -27,6 +27,7 @@ namespace Yumiki.Web.Master.Pages.Security
 
                 CurrentUser.UserID = user.ID;
                 CurrentUser.UserLoginName = user.UserLoginName;
+                CurrentUser.UserFullName = $"{user.FirstName} {user.LastName}".Trim();
                 CurrentUser.LastLoginTime = DateTimeExtension.GetSystemDatetime();
                 CurrentUser.TimeZone = DateTimeExtension.GetTimeZoneById(user.TimeZone);
 

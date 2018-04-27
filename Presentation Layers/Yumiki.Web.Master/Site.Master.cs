@@ -15,16 +15,16 @@ namespace Yumiki.Web.Master
             {
                 LoadMenu();
 
-                ulLogoutSection.Visible = false;
                 lblUserName.Text = lblTimeZoneInfo.Text = string.Empty;
 
                 lblReleaseYear.Text = DateTimeExtension.GetSystemDatetime().Year.ToString();
 
                 if (CurrentUser.IsAuthenticated)
                 {
-                    lblUserName.Text = CurrentUser.UserLoginName;
+                    lblUserName.Text = CurrentUser.UserFullName;
                     lblTimeZoneInfo.Text = CurrentUser.TimeZone.ToString();
                     ulLogoutSection.Visible = true;
+                    ulTimeZoneSection.Visible = true;
                 }
             }
         }

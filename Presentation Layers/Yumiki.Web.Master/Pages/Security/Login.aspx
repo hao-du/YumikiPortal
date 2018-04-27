@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Yumiki.Web.Master.Pages.Security.Login" %>
+﻿<%@ page title="" language="C#" masterpagefile="~/Site.Master" autoeventwireup="true" codebehind="Login.aspx.cs" inherits="Yumiki.Web.Master.Pages.Security.Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeaderContainer" runat="server">
     <script>
@@ -37,16 +37,17 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentContainer" runat="server">
     <div class="container">
-        <asp:HiddenField ID="HiddenField1" runat="server" Value="" />
-        <h2 class="text-uppercase">Welcome to Yumiki Portal!</h2>
-        <div class="well well-sm">
-            <div class="btn-group">
-                <asp:Button ID="btnLogin" runat="server" Text="Sign In" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
-            </div>
-        </div>
-        <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row justify-content-md-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <h1 class="text-uppercase">Yumiki Portal</h1>
+                <div class="card bg-secondary mb-3">
+                    <div class="card-body p-2">
+                        <div class="btn-group">
+                            <asp:Button ID="btnLogin" runat="server" Text="Sign In" CssClass="btn btn-primary" OnClientClick="startUserValidation()" OnClick="btnLogin_Click" CausesValidation="true" />
+                        </div>
+                    </div>
+                </div>
+                <asp:ValidationSummary ID="vsUserValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                 <div class="form-group">
                     <label>User Name</label>
                     <asp:TextBox runat="server" ID="txtUserLoginName" CssClass="form-control"></asp:TextBox>
@@ -59,29 +60,12 @@
                 </div>
                 <div class="form-group">
                     <blockquote>
-                        <asp:LinkButton runat="server" ID="btnForgotPassword" Text="Forgot Password?" OnClick="btnForgotPassword_Click" CausesValidation="false"></asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="btnForgotPassword" Text="Forgot Password?" OnClick="btnForgotPassword_Click" CausesValidation="false" Visible="false"></asp:LinkButton>
                     </blockquote>
                 </div>
-            </div>
-            <div class="col-md-8">
-                <blockquote>
-                    <p class="text-info">Need to activate your account?</p>
-                    <p class="text-muted">Please send an email to <a href="mailto:yumiki.help@gmail.com">Yumiki Support</a> to get activation code.</p>
-                    <p class="bg-info paragraph-padding">
-                        Yumiki Portal contains vary application modules which can help managing things better and quicker such as task/time/expense module etc... and is able to expend or add more modules to adapt your business needs.
-                        <br />
-                        <br />
-                        Portal is applicable for a small business or personal. If you need any further information, please contact us at <a href="mailto:yumiki.help@gmail.com">Yumiki Support</a> to get better knowlegde on our products.
-                    </p>
-                    <footer>© <%=Yumiki.Commons.Helpers.DateTimeExtension.GetLocalSystemDatetime().Year%> - Yumiki Portal.</footer>
-                </blockquote>
+                © <%=Yumiki.Commons.Helpers.DateTimeExtension.GetLocalSystemDatetime().Year%> - Yumiki Portal.
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-            </div>
-        </div>
-
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SubContentContainer" runat="server">

@@ -6,7 +6,7 @@
 <div class="container">
     <h1>@ViewBag.Title</h1>
     <div class="card bg-secondary">
-        <div class="card-body">
+        <div class="card-body p-2">
             <div class="btn-group">
                 @Html.ActionLink("Add", "Create", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
                 @{
@@ -25,7 +25,7 @@
                 {
                     @Html.Hidden(Constants.Active, true);
                     @Html.Label("Applications", new { @class = "d-none d-md-block" })
-                    @Html.DropDownList(Constants.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker", @onchange = "this.form.submit();" })
+                    @Html.DropDownList(Constants.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker mt-md-0 mt-2", @onchange = "this.form.submit();" })
                 }
             </div>
         </div>

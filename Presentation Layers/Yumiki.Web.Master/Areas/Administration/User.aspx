@@ -15,7 +15,7 @@
         <ContentTemplate>
             <div class="container">
                 <asp:HiddenField ID="hdnID" runat="server" Value="" />
-                <h2>Users</h2>
+                <h1>Users</h1>
                 <ul class="nav nav-tabs">
                     <li runat="server" id="liUserList" class="nav-link">
                         <asp:LinkButton runat="server" ID="btnUserListTab" Text="User List" CausesValidation="false" OnClick="LinkButton_Click"></asp:LinkButton></li>
@@ -29,7 +29,7 @@
                 <asp:MultiView runat="server" ID="mtvUserTabs" ActiveViewIndex="0">
                     <asp:View ID="vwListTab" runat="server">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
                                     <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
                                     <asp:Button ID="btnDisplayInactiveUsers" runat="server" CssClass="btn btn-default" Text="Show Inactive Users" OnClick="btnDisplayInactiveUsers_Click" CausesValidation="false" />
@@ -83,7 +83,7 @@
                     </asp:View>
                     <asp:View runat="server" ID="vwAddEditTab">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
                                     <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-primary" ValidationGroup="User" OnClientClick="yumiki.webForm.validation.validateInputs('User');" OnClick="btnUserSave_Click" CausesValidation="true" />
                                 </div>
@@ -152,7 +152,7 @@
                     </asp:View>
                     <asp:View runat="server" ID="vwUserDetailsTab">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
                                     <asp:Button ID="btnAddContact" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAddContact_Click" CausesValidation="false" />
                                 </div>
@@ -160,7 +160,7 @@
                         </div>
                         <asp:Repeater runat="server" ID="rptContactType">
                             <ItemTemplate>
-                                <div class="card">
+                                <div class="card mb-3">
                                     <div class="card-header bg-info">
                                         <h5>
                                             <%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.ContactTypeName) %></a>
@@ -169,7 +169,7 @@
                                     <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
                                         <HeaderTemplate>
                                             <div class="table-responsive-lg">
-                                                <table class="table table-striped table-bordered table-hover">
+                                                <table class="table table-striped table-bordered table-hover mb-0">
                                                     <thead class="thead-dark">
                                                         <tr>
                                                             <th></th>
@@ -212,7 +212,7 @@
                     </asp:View>
                     <asp:View runat="server" ID="vwResetPassword">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
                                     <asp:Button ID="btnResetPassword" runat="server" Text="Reset" CssClass="btn btn-primary" ValidationGroup="ResetPassword" OnClientClick="yumiki.webForm.validation.validateInputs('ResetPassword');" OnClick="btnResetPassword_Click" CausesValidation="true" />
                                 </div>

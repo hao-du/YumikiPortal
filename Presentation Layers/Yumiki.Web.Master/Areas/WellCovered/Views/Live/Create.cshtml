@@ -15,10 +15,10 @@
         @Html.Hidden(Yumiki.Web.WellCovered.Controllers.LiveController.ObjectID, objectID)
 
         <div class="card bg-secondary">
-            <div class="card-body">
+            <div class="card-body p-2">
                 <div class="btn-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
-                    @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Back", "List", new { objectID = objectID, active = true }, new { @class = "btn btn-dark" })
                 </div>
             </div>
         </div>

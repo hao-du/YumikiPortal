@@ -24,7 +24,7 @@
                 <asp:MultiView runat="server" ID="mtvGroupTabs" ActiveViewIndex="0">
                     <asp:View ID="vwGroupListTab" runat="server">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
                                     <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
                                     <asp:Button ID="btnDisplayInactiveGroups" runat="server" CssClass="btn btn-default" Text="Show Inactive Groups" OnClick="btnDisplayInactiveGroups_Click" CausesValidation="false" />
@@ -74,14 +74,14 @@
                     </asp:View>
                     <asp:View ID="vwUserAssignmentTab" runat="server">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
-                                    <asp:Button ID="btnDisplayUser" runat="server" CssClass="btn btn-primary" Text="Show Unassigned Users" OnClick="btnDisplayUser_Click" CausesValidation="false" />
                                     <asp:Button ID="btnAssignUnassignUser" runat="server" CssClass="btn btn-primary" Text="Assign" OnClick="btnAssignUnassignUser_Click" CausesValidation="false" />
+                                    <asp:Button ID="btnDisplayUser" runat="server" CssClass="btn" Text="Show Unassigned Users" OnClick="btnDisplayUser_Click" CausesValidation="false" />
                                 </div>
-                                <h4 class="float-md-right text-white">
+                                <h5 class="float-md-right text-white my-2">
                                     <asp:Literal runat="server" ID="lblDisplayUserDescription" Text="Unassigned User List"></asp:Literal>
-                                </h4>
+                                </h5>
                             </div>
                         </div>
                         <div class="table-responsive-lg">
@@ -120,14 +120,14 @@
                     </asp:View>
                     <asp:View ID="vwPrivilegeAssignmentTab" runat="server">
                         <div class="card bg-secondary">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="btn-group">
-                                    <asp:Button ID="btnDisplayPrivilege" runat="server" CssClass="btn btn-primary" Text="Show Unassigned Privileges" OnClick="btnDisplayPrivilege_Click" CausesValidation="false" />
                                     <asp:Button ID="btnAssignUnassignPrivilege" runat="server" CssClass="btn btn-primary" Text="Assign" OnClick="btnAssignUnassignPrivilege_Click" CausesValidation="false" />
+                                    <asp:Button ID="btnDisplayPrivilege" runat="server" CssClass="btn" Text="Show Unassigned Privileges" OnClick="btnDisplayPrivilege_Click" CausesValidation="false" />
                                 </div>
-                                <h4 class="float-md-right text-white">
+                                <h5 class="float-md-right text-white my-2">
                                     <asp:Literal runat="server" ID="lblDisplayPrivilegeDescription" Text="Unassigned Privilege List"></asp:Literal>
-                                </h4>
+                                </h5>
                             </div>
                         </div>
                             <div class="table-responsive">

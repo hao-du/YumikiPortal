@@ -139,15 +139,6 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.View vwUserAssignmentTab;
         
         /// <summary>
-        /// btnDisplayUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDisplayUser;
-        
-        /// <summary>
         /// btnAssignUnassignUser control.
         /// </summary>
         /// <remarks>
@@ -155,6 +146,15 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAssignUnassignUser;
+        
+        /// <summary>
+        /// btnDisplayUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplayUser;
         
         /// <summary>
         /// lblDisplayUserDescription control.
@@ -184,15 +184,6 @@ namespace Yumiki.Web.Administration {
         protected global::System.Web.UI.WebControls.View vwPrivilegeAssignmentTab;
         
         /// <summary>
-        /// btnDisplayPrivilege control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDisplayPrivilege;
-        
-        /// <summary>
         /// btnAssignUnassignPrivilege control.
         /// </summary>
         /// <remarks>
@@ -200,6 +191,15 @@ namespace Yumiki.Web.Administration {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAssignUnassignPrivilege;
+        
+        /// <summary>
+        /// btnDisplayPrivilege control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDisplayPrivilege;
         
         /// <summary>
         /// lblDisplayPrivilegeDescription control.

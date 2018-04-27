@@ -60,7 +60,7 @@
                 <ul class="navbar-nav">
                     <asp:Literal runat="server" ID="lblMenu"></asp:Literal>
                 </ul>
-                <ul runat="server" id="ulLogoutSection" class="navbar-nav ml-auto">
+                <ul runat="server" id="ulLogoutSection" class="navbar-nav ml-auto" visible="false">
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span class="fa fa-user-circle-o"></span>
@@ -90,7 +90,7 @@
             <span class="navbar-text">© <asp:Literal runat="server" ID="lblReleaseYear" Mode="PassThrough"></asp:Literal> - Yumiki Portal.
             </span>
             <div class="collapse navbar-collapse" id="navbarBottomDropdown">
-                <ul class="navbar-nav ml-auto">
+                <ul id="ulTimeZoneSection" class="navbar-nav ml-auto" runat="server" visible="false">
                     <li class="nav-item">
                         <span class="navbar-text">
                             <b>Your Time Zone</b>: <asp:Literal runat="server" ID="lblTimeZoneInfo" Mode="PassThrough"></asp:Literal>

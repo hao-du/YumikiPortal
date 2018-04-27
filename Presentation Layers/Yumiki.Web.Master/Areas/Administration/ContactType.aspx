@@ -9,7 +9,7 @@
             <div class="container">
                 <h1>Contact Types</h1>
                 <div class="card bg-secondary">
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="btn-group">
                             <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
                             <asp:Button ID="btnDisplayInactiveContactTypes" runat="server" CssClass="btn btn-default" Text="Show Inactive ContactTypes" OnClick="btnDisplayInactiveContactTypes_Click" CausesValidation="false" />
@@ -81,7 +81,7 @@
                                 <div class="form-group">
                                     <asp:CheckBox runat="server" ID="ckbIsActive" Checked="true" Text="Is Active" />
                                 </div>
-                                <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="well well-sm alert alert-danger" />
+                                <asp:ValidationSummary ID="vsContactTypeValidationSummary" DisplayMode="List" EnableClientScript="true" ShowSummary="true" ShowMessageBox="false" ShowValidationErrors="true" runat="server" CssClass="alert alert-danger" />
                             </div>
                             <div class="modal-footer bg-dark">
                                 <asp:Button ID="btnDialogSave" runat="server" Text="Save" CssClass="btn btn-primary" OnClientClick="yumiki.webForm.validation.validateInputs();" OnClick="btnDialogSave_Click" CausesValidation="true" />

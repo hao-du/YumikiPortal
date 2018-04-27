@@ -12,10 +12,10 @@
         @Html.Hidden("action", string.Empty)
 
         <div class="card bg-secondary">
-            <div class="card-body">
+            <div class="card-body p-2">
                 <div class="btn-group">
                     <input type="button" value="Save" class="btn btn-primary" onclick="yumiki.wellCovered.onFormSubmit('@Yumiki.Web.WellCovered.Controllers.FieldController.PostSave')" />
-                    @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Back", "List", new { active = true, objectID = Model.ObjectID.ToString() }, new { @class = "btn btn-dark" })
                 </div>
             </div>
         </div>

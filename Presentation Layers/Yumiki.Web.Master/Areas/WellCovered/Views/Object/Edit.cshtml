@@ -15,10 +15,10 @@
         @Html.Hidden(Constants.AppID, Request.Params[Constants.AppID])
 
         <div class="card bg-secondary">
-            <div class="card-body">
+            <div class="card-body p-2">
                 <div class="btn-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
-                    @Html.ActionLink("Back", "List", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Back", "List", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-dark" })
                 </div>
             </div>
         </div>

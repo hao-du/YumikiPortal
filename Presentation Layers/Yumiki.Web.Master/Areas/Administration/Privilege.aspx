@@ -19,7 +19,7 @@
             <div class="container">
                 <h1>Privileges</h1>
                 <div class="card bg-secondary">
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <div class="btn-group">
                             <asp:Button ID="btnAdd" runat="server" CssClass="btn btn-primary" Text="New" OnClick="btnAdd_Click" CausesValidation="false" />
                             <asp:Button ID="btnDisplayInactivePrivileges" runat="server" CssClass="btn btn-default" Text="Show Inactive Privileges" OnClick="btnDisplayInactivePrivileges_Click" CausesValidation="false" />
