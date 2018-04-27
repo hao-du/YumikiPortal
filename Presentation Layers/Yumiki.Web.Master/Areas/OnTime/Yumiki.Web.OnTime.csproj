@@ -104,6 +104,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\HtmlController.cs" />
     <Compile Include="Controllers\TestOnController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OnTimeAreaRegistration.cs" />

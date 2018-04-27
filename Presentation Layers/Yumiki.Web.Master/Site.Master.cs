@@ -22,7 +22,7 @@ namespace Yumiki.Web.Master
                 if (CurrentUser.IsAuthenticated)
                 {
                     lblUserName.Text = CurrentUser.UserFullName;
-                    lblTimeZoneInfo.Text = CurrentUser.TimeZone.ToString();
+                    lblTimeZoneInfo.Text = CurrentUser.TimeZone?.ToString();
                     ulLogoutSection.Visible = true;
                     ulTimeZoneSection.Visible = true;
                 }

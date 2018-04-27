@@ -76,7 +76,7 @@ namespace Yumiki.Web.Base
                 ViewBag.UserName = CurrentUser.UserFullName;
                 ViewBag.UserID = CurrentUser.UserID;
                 ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
-                ViewBag.TimeZone = CurrentUser.TimeZone;
+                ViewBag.TimeZone = CurrentUser.TimeZone?.ToString();
             }
         }
 
