@@ -26,7 +26,6 @@ namespace Yumiki.Commons.Dictionaries
         {
             public const string WebFormMasterPrefix = "Pages";
             public const string WebFormAreaPrefix = "Apps";
-            //public const string WebHandlerAreaPrefix = "Handlers";
         }
     }
 }

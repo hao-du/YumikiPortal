@@ -8,7 +8,6 @@ using Yumiki.Data.MoneyTrace.Interfaces;
 using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using System.Linq.Expressions;
-using Yumiki.Commons.Database;
 using LinqKit;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
