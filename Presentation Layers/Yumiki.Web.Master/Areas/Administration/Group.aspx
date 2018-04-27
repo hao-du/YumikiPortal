@@ -31,10 +31,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive-lg">
+                        <div class="table-responsive">
                             <asp:Repeater runat="server" ID="rptGroup">
                                 <HeaderTemplate>
-                                    <table id="tblGroup" class="table table-striped table-bordered table-hover">
+                                    <table id="tblGroup" class="table table-sm table-striped table-bordered table-hover">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th></th>
@@ -84,10 +84,10 @@
                                 </h5>
                             </div>
                         </div>
-                        <div class="table-responsive-lg">
+                        <div class="table-responsive">
                             <asp:Repeater runat="server" ID="rptUser">
                                 <HeaderTemplate>
-                                    <table id="tblUser" class="table table-striped table-bordered table-hover">
+                                    <table id="tblUser" class="table table-sm table-striped table-bordered table-hover">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th></th>
@@ -133,7 +133,7 @@
                             <div class="table-responsive">
                                 <asp:Repeater runat="server" ID="rptPrivilege">
                                     <HeaderTemplate>
-                                        <table id="tblPrivilege" class="table table-striped table-bordered table-hover">
+                                        <table id="tblPrivilege" class="table table-sm table-striped table-bordered table-hover">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th></th>

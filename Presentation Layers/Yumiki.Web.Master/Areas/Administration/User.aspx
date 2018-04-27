@@ -36,10 +36,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive-lg">
+                        <div class="table-responsive">
                             <asp:Repeater runat="server" ID="rptUser">
                                 <HeaderTemplate>
-                                    <table id="tblUser" class="table table-striped table-bordered table-hover">
+                                    <table id="tblUser" class="table table-sm table-striped table-bordered table-hover">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th></th>
@@ -168,8 +168,8 @@
                                     </div>
                                     <asp:Repeater runat="server" ID="rptAddressDetail" DataSource='<%# Eval(Yumiki.Entity.Administration.CustomObjects.ContactTypeWithUserAddress.FieldName.UserAddresses) %>'>
                                         <HeaderTemplate>
-                                            <div class="table-responsive-lg">
-                                                <table class="table table-striped table-bordered table-hover mb-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-striped table-bordered table-hover mb-0">
                                                     <thead class="thead-dark">
                                                         <tr>
                                                             <th></th>

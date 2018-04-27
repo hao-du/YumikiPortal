@@ -34,10 +34,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive-lg">
+                <div class="table-responsive">
                     <asp:Repeater runat="server" ID="rptPrivilege">
                         <HeaderTemplate>
-                            <table id="tblPrivilege" class="table table-striped table-bordered table-hover">
+                            <table id="tblPrivilege" class="table table-sm table-striped table-bordered table-hover">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th></th>
