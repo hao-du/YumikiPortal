@@ -325,9 +325,7 @@ namespace Yumiki.Web.Administration
             }
 
             mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
-            liGroupList.Attributes.Remove("class");
-            liUserAssignment.Attributes.Remove("class");
-            liPrivilegeAssignment.Attributes.Remove("class");
+            liGroupList.Attributes["class"] = liUserAssignment.Attributes["class"] = liPrivilegeAssignment.Attributes["class"] = "nav-link";
 
             liUserAssignment.Visible = false;
             liPrivilegeAssignment.Visible = false;
@@ -335,7 +333,7 @@ namespace Yumiki.Web.Administration
             if (((LinkButton)sender).ID == btnGroupListTab.ID)
             {
                 mtvGroupTabs.ActiveViewIndex = groupListTabIndex;
-                liGroupList.Attributes.Add("class", "active");
+                liGroupList.Attributes["class"] = "nav-link active";
             }
             else
             {
@@ -348,12 +346,12 @@ namespace Yumiki.Web.Administration
                 if (((LinkButton)sender).ID == btnUserAssignmentTab.ID)
                 {
                     mtvGroupTabs.ActiveViewIndex = userAssignmentTabIndex;
-                    liUserAssignment.Attributes.Add("class", "active");
+                    liUserAssignment.Attributes["class"] = "nav-link active";
                 }
                 else if (((LinkButton)sender).ID == btnPrivilegeAssignmentTab.ID)
                 {
                     mtvGroupTabs.ActiveViewIndex = privilegeAssignmentTabIndex;
-                    liPrivilegeAssignment.Attributes.Add("class", "active");
+                    liPrivilegeAssignment.Attributes["class"] = "nav-link active";
                 }
             }
         }

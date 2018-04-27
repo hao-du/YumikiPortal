@@ -1,0 +1,22 @@
+{
+  "name": "yumiki-portal-ontime",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "dependencies": {
+    "@angular/common": "~5.2.10",
+    "@angular/compiler": "~5.2.10",
+    "@angular/core": "~5.2.10",
+    "@angular/forms": "~5.2.10",
+    "@angular/http": "~5.2.10",
+    "@angular/platform-browser": "~5.2.10",
+    "@angular/platform-browser-dynamic": "~5.2.10",
+    "@angular/router": "~5.2.10",
+
+    "angular-in-memory-web-api": "~0.5.4",
+    "systemjs": "0.19.40",
+    "core-js": "^2.4.1",
+    "rxjs": "5.0.1",
+    "zone.js": "^0.8.4"
+  }
+}

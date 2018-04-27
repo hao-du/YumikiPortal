@@ -1,24 +1,26 @@
 ﻿@model Yumiki.Web.WellCovered.Models.MD_App
 
 @{
-    ViewBag.Title = "Create Application";
+    ViewBag.Title = $"Create application";
 }
 
 <div class="container">
-    <h2>@ViewBag.Title</h2>
+    <h1>@ViewBag.Title</h1>
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <div class="well well-sm">
-            <div class="btn-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back", "List", new { }, new { @class = "btn btn-primary" })
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    @Html.ActionLink("Back", "List", new { }, new { @class = "btn btn-dark" })
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.AppName)
                     @Html.EditorFor(model => model.AppName, new { htmlAttributes = new { @class = "form-control" } })
@@ -27,7 +29,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-md-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descriptions)
                     @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })

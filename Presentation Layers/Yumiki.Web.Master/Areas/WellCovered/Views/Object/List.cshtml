@@ -1,94 +1,90 @@
 ﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Object>
 
 @{
-    ViewBag.Title = "Object List";
+    ViewBag.Title = "Objects";
 }
 <div class="container">
-    <h2>@ViewBag.Title</h2>
-    <div class="well well-sm">
-        <div class="btn-group">
-            @Html.ActionLink("Add", "Create", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
-            @{
-                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
-                {
-                    @Html.ActionLink("Show Inactive", "List", new { active = false, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-default" })
-                }
-                else
-                {
-                    @Html.ActionLink("Show Active", "List", new { active = true, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-default" })
-                }
-            }
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            @using (Html.BeginForm("List", "Object", FormMethod.Get))
-            {
-                @Html.Hidden(Constants.Active, true);
-                <div class="form-group">
-                    @Html.Label("Applications");
-                    @Html.DropDownList(Constants.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker", @onchange = "this.form.submit();" })
-                </div>
-            }
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th></th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ObjectName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ApiName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ApplicationName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastUpdateDateUI)
-                        </th>
-                    </tr>
-                    @foreach (var item in Model)
+    <h1>@ViewBag.Title</h1>
+    <div class="card bg-secondary">
+        <div class="card-body p-2">
+            <div class="btn-group">
+                @Html.ActionLink("Add", "Create", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
+                @{
+                    if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
                     {
-                        <tr>
-                            <td>
-                                @Html.ActionLink(" ", "Edit", new { id = item.ID, appID = Request.Params[Constants.AppID] }, new { @class = "fa fa-edit", title = "Edit" })
-                                <span class="yumiki-separator-vbar"></span>
-                                @Html.ActionLink(" ", "List", "Field", new { active = true, objectID = item.ID.ToString(), appID = Request.Params[Constants.AppID] }, new { target = "_blank", @class = "fa fa-database", title = "View Fields" })
-                                <span class="yumiki-separator-vbar"></span>
-                                @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()), @class= "ymk-form" }))
-                                {
-                                    @Html.Hidden("objectID", item.ID.ToString())
-                                    @Html.Hidden(Constants.AppID, Request.QueryString[Constants.AppID])
-                                    <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');" title="Publish"><span class="fa fa-cloud-upload"></span></a>
-                                }
-                                <span class="yumiki-separator-vbar"></span>
-                                @Html.ActionLink(" ", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { target = "_blank", @class = "fa fa-dashboard", title = "View Dashboard" })
-                            </td>
-                            <td>
-                                @{
-                                    string objectName = string.Format("{0} - Display Name: {1}", item.ObjectName, item.DisplayName);
-                                }
-                                @Html.DisplayFor(modelItem => objectName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ApiName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ApplicationName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
-                            </td>
-                        </tr>
-                                    }
-
-                </table>
+                        @Html.ActionLink("Show Inactive", "List", new { active = false, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-dark" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Show Active", "List", new { active = true, appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-dark" })
+                    }
+                }
+            </div>
+            <div class="float-md-right text-white">
+                @using (Html.BeginForm("List", "Object", FormMethod.Get))
+                {
+                    @Html.Hidden(Constants.Active, true);
+                    @Html.Label("Applications", new { @class = "d-none d-md-block" })
+                    @Html.DropDownList(Constants.AppID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown, new { @class = "form-control selectpicker mt-md-0 mt-2", @onchange = "this.form.submit();" })
+                }
             </div>
         </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ObjectName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ApiName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ApplicationName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastUpdateDateUI)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(" ", "Edit", new { id = item.ID, appID = Request.Params[Constants.AppID] }, new { @class = "fa fa-edit", title = "Edit" })
+                            @Html.ActionLink(" ", "List", "Field", new { active = true, objectID = item.ID.ToString(), appID = Request.Params[Constants.AppID] }, new { target = "_blank", @class = "fa fa-database", title = "View Fields" })
+
+                            @using (Html.BeginForm("PublishObject", "Live", FormMethod.Post, new { @id = string.Format("form-{0}", item.ID.ToString()), @class = "d-inline" }))
+                            {
+                                @Html.Hidden("objectID", item.ID.ToString())
+                                @Html.Hidden(Constants.AppID, Request.QueryString[Constants.AppID])
+                                <a href="#" onclick="yumiki.wellCovered.onListSubmit('@string.Format("form-{0}", item.ID.ToString())');" title="Publish"><span class="fa fa-cloud-upload"></span></a>
+                            }
+                            @Html.ActionLink(" ", "List", "Live", new { objectID = item.ID.ToString(), active = true }, new { target = "_blank", @class = "fa fa-dashboard", title = "View Dashboard" })
+                        </td>
+                        <td>
+                            @{
+                                string objectName = string.Format("{0} - Display Name: {1}", item.ObjectName, item.DisplayName);
+                            }
+                            @Html.DisplayFor(modelItem => objectName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApiName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApplicationName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
+                        </td>
+                    </tr>
+                 }
+            </tbody>
+        </table>
     </div>
 </div>
 @section BottomScript{

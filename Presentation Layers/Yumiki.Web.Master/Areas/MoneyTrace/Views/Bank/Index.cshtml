@@ -32,81 +32,79 @@
 }
 <div ng-app="bank">
     <div class="container" ng-controller="bankController" ng-init="loadData();">
-        <h2>Bank</h2>
-        <div class="well well-sm">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
-                <button type="button" class="btn btn-default" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table id="tblBank" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Bank Name</th>
-                                <th>Descriptions</th>
-                                <th>Shareable</th>
-                                <th>Active Status</th>
-                                <th>Modify Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="bank in banks">
-                                <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bank.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                                <td>{{ bank.@TB_Bank.FieldName.BankName }}</td>
-                                <td>{{ bank.@CommonProperties.Descriptions }}</td>
-                                <td><input type="checkbox" ng-checked="{{ bank.@TB_Bank.FieldName.IsShareable }}" disabled="disabled" /></td>
-                                <td><input type="checkbox" ng-checked="{{ bank.@CommonProperties.IsActive }}" disabled="disabled" /></td>
-                                <td>{{ bank.@CommonProperties.LastUpdateDateUI }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <h1>Banks</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
                 </div>
             </div>
-            <div class="col-md-12">
-                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination-sm" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
+        </div>
+        <div class="table-responsive">
+            <table id="tblBank" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Bank Name</th>
+                        <th>Descriptions</th>
+                        <th>Shareable</th>
+                        <th>Active Status</th>
+                        <th>Modify Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="bank in banks">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(bank.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ bank.@TB_Bank.FieldName.BankName }}</td>
+                        <td>{{ bank.@CommonProperties.Descriptions }}</td>
+                        <td><input type="checkbox" ng-checked="{{ bank.@TB_Bank.FieldName.IsShareable }}" disabled="disabled" /></td>
+                        <td><input type="checkbox" ng-checked="{{ bank.@CommonProperties.IsActive }}" disabled="disabled" /></td>
+                        <td>{{ bank.@CommonProperties.LastUpdateDateUI }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="loadData();" class="pagination" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
     <div id="dlgBank" class="modal fade" role="dialog" ng-controller="bankDialogController">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <!-- Modal content-->
             <div class="modal-content">
                 <form name="bankForm" ng-submit="save(bankForm.$valid)" novalidate>
                     <div class="modal-header">
-                        <h4 class="modal-title">{{ dialogTitle }}</h4>
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group" ng-class="{ 'has-error' : bankForm.bankName.$invalid }">
-                            <label>Bank Name</label>
-                            <input type="text" name="bankName" ng-model="bank.@TB_Bank.FieldName.BankName" class="form-control" ng-required="true" />
-                            <p ng-show="bankForm.bankName.$error.required && bankForm.bankName.$dirty" class="help-block">Bank Name is required.</p>
-                        </div>
                         <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="bank.@TB_Bank.FieldName.IsShareable" ng-checked="bank.@TB_Bank.FieldName.IsShareable" />
-                                <label>Is Shareable</label>
-                            </span>
+                            <label>Bank Name</label>
+                            <input type="text" name="bankName" ng-model="bank.@TB_Bank.FieldName.BankName" class="form-control" ng-class="{ 'border-danger' : bankForm.bankName.$invalid && bankForm.bankName.$dirty }" ng-required="true" />
+                            <p ng-show="bankForm.bankName.$error.required && bankForm.bankName.$dirty" class="text-danger">Bank Name is required.</p>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="bank.@TB_Bank.FieldName.IsShareable" ng-checked="bank.@TB_Bank.FieldName.IsShareable" /> Is Shareable
+                            </label>
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>
                             <textarea ng-model="bank.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
                         </div>
-                        <div class="form-group">
-                            <span class="checkbox">
-                                <input type="checkbox" ng-model="bank.@CommonProperties.IsActive" ng-checked="bank.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                                <label>Is Active</label>
-                            </span>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="bank.@CommonProperties.IsActive" ng-checked="bank.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
+                            </label>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-default" ng-disabled="bankForm.$invalid">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="bankForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>

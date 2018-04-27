@@ -1,11 +1,11 @@
 ﻿@model Yumiki.Web.WellCovered.Models.MD_Object
 
 @{
-    ViewBag.Title = "Edit Object";
+    ViewBag.Title = $"Edit {Model.ObjectName} object";
 }
 
-<div class="container" ">
-    <h2>@ViewBag.Title</h2>
+<div class="container">
+    <h1>@ViewBag.Title</h1>
 
     @using (Html.BeginForm())
     {
@@ -14,15 +14,17 @@
         @Html.HiddenFor(model => model.ApiName)
         @Html.Hidden(Constants.AppID, Request.Params[Constants.AppID])
 
-        <div class="well well-sm">
-            <div class="btn-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back", "List", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-primary" })
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    @Html.ActionLink("Back", "List", new { appID = Request.Params[Constants.AppID] }, new { @class = "btn btn-dark" })
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ObjectName)
                     @Html.EditorFor(model => model.ObjectName, new { htmlAttributes = new { @class = "form-control" } })
@@ -31,7 +33,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.DisplayName)
                     @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
@@ -40,10 +42,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApiName)
-                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control", disabled= "disabled " } })
+                    @Html.EditorFor(model => model.ApiName, new { htmlAttributes = new { @class = "form-control", disabled = "disabled " } })
                     <p class="text-info">
                         <i>Api Name is used by system and can only name it during adding new.</i>
                     </p>
@@ -53,7 +55,7 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApplicationName)
                     @Html.DropDownListFor(model => model.ApplicationID, (SelectList)ViewBag.AppDatasource, Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown, new { @class = "form-control selectpicker" })
@@ -61,7 +63,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descriptions)
                     @Html.TextAreaFor(model => model.Descriptions, new { @class = "form-control", @rows = 5 })
@@ -69,12 +71,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-6">
                 <div class="form-group">
-                    <span class="checkbox">
                         @Html.EditorFor(model => model.IsActive)
                         @Html.LabelFor(model => model.IsActive)
-                    </span>
                 </div>
             </div>
         </div>

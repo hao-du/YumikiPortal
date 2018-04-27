@@ -2,5 +2,17 @@
     ViewBag.Title = "Application List";
 }
 
+@section HeadScript {
+    <!-- Polyfill(s) for older browsers -->
+    <script src="~/areas/ontime/node_modules/core-js/client/shim.min.js"></script>
 
-Test
+    <script src="~/areas/ontime/node_modules/zone.js/dist/zone.js"></script>
+    <script src="~/areas/ontime/node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="~/areas/ontime/systemjs.config.js"></script>
+    <script>
+        System.import('/areas/ontime/ontime-clients/main.js').catch(function (err) { console.error(err); });
+    </script>
+}
+
+<my-app>Loading AppComponent content here ...</my-app>

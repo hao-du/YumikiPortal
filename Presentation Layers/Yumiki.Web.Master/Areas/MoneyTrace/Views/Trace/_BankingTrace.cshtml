@@ -4,50 +4,54 @@
  
 <!-- Banking Trace Modal -->
 <div id="dlgBankingTrace" class="modal fade" role="dialog" ng-controller="bankingTraceDialogController" ng-init="bindControls();">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
             <form name="bankingTraceForm" ng-submit="save(bankingTraceForm.$valid)" novalidate>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    <h5 class="modal-title">{{ dialogTitle }}</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.traceDate.$invalid }">
+                    <div class="form-group">
                         <label>Trace Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
-                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : bankingTraceForm.traceDate.$invalid && bankingTraceForm.traceDate.$dirty }"/>
+                            <div class="input-group-append input-group-calendar">
+                                <span class="input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
-                        <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        <p ng-show="bankingTraceForm.traceDate.$error.required && bankingTraceForm.traceDate.$dirty" class="text-danger">Trace Date is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.amount.$invalid }">
+                    <div class="form-group">
                         <label>Amount</label>
-                        <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                        <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                        <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="help-block">Amount is required.</p>
+                        <input type="text" name="amount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : bankingTraceForm.amount.$invalid && bankingTraceForm.amount.$dirty }" ng-required="true" />
+                        <div class="text-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                        <p ng-show="bankingTraceForm.amount.$error.required && bankingTraceForm.amount.$dirty" class="text-danger">Amount is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.currency.$invalid }">
+                    <div class="form-group">
                         <label>Currency</label>
                         <select class="form-control selectpicker" name="currency" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList"
+                                ng-class="{ 'border-danger' : bankingTraceForm.currency.$invalid && bankingTraceForm.currency.$dirty }">
+                            <option value="@CommonValues.EmptyValue" selected="selected">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        <p ng-show="bankingTraceForm.currency.$error.required && bankingTraceForm.currency.$dirty" class="text-danger">Currency is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : bankingTraceForm.bank.$invalid }">
+                    <div class="form-group">
                         <label>Bank</label>
                         <select class="form-control selectpicker" name="bank" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.BankID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks">
+                                ng-options="item.@CommonProperties.ID as item.@TB_Bank.FieldName.BankName for item in banks"
+                                ng-class="{ 'border-danger' : bankingTraceForm.bank.$invalid && bankingTraceForm.bank.$dirty }">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="help-block">Bank is required.</p>
+                        <p ng-show="bankingTraceForm.bank.$error.required && bankingTraceForm.bank.$dirty" class="text-danger">Bank is required.</p>
                     </div>
 
                     <div class="form-group">
@@ -60,16 +64,15 @@
                         <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <span class="checkbox">
-                            <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                            <label>Is Active</label>
-                        </span>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
+                        </label>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-default" ng-disabled="bankingTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer bg-dark">
+                    <button type="submit" class="btn btn-primary" ng-disabled="bankingTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>

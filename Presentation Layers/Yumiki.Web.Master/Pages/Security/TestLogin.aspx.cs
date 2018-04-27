@@ -32,6 +32,7 @@ namespace Yumiki.Web.Master.Pages.Security
             testUsers.Add(new TB_User { UserLoginName = "ltkiet" });
             testUsers.Add(new TB_User { UserLoginName = "ntkoanh" });
             testUsers.Add(new TB_User { UserLoginName = "ltoanh" });
+            testUsers.Add(new TB_User { UserLoginName = "test" });
 
             rptUserNames.DataSource = testUsers;
             rptUserNames.DataBind();
@@ -45,6 +46,7 @@ namespace Yumiki.Web.Master.Pages.Security
 
                 CurrentUser.UserID = user.ID;
                 CurrentUser.UserLoginName = user.UserLoginName;
+                CurrentUser.UserFullName = $"{user.FirstName} {user.LastName}".Trim();
                 CurrentUser.LastLoginTime = DateTimeExtension.GetSystemDatetime();
                 CurrentUser.TimeZone = DateTimeExtension.GetTimeZoneById(user.TimeZone);
 

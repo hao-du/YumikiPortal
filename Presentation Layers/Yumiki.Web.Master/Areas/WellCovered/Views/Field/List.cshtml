@@ -1,105 +1,105 @@
 ﻿@model IEnumerable<Yumiki.Web.WellCovered.Models.MD_Field>
 
 @{
-    ViewBag.Title = "Field List";
+    ViewBag.Title = "Fields";
 }
 
 <div class="container">
-    <h2>@ViewBag.Title</h2>
-    <div class="well well-sm">
-        <div class="btn-group">
-            @{
-                var hasRecords = Model.Any();
-                string paramObjectID = ViewBag.ObjectID;
+    <h1>@ViewBag.Title</h1>
+    <div class="card bg-secondary">
+        <div class="card-body p-2">
+            <div class="btn-group">
+                @{
+                    var hasRecords = Model.Any();
+                    string paramObjectID = ViewBag.ObjectID;
 
-                @Html.ActionLink("Add", "Create", new { objectID = ViewBag.ObjectID }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Add", "Create", new { objectID = ViewBag.ObjectID }, new { @class = "btn btn-primary" })
 
-                if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
-                {
-                    @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = "btn btn-default" })
+                    if (string.IsNullOrWhiteSpace(Request.Params[Constants.Active]) || bool.Parse(Request.Params[Constants.Active]))
+                    {
+                        @Html.ActionLink("Show Inactive", "List", new { active = false, objectID = paramObjectID }, new { @class = "btn btn-dark" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Show Active", "List", new { active = true, objectID = paramObjectID }, new { @class = "btn btn-dark" })
+                    }
                 }
-                else
-                {
-                    @Html.ActionLink("Show Active", "List", new { active = true, objectID = paramObjectID }, new { @class = "btn btn-default" })
-                }
-            }
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+    <div class="table-responsive">
+        <table class="table table-sm table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FieldName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ApiName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FieldType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsDisplayable)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FieldOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastUpdateDateUI)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderBy(c => c.FieldOrder))
+                {
                     <tr>
-                        <th></th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FieldName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ApiName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FieldType)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IsDisplayable)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FieldOrder)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.LastUpdateDateUI)
-                        </th>
+                        <td>
+                            @Html.ActionLink(" ", "Edit", new { id = item.ID, objectID = item.ObjectID }, new { @class = "fa fa-edit", title = "Edit" })
+                        </td>
+                        <td>
+                            @{
+                                string fieldName = string.Format("{0} - Display Name: {1}", item.FieldName, item.DisplayName);
+                            }
+                            @Html.DisplayFor(modelItem => fieldName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApiName)
+                        </td>
+                        <td>
+                            @{
+                                string description = string.Empty;
+
+                                if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
+                                {
+                                    description = string.Format("{0}{1} - Datasource: {2}", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), (item.IsRequired ? " Required" : string.Empty), item.Datasource);
+                                }
+                                else if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
+                                {
+                                    description = string.Format("{0} ({1})", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), item.FieldLength.HasValue ? item.FieldLength.Value : 0);
+                                }
+                                else
+                                {
+                                    description = Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType);
+                                }
+                            }
+                            @Html.DisplayFor(modelItem => description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsDisplayable)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FieldOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
+                        </td>
                     </tr>
-
-                    @foreach (var item in Model.OrderBy(c => c.FieldOrder))
-                    {
-                        <tr>
-                            <td>
-                                @Html.ActionLink(" ", "Edit", new { id = item.ID, objectID = item.ObjectID }, new { @class = "fa fa-edit", title = "Edit" })
-                            </td>
-                            <td>
-                                @{
-                                    string fieldName = string.Format("{0} - Display Name: {1}", item.FieldName, item.DisplayName);
-                                }
-                                @Html.DisplayFor(modelItem => fieldName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ApiName)
-                            </td>
-                            <td>
-                                @{
-                                    string description = string.Empty;
-
-                                    if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_DATASOURCE)
-                                    {
-                                        description = string.Format("{0}{1} - Datasource: {2}", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), (item.IsRequired ? " Required" : string.Empty), item.Datasource);
-                                    }
-                                    else if (item.FieldType == Yumiki.Entity.WellCovered.EN_DataType.E_STRING)
-                                    {
-                                        description = string.Format("{0} ({1})", Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType), item.FieldLength.HasValue ? item.FieldLength.Value : 0);
-                                    }
-                                    else
-                                    {
-                                        description = Yumiki.Commons.Helpers.EnumHelper.GetDescription(item.FieldType);
-                                    }
-                                }
-                                @Html.DisplayFor(modelItem => description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsDisplayable)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FieldOrder)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastUpdateDateUI)
-                            </td>
-                        </tr>
-                    }
-
-                </table>
-            </div>
-        </div>
+                  }
+            </tbody>
+        </table>
     </div>
 </div>

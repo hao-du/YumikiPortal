@@ -73,10 +73,10 @@ namespace Yumiki.Web.Base
 
             if (CurrentUser.IsAuthenticated)
             {
-                ViewBag.UserName = CurrentUser.UserLoginName;
+                ViewBag.UserName = CurrentUser.UserFullName;
                 ViewBag.UserID = CurrentUser.UserID;
                 ViewBag.LastLoginTime = CurrentUser.LastLoginTime;
-                ViewBag.TimeZone = CurrentUser.TimeZone;
+                ViewBag.TimeZone = CurrentUser.TimeZone?.ToString();
             }
         }
 

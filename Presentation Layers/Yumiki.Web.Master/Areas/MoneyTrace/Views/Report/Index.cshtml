@@ -17,7 +17,7 @@
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
-<script type="text/javascript">
+    <script type="text/javascript">
         yumiki.moneyTrace.report.initReport(
             'cvReportChart',
             {
@@ -45,39 +45,44 @@
             '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate',
             '@Yumiki.Commons.Logging.LogLevel.ERROR'
         )
-</script>
+    </script>
 }
 
 <div ng-app="report">
     <div class="container" ng-controller="reportController" ng-init="loadData();">
-        <h2>Trace Report</h2>
+        <h1>Trace Report</h1>
         <form name="reportForm" ng-submit="getReport(reportForm.$valid)" novalidate>
-            <div class="well well-sm">
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary" ng-disabled="reportForm.$invalid">Report</button>
+            <div class="card bg-secondary">
+                <div class="card-body p-2">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary" ng-disabled="reportForm.$invalid">Report</button>
+                    </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group" ng-class="{ 'has-error' : reportForm.reportType.$invalid }">
+                    <div class="form-group">
                         <label>Report Type</label>
-                        <select class="form-control selectpicker" name="reportType" ng-required="true"
+                        <select class="form-control selectpicker" 
+                                ng-class="{ 'border-danger' : reportForm.reportType.$invalid && reportForm.reportType.$dirty }"
+                                name="reportType" ng-required="true"
                                 ng-model="requestObject.@GetReportRequest.FieldName.ReportType"
                                 ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes"
                                 ng-change="updateReportType()"></select>
-                        <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="help-block">Report Type is required.</p>
+                        <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="text-danger">Report Type is required.</p>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group" ng-class="{ 'has-error' : reportForm.currency.$invalid }">
+                    <div class="form-group">
                         <label>Currency</label>
-                        <select class="form-control selectpicker" name="currency" ng-required="true"
+                        <select class="form-control selectpicker" 
+                                ng-class="{ 'border-danger' : reportForm.currency.$invalid && reportForm.currency.$dirty }"
+                                name="currency" ng-required="true"
                                 ng-model="requestObject.@GetReportRequest.FieldName.CurrencyID"
                                 ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="reportForm.currency.$error.required && reportForm.currency.$dirty" class="help-block">Currency is required.</p>
+                        <p ng-show="reportForm.currency.$error.required && reportForm.currency.$dirty" class="text-danger">Currency is required.</p>
                     </div>
                 </div>
             </div>
@@ -87,9 +92,11 @@
                         <label>{{startDateLabel}}</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" ng-change="updateDates(0)">
                             <input type="text" name="startDate" ng-model="requestObject.@GetReportRequest.FieldName.StartDate" class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
+                            <div class="input-group-append input-group-calendar">
+                                <span class="input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
 
                     </div>
@@ -99,9 +106,11 @@
                         <label>End Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="requestObject.@GetReportRequest.FieldName.EndDate" ng-change="updateDates(1)">
                             <input type="text" name="endDate" ng-model="requestObject.@GetReportRequest.FieldName.EndDate" class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
+                            <div class="input-group-append input-group-calendar">
+                                <span class="input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,20 +133,19 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <span class="checkbox">
-                            <input type="checkbox" ng-model="requestObject.@GetReportRequest.FieldName.CalculateTotal" ng-checked="requestObject.@GetReportRequest.FieldName.CalculateTotal" />
-                            <label><b>Calculate Only Total Amount</b></label>
-                        </span>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.CalculateTotal" ng-checked="requestObject.@GetReportRequest.FieldName.CalculateTotal" /> <b>Calculate Only Total Amount</b>
+                        </label>
                     </div>
                 </div>
                 <div class="col-md-6">
                 </div>
             </div>
         </form>
+        <hr />
         <div class="row" ng-show="showReport">
-            <hr />
-            <div class="col-md-12">
+            <div class="col-md">
                 <canvas id="cvReportChart"></canvas>
             </div>
         </div>

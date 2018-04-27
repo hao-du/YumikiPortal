@@ -1,6 +1,6 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Yumiki.Web.Master.Site" %>
+﻿<%@ master language="C#" autoeventwireup="true" codebehind="Site.master.cs" inherits="Yumiki.Web.Master.Site" %>
 
-<%@ Import Namespace="SquishIt.Framework" %>
+<%@ import namespace="SquishIt.Framework" %>
 
 <!DOCTYPE html>
 
@@ -13,19 +13,19 @@
     <asp:PlaceHolder runat="server">
         <!--3rd Libraries-->
         <%= Bundle.Css()
-        .Add("~/third-party-clients/jquery-3.2.1/jquery-ui.min.css")
-        .Add("~/third-party-clients/bootstrap-3.3.7/css/bootstrap.min.css")
+        .Add("~/third-party-clients/jquery-3.3.1/jquery-ui.min.css")
+        .Add("~/third-party-clients/bootstrap-4.1.0/css/bootstrap.min.css")
         .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.css")
         .Add("~/third-party-clients/font-awesome-4.7.0/css/font-awesome.min.css")
-        .Add("~/clients/styles/site.less")
+        .Add("~/clients/styles/site.scss")
         .Render("~/cache/yumiki_#.css")
         %>
 
         <%= Bundle.JavaScript()
-        .Add("~/third-party-clients/jquery-3.2.1/jquery.min.js")
-        .Add("~/third-party-clients/jquery-3.2.1/jquery-ui.min.js")
-        .Add("~/third-party-clients/angular-js-1.6.5/angular.min.js")
-        .Add("~/third-party-clients/bootstrap-3.3.7/js/bootstrap.min.js")
+        .Add("~/third-party-clients/jquery-3.3.1/jquery.min.js")
+        .Add("~/third-party-clients/jquery-3.3.1/jquery-ui.min.js")
+        .Add("~/third-party-clients/angular-js-1.6.9/angular.min.js")
+        .Add("~/third-party-clients/bootstrap-4.1.0/js/bootstrap.min.js")
         .Add("~/third-party-clients/angular-ui-bootstrap-2.5.0/angular-ui-bootstrap.min.js")
         .Add("~/third-party-clients/moment-js-2.18.1/moment.min.js")
         .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.js")
@@ -47,37 +47,34 @@
     <asp:ContentPlaceHolder ID="HeaderContainer" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body class="modal-open">
+<body>
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">
-                        <asp:Literal runat="server" ID="lblYumikiTitle" Text="YUMIKI PORTAL"></asp:Literal></a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <asp:Literal runat="server" ID="lblMenu"></asp:Literal>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <p class="navbar-text">
-                                <span class="fa fa-user-circle-o"></span>
-                                <asp:Literal runat="server" ID="lblUserName" Text=""></asp:Literal>
-                            </p>
-                        </li>
-                        <li runat="server" id="liLogoutSection">
-                            <asp:LinkButton runat="server" ID="lnkLogout" Text="" OnClick="lnkLogout_Click" ToolTip="Log Out" CssClass="fa fa-sign-out"></asp:LinkButton>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="#">
+                <asp:Literal runat="server" ID="lblYumikiTitle" Text="YUMIKI PORTAL"></asp:Literal></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <asp:Literal runat="server" ID="lblMenu"></asp:Literal>
+                </ul>
+                <ul runat="server" id="ulLogoutSection" class="navbar-nav ml-auto" visible="false">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span class="fa fa-user-circle-o"></span>
+                            <asp:Literal runat="server" ID="lblUserName" Text=""></asp:Literal>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <asp:LinkButton runat="server" ID="lnkLogout" Text="" OnClick="lnkLogout_Click" ToolTip="Log Out" CssClass="nav-link">
+                        <span class="fa fa-sign-out"></span>
+                        <span class="d-md-none">Log Out</span>
+                        </asp:LinkButton>
+                    </li>
+                </ul>
             </div>
         </nav>
         <div class="full-width">
@@ -86,49 +83,30 @@
         </div>
         <asp:ContentPlaceHolder ID="SubContentContainer" runat="server">
         </asp:ContentPlaceHolder>
-        <div class="navbar navbar-default navbar-fixed-bottom">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-btn btn navbar-toggle navbar-toggle-override collapsed" data-toggle="collapse" data-target="#navbarFooter" aria-expanded="false" aria-controls="navbar">
-                        <span class="glyphicon glyphicon-info-sign"></span>
-                    </button>
-                    <a href="#" class="navbar-btn btn pull-left" onclick="yumiki.sideBar.openNav()">
-                        <span class="fa fa-windows"></span>
-                    </a>
-                    <p class="navbar-text">
-                        &nbsp;©
-                        <asp:Literal runat="server" ID="lblReleaseYear"></asp:Literal>
-                        - Yumiki Portal.
-                    </p>
-                </div>
-                <div id="navbarFooter" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <p class="navbar-text">
-                                <b>Your Time Zone</b>:
-                                <asp:Literal runat="server" ID="lblTimeZoneInfo"></asp:Literal>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBottomDropdown" aria-controls="navbarBottomDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-info-circle"></span>
+            </button>
+            <span class="navbar-text">© <asp:Literal runat="server" ID="lblReleaseYear" Mode="PassThrough"></asp:Literal> - Yumiki Portal.
+            </span>
+            <div class="collapse navbar-collapse" id="navbarBottomDropdown">
+                <ul id="ulTimeZoneSection" class="navbar-nav ml-auto" runat="server" visible="false">
+                    <li class="nav-item">
+                        <span class="navbar-text">
+                            <b>Your Time Zone</b>: <asp:Literal runat="server" ID="lblTimeZoneInfo" Mode="PassThrough"></asp:Literal>
+                        </span>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <!--Side Bar Navigation-->
-        <div id="sbnSideBarNav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="yumiki.sideBar.closeNav()">&times;</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
-        </div>
+        </nav>
         <asp:UpdateProgress runat="server" ID="UpdateProgress1">
             <ProgressTemplate>
-                <div class="modal-backdrop"></div>
-                <div id="dlgLoadingBar" class="modal show">
-                    <div class="modal-dialog">
+                <div class="modal-backdrop show"></div>
+                <div id="dlgLoadingBar" class="modal d-block">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-body">
-                                Loading... <i class="fa fa-hourglass-o gly-spin"></i>
+                            <div class="modal-body text-center">
+                                Now Loading... <i class="fa fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -136,22 +114,22 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
 
-        <div id="dlgMessageDialog" class="modal fade" role="dialog">
-            <div class="modal-dialog">
+        <div id="dlgMessageDialog" class="modal">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="txtDialogTitle"></h4>
                     </div>
                     <div class="modal-body">
                         <div id="txtMessage"></div>
-                        <div id="txtDetails" class="panel panel-default collapse">
-                            <div class="panel-heading">Details...</div>
-                            <div id="txtMessageDetails" class="panel-body yumiki-panel">
+                        <div id="txtDetails" class="card collapse">
+                            <div class="card-header">Details...</div>
+                            <div id="txtMessageDetails" class="card-body">
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnMessageDetails" class="btn btn-default" data-toggle="collapse" data-target="#txtDetails">Details...</button>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" id="btnMessageDetails" class="btn btn-primary" data-toggle="collapse" data-target="#txtDetails">Details...</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

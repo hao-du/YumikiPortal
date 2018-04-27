@@ -4,57 +4,61 @@
  
 <!-- Exchange Trace Modal -->
 <div id="dlgExchangeTrace" class="modal fade" role="dialog" ng-controller="exchangeTraceDialogController" ng-init="bindControls();">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
             <form name="exchangeTraceForm" ng-submit="save(exchangeTraceForm.$valid)" novalidate>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{ dialogTitle }}</h4>
+                    <h5 class="modal-title">{{ dialogTitle }}</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.traceDate.$invalid }">
+                    <div class="form-group">
                         <label>Trace Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
-                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" />
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : exchangeTraceForm.traceDate.$invalid && exchangeTraceForm.traceDate.$dirty }" />
+                            <div class="input-group-append input-group-calendar">
+                                <span class="input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
-                        <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="help-block">Trace Date is required.</p>
+                        <p ng-show="exchangeTraceForm.traceDate.$error.required && exchangeTraceForm.traceDate.$dirty" class="text-danger">Trace Date is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceAmount.$invalid }">
+                    <div class="form-group">
                         <label>Source Amount</label>
-                        <input type="text" name="sourceAmount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-align-right" ng-required="true" />
-                        <div class="text-align-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
-                        <p ng-show="exchangeTraceForm.sourceAmount.$error.required && exchangeTraceForm.sourceAmount.$dirty" class="help-block">Source Amount is required.</p>
+                        <input type="text" name="sourceAmount" ng-model="trace.@TB_Trace.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : exchangeTraceForm.sourceAmount.$invalid && exchangeTraceForm.sourceAmount.$dirty }" ng-required="true" />
+                        <div class="text-right">{{ trace.@TB_Trace.FieldName.Amount | number:2 }}</div>
+                        <p ng-show="exchangeTraceForm.sourceAmount.$error.required && exchangeTraceForm.sourceAmount.$dirty" class="text-danger">Source Amount is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.sourceCurrency.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-danger' : exchangeTraceForm.sourceCurrency.$invalid }">
                         <label>Source Currency</label>
                         <select class="form-control selectpicker" name="sourceCurrency" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.CurrencyID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList"
+                                ng-class="{ 'border-danger' : exchangeTraceForm.sourceCurrency.$invalid && exchangeTraceForm.sourceCurrency.$dirty }">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="exchangeTraceForm.sourceCurrency.$error.required && exchangeTraceForm.sourceCurrency.$dirty" class="help-block">Source Currency is required.</p>
+                        <p ng-show="exchangeTraceForm.sourceCurrency.$error.required && exchangeTraceForm.sourceCurrency.$dirty" class="text-danger">Source Currency is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destAmount.$invalid }">
+                    <div class="form-group">
                         <label>Destination Amount</label>
-                        <input type="text" name="destAmount" ng-model="trace.@TB_Trace.FieldName.ExchangeAmount" class="form-control text-align-right" ng-required="true" />
-                        <div class="text-align-right">{{ trace.@TB_Trace.FieldName.ExchangeAmount | number:2 }}</div>
-                        <p ng-show="exchangeTraceForm.destAmount.$error.required && exchangeTraceForm.destAmount.$dirty" class="help-block">Destination Amount is required.</p>
+                        <input type="text" name="destAmount" ng-model="trace.@TB_Trace.FieldName.ExchangeAmount" class="form-control text-right" ng-class="{ 'border-danger' : exchangeTraceForm.destAmount.$invalid && exchangeTraceForm.destAmount.$dirty }" ng-required="true" />
+                        <div class="text-right">{{ trace.@TB_Trace.FieldName.ExchangeAmount | number:2 }}</div>
+                        <p ng-show="exchangeTraceForm.destAmount.$error.required && exchangeTraceForm.destAmount.$dirty" class="text-danger">Destination Amount is required.</p>
                     </div>
 
-                    <div class="form-group" ng-class="{ 'has-error' : exchangeTraceForm.destCurrency.$invalid }">
+                    <div class="form-group" ng-class="{ 'has-danger' : exchangeTraceForm.destCurrency.$invalid }">
                         <label>Destination Currency</label>
                         <select class="form-control selectpicker" name="destCurrency" ng-required="true"
                                 ng-model="trace.@TB_Trace.FieldName.ExchangeCurrencyID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
+                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList"
+                                ng-class="{ 'border-danger' : exchangeTraceForm.destCurrency.$invalid && exchangeTraceForm.destCurrency.$dirty }">
                             <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
                         </select>
-                        <p ng-show="exchangeTraceForm.destCurrency.$error.required && exchangeTraceForm.destCurrency.$dirty" class="help-block">Destination Currency is required.</p>
+                        <p ng-show="exchangeTraceForm.destCurrency.$error.required && exchangeTraceForm.destCurrency.$dirty" class="text-danger">Destination Currency is required.</p>
                     </div>
 
                     <div class="form-group">
@@ -67,16 +71,15 @@
                         <textarea ng-model="trace.@TB_Trace.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <span class="checkbox">
-                            <input type="checkbox" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" />
-                            <label>Is Active</label>
-                        </span>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
+                        </label>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-default" ng-disabled="exchangeTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer bg-dark">
+                    <button type="submit" class="btn btn-primary" ng-disabled="exchangeTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
