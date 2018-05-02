@@ -10,19 +10,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var project_js_1 = require("./models/project.js");
-var AppComponent = (function () {
-    function AppComponent() {
-        this.project = new project_js_1.Project('Test Project', 'This is test project.');
+var project_model_js_1 = require("./project.model.js");
+var ProjectListComponent = (function () {
+    function ProjectListComponent() {
+        this.project = new project_model_js_1.Project('Real Project', 'This is real project.');
     }
-    return AppComponent;
+    return ProjectListComponent;
 }());
-AppComponent = __decorate([
+ProjectListComponent = __decorate([
     core_1.Component({
-        selector: 'my-app',
+        selector: 'ontime',
         templateUrl: '/Apps/OnTime/Project/List',
     }),
     __metadata("design:paramtypes", [])
-], AppComponent);
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+], ProjectListComponent);
+exports.ProjectListComponent = ProjectListComponent;
+//# sourceMappingURL=project.component.list.js.map

@@ -11,4 +11,4 @@ var Project = (function () {
     return Project;
 }());
 exports.Project = Project;
-//# sourceMappingURL=project.js.map
+//# sourceMappingURL=project.model.js.map
