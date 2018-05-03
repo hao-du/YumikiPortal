@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Project } from './project.model.js'
+import { Projects } from './project.models.js'
 
 @Component({
     selector: 'ontime',
     templateUrl: '/Apps/OnTime/Project/List',
 })
-export class ProjectListComponent {
-    project: Project;
+export class ProjectListComponent implements OnInit {
+    projects = Projects;
+    selectedProject : Project;
 
     constructor() {
-        this.project = new Project('Real Project', 'This is real project.');
+    }
+
+    ngOnInit() {
+    }
+
+    onSelect(project : Project): void {
+        this.selectedProject = project;
     }
 }

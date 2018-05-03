@@ -2,5 +2,20 @@
     Layout = null;
 }
 
-<h1>{{project.projectName}}</h1>
-<p>Description: {{ project.projectDescription }}<p>
+<div *ngIf="project">
+
+    <h2>{{ project.projectName | uppercase }} Details</h2>
+    <div>
+        <label>
+            Name:
+            <input [(ngModel)]="project.projectName" placeholder="Project Name">
+        </label>
+    </div>
+    <div>
+        <label>
+            Desc:
+            <input [(ngModel)]="project.projectDescription" placeholder="Project Description">
+        </label>
+    </div>
+
+</div>

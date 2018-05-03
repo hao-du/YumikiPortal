@@ -2,5 +2,13 @@
     Layout = null;
 }
 
-<h1>{{project.projectName}}</h1>
-<p>Description: {{ project.projectDescription }}<p>
+<h2>Projects</h2>
+<ul>
+    <li *ngFor="let project of projects"
+        [class.selected]="project === selectedProject"
+        (click)="onSelect(project)">
+        {{project.projectName}} -- {{project.projectDescription}}
+    </li>
+</ul>
+
+<project-submit [project]="selectedProject"></project-submit>

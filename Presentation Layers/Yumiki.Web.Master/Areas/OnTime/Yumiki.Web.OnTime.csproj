@@ -143,7 +143,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ontime-clients\project\project.component.submit.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.component.list.ts" />
+    <TypeScriptCompile Include="ontime-clients\project\project.models.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.module.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.bootstrap.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.model.ts" />
