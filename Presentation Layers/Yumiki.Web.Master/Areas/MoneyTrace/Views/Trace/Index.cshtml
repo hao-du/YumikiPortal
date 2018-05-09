@@ -7,19 +7,29 @@
     ViewBag.Title = "Trace";
 }
 
+@section HeadScript {
+    <style>
+        .ui-autocomplete {
+            max-height: 120px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    </style>
+}
+
 @section BottomScript{
-@MvcHtmlString.Create(
-        Bundle.JavaScript()
-        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-controls.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-list.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-normal.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js")
-        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
-        .Render("~/cache/yumiki_#.js"))
+    @MvcHtmlString.Create(
+            Bundle.JavaScript()
+            .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-controls.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-list.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-normal.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-banking.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-exchange.js")
+            .Add("~/Areas/MoneyTrace/clients/scripts/trace/yumiki-money-trace-trace-transfer.js")
+            .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+            .Render("~/cache/yumiki_#.js"))
 
 
     <script type="text/javascript">

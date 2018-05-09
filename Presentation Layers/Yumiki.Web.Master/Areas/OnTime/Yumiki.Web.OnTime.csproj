@@ -123,6 +123,8 @@
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Shared\_OntimeInclude.cshtml" />
     <Content Include="Views\Shared\_AppInclude.cshtml" />
+    <None Include="Properties\PublishProfiles\Debug.pubxml" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
