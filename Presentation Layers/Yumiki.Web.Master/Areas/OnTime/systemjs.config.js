@@ -15,8 +15,10 @@
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
-            'rxjs': 'npm:rxjs',
-            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+            '@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js',
+            'tslib': 'npm:tslib/tslib.js',
+
+            'rxjs': 'npm:rxjs'
         },
         packages: {
             app: {

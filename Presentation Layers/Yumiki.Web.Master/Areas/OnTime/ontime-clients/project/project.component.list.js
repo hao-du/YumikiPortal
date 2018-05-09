@@ -10,12 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var project_models_js_1 = require("./project.models.js");
+var project_service_js_1 = require("./project.service.js");
 var ProjectListComponent = (function () {
-    function ProjectListComponent() {
-        this.projects = project_models_js_1.Projects;
+    function ProjectListComponent(service) {
+        this.service = service;
     }
     ProjectListComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.service.getProjects().subscribe(function (projects) {
+            _this.projects = projects;
+            console.log(projects);
+        });
     };
     ProjectListComponent.prototype.onSelect = function (project) {
         this.selectedProject = project;
@@ -27,7 +32,7 @@ ProjectListComponent = __decorate([
         selector: 'ontime',
         templateUrl: '/Apps/OnTime/Project/List',
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [project_service_js_1.ProjectService])
 ], ProjectListComponent);
 exports.ProjectListComponent = ProjectListComponent;
 //# sourceMappingURL=project.component.list.js.map

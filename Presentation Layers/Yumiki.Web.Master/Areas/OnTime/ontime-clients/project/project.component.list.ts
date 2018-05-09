@@ -1,20 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Project } from './project.model.js'
-import { Projects } from './project.models.js'
+
+import { ProjectService } from './project.service.js';
 
 @Component({
     selector: 'ontime',
     templateUrl: '/Apps/OnTime/Project/List',
 })
 export class ProjectListComponent implements OnInit {
-    projects = Projects;
+    projects: Project[];
     selectedProject : Project;
 
-    constructor() {
+    constructor(private service: ProjectService) {
     }
 
     ngOnInit() {
+        this.service.getProjects().subscribe(projects => {
+            this.projects = projects;
+            console.log(projects);
+        });
     }
 
     onSelect(project : Project): void {

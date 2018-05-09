@@ -9,8 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
+var http_1 = require("@angular/common/http");
 var project_component_list_js_1 = require("./project.component.list.js");
 var project_component_submit_js_1 = require("./project.component.submit.js");
+var project_service_js_1 = require("./project.service.js");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -18,9 +20,10 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule],
+        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpClientModule],
         declarations: [project_component_list_js_1.ProjectListComponent, project_component_submit_js_1.ProjectSubmitComponent],
-        bootstrap: [project_component_list_js_1.ProjectListComponent]
+        bootstrap: [project_component_list_js_1.ProjectListComponent],
+        providers: [project_service_js_1.ProjectService]
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -4,18 +4,23 @@
 
 <div *ngIf="project">
 
-    <h2>{{ project.projectName | uppercase }} Details</h2>
+    <h2>{{ project.ProjectName | uppercase }} Details</h2>
     <div>
         <label>
             Name:
-            <input [(ngModel)]="project.projectName" placeholder="Project Name">
+            <input [(ngModel)]="project.ProjectName" placeholder="Project Name">
         </label>
     </div>
     <div>
         <label>
             Desc:
-            <input [(ngModel)]="project.projectDescription" placeholder="Project Description">
+            <input [(ngModel)]="project.ProjectDescription" placeholder="Project Description">
         </label>
     </div>
-
+    <div>
+        <label>
+            Active State:
+            <input type="checkbox" [(ngModel)]="project.IsActive">
+        </label>
+    </div>
 </div>
