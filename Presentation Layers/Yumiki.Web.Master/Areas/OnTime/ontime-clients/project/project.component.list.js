@@ -25,14 +25,14 @@ var ProjectListComponent = (function () {
     ProjectListComponent.prototype.onSelect = function (project) {
         this.selectedProject = project;
     };
+    ProjectListComponent = __decorate([
+        core_1.Component({
+            selector: 'ontime',
+            templateUrl: '/Apps/OnTime/Project/List',
+        }),
+        __metadata("design:paramtypes", [project_service_js_1.ProjectService])
+    ], ProjectListComponent);
     return ProjectListComponent;
 }());
-ProjectListComponent = __decorate([
-    core_1.Component({
-        selector: 'ontime',
-        templateUrl: '/Apps/OnTime/Project/List',
-    }),
-    __metadata("design:paramtypes", [project_service_js_1.ProjectService])
-], ProjectListComponent);
 exports.ProjectListComponent = ProjectListComponent;
 //# sourceMappingURL=project.component.list.js.map

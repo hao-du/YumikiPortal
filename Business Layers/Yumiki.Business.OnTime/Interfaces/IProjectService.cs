@@ -1,10 +1,13 @@
-﻿namespace Yumiki.Business.OnTime.Interfaces
+﻿using System.Collections.Generic;
+using Yumiki.Entity.OnTime;
+
+namespace Yumiki.Business.OnTime.Interfaces
 {
     public interface IProjectService
     {
         /// <summary>
         /// Get all active/Inactive project
         /// </summary>
-        void GetAllProjects(bool isActive);
+        List<TB_Project> GetAllProjects(bool isActive);
     }
 }

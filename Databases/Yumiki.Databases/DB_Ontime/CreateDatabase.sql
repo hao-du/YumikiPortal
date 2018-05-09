@@ -1,6 +1,51 @@
 ﻿USE [DB_Ontime]
 GO
-/****** Object:  Table [dbo].[TB_History]    Script Date: 5/9/2018 5:18:22 PM ******/
+ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_User1]
+GO
+ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_User]
+GO
+ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_Project]
+GO
+ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_Phase]
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment] DROP CONSTRAINT [FK_TB_ProjectAssignment_TB_User]
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment] DROP CONSTRAINT [FK_TB_ProjectAssignment_TB_Project]
+GO
+ALTER TABLE [dbo].[TB_Project] DROP CONSTRAINT [FK_TB_Project_TB_User]
+GO
+ALTER TABLE [dbo].[TB_PhaseAssignment] DROP CONSTRAINT [FK_TB_PhaseAssignment_TB_User]
+GO
+ALTER TABLE [dbo].[TB_PhaseAssignment] DROP CONSTRAINT [FK_TB_PhaseAssignment_TB_Phase]
+GO
+ALTER TABLE [dbo].[TB_Phase] DROP CONSTRAINT [FK_TB_Phase_TB_User]
+GO
+ALTER TABLE [dbo].[TB_History] DROP CONSTRAINT [FK_TB_History_TB_Task]
+GO
+ALTER TABLE [dbo].[TB_History] DROP CONSTRAINT [FK_TB_History_TB_Phase]
+GO
+/****** Object:  Table [dbo].[TB_User]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_User]
+GO
+/****** Object:  Table [dbo].[TB_Task]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_Task]
+GO
+/****** Object:  Table [dbo].[TB_ProjectAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_ProjectAssignment]
+GO
+/****** Object:  Table [dbo].[TB_Project]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_Project]
+GO
+/****** Object:  Table [dbo].[TB_PhaseAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_PhaseAssignment]
+GO
+/****** Object:  Table [dbo].[TB_Phase]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_Phase]
+GO
+/****** Object:  Table [dbo].[TB_History]    Script Date: 5/9/2018 9:01:24 PM ******/
+DROP TABLE [dbo].[TB_History]
+GO
+/****** Object:  Table [dbo].[TB_History]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -19,9 +64,8 @@ CREATE TABLE [dbo].[TB_History](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
-/****** Object:  Table [dbo].[TB_Phase]    Script Date: 5/9/2018 5:18:22 PM ******/
+/****** Object:  Table [dbo].[TB_Phase]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -44,9 +88,27 @@ CREATE TABLE [dbo].[TB_Phase](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
-/****** Object:  Table [dbo].[TB_Project]    Script Date: 5/9/2018 5:18:22 PM ******/
+/****** Object:  Table [dbo].[TB_PhaseAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TB_PhaseAssignment](
+	[ID] [uniqueidentifier] NOT NULL,
+	[PhaseID] [uniqueidentifier] NULL,
+	[UserID] [uniqueidentifier] NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_PhaseAssignment] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TB_Project]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -64,9 +126,27 @@ CREATE TABLE [dbo].[TB_Project](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
-/****** Object:  Table [dbo].[TB_Task]    Script Date: 5/9/2018 5:18:22 PM ******/
+/****** Object:  Table [dbo].[TB_ProjectAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TB_ProjectAssignment](
+	[ID] [uniqueidentifier] NOT NULL,
+	[ProjectID] [uniqueidentifier] NULL,
+	[UserID] [uniqueidentifier] NULL,
+	[Descriptions] [nvarchar](255) NULL,
+	[IsActive] [bit] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[LastUpdateDate] [datetime] NULL,
+ CONSTRAINT [PK_TB_ProjectAssignment] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TB_Task]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -80,7 +160,7 @@ CREATE TABLE [dbo].[TB_Task](
 	[EndDate] [date] NOT NULL,
 	[Status] [int] NOT NULL,
 	[TaskDescriptions] [ntext] NOT NULL,
-	[AssingedUserID] [uniqueidentifier] NULL,
+	[AssignedUserID] [uniqueidentifier] NOT NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
@@ -91,9 +171,8 @@ CREATE TABLE [dbo].[TB_Task](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
 GO
-/****** Object:  Table [dbo].[TB_User]    Script Date: 5/9/2018 5:18:22 PM ******/
+/****** Object:  Table [dbo].[TB_User]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -113,7 +192,6 @@ CREATE TABLE [dbo].[TB_User](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 ALTER TABLE [dbo].[TB_History]  WITH CHECK ADD  CONSTRAINT [FK_TB_History_TB_Phase] FOREIGN KEY([PhaseID])
 REFERENCES [dbo].[TB_Phase] ([ID])
@@ -130,10 +208,30 @@ REFERENCES [dbo].[TB_User] ([ID])
 GO
 ALTER TABLE [dbo].[TB_Phase] CHECK CONSTRAINT [FK_TB_Phase_TB_User]
 GO
+ALTER TABLE [dbo].[TB_PhaseAssignment]  WITH CHECK ADD  CONSTRAINT [FK_TB_PhaseAssignment_TB_Phase] FOREIGN KEY([PhaseID])
+REFERENCES [dbo].[TB_Phase] ([ID])
+GO
+ALTER TABLE [dbo].[TB_PhaseAssignment] CHECK CONSTRAINT [FK_TB_PhaseAssignment_TB_Phase]
+GO
+ALTER TABLE [dbo].[TB_PhaseAssignment]  WITH CHECK ADD  CONSTRAINT [FK_TB_PhaseAssignment_TB_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[TB_User] ([ID])
+GO
+ALTER TABLE [dbo].[TB_PhaseAssignment] CHECK CONSTRAINT [FK_TB_PhaseAssignment_TB_User]
+GO
 ALTER TABLE [dbo].[TB_Project]  WITH CHECK ADD  CONSTRAINT [FK_TB_Project_TB_User] FOREIGN KEY([UserID])
 REFERENCES [dbo].[TB_User] ([ID])
 GO
 ALTER TABLE [dbo].[TB_Project] CHECK CONSTRAINT [FK_TB_Project_TB_User]
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment]  WITH CHECK ADD  CONSTRAINT [FK_TB_ProjectAssignment_TB_Project] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[TB_Project] ([ID])
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment] CHECK CONSTRAINT [FK_TB_ProjectAssignment_TB_Project]
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment]  WITH CHECK ADD  CONSTRAINT [FK_TB_ProjectAssignment_TB_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[TB_User] ([ID])
+GO
+ALTER TABLE [dbo].[TB_ProjectAssignment] CHECK CONSTRAINT [FK_TB_ProjectAssignment_TB_User]
 GO
 ALTER TABLE [dbo].[TB_Task]  WITH CHECK ADD  CONSTRAINT [FK_TB_Task_TB_Phase] FOREIGN KEY([PhaseID])
 REFERENCES [dbo].[TB_Phase] ([ID])
@@ -145,7 +243,7 @@ REFERENCES [dbo].[TB_Project] ([ID])
 GO
 ALTER TABLE [dbo].[TB_Task] CHECK CONSTRAINT [FK_TB_Task_TB_Project]
 GO
-ALTER TABLE [dbo].[TB_Task]  WITH CHECK ADD  CONSTRAINT [FK_TB_Task_TB_User] FOREIGN KEY([AssingedUserID])
+ALTER TABLE [dbo].[TB_Task]  WITH CHECK ADD  CONSTRAINT [FK_TB_Task_TB_User] FOREIGN KEY([AssignedUserID])
 REFERENCES [dbo].[TB_User] ([ID])
 GO
 ALTER TABLE [dbo].[TB_Task] CHECK CONSTRAINT [FK_TB_Task_TB_User]

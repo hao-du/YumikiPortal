@@ -1,5 +1,5 @@
 export class Project {
     ProjectName: string;
-    ProjectDescription: string;
+    Descriptions: string;
     IsActive: boolean;
 }

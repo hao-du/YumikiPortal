@@ -1,6 +1,8 @@
-﻿using Yumiki.Business.Base;
+﻿using System.Collections.Generic;
+using Yumiki.Business.Base;
 using Yumiki.Business.OnTime.Interfaces;
 using Yumiki.Data.OnTime.Interfaces;
+using Yumiki.Entity.OnTime;
 
 namespace Yumiki.Business.OnTime.Services
 {
@@ -9,9 +11,9 @@ namespace Yumiki.Business.OnTime.Services
         /// <summary>
         /// Get all active/Inactive project
         /// </summary>
-        public void GetAllProjects(bool isActive)
+        public List<TB_Project> GetAllProjects(bool isActive)
         {
-            Repository.GetAllProjects(isActive);
+            return Repository.GetAllProjects(isActive);
         }
     }
 }

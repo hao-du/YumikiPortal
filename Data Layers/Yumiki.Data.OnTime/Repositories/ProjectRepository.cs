@@ -1,4 +1,7 @@
-﻿using Yumiki.Data.OnTime.Interfaces;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Yumiki.Data.OnTime.Interfaces;
+using Yumiki.Entity.OnTime;
 
 namespace Yumiki.Data.OnTime.Repositories
 {
@@ -7,9 +10,9 @@ namespace Yumiki.Data.OnTime.Repositories
         /// <summary>
         /// Get all active/Inactive project
         /// </summary>
-        public void GetAllProjects(bool isActive)
+        public List<TB_Project> GetAllProjects(bool isActive)
         {
-            
+            return Context.TB_Project.Where(c => c.IsActive == isActive).ToList();
         }
     }
 }

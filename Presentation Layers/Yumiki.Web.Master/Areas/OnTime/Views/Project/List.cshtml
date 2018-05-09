@@ -7,7 +7,7 @@
     <li *ngFor="let project of projects"
         [class.selected]="project === selectedProject"
         (click)="onSelect(project)">
-        {{project.ProjectName}} -- {{project.ProjectDescription}} -- {{project.IsActive ? "Active" : "Inactive"}}
+        {{project.ProjectName}} -- {{project.Descriptions}} -- {{project.IsActive ? "Active" : "Inactive"}}
     </li>
 </ul>
 
