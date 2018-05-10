@@ -28,12 +28,21 @@ namespace Yumiki.Web.OnTime.Controllers
                 return InternalServerError(ex);
             }
         }
-    }
 
-    public class Project
-    {
-        public string ProjectName { get; set; }
-        public string ProjectDescription { get; set; }
-        public bool IsActive { get; set; }
+        [Route("get", Name = "GetProject")]
+        [HttpGet()]
+        public IHttpActionResult Get(string id)
+        {
+            try
+            {
+                MD_Project project = new MD_Project(BusinessService.GetProject(id));
+
+                return Ok(project);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }

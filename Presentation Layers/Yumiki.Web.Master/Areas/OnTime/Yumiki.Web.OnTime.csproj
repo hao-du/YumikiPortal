@@ -152,6 +152,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ontime-clients\common\guid.ts" />
     <TypeScriptCompile Include="ontime-clients\models\ontimebase.model.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.component.submit.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.component.list.ts" />

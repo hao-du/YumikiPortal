@@ -1,14 +1,66 @@
 ﻿@{
     Layout = null;
+    ViewBag.Title = "Projects";
 }
 
-<h2>Projects</h2>
-<ul>
-    <li *ngFor="let project of projects"
-        [class.selected]="project === selectedProject"
-        (click)="onSelect(project)">
-        {{project.ProjectName}} -- {{project.Descriptions}} -- {{project.IsActive ? "Active" : "Inactive"}}
-    </li>
-</ul>
-
+<div class="container">
+    <h1>@ViewBag.Title</h1>
+    <div class="card bg-secondary">
+        <div class="card-body p-2">
+            <div class="btn-group">
+                <a href="#" (click)="onSelect(null)" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Project Name
+                            </th>
+                            <th>
+                                Assigned Number
+                            </th>
+                            <th>
+                                Prefix
+                            </th>
+                            <th>
+                                Descriptions
+                            </th>
+                            <th>
+                                LastUpdateDateUI
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let project of projects" [class.selected]="project === selectedProject">
+                            <td>
+                                <a href="#" (click)="onSelect(project)" title="Edit"><span class="fa fa-edit"></span></a>
+                            </td>
+                            <td>
+                                {{project.ProjectName}}
+                            </td>
+                            <td>
+                                {{project. AssignedNumber}}
+                            </td>
+                            <td>
+                                {{project.Prefix}}
+                            </td>
+                            <td>
+                                {{project.Descriptions}}
+                            </td>
+                            <td>
+                                {{project.LastUpdateDateUI}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <project-submit [project]="selectedProject"></project-submit>

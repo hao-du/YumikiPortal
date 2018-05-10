@@ -12,4 +12,8 @@ export class ProjectService {
     getProjects(): Observable<Project[]> {
         return this.httpClient.get<Project[]>('/api/ontime/project/getall');
     }
+
+    getProject(id : string): Observable<Project> {
+        return this.httpClient.get<Project>('/api/ontime/project/get?id=' + id);
+    }
 }

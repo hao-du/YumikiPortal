@@ -16,6 +16,9 @@ var ProjectSubmitComponent = (function () {
     }
     ProjectSubmitComponent.prototype.ngOnInit = function () {
     };
+    ProjectSubmitComponent.prototype.onClose = function () {
+        this.project = undefined;
+    };
     return ProjectSubmitComponent;
 }());
 __decorate([

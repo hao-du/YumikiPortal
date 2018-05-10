@@ -3,24 +3,33 @@
 }
 
 <div *ngIf="project">
-
-    <h2>{{ project.ProjectName | uppercase }} Details</h2>
-    <div>
-        <label>
-            Name:
-            <input [(ngModel)]="project.ProjectName" placeholder="Project Name">
-        </label>
-    </div>
-    <div>
-        <label>
-            Desc:
-            <input [(ngModel)]="project.Descriptions" placeholder="Project Description">
-        </label>
-    </div>
-    <div>
-        <label>
-            Active State:
-            <input type="checkbox" [(ngModel)]="project.IsActive">
-        </label>
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        {{ project.ID == '' ? 'New Project' : 'Edit Project' }}
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input [(ngModel)]="project.ProjectName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Descriptions</label>
+                        <textarea [(ngModel)]="project.ProjectName" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" [(ngModel)]="project.IsActive">
+                        Is Active
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <button class="btn btn-default" (click)="onClose()">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

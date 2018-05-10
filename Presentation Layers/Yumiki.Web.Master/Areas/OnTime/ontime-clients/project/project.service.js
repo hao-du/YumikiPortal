@@ -18,6 +18,9 @@ var ProjectService = (function () {
     ProjectService.prototype.getProjects = function () {
         return this.httpClient.get('/api/ontime/project/getall');
     };
+    ProjectService.prototype.getProject = function (id) {
+        return this.httpClient.get('/api/ontime/project/get?id=' + id);
+    };
     return ProjectService;
 }());
 ProjectService = __decorate([
