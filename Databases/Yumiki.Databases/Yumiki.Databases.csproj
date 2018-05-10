@@ -45,6 +45,7 @@
   <ItemGroup>
     <Content Include="DB_Administration\InsertData.sql" />
     <None Include="DB_Administration\Release-014\AlterPROC_SyncUser.sql" />
+    <Content Include="DB_Administration\Release-014\InsertData.sql" />
     <Content Include="DB_Administration\v.1.0.0.0-Beta06\InsertData.sql" />
     <Content Include="DB_MoneyTrace\Release-008\InsertData.sql" />
     <Content Include="DB_Ontime\CreateDatabase.sql" />

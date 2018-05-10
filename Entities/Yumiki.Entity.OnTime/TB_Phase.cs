@@ -25,6 +25,8 @@ namespace Yumiki.Entity.OnTime
 
         public DateTime? ActualEndDate { get; set; }
 
+        public string ReleaseVersion { get; set; }
+
         public int Status { get; set; }
 
         public Guid UserID { get; set; }

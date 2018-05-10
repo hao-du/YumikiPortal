@@ -16,15 +16,15 @@ var project_service_js_1 = require("./project.service.js");
 var AppModule = (function () {
     function AppModule() {
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpClientModule],
-            declarations: [project_component_list_js_1.ProjectListComponent, project_component_submit_js_1.ProjectSubmitComponent],
-            bootstrap: [project_component_list_js_1.ProjectListComponent],
-            providers: [project_service_js_1.ProjectService]
-        })
-    ], AppModule);
     return AppModule;
 }());
+AppModule = __decorate([
+    core_1.NgModule({
+        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpClientModule],
+        declarations: [project_component_list_js_1.ProjectListComponent, project_component_submit_js_1.ProjectSubmitComponent],
+        bootstrap: [project_component_list_js_1.ProjectListComponent],
+        providers: [project_service_js_1.ProjectService]
+    })
+], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=project.module.js.map

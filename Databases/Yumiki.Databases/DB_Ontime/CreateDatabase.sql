@@ -1,50 +1,5 @@
 ﻿USE [DB_Ontime]
 GO
-ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_User1]
-GO
-ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_User]
-GO
-ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_Project]
-GO
-ALTER TABLE [dbo].[TB_Task] DROP CONSTRAINT [FK_TB_Task_TB_Phase]
-GO
-ALTER TABLE [dbo].[TB_ProjectAssignment] DROP CONSTRAINT [FK_TB_ProjectAssignment_TB_User]
-GO
-ALTER TABLE [dbo].[TB_ProjectAssignment] DROP CONSTRAINT [FK_TB_ProjectAssignment_TB_Project]
-GO
-ALTER TABLE [dbo].[TB_Project] DROP CONSTRAINT [FK_TB_Project_TB_User]
-GO
-ALTER TABLE [dbo].[TB_PhaseAssignment] DROP CONSTRAINT [FK_TB_PhaseAssignment_TB_User]
-GO
-ALTER TABLE [dbo].[TB_PhaseAssignment] DROP CONSTRAINT [FK_TB_PhaseAssignment_TB_Phase]
-GO
-ALTER TABLE [dbo].[TB_Phase] DROP CONSTRAINT [FK_TB_Phase_TB_User]
-GO
-ALTER TABLE [dbo].[TB_History] DROP CONSTRAINT [FK_TB_History_TB_Task]
-GO
-ALTER TABLE [dbo].[TB_History] DROP CONSTRAINT [FK_TB_History_TB_Phase]
-GO
-/****** Object:  Table [dbo].[TB_User]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_User]
-GO
-/****** Object:  Table [dbo].[TB_Task]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_Task]
-GO
-/****** Object:  Table [dbo].[TB_ProjectAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_ProjectAssignment]
-GO
-/****** Object:  Table [dbo].[TB_Project]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_Project]
-GO
-/****** Object:  Table [dbo].[TB_PhaseAssignment]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_PhaseAssignment]
-GO
-/****** Object:  Table [dbo].[TB_Phase]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_Phase]
-GO
-/****** Object:  Table [dbo].[TB_History]    Script Date: 5/9/2018 9:01:24 PM ******/
-DROP TABLE [dbo].[TB_History]
-GO
 /****** Object:  Table [dbo].[TB_History]    Script Date: 5/9/2018 9:01:24 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -77,6 +32,7 @@ CREATE TABLE [dbo].[TB_Phase](
 	[EstimatedEndDate] [date] NULL,
 	[ActualStartDate] [date] NULL,
 	[ActualEndDate] [date] NULL,
+	[ReleaseVersion] [varchar](50) NULL,
 	[Status] [int] NOT NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
@@ -117,6 +73,8 @@ CREATE TABLE [dbo].[TB_Project](
 	[ID] [uniqueidentifier] NOT NULL,
 	[ProjectName] [nvarchar](50) NOT NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
+	[AssignedNumber] [int] NOT NULL,
+	[Prefix] [varchar](4) NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,

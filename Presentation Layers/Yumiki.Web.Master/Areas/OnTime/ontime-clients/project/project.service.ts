@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Project } from './project.model.js';
+import { Project } from '../models/project.model.js'
 
 @Injectable()
 export class ProjectService {

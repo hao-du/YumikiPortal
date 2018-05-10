@@ -16,6 +16,10 @@ namespace Yumiki.Entity.OnTime
 
         public string ProjectName { get; set; }
 
+        public int AssignedNumber { get; set; }
+
+        public string Prefix { get; set; }
+
         public Guid UserID { get; set; }
 
         public string Descriptions { get; set; }

@@ -18,11 +18,11 @@ var ProjectService = (function () {
     ProjectService.prototype.getProjects = function () {
         return this.httpClient.get('/api/ontime/project/getall');
     };
-    ProjectService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [http_1.HttpClient])
-    ], ProjectService);
     return ProjectService;
 }());
+ProjectService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.HttpClient])
+], ProjectService);
 exports.ProjectService = ProjectService;
 //# sourceMappingURL=project.service.js.map

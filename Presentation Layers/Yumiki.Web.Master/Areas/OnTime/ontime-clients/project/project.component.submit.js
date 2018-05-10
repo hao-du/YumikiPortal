@@ -10,24 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var project_model_js_1 = require("./project.model.js");
+var project_model_js_1 = require("../models/project.model.js");
 var ProjectSubmitComponent = (function () {
     function ProjectSubmitComponent() {
     }
     ProjectSubmitComponent.prototype.ngOnInit = function () {
     };
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", project_model_js_1.Project)
-    ], ProjectSubmitComponent.prototype, "project", void 0);
-    ProjectSubmitComponent = __decorate([
-        core_1.Component({
-            selector: 'project-submit',
-            templateUrl: '/Apps/OnTime/Project/Submit',
-        }),
-        __metadata("design:paramtypes", [])
-    ], ProjectSubmitComponent);
     return ProjectSubmitComponent;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", project_model_js_1.Project)
+], ProjectSubmitComponent.prototype, "project", void 0);
+ProjectSubmitComponent = __decorate([
+    core_1.Component({
+        selector: 'project-submit',
+        templateUrl: '/Apps/OnTime/Project/Submit',
+    }),
+    __metadata("design:paramtypes", [])
+], ProjectSubmitComponent);
 exports.ProjectSubmitComponent = ProjectSubmitComponent;
 //# sourceMappingURL=project.component.submit.js.map
