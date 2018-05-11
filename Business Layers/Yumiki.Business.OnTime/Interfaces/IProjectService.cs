@@ -15,5 +15,11 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// </summary>
         /// <param name="id">Project ID</param>
         TB_Project GetProject(string id);
+
+        /// <summary>
+        /// Create/Update a Project
+        /// </summary>
+        /// <param name="project">If Project id is empty, then this is new Project. Otherwise, this needs to be updated</param>
+        void SaveProject(TB_Project project);
     }
 }

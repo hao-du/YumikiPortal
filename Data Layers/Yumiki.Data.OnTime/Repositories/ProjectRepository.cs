@@ -24,5 +24,29 @@ namespace Yumiki.Data.OnTime.Repositories
         {
             return Context.TB_Project.SingleOrDefault(c => c.ID == id);
         }
+
+        /// <summary>
+        /// Create/Update a Project
+        /// </summary>
+        /// <param name="project">If Project id is empty, then this is new Project. Otherwise, this needs to be updated</param>
+        public void SaveProject(TB_Project project)
+        {
+            if (project.ID == Guid.Empty)
+            {
+                Context.TB_Project.Add(project);
+            }
+            else
+            {
+                TB_Project dbProject = Context.TB_Project.Single(c => c.ID == project.ID);
+                dbProject.ProjectName = project.ProjectName;
+                dbProject.Prefix = project.Prefix;
+                dbProject.AssignedNumber = project.AssignedNumber;
+                dbProject.UserID = project.UserID;
+                dbProject.Descriptions = project.Descriptions;
+                dbProject.IsActive = project.IsActive;
+            }
+
+            Save();
+        }
     }
 }

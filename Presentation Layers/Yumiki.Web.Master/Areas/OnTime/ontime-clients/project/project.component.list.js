@@ -18,20 +18,16 @@ var ProjectListComponent = (function () {
         this.service = service;
     }
     ProjectListComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        yumiki.message.displayLoadingDialog(true);
-        this.service.getProjects().subscribe(function (projects) {
-            _this.projects = projects;
-            console.log(projects);
-            yumiki.message.displayLoadingDialog(false);
-        });
+        this.getProjects();
     };
     ProjectListComponent.prototype.onSelect = function (project) {
         var _this = this;
         if (!project) {
             project = new project_model_js_1.Project();
             project.ID = guid_js_1.Guid.empty;
+            project.IsActive = true;
             this.selectedProject = project;
+            console.log(project);
             console.log("Add with ID: " + project.ID);
         }
         else {
@@ -39,12 +35,7 @@ var ProjectListComponent = (function () {
                 yumiki.message.displayLoadingDialog(true);
                 this.service.getProject(project.ID).subscribe(function (result) {
                     console.log(project);
-                    project.ProjectName = result.ProjectName;
-                    project.AssignedNumber = result.AssignedNumber;
-                    project.Prefix = result.Prefix;
-                    project.Descriptions = result.Descriptions;
-                    project.IsActive = result.IsActive;
-                    project.LastUpdateDateUI = result.LastUpdateDateUI;
+                    project = result;
                     console.log(project);
                     _this.selectedProject = project;
                     console.log("Edit with ID: " + project.ID);
@@ -53,6 +44,20 @@ var ProjectListComponent = (function () {
             }
         }
         console.log("Selected ID: " + project.ID);
+    };
+    ProjectListComponent.prototype.onRefreshData = function (message) {
+        if (message == 'ok') {
+            this.getProjects();
+        }
+    };
+    ProjectListComponent.prototype.getProjects = function () {
+        var _this = this;
+        yumiki.message.displayLoadingDialog(true);
+        this.service.getProjects().subscribe(function (projects) {
+            _this.projects = projects;
+            console.log(projects);
+            yumiki.message.displayLoadingDialog(false);
+        });
     };
     return ProjectListComponent;
 }());

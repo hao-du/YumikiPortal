@@ -19,22 +19,17 @@ export class ProjectListComponent implements OnInit {
     }
 
     ngOnInit() {
-        yumiki.message.displayLoadingDialog(true);
-
-        this.service.getProjects().subscribe(projects => {
-            this.projects = projects;
-            console.log(projects);
-
-            yumiki.message.displayLoadingDialog(false);
-        });
+        this.getProjects();
     }
 
-    onSelect(project: Project): void {
+    onSelect(project: Project) {
         if (!project) {
             project = new Project();
             project.ID = Guid.empty;
+            project.IsActive = true;
 
             this.selectedProject = project;
+            console.log(project);
             console.log("Add with ID: " + project.ID);
         }
         else {
@@ -44,12 +39,7 @@ export class ProjectListComponent implements OnInit {
                 this.service.getProject(project.ID).subscribe(result => {
                     console.log(project);
 
-                    project.ProjectName = result.ProjectName;
-                    project.AssignedNumber = result.AssignedNumber;
-                    project.Prefix = result.Prefix;
-                    project.Descriptions = result.Descriptions;
-                    project.IsActive = result.IsActive;
-                    project.LastUpdateDateUI = result.LastUpdateDateUI;
+                    project = result;
 
                     console.log(project);
 
@@ -62,5 +52,23 @@ export class ProjectListComponent implements OnInit {
         }
 
         console.log("Selected ID: " + project.ID);
+    }
+
+    onRefreshData(message : string) {
+        if (message == 'ok') {
+            this.getProjects();
+        }
+        
+    }
+
+    getProjects() {
+        yumiki.message.displayLoadingDialog(true);
+
+        this.service.getProjects().subscribe(projects => {
+            this.projects = projects;
+            console.log(projects);
+
+            yumiki.message.displayLoadingDialog(false);
+        });
     }
 }

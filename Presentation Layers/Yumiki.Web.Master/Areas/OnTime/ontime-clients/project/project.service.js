@@ -11,6 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
+var httpOptions = {
+    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
+};
 var ProjectService = (function () {
     function ProjectService(httpClient) {
         this.httpClient = httpClient;
@@ -20,6 +23,9 @@ var ProjectService = (function () {
     };
     ProjectService.prototype.getProject = function (id) {
         return this.httpClient.get('/api/ontime/project/get?id=' + id);
+    };
+    ProjectService.prototype.saveProject = function (project) {
+        return this.httpClient.post('/api/ontime/project/save', project, httpOptions);
     };
     return ProjectService;
 }());

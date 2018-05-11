@@ -38,5 +38,29 @@ namespace Yumiki.Business.OnTime.Services
 
             return Repository.GetProject(convertedID);
         }
+
+        /// <summary>
+        /// Create/Update a Project
+        /// </summary>
+        /// <param name="project">If Project id is empty, then this is new Project. Otherwise, this needs to be updated</param>
+        public void SaveProject(TB_Project project)
+        {
+            if (string.IsNullOrWhiteSpace(project.ProjectName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Project Name is required.", Logger);
+            }
+
+            if (string.IsNullOrWhiteSpace(project.Prefix))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Prefix is required.", Logger);
+            }
+
+            if (project.AssignedNumber < 0)
+            {
+                throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Assigned Number cannot less then 0.", Logger);
+            }
+
+            Repository.SaveProject(project);
+        }
     }
 }

@@ -1,6 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Project } from '../models/project.model.js';
+
+import { ProjectService } from './project.service.js';
+
+declare var yumiki: any;
 
 @Component({
     selector: 'project-submit',
@@ -8,8 +12,9 @@ import { Project } from '../models/project.model.js';
 })
 export class ProjectSubmitComponent implements OnInit {
     @Input() project?: Project;
+    @Output() messageEvent = new EventEmitter<string>();
 
-    constructor() {
+    constructor(private service: ProjectService) {
     }
 
     ngOnInit() {
@@ -17,5 +22,21 @@ export class ProjectSubmitComponent implements OnInit {
 
     onClose() {
         this.project = undefined;
+    }
+
+    onSave()
+    {
+        yumiki.message.displayLoadingDialog(true);
+
+        this.service.saveProject(this.project as Project).subscribe(result => {
+            console.log(result);
+
+            //Emit message to List Compoment to refresh data
+            this.messageEvent.emit('ok');
+
+            this.onClose();
+
+            yumiki.message.displayLoadingDialog(false);
+        });
     }
 }

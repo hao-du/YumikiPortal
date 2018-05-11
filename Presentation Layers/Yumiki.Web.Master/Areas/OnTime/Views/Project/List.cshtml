@@ -63,4 +63,4 @@
         </div>
     </div>
 </div>
-<project-submit [project]="selectedProject"></project-submit>
+<project-submit [project]="selectedProject" (messageEvent)="onRefreshData($event)"></project-submit>
