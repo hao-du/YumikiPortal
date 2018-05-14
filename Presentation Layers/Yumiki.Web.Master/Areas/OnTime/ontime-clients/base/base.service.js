@@ -20,7 +20,6 @@ var BaseService = (function () {
             .catch(this.errorHandler);
     };
     BaseService.prototype.errorHandler = function (response) {
-        console.log(response);
         return Observable_1.Observable.throw(response.error || 'Server error');
     };
     return BaseService;

@@ -17,6 +17,7 @@ var project_service_js_1 = require("./project.service.js");
 var ProjectListComponent = (function () {
     function ProjectListComponent(service) {
         this.service = service;
+        this.showActiveList = true;
     }
     ProjectListComponent.prototype.ngOnInit = function () {
         this.getProjects();
@@ -28,28 +29,23 @@ var ProjectListComponent = (function () {
             project.ID = guid_js_1.Guid.empty;
             project.IsActive = true;
             this.selectedProject = project;
-            console.log(project);
-            console.log("Add with ID: " + project.ID);
         }
         else {
             if (project && project.ID != guid_js_1.Guid.empty) {
                 yumiki.message.displayLoadingDialog(true);
                 this.service.getProject(project.ID).subscribe(function (result) {
-                    console.log(project);
-                    project = result;
-                    console.log(project);
-                    _this.selectedProject = project;
-                    console.log("Edit with ID: " + project.ID);
+                    _this.selectedProject = project = result;
                     yumiki.message.displayLoadingDialog(false);
                 }, function (err) {
-                    console.log("Edit Error");
-                    console.log(err);
                     yumiki.message.displayLoadingDialog(false);
                     yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
                 });
             }
         }
-        console.log("Selected ID: " + project.ID);
+    };
+    ProjectListComponent.prototype.onShowList = function () {
+        this.showActiveList = !this.showActiveList;
+        this.getProjects();
     };
     ProjectListComponent.prototype.onRefreshData = function (message) {
         if (message == 'ok') {
@@ -59,13 +55,10 @@ var ProjectListComponent = (function () {
     ProjectListComponent.prototype.getProjects = function () {
         var _this = this;
         yumiki.message.displayLoadingDialog(true);
-        this.service.getProjects().subscribe(function (projects) {
+        this.service.getProjects(this.showActiveList).subscribe(function (projects) {
             _this.projects = projects;
-            console.log(projects);
             yumiki.message.displayLoadingDialog(false);
         }, function (err) {
-            console.log("Get Error");
-            console.log(err);
             yumiki.message.displayLoadingDialog(false);
             yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
         });

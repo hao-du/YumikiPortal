@@ -37,6 +37,9 @@ namespace Yumiki.Data.OnTime
                 .HasForeignKey(e => e.PhaseID)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<TB_Phase>()
+                .Ignore(e => e.IsAssigned);
+
             modelBuilder.Entity<TB_Project>()
                 .HasMany(e => e.ProjectAssignments)
                 .WithOptional(e => e.Project)
@@ -47,6 +50,9 @@ namespace Yumiki.Data.OnTime
                 .WithRequired(e => e.Project)
                 .HasForeignKey(e => e.ProjectID)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Project>()
+                .Ignore(e => e.IsAssigned);
 
             modelBuilder.Entity<TB_Task>()
                 .HasMany(e => e.Histories)

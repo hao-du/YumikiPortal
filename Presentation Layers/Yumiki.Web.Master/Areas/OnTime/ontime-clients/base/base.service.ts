@@ -26,8 +26,6 @@ export class BaseService {
     }
 
     errorHandler(response: HttpErrorResponse) {
-        console.log(response);
-
         return Observable.throw(response.error || 'Server error');
     }
 }

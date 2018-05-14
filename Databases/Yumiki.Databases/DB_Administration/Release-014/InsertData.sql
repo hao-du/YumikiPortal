@@ -13,3 +13,6 @@ VALUES(NEWID(), 'Phase', '/Ontime/Phase/Index', 1, @OnTimeID, 'Phase Setup Page'
 
 INSERT INTO TB_Privilege
 VALUES(NEWID(), 'Task', '/Ontime/Task/Index', 1, @OnTimeID, 'Task Dashboard and Management Page', 1, GETDATE(), NULL)
+
+INSERT INTO TB_Privilege
+VALUES(NEWID(), 'User Assignment', '/Ontime/UserAssignment/Index', 1, @OnTimeID, 'Phase and Project Assignments for Users Page', 1, GETDATE(), NULL)

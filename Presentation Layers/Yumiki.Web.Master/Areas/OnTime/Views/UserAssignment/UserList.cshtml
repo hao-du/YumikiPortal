@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "User Assignments";
+}
+
+<div class="container">
+    <h1>@ViewBag.Title</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                User Name
+                            </th>
+                            <th>
+                                Full Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td>
+                                <a href="#" routerLink="/Assignment/{{user.ID}}"><span class="fa fa-tasks"></span></a>
+                            </td>
+                            <td>
+                                {{user.UserName}}
+                            </td>
+                            <td>
+                                {{user. FullName}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

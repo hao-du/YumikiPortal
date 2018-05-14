@@ -55,6 +55,18 @@ namespace Yumiki.Web.Ontime.Models
             }
         }
 
+        public bool IsAssigned
+        {
+            get
+            {
+                return _internalItem.IsAssigned;
+            }
+            set
+            {
+                _internalItem.IsAssigned = value;
+            }
+        }
+
         public override TB_Project ToObject()
         {
             _internalItem.UserID = CurrentUser.UserID;

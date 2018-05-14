@@ -1,6 +1,6 @@
 ﻿@{
     Layout = null;
-    ViewBag.Title = "Projects";
+    ViewBag.Title = "User Assignments";
 }
 
 <div class="container">
@@ -8,8 +8,7 @@
     <div class="card bg-secondary">
         <div class="card-body p-2">
             <div class="btn-group">
-                <a href="#" (click)="onSelect(null)" class="btn btn-primary">Add</a>
-                <a href="#" (click)="onShowList()" class="btn btn-primary">{{ showActiveList ? 'Show Inactive' : 'Show Active' }}</a>
+                <button routerLink="/User" class="btn">Back</button>
             </div>
         </div>
     </div>
@@ -24,38 +23,26 @@
                                 Project Name
                             </th>
                             <th>
-                                Assigned Number
-                            </th>
-                            <th>
                                 Prefix
                             </th>
                             <th>
                                 Descriptions
                             </th>
-                            <th>
-                                LastUpdateDateUI
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let project of projects" [class.selected]="project === selectedProject">
+                        <tr *ngFor="let project of user.ProjectAssignments">
                             <td>
-                                <a href="#" (click)="onSelect(project)" title="Edit"><span class="fa fa-edit"></span></a>
+                                <input type="checkbox" [(ngModel)]="project.isAssigned"/>
                             </td>
                             <td>
                                 {{project.ProjectName}}
-                            </td>
-                            <td>
-                                {{project. AssignedNumber}}
                             </td>
                             <td>
                                 {{project.Prefix}}
                             </td>
                             <td>
                                 {{project.Descriptions}}
-                            </td>
-                            <td>
-                                {{project.LastUpdateDateUI}}
                             </td>
                         </tr>
                     </tbody>
@@ -64,4 +51,3 @@
         </div>
     </div>
 </div>
-<router-outlet></router-outlet>

@@ -15,8 +15,10 @@ declare var yumiki: any;
 export class ProjectListComponent implements OnInit {
     projects: Project[];
     selectedProject: Project;
+    showActiveList: boolean;
 
     constructor(private service: ProjectService) {
+        this.showActiveList = true;
     }
 
     ngOnInit() {
@@ -49,6 +51,11 @@ export class ProjectListComponent implements OnInit {
         }
     }
 
+    onShowList() {
+        this.showActiveList = !this.showActiveList;
+        this.getProjects();
+    }
+
     onRefreshData(message: string) {
         if (message == 'ok') {
             this.getProjects();
@@ -58,7 +65,7 @@ export class ProjectListComponent implements OnInit {
     getProjects() {
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.getProjects().subscribe(
+        this.service.getProjects(this.showActiveList).subscribe(
             projects => {
                 this.projects = projects;
 

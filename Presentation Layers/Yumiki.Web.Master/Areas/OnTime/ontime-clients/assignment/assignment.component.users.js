@@ -11,46 +11,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var constants_js_1 = require("../common/constants.js");
-var project_model_js_1 = require("../models/project.model.js");
-var project_service_js_1 = require("./project.service.js");
-var ProjectSubmitComponent = (function () {
-    function ProjectSubmitComponent(service) {
+var assignment_service_js_1 = require("./assignment.service.js");
+var UsersComponent = (function () {
+    function UsersComponent(service) {
         this.service = service;
-        this.messageEvent = new core_1.EventEmitter();
     }
-    ProjectSubmitComponent.prototype.ngOnInit = function () {
+    UsersComponent.prototype.ngOnInit = function () {
+        this.getUsers();
     };
-    ProjectSubmitComponent.prototype.onClose = function () {
-        this.project = undefined;
-    };
-    ProjectSubmitComponent.prototype.onSave = function () {
+    UsersComponent.prototype.getUsers = function () {
         var _this = this;
         yumiki.message.displayLoadingDialog(true);
-        this.service.saveProject(this.project).subscribe(function () {
-            _this.messageEvent.emit('ok');
-            _this.onClose();
+        this.service.getUsers().subscribe(function (result) {
+            _this.users = result;
             yumiki.message.displayLoadingDialog(false);
         }, function (err) {
             yumiki.message.displayLoadingDialog(false);
             yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
         });
     };
-    return ProjectSubmitComponent;
+    return UsersComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", project_model_js_1.Project)
-], ProjectSubmitComponent.prototype, "project", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", Object)
-], ProjectSubmitComponent.prototype, "messageEvent", void 0);
-ProjectSubmitComponent = __decorate([
+UsersComponent = __decorate([
     core_1.Component({
-        selector: 'project-submit',
-        templateUrl: '/Apps/OnTime/Project/Submit',
+        selector: 'ontime',
+        templateUrl: '/Apps/OnTime/UserAssignment/UserList',
     }),
-    __metadata("design:paramtypes", [project_service_js_1.ProjectService])
-], ProjectSubmitComponent);
-exports.ProjectSubmitComponent = ProjectSubmitComponent;
-//# sourceMappingURL=project.component.submit.js.map
+    __metadata("design:paramtypes", [assignment_service_js_1.AssignmentService])
+], UsersComponent);
+exports.UsersComponent = UsersComponent;
+//# sourceMappingURL=assignment.component.users.js.map

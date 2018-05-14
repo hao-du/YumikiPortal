@@ -22,25 +22,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
 var base_service_js_1 = require("../base/base.service.js");
-var ProjectService = (function (_super) {
-    __extends(ProjectService, _super);
-    function ProjectService(httpClient) {
+var AssignmentService = (function (_super) {
+    __extends(AssignmentService, _super);
+    function AssignmentService(httpClient) {
         return _super.call(this, httpClient) || this;
     }
-    ProjectService.prototype.getProjects = function (isActive) {
-        return this.doGet('/api/ontime/project/getall?isActive=' + isActive);
+    AssignmentService.prototype.getUsers = function () {
+        return this.doGet('/api/ontime/assignment/getusers');
     };
-    ProjectService.prototype.getProject = function (id) {
-        return this.doGet('/api/ontime/project/get?id=' + id);
+    AssignmentService.prototype.getAssignments = function (userID) {
+        return this.doGet('/api/ontime/assignment/getassignments?userID=' + userID);
     };
-    ProjectService.prototype.saveProject = function (project) {
-        return this.doPost('/api/ontime/project/save', project);
-    };
-    return ProjectService;
+    return AssignmentService;
 }(base_service_js_1.BaseService));
-ProjectService = __decorate([
+AssignmentService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [http_1.HttpClient])
-], ProjectService);
-exports.ProjectService = ProjectService;
-//# sourceMappingURL=project.service.js.map
+], AssignmentService);
+exports.AssignmentService = AssignmentService;
+//# sourceMappingURL=assignment.service.js.map

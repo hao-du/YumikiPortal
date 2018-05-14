@@ -15,11 +15,11 @@ namespace Yumiki.Web.OnTime.Controllers
     {
         [Route("getall", Name = "GetAllProjects")]
         [HttpGet()]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool isActive)
         {
             try
             {
-                IEnumerable<MD_Project> projects = BusinessService.GetAllProjects(true).Select(c => new MD_Project(c));
+                IEnumerable<MD_Project> projects = BusinessService.GetAllProjects(isActive).Select(c => new MD_Project(c));
 
                 return Ok(projects);
             }

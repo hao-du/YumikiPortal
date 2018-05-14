@@ -104,8 +104,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ApiUserAssignmentController.cs" />
     <Compile Include="Controllers\ApiProjectController.cs" />
+    <Compile Include="Controllers\UserAssignmentController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Models\MD_User.cs" />
     <Compile Include="Models\MD_Project.cs" />
     <Compile Include="Models\MD_OnTimeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +130,10 @@
     <Content Include="Views\Shared\_AppInclude.cshtml" />
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <Content Include="Views\UserAssignment\Index.cshtml" />
+    <Content Include="Views\UserAssignment\UserList.cshtml" />
+    <Content Include="Views\UserAssignment\AssignmentList.cshtml" />
+    <Content Include="Views\UserAssignment\List.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -152,10 +159,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.bootstrap.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.component.assignment.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.component.list.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.module.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.component.user.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.rounting.ts" />
+    <TypeScriptCompile Include="ontime-clients\assignment\assignment.service.ts" />
     <TypeScriptCompile Include="ontime-clients\base\base.service.ts" />
     <TypeScriptCompile Include="ontime-clients\common\constants.ts" />
     <TypeScriptCompile Include="ontime-clients\common\guid.ts" />
     <TypeScriptCompile Include="ontime-clients\models\ontimebase.model.ts" />
+    <TypeScriptCompile Include="ontime-clients\models\user.model.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.component.submit.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.component.list.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.service.ts" />

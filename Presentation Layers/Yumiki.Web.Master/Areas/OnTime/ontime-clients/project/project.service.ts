@@ -12,8 +12,8 @@ export class ProjectService extends BaseService {
         super(httpClient);
     }
 
-    getProjects(): Observable<Project[]> {
-        return this.doGet<Project[]>('/api/ontime/project/getall');
+    getProjects(isActive: boolean): Observable<Project[]> {
+        return this.doGet<Project[]>('/api/ontime/project/getall?isActive=' + isActive);
     }
 
     getProject(id: string): Observable<Project> {
