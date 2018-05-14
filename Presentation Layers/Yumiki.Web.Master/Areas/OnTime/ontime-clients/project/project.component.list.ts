@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Guid } from '../common/guid.js'
+import { Constants } from '../common/constants.js'
 import { Project } from '../models/project.model.js'
 
 import { ProjectService } from './project.service.js';
@@ -29,46 +30,43 @@ export class ProjectListComponent implements OnInit {
             project.IsActive = true;
 
             this.selectedProject = project;
-            console.log(project);
-            console.log("Add with ID: " + project.ID);
         }
         else {
             if (project && project.ID != Guid.empty) {
                 yumiki.message.displayLoadingDialog(true);
 
-                this.service.getProject(project.ID).subscribe(result => {
-                    console.log(project);
+                this.service.getProject(project.ID).subscribe(
+                    result => {
+                        this.selectedProject = project = result;
 
-                    project = result;
-
-                    console.log(project);
-
-                    this.selectedProject = project;
-                    console.log("Edit with ID: " + project.ID);
-
-                    yumiki.message.displayLoadingDialog(false);
-                });
+                        yumiki.message.displayLoadingDialog(false);
+                    },
+                    err => {
+                        yumiki.message.displayLoadingDialog(false);
+                        yumiki.message.clientMessage(err, '', Constants.ErrorType);
+                    });
             }
         }
-
-        console.log("Selected ID: " + project.ID);
     }
 
-    onRefreshData(message : string) {
+    onRefreshData(message: string) {
         if (message == 'ok') {
             this.getProjects();
         }
-        
     }
 
     getProjects() {
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.getProjects().subscribe(projects => {
-            this.projects = projects;
-            console.log(projects);
+        this.service.getProjects().subscribe(
+            projects => {
+                this.projects = projects;
 
-            yumiki.message.displayLoadingDialog(false);
-        });
+                yumiki.message.displayLoadingDialog(false);
+            },
+            err => {
+                yumiki.message.displayLoadingDialog(false);
+                yumiki.message.clientMessage(err, '', Constants.ErrorType);
+            });
     }
 }

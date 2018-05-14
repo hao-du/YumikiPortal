@@ -1,4 +1,14 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,24 +21,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
-var httpOptions = {
-    headers: new http_1.HttpHeaders({ 'Content-Type': 'application/json' })
-};
-var ProjectService = (function () {
+var base_service_js_1 = require("../base/base.service.js");
+var ProjectService = (function (_super) {
+    __extends(ProjectService, _super);
     function ProjectService(httpClient) {
-        this.httpClient = httpClient;
+        return _super.call(this, httpClient) || this;
     }
     ProjectService.prototype.getProjects = function () {
-        return this.httpClient.get('/api/ontime/project/getall');
+        return this.doGet('/api/ontime/project/getall');
     };
     ProjectService.prototype.getProject = function (id) {
-        return this.httpClient.get('/api/ontime/project/get?id=' + id);
+        return this.doGet('/api/ontime/project/get?id=' + id);
     };
     ProjectService.prototype.saveProject = function (project) {
-        return this.httpClient.post('/api/ontime/project/save', project, httpOptions);
+        return this.doPost('/api/ontime/project/save', project);
     };
     return ProjectService;
-}());
+}(base_service_js_1.BaseService));
 ProjectService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [http_1.HttpClient])

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { Constants } from '../common/constants.js'
 import { Project } from '../models/project.model.js';
 
 import { ProjectService } from './project.service.js';
@@ -24,19 +25,21 @@ export class ProjectSubmitComponent implements OnInit {
         this.project = undefined;
     }
 
-    onSave()
-    {
+    onSave() {
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.saveProject(this.project as Project).subscribe(result => {
-            console.log(result);
+        this.service.saveProject(this.project as Project).subscribe(
+            () => {
+                //Emit message to List Compoment to refresh data
+                this.messageEvent.emit('ok');
 
-            //Emit message to List Compoment to refresh data
-            this.messageEvent.emit('ok');
+                this.onClose();
 
-            this.onClose();
-
-            yumiki.message.displayLoadingDialog(false);
-        });
+                yumiki.message.displayLoadingDialog(false);
+            },
+            err => {
+                yumiki.message.displayLoadingDialog(false);
+                yumiki.message.clientMessage(err, '', Constants.ErrorType);
+            });
     }
 }

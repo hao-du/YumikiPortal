@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var constants_js_1 = require("../common/constants.js");
 var project_model_js_1 = require("../models/project.model.js");
 var project_service_js_1 = require("./project.service.js");
 var ProjectSubmitComponent = (function () {
@@ -30,6 +31,11 @@ var ProjectSubmitComponent = (function () {
             _this.messageEvent.emit('ok');
             _this.onClose();
             yumiki.message.displayLoadingDialog(false);
+        }, function (err) {
+            console.log("Submit Error");
+            console.log(err);
+            yumiki.message.displayLoadingDialog(false);
+            yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
         });
     };
     return ProjectSubmitComponent;

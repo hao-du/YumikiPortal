@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var guid_js_1 = require("../common/guid.js");
+var constants_js_1 = require("../common/constants.js");
 var project_model_js_1 = require("../models/project.model.js");
 var project_service_js_1 = require("./project.service.js");
 var ProjectListComponent = (function () {
@@ -40,6 +41,11 @@ var ProjectListComponent = (function () {
                     _this.selectedProject = project;
                     console.log("Edit with ID: " + project.ID);
                     yumiki.message.displayLoadingDialog(false);
+                }, function (err) {
+                    console.log("Edit Error");
+                    console.log(err);
+                    yumiki.message.displayLoadingDialog(false);
+                    yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
                 });
             }
         }
@@ -57,6 +63,11 @@ var ProjectListComponent = (function () {
             _this.projects = projects;
             console.log(projects);
             yumiki.message.displayLoadingDialog(false);
+        }, function (err) {
+            console.log("Get Error");
+            console.log(err);
+            yumiki.message.displayLoadingDialog(false);
+            yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
         });
     };
     return ProjectListComponent;
