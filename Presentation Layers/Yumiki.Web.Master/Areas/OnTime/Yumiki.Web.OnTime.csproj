@@ -108,6 +108,7 @@
     <Compile Include="Controllers\ApiProjectController.cs" />
     <Compile Include="Controllers\UserAssignmentController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Models\MD_ProjectAssignment.cs" />
     <Compile Include="Models\MD_User.cs" />
     <Compile Include="Models\MD_Project.cs" />
     <Compile Include="Models\MD_OnTimeBase.cs" />

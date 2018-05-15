@@ -23,6 +23,11 @@ var AssignmentComponent = (function () {
     AssignmentComponent.prototype.ngOnInit = function () {
         this.getAssignments();
     };
+    AssignmentComponent.prototype.onChange = function (project) {
+        this.service.saveProjectAssignments(this.user.ID, project.ID, project.IsAssigned).subscribe(function () { }, function (err) {
+            yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
+        });
+    };
     AssignmentComponent.prototype.getAssignments = function () {
         var _this = this;
         var id = this.route.snapshot.paramMap.get('id');

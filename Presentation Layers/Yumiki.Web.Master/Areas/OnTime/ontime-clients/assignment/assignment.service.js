@@ -33,6 +33,9 @@ var AssignmentService = (function (_super) {
     AssignmentService.prototype.getAssignments = function (userID) {
         return this.doGet('/api/ontime/assignment/getassignments?userID=' + userID);
     };
+    AssignmentService.prototype.saveProjectAssignments = function (userID, projectID, isAssigned) {
+        return this.doPost('/api/ontime/assignment/saveprojectassignment', { 'UserID': userID, 'ProjectID': projectID, 'IsAssigned': isAssigned });
+    };
     return AssignmentService;
 }(base_service_js_1.BaseService));
 AssignmentService = __decorate([

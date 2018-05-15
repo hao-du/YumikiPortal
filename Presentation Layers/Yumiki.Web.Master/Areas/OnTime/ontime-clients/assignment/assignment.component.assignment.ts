@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Constants } from '../common/constants.js'
 import { User } from '../models/user.model.js'
+import { Project } from '../models/project.model.js'
 
 import { AssignmentService } from './assignment.service.js';
 
@@ -26,6 +27,14 @@ export class AssignmentComponent implements OnInit {
 
     ngOnInit() {
         this.getAssignments();
+    }
+
+    onChange(project: Project) {
+        this.service.saveProjectAssignments(this.user.ID, project.ID, project.IsAssigned).subscribe(
+            () => {},
+            err => {
+                yumiki.message.clientMessage(err, '', Constants.ErrorType);
+            });
     }
 
     getAssignments() {

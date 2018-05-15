@@ -17,5 +17,10 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// </summary>
         /// <returns></returns>
         GetUserWithAssignmentResponse GetUserWithAssignments(string userID);
+
+        /// <summary>
+        /// Save User Assignment for Project
+        /// </summary>
+        void SaveProjectAssignment(string userID, string projectID, bool isAssigned);
     }
 }

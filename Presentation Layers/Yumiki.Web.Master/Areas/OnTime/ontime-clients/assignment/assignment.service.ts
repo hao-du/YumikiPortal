@@ -19,4 +19,8 @@ export class AssignmentService extends BaseService {
     getAssignments(userID:string): Observable<User> {
         return this.doGet<User>('/api/ontime/assignment/getassignments?userID=' + userID);
     }
+
+    saveProjectAssignments(userID: string, projectID: string, isAssigned: boolean): Observable<any> {
+        return this.doPost<any>('/api/ontime/assignment/saveprojectassignment', { 'UserID': userID, 'ProjectID': projectID, 'IsAssigned': isAssigned });
+    }
 }

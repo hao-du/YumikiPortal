@@ -18,5 +18,10 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// </summary>
         /// <returns></returns>
         GetUserWithAssignmentResponse GetUserWithAssignments(Guid userID);
+
+        /// <summary>
+        /// Save User Assignment for Project
+        /// </summary>
+        void SaveProjectAssignment(Guid userID, Guid projectID, bool isAssigned);
     }
 }

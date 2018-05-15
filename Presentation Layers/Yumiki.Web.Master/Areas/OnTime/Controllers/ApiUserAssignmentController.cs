@@ -48,5 +48,21 @@ namespace Yumiki.Web.OnTime.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [Route("saveprojectassignment", Name = "SaveProjectAssignment")]
+        [HttpPost()]
+        public IHttpActionResult SaveProjectAssignment(MD_ProjectAssignment assignment)
+        {
+            try
+            {
+                BusinessService.SaveProjectAssignment(assignment.UserID, assignment.ProjectID, assignment.IsAssigned);
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }

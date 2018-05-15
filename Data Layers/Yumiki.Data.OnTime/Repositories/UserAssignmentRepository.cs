@@ -42,5 +42,31 @@ namespace Yumiki.Data.OnTime.Repositories
 
             return response;
         }
+
+        /// <summary>
+        /// Get a specific user with Projects and Phases Assignment
+        /// </summary>
+        /// <returns></returns>
+        public void SaveProjectAssignment(Guid userID, Guid projectID, bool isAssigned)
+        {
+            TB_ProjectAssignment assignment = Context.TB_ProjectAssignment.SingleOrDefault(c => c.UserID == userID && c.ProjectID == projectID);
+
+            if(isAssigned && assignment == null)
+            {
+                assignment = new TB_ProjectAssignment();
+                assignment.UserID = userID;
+                assignment.ProjectID = projectID;
+
+                Context.TB_ProjectAssignment.Add(assignment);
+
+                Save();
+            }
+            else if(!isAssigned && assignment != null)
+            {
+                Context.TB_ProjectAssignment.Remove(assignment);
+
+                Save();
+            }
+        }
     }
 }

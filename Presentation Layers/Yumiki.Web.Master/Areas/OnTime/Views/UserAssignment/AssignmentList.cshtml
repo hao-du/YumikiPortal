@@ -33,7 +33,7 @@
                     <tbody>
                         <tr *ngFor="let project of user.ProjectAssignments">
                             <td>
-                                <input type="checkbox" [(ngModel)]="project.isAssigned"/>
+                                <input type="checkbox" [(ngModel)]="project.IsAssigned" (change)="onChange(project)"/>
                             </td>
                             <td>
                                 {{project.ProjectName}}
