@@ -1,0 +1,16 @@
+﻿@section HeadScript {
+    @using SquishIt.Framework;
+
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/Ontime/ontime-clients/js/yumiki-ontime.js")
+        .Render("~/cache/yumiki_#.js"))
+
+    @Html.Partial("_OntimeInclude")
+
+    <script>
+        System.import('/areas/ontime/ontime-clients/phase/phase.bootstrap.js').catch(function (err) { console.error(err); });
+    </script>
+}
+
+@Html.Partial("_AppInclude")

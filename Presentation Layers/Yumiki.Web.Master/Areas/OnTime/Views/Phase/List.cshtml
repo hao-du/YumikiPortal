@@ -1,6 +1,6 @@
 ﻿@{
     Layout = null;
-    ViewBag.Title = "Projects";
+    ViewBag.Title = "Phases";
 }
 
 <div class="container">
@@ -21,13 +21,13 @@
                         <tr>
                             <th></th>
                             <th>
-                                Project Name
+                                Phase Name
                             </th>
                             <th>
-                                Assigned Number
+                                Status
                             </th>
                             <th>
-                                Prefix
+                                Release Version
                             </th>
                             <th>
                                 Descriptions
@@ -38,24 +38,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let project of projects" [class.selected]="project === selectedProject">
+                        <tr *ngFor="let phase of phases" [class.selected]="phase === selectedPhase">
                             <td>
-                                <a href="#" (click)="onSelect(project)" title="Edit"><span class="fa fa-edit"></span></a>
+                                <a href="#" (click)="onSelect(phase)" title="Edit"><span class="fa fa-edit"></span></a>
                             </td>
                             <td>
-                                {{project.ProjectName}}
+                                {{phase.PhaseName}}
                             </td>
                             <td>
-                                {{project. AssignedNumber}}
+                                {{phase.Status}}
                             </td>
                             <td>
-                                {{project.Prefix}}
+                                {{phase.ReleaseVersion}}
                             </td>
                             <td>
-                                {{project.Descriptions}}
+                                {{phase.Descriptions}}
                             </td>
                             <td>
-                                {{project.LastUpdateDateUI}}
+                                {{phase.LastUpdateDateUI}}
                             </td>
                         </tr>
                     </tbody>
@@ -64,4 +64,4 @@
         </div>
     </div>
 </div>
-<project-submit [project]="selectedProject" (messageEvent)="onRefreshData($event)"></project-submit>
+<phase-submit [phase]="selectedPhase" (messageEvent)="onRefreshData($event)"></phase-submit>

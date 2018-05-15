@@ -41,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPhaseService.cs" />
     <Compile Include="Interfaces\IUserAssignmentService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\PhaseService.cs" />
     <Compile Include="Services\UserAssignmentService.cs" />
     <Compile Include="Services\ProjectService.cs" />
   </ItemGroup>
