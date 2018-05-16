@@ -23,6 +23,8 @@
 bld/
 [Bb]in/
 [Oo]bj/
+[Oo]bj/
+Presentation Layers/Yumiki.Web.Master/Areas/OnTime/ontime-clients/**/*.js
 
 # Visual Studio 2015 cache/options directory
 .vs/
