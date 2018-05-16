@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yumiki.Data.Base;
 using Yumiki.Entity.OnTime;
 
 namespace Yumiki.Data.OnTime.Interfaces
 {
-    public interface IPhaseRepository
+    public interface IPhaseRepository: IShareableRepository<OnTimeModel>
     {
         /// <summary>
         /// Get all active/Inactive phase

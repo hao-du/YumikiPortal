@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IPhaseService.cs" />
+    <Compile Include="Interfaces\ITaskService.cs" />
     <Compile Include="Interfaces\IUserAssignmentService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PhaseService.cs" />
+    <Compile Include="Services\TaskService.cs" />
     <Compile Include="Services\UserAssignmentService.cs" />
     <Compile Include="Services\ProjectService.cs" />
   </ItemGroup>
@@ -54,6 +56,10 @@
     <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
       <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>
       <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
+      <Project>{04117F61-B63A-4414-A95D-63E6288449C6}</Project>
+      <Name>Yumiki.Data.Base</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>

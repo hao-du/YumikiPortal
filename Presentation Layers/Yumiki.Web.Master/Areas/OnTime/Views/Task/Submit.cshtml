@@ -1,0 +1,127 @@
+﻿@using Yumiki.Web.Ontime.Models;
+@{
+    Layout = null;
+}
+
+<div *ngIf="task">
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form (ngSubmit)="onSave()" #taskForm="ngForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            {{ task.ID == '' ? 'New Task' : 'Edit Task' }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Task Name</label>
+                            <input [(ngModel)]="task.TaskName" class="form-control" name="taskName" required #taskName="ngModel" [class.border-danger]="taskName.invalid && (taskName.dirty || taskName.touched)" />
+                            <p *ngIf="taskName.invalid && taskName.errors.required && (taskName.dirty || taskName.touched)" class="text-danger">Task Name is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Project</label>
+                            <select class="form-control" name="projectID" [(ngModel)]="task.ProjectID"
+                                    required #projectID="ngModel" [class.border-danger]="projectID.invalid && (projectID.dirty || projectID.touched)">
+                                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                                @foreach (MD_Project project in ViewBag.Projects)
+                                {
+                                    <option value="@project.ID.ToString()">@project.ProjectName</option>
+                                }
+                            </select>
+
+                            <p *ngIf="projectID.invalid && projectID.errors.required && (projectID.dirty || projectID.touched)" class="text-danger">Project is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phase</label>
+                            <select class="form-control" name="phaseID" [(ngModel)]="task.PhaseID"
+                                    required #phaseID="ngModel" [class.border-danger]="phaseID.invalid && (phaseID.dirty || phaseID.touched)">
+                                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                                @foreach (MD_Phase phase in ViewBag.Phases)
+                                {
+                                    <option value="@phase.ID.ToString()">@phase.PhaseName</option>
+                                }
+                            </select>
+
+                            <p *ngIf="phaseID.invalid && phaseID.errors.required && (phaseID.dirty || phaseID.touched)" class="text-danger">Phase is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Assign To</label>
+                            <select class="form-control" name="assignedUserID" [(ngModel)]="task.AssignedUserID"
+                                    required #assignedUserID="ngModel" [class.border-danger]="assignedUserID.invalid && (assignedUserID.dirty || assignedUserID.touched)">
+                                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                                @foreach (MD_User user in ViewBag.Users)
+                                {
+                                    <option value="@user.ID.ToString()">@user.FullName</option>
+                                }
+                            </select>
+
+                            <p *ngIf="assignedUserID.invalid && assignedUserID.errors.required && (assignedUserID.dirty || assignedUserID.touched)" class="text-danger">Assign To is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" name="status" [(ngModel)]="task.Status"
+                                    required #status="ngModel" [class.border-danger]="status.invalid && (status.dirty || status.touched)">
+                                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                                @foreach (Yumiki.Commons.Entities.ExtendEnum status in ViewBag.Statuses)
+                                {
+                                    <option value="@status.Value">@status.DisplayText</option>
+                                }
+                            </select>
+
+                            <p *ngIf="status.invalid && status.errors.required && (status.dirty || status.touched)" class="text-danger">Status is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="task.StartDate" class="form-control border-right-0" name="startDate"
+                                       bsDatepicker #startDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }"
+                                       required [class.border-danger]="startDate.invalid && (startDate.dirty || startDate.touched)"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white" [class.border-danger]="startDate.invalid && (startDate.dirty || startDate.touched)">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p *ngIf="startDate.invalid && startDate.errors.required && (startDate.dirty || startDate.touched)" class="text-danger">Start Date is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="task.EndDate" class="form-control border-right-0" name="endDate"
+                                       bsDatepicker #endDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }"
+                                       required [class.border-danger]="endDate.invalid && (endDate.dirty || endDate.touched)"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white" [class.border-danger]="endDate.invalid && (endDate.dirty || endDate.touched)">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p *ngIf="endDate.invalid && endDate.errors.required && (endDate.dirty || endDate.touched)" class="text-danger">End Date is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea [(ngModel)]="task.TaskDescriptions" class="form-control" rows="5" 
+                                      name="descriptions" required #descriptions="ngModel" [class.border-danger]="descriptions.invalid && (descriptions.dirty || descriptions.touched)"></textarea>
+                            <p *ngIf="descriptions.invalid && descriptions.errors.required && (descriptions.dirty || descriptions.touched)" class="text-danger">Task Descriptions field is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" [(ngModel)]="task.IsActive" name="isactive">
+                            Is Active
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" [disabled]="!taskForm.form.valid">Save</button>
+                        <button class="btn" (click)="onClose()">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Yumiki.Data.Base;
 using Yumiki.Entity.OnTime;
 using Yumiki.Entity.OnTime.ServiceObjects;
 
 namespace Yumiki.Data.OnTime.Interfaces
 {
-    public interface IUserAssignmentRepository
+    public interface IUserAssignmentRepository : IShareableRepository<OnTimeModel>
     {
         /// <summary>
         /// Get All Active Users
