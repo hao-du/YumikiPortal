@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Constants } from '../common/constants.js'
 import { User } from '../models/user.model.js'
 import { Project } from '../models/project.model.js'
+import { Phase } from '../models/phase.model.js'
 
 import { AssignmentService } from './assignment.service.js';
 
@@ -29,9 +30,17 @@ export class AssignmentComponent implements OnInit {
         this.getAssignments();
     }
 
-    onChange(project: Project) {
+    onProjectChange(project: Project) {
         this.service.saveProjectAssignments(this.user.ID, project.ID, project.IsAssigned).subscribe(
             () => {},
+            err => {
+                yumiki.message.clientMessage(err, '', Constants.ErrorType);
+            });
+    }
+
+    onPhaseChange(phase: Phase) {
+        this.service.savePhaseAssignments(this.user.ID, phase.ID, phase.IsAssigned).subscribe(
+            () => { },
             err => {
                 yumiki.message.clientMessage(err, '', Constants.ErrorType);
             });

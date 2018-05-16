@@ -28,6 +28,11 @@ namespace Yumiki.Web.Ontime.Models
             get; set;
         }
 
+        public IEnumerable<MD_Phase> PhaseAssignments
+        {
+            get; set;
+        }
+
         public string FullName
         {
             get

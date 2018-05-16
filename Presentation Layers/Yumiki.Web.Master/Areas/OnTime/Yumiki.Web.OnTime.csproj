@@ -111,6 +111,7 @@
     <Compile Include="Controllers\UserAssignmentController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Models\MD_Phase.cs" />
+    <Compile Include="Models\MD_PhaseAssignment.cs" />
     <Compile Include="Models\MD_ProjectAssignment.cs" />
     <Compile Include="Models\MD_User.cs" />
     <Compile Include="Models\MD_Project.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="OnTimeAreaRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ontime-clients\js\yumiki-ontime.js" />
     <Content Include="systemjs.config.js" />
     <Content Include="Views\web.config" />
     <Content Include="package.json" />

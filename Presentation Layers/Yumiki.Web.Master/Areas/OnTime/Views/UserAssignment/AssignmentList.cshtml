@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-bordered table-hover">
                     <thead class="thead-dark">
@@ -33,7 +33,7 @@
                     <tbody>
                         <tr *ngFor="let project of user.ProjectAssignments">
                             <td>
-                                <input type="checkbox" [(ngModel)]="project.IsAssigned" (change)="onChange(project)"/>
+                                <input type="checkbox" [(ngModel)]="project.IsAssigned" (change)="onProjectChange(project)"/>
                             </td>
                             <td>
                                 {{project.ProjectName}}
@@ -43,6 +43,36 @@
                             </td>
                             <td>
                                 {{project.Descriptions}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Phase Name
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let phase of user.PhaseAssignments">
+                            <td>
+                                <input type="checkbox" [(ngModel)]="phase.IsAssigned" (change)="onPhaseChange(phase)" />
+                            </td>
+                            <td>
+                                {{phase.PhaseName}}
+                            </td>
+                            <td>
+                                {{phase.StatusUI}}
                             </td>
                         </tr>
                     </tbody>

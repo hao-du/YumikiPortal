@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Constants } from '../common/constants.js'
 import { Phase } from '../models/phase.model.js';
@@ -11,22 +11,13 @@ declare var yumiki: any;
     selector: 'phase-submit',
     templateUrl: '/Apps/OnTime/Phase/Submit',
 })
-export class PhaseSubmitComponent implements AfterViewChecked {
+export class PhaseSubmitComponent {
     @Input() phase?: Phase;
     @Output() messageEvent = new EventEmitter<string>();
 
     isControlInitialized: boolean = false;
 
     constructor(private service: PhaseService) {
-    }
-
-    ngAfterViewChecked() {
-        if (!this.isControlInitialized && this.phase) {
-            console.log(this);
-            yumiki.ontime.initDateTimePicker();
-            console.log("ngAfterContentChecked");
-            this.isControlInitialized = true;
-        }
     }
 
     onClose() {

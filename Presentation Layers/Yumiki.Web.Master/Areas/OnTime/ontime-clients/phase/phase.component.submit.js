@@ -19,14 +19,6 @@ var PhaseSubmitComponent = (function () {
         this.messageEvent = new core_1.EventEmitter();
         this.isControlInitialized = false;
     }
-    PhaseSubmitComponent.prototype.ngAfterViewChecked = function () {
-        if (!this.isControlInitialized && this.phase) {
-            console.log(this);
-            yumiki.ontime.initDateTimePicker();
-            console.log("ngAfterContentChecked");
-            this.isControlInitialized = true;
-        }
-    };
     PhaseSubmitComponent.prototype.onClose = function () {
         this.phase = undefined;
         this.isControlInitialized = false;

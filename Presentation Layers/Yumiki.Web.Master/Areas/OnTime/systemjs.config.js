@@ -16,16 +16,37 @@
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
             '@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js',
+
+            'ngx-bootstrap': 'npm:ngx-bootstrap',
+
             'tslib': 'npm:tslib/tslib.js',
 
-            'rxjs': 'npm:rxjs'
+            'rxjs': 'npm:rxjs',
+            "rxjs-compat": "npm:rxjs-compat",
         },
         packages: {
             app: {
                 defaultExtension: 'js'
             },
             rxjs: {
+                main: 'bundles/rxjs.umd.min.js',
                 defaultExtension: 'js'
+            },
+            'ngx-bootstrap': {
+                main: 'bundles/ngx-bootstrap.umd.min.js',
+                defaultExtension: 'js'
+            },
+            'rxjs/operators': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            'rxjs/internal-compatibility': {
+                main: 'index.js',
+                defaultExtension: 'js'
+            },
+            "rxjs-compat": {
+                main: "index.js",
+                defaultExtension: "js"
             }
         }
     });

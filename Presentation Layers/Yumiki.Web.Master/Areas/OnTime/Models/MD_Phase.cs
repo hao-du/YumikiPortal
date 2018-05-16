@@ -44,6 +44,14 @@ namespace Yumiki.Web.Ontime.Models
             }
         }
 
+        public string StatusUI
+        {
+            get
+            {
+                return EnumHelper.GetDescription((EN_PhaseStatus)_internalItem.Status);
+            }
+        }
+
         public string ReleaseVersion
         {
             get
@@ -56,51 +64,63 @@ namespace Yumiki.Web.Ontime.Models
             }
         }
 
-        public DateTime? EstimatedStartDate
+        public string EstimatedStartDate
         {
             get
             {
-                return _internalItem.EstimatedStartDate;
+                return _internalItem.EstimatedStartDate.HasValue ? _internalItem.EstimatedStartDate.Value.ToString(Formats.DateTime.LongDate) : string.Empty;
             }
             set
             {
-                _internalItem.EstimatedStartDate = value;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _internalItem.EstimatedStartDate = DateTime.Parse(value);
+                }
             }
         }
 
-        public DateTime? EstimatedEndDate
+        public string EstimatedEndDate
         {
             get
             {
-                return _internalItem.EstimatedEndDate;
+                return _internalItem.EstimatedEndDate.HasValue ? _internalItem.EstimatedEndDate.Value.ToString(Formats.DateTime.LongDate) : string.Empty;
             }
             set
             {
-                _internalItem.EstimatedEndDate = value;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _internalItem.EstimatedEndDate = DateTime.Parse(value);
+                }
             }
         }
 
-        public DateTime? ActualStartDate
+        public string ActualStartDate
         {
             get
             {
-                return _internalItem.ActualStartDate;
+                return _internalItem.ActualStartDate.HasValue ? _internalItem.ActualStartDate.Value.ToString(Formats.DateTime.LongDate) : string.Empty;
             }
             set
             {
-                _internalItem.ActualStartDate = value;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _internalItem.ActualStartDate = DateTime.Parse(value);
+                }
             }
         }
 
-        public DateTime? ActualEndDate
+        public string ActualEndDate
         {
             get
             {
-                return _internalItem.ActualEndDate;
+                return _internalItem.ActualEndDate.HasValue ? _internalItem.ActualEndDate.Value.ToString(Formats.DateTime.LongDate) : string.Empty;
             }
             set
             {
-                _internalItem.ActualEndDate = value;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _internalItem.ActualEndDate = DateTime.Parse(value);
+                }
             }
         }
 

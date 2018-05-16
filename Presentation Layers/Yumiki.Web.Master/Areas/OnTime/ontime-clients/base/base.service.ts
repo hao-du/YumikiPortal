@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 
 const httpOptions = {
@@ -16,13 +16,11 @@ export class BaseService {
     }
 
     doGet<T>(url: string): Observable<T> {
-        return this.httpClient.get<T>(url)
-            .catch(this.errorHandler);
+        return this.httpClient.get<T>(url).pipe(catchError(this.errorHandler));
     }
 
     doPost<T>(url: string, obj: T): Observable<T> {
-        return this.httpClient.post<T>(url, obj, httpOptions)
-            .catch(this.errorHandler);
+        return this.httpClient.post<T>(url, obj, httpOptions).pipe(catchError(this.errorHandler));
     }
 
     errorHandler(response: HttpErrorResponse) {

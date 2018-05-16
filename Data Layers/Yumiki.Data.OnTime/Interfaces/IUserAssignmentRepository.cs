@@ -23,5 +23,11 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// Save User Assignment for Project
         /// </summary>
         void SaveProjectAssignment(Guid userID, Guid projectID, bool isAssigned);
+
+        /// <summary>
+        /// Save Phase and User to Assignment
+        /// </summary>
+        /// <returns></returns>
+        void SavePhaseAssignment(Guid userID, Guid phaseID, bool isAssigned);
     }
 }

@@ -44,7 +44,7 @@ namespace Yumiki.Data.OnTime.Repositories
         }
 
         /// <summary>
-        /// Get a specific user with Projects and Phases Assignment
+        /// Save Project and User to Assignment
         /// </summary>
         /// <returns></returns>
         public void SaveProjectAssignment(Guid userID, Guid projectID, bool isAssigned)
@@ -64,6 +64,32 @@ namespace Yumiki.Data.OnTime.Repositories
             else if(!isAssigned && assignment != null)
             {
                 Context.TB_ProjectAssignment.Remove(assignment);
+
+                Save();
+            }
+        }
+
+        /// <summary>
+        /// Save Phase and User to Assignment
+        /// </summary>
+        /// <returns></returns>
+        public void SavePhaseAssignment(Guid userID, Guid phaseID, bool isAssigned)
+        {
+            TB_PhaseAssignment assignment = Context.TB_PhaseAssignment.SingleOrDefault(c => c.UserID == userID && c.PhaseID == phaseID);
+
+            if (isAssigned && assignment == null)
+            {
+                assignment = new TB_PhaseAssignment();
+                assignment.UserID = userID;
+                assignment.PhaseID = phaseID;
+
+                Context.TB_PhaseAssignment.Add(assignment);
+
+                Save();
+            }
+            else if (!isAssigned && assignment != null)
+            {
+                Context.TB_PhaseAssignment.Remove(assignment);
 
                 Save();
             }

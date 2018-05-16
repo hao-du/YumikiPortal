@@ -22,5 +22,11 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// Save User Assignment for Project
         /// </summary>
         void SaveProjectAssignment(string userID, string projectID, bool isAssigned);
+
+        /// <summary>
+        /// Save Phase and User to Assignment
+        /// </summary>
+        /// <returns></returns>
+        void SavePhaseAssignment(string userID, string phaseID, bool isAssigned);
     }
 }

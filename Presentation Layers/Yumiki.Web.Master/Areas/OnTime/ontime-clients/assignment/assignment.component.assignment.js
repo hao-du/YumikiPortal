@@ -23,8 +23,13 @@ var AssignmentComponent = (function () {
     AssignmentComponent.prototype.ngOnInit = function () {
         this.getAssignments();
     };
-    AssignmentComponent.prototype.onChange = function (project) {
+    AssignmentComponent.prototype.onProjectChange = function (project) {
         this.service.saveProjectAssignments(this.user.ID, project.ID, project.IsAssigned).subscribe(function () { }, function (err) {
+            yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
+        });
+    };
+    AssignmentComponent.prototype.onPhaseChange = function (phase) {
+        this.service.savePhaseAssignments(this.user.ID, phase.ID, phase.IsAssigned).subscribe(function () { }, function (err) {
             yumiki.message.clientMessage(err, '', constants_js_1.Constants.ErrorType);
         });
     };

@@ -72,5 +72,37 @@ namespace Yumiki.Business.OnTime.Services
 
             Repository.SaveProjectAssignment(convertedUserID, convertedProjectID, isAssigned);
         }
+
+        /// <summary>
+        /// Save Phase and User to Assignment
+        /// </summary>
+        public void SavePhaseAssignment(string userID, string phaseID, bool isAssigned)
+        {
+            if (string.IsNullOrWhiteSpace(userID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
+            }
+
+            Guid convertedUserID = Guid.Empty;
+            Guid.TryParse(userID, out convertedUserID);
+            if (convertedUserID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
+            }
+
+            if (string.IsNullOrWhiteSpace(phaseID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Phase ID cannot be empty.", Logger);
+            }
+
+            Guid convertedPhaseID = Guid.Empty;
+            Guid.TryParse(phaseID, out convertedPhaseID);
+            if (convertedPhaseID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Phase ID must be GUID type.", Logger);
+            }
+
+            Repository.SavePhaseAssignment(convertedUserID, convertedPhaseID, isAssigned);
+        }
     }
 }

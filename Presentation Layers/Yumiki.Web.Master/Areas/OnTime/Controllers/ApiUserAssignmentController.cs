@@ -40,6 +40,7 @@ namespace Yumiki.Web.OnTime.Controllers
 
                 MD_User user = new MD_User(response.UserWithAssignments);
                 user.ProjectAssignments = response.ProjectAssignments.Select(c => new MD_Project(c));
+                user.PhaseAssignments = response.PhaseAssignments.Select(c => new MD_Phase(c));
 
                 return Ok(user);
             }
@@ -56,6 +57,22 @@ namespace Yumiki.Web.OnTime.Controllers
             try
             {
                 BusinessService.SaveProjectAssignment(assignment.UserID, assignment.ProjectID, assignment.IsAssigned);
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("savephaseassignment", Name = "SavePhaseAssignment")]
+        [HttpPost()]
+        public IHttpActionResult SavePhaseAssignment(MD_PhaseAssignment assignment)
+        {
+            try
+            {
+                BusinessService.SavePhaseAssignment(assignment.UserID, assignment.PhaseID, assignment.IsAssigned);
 
                 return Ok(true);
             }

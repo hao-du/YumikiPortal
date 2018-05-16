@@ -1,11 +1,4 @@
 ﻿@section HeadScript {
-    @using SquishIt.Framework;
-
-    @MvcHtmlString.Create(
-        Bundle.JavaScript()
-        .Add("~/Areas/Ontime/ontime-clients/js/yumiki-ontime.js")
-        .Render("~/cache/yumiki_#.js"))
-
     @Html.Partial("_OntimeInclude")
 
     <script>
