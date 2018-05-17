@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import { Guid } from '../common/guid.js'
-import { Constants } from '../common/constants.js'
 import { Task } from '../models/task.model.js'
 
 import { TaskService } from './task.service.js';
+import { Constants } from "../common/constants.js";
 
 declare var yumiki: any;
 
@@ -14,57 +15,31 @@ declare var yumiki: any;
 })
 export class TaskListComponent implements OnInit {
     tasks: Task[];
-    selectedTask: Task;
 
-    constructor(private service: TaskService) {
+    constructor(
+        private route: ActivatedRoute,
+        private service: TaskService,
+        private location: Location
+    ) {
     }
 
     ngOnInit() {
         this.getTasks();
     }
 
-    onSelect(task: Task) {
-        if (!task) {
-            task = new Task();
-            task.ID = Guid.empty;
-            task.PhaseID = '';
-            task.ProjectID = '';
-            task.AssignedUserID = '';
-            task.Status = '';
-            task.IsActive = true;
-
-            this.selectedTask = task;
-        }
-        else {
-            if (task && task.ID != Guid.empty) {
-                yumiki.message.displayLoadingDialog(true);
-
-                this.service.getTask(task.ID).subscribe(
-                    result => {
-                        this.selectedTask = task = result;
-
-                        yumiki.message.displayLoadingDialog(false);
-                    },
-                    err => {
-                        yumiki.message.displayLoadingDialog(false);
-                        yumiki.message.clientMessage(err, '', Constants.ErrorType);
-                    });
-            }
-        }
-    }
-
-    onRefreshData(message: string) {
-        if (message == 'ok') {
-            this.getTasks();
-        }
+    onClose() {
+        this.location.back();
+        return false;
     }
 
     getTasks() {
+        const type: string = this.route.snapshot.paramMap.get('type') as string;
+
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.getTasks().subscribe(
-            tasks => {
-                this.tasks = tasks;
+        this.service.getTasks(+type).subscribe(
+            result => {
+                this.tasks = result;
 
                 yumiki.message.displayLoadingDialog(false);
             },

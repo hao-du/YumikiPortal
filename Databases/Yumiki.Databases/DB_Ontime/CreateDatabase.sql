@@ -118,7 +118,7 @@ CREATE TABLE [dbo].[TB_Task](
 	[EndDate] [date] NOT NULL,
 	[Status] [int] NOT NULL,
 	[TaskDescriptions] [ntext] NOT NULL,
-	[AssignedUserID] [uniqueidentifier] NOT NULL,
+	[AssignedUserID] [uniqueidentifier] NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,

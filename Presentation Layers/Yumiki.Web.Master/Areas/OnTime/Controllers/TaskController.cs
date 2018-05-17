@@ -17,6 +17,16 @@ namespace Yumiki.Web.OnTime.Controllers
             return View();
         }
 
+        public ActionResult Landing()
+        {
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
         public ActionResult List()
         {
             return View();

@@ -27,7 +27,7 @@ namespace Yumiki.Entity.OnTime
 
         public string TaskDescriptions { get; set; }
 
-        public Guid AssignedUserID { get; set; }
+        public Guid? AssignedUserID { get; set; }
 
         public Guid UserID { get; set; }
 

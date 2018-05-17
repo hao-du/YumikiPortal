@@ -7,11 +7,6 @@ namespace Yumiki.Data.OnTime.Interfaces
     public interface ITaskRepository
     {
         /// <summary>
-        /// Get all active/Inactive task
-        /// </summary>
-        List<TB_Task> GetAllTasks();
-
-        /// <summary>
         /// Get a task by id
         /// </summary>
         /// <param name="id">Task ID</param>
@@ -28,5 +23,25 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// </summary>
         /// <returns>Tube Type</returns>
         (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata();
+
+        /// <summary>
+        /// Get only tasks assign to logged user
+        /// </summary>
+        List<TB_Task> GetMyTasks(Guid userID, int? totalRecords);
+
+        /// <summary>
+        /// Get only tasks which created by logged user
+        /// </summary>
+        List<TB_Task> GetMyCreatedTasks(Guid userID, int? totalRecords);
+
+        /// <summary>
+        /// Get all tasks with order from newest to oldest
+        /// </summary>
+        List<TB_Task> GetTasks(Guid userID, int? totalRecords);
+
+        /// <summary>
+        /// Get all unassigned tasks
+        /// </summary>
+        List<TB_Task> GetUnassignedTasks(Guid userID, int? totalRecords);
     }
 }

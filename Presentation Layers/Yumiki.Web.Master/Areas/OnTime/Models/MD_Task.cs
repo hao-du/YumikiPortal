@@ -72,15 +72,15 @@ namespace Yumiki.Web.Ontime.Models
             }
         }
 
-        public Guid AssignedUserID
+        public string AssignedUserID
         {
             get
             {
-                return _internalItem.AssignedUserID;
+                return _internalItem.AssignedUserID.HasValue ? _internalItem.AssignedUserID.Value.ToString() : string.Empty;
             }
             set
             {
-                _internalItem.AssignedUserID = value;
+                _internalItem.AssignedUserID = Guid.Parse(value);
             }
         }
 

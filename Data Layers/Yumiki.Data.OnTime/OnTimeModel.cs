@@ -97,7 +97,7 @@ namespace Yumiki.Data.OnTime
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.AssignedTasks)
-                .WithRequired(e => e.AssignedUser)
+                .WithOptional(e => e.AssignedUser)
                 .HasForeignKey(e => e.AssignedUserID);
         }
     }

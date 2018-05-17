@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import { Constants } from '../common/constants.js'
+import { Guid } from '../common/guid.js';
+import { Constants } from '../common/constants.js';
+
 import { Task } from '../models/task.model.js';
 
 import { TaskService } from './task.service.js';
@@ -13,16 +17,46 @@ declare var yumiki: any;
 })
 export class TaskSubmitComponent implements OnInit {
     @Input() task?: Task;
-    @Output() messageEvent = new EventEmitter<string>();
 
-    constructor(private service: TaskService) {
+    constructor(
+        private route: ActivatedRoute,
+        private service: TaskService,
+        private location: Location
+    ) {
+        this.task = new Task();
     }
 
     ngOnInit() {
+        const id: string = this.route.snapshot.paramMap.get('id') as string;
+
+        if (!id) {
+            this.task = new Task();
+            this.task.ID = Guid.empty;
+            this.task.PhaseID = '';
+            this.task.ProjectID = '';
+            this.task.AssignedUserID = '';
+            this.task.Status = '';
+            this.task.IsActive = true;
+        }
+        else {
+            yumiki.message.displayLoadingDialog(true);
+
+            this.service.getTask(id).subscribe(
+                result => {
+                    this.task = result;
+
+                    yumiki.message.displayLoadingDialog(false);
+                },
+                err => {
+                    yumiki.message.displayLoadingDialog(false);
+                    yumiki.message.clientMessage(err, '', Constants.ErrorType);
+                });
+        }
     }
 
     onClose() {
-        this.task = undefined;
+        this.location.back();
+        return false;
     }
 
     onSave() {
@@ -30,9 +64,6 @@ export class TaskSubmitComponent implements OnInit {
 
         this.service.saveTask(this.task as Task).subscribe(
             () => {
-                //Emit message to List Compoment to refresh data
-                this.messageEvent.emit('ok');
-
                 this.onClose();
 
                 yumiki.message.displayLoadingDialog(false);

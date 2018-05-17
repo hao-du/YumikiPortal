@@ -13,13 +13,35 @@ namespace Yumiki.Web.OnTime.Controllers
     [RoutePrefix("api/ontime/task")]
     public class ApiTaskController : ApiBaseController<ITaskService>
     {
-        [Route("getall", Name = "GetAllTasks")]
+        [Route("getdashboard", Name = "GetDashboard")]
         [HttpGet()]
         public IHttpActionResult Get()
         {
             try
             {
-                IEnumerable<MD_Task> tasks = BusinessService.GetAllTasks().Select(c => new MD_Task(c));
+                var tube = BusinessService.GetAllTasksWithTypes(CurrentUser.UserID.ToString(), 10);
+
+                MD_TaskDashBoard dashBoard = new MD_TaskDashBoard();
+                dashBoard.MyTasks = tube.Item1.Select(c=>new MD_Task(c));
+                dashBoard.MyCreatedTasks = tube.Item2.Select(c => new MD_Task(c));
+                dashBoard.LatestTasks = tube.Item3.Select(c => new MD_Task(c));
+                dashBoard.UnassignedTasks = tube.Item4.Select(c => new MD_Task(c));
+
+                return Ok(dashBoard);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("gettasks", Name = "GetTasks")]
+        [HttpGet()]
+        public IHttpActionResult Get(int taskType)
+        {
+            try
+            {
+                IEnumerable<MD_Task> tasks = BusinessService.GetTasks(CurrentUser.UserID.ToString(), null, (EN_TaskType)taskType).Select(c=>new MD_Task(c));
 
                 return Ok(tasks);
             }
