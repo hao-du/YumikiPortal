@@ -27,7 +27,7 @@ export class PhaseSubmitComponent {
 
     onSave() {
         yumiki.message.displayLoadingDialog(true);
-        console.log(this.phase);
+
         this.service.savePhase(this.phase as Phase).subscribe(
             () => {
                 //Emit message to List Compoment to refresh data

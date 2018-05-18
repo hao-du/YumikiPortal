@@ -104,6 +104,7 @@ namespace Yumiki.Data.OnTime.Repositories
                 dbTask.PhaseID = task.PhaseID;
                 dbTask.StartDate = task.StartDate;
                 dbTask.EndDate = task.EndDate;
+                dbTask.Priority = task.Priority;
                 dbTask.Status = task.Status;
                 dbTask.TaskDescriptions = task.TaskDescriptions;
                 dbTask.AssignedUserID = task.AssignedUserID;

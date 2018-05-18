@@ -33,8 +33,6 @@ export class PhaseListComponent implements OnInit {
             phase.Status = "";
 
             this.selectedPhase = phase;
-
-            console.log(phase);
         }
         else {
             if (phase && phase.ID != Guid.empty) {

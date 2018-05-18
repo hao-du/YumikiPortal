@@ -17,6 +17,7 @@ declare var yumiki: any;
 })
 export class TaskSubmitComponent implements OnInit {
     @Input() task?: Task;
+    title: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -30,12 +31,15 @@ export class TaskSubmitComponent implements OnInit {
         const id: string = this.route.snapshot.paramMap.get('id') as string;
 
         if (!id) {
+            this.title = "Create New Task"
+
             this.task = new Task();
             this.task.ID = Guid.empty;
             this.task.PhaseID = '';
             this.task.ProjectID = '';
             this.task.AssignedUserID = '';
             this.task.Status = '';
+            this.task.Priority = '';
             this.task.IsActive = true;
         }
         else {
@@ -44,6 +48,8 @@ export class TaskSubmitComponent implements OnInit {
             this.service.getTask(id).subscribe(
                 result => {
                     this.task = result;
+
+                    this.title = "Edit Task: " + this.task.TaskName;
 
                     yumiki.message.displayLoadingDialog(false);
                 },

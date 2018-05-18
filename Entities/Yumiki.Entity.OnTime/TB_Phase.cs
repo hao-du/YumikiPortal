@@ -27,7 +27,7 @@ namespace Yumiki.Entity.OnTime
 
         public string ReleaseVersion { get; set; }
 
-        public int Status { get; set; }
+        public EN_PhaseStatus Status { get; set; }
 
         public Guid UserID { get; set; }
 

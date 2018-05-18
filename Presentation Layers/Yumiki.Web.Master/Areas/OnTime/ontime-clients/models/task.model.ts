@@ -11,6 +11,8 @@ export class Task extends OnTimeBase {
     StartDate: string;
     EndDate: string;
     Status: string;
+    Priority: string;
     StatusUI: string;
+    PriorityUI: string;
     TaskDescriptions: string;
 }

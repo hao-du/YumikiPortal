@@ -36,11 +36,11 @@ namespace Yumiki.Web.Ontime.Models
         {
             get
             {
-                return _internalItem.Status;
+                return (int)_internalItem.Status;
             }
             set
             {
-                _internalItem.Status = value;
+                _internalItem.Status = (EN_PhaseStatus)value;
             }
         }
 

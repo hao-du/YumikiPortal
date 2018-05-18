@@ -80,7 +80,10 @@ namespace Yumiki.Web.Ontime.Models
             }
             set
             {
-                _internalItem.AssignedUserID = Guid.Parse(value);
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _internalItem.AssignedUserID = Guid.Parse(value);
+                }
             }
         }
 
@@ -120,11 +123,23 @@ namespace Yumiki.Web.Ontime.Models
         {
             get
             {
-                return _internalItem.Status;
+                return (int)_internalItem.Status;
             }
             set
             {
-                _internalItem.Status = value;
+                _internalItem.Status = (EN_TaskStatus)value;
+            }
+        }
+
+        public int Priority
+        {
+            get
+            {
+                return (int)_internalItem.Priority;
+            }
+            set
+            {
+                _internalItem.Priority = (EN_Priority)value;
             }
         }
 
@@ -133,6 +148,14 @@ namespace Yumiki.Web.Ontime.Models
             get
             {
                 return EnumHelper.GetDescription((EN_PhaseStatus)_internalItem.Status);
+            }
+        }
+
+        public string PriorityUI
+        {
+            get
+            {
+                return EnumHelper.GetDescription((EN_Priority)_internalItem.Priority);
             }
         }
 

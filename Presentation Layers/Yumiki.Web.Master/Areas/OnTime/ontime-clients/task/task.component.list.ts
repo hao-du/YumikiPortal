@@ -14,6 +14,7 @@ declare var yumiki: any;
     templateUrl: '/Apps/OnTime/Task/List',
 })
 export class TaskListComponent implements OnInit {
+    title: string;
     tasks: Task[];
 
     constructor(
@@ -34,6 +35,21 @@ export class TaskListComponent implements OnInit {
 
     getTasks() {
         const type: string = this.route.snapshot.paramMap.get('type') as string;
+
+        switch (+type) {
+            case 1:
+                this.title = "My Assigned Tasks";
+                break;
+            case 2:
+                this.title = "My Created Tasks";
+                break;
+            case 3:
+                this.title = "Recent Tasks";
+                break;
+            case 4:
+                this.title = "Unassigned Tasks";
+                break;
+        }
 
         yumiki.message.displayLoadingDialog(true);
 

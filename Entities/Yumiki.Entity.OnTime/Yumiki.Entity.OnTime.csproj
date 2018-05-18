@@ -42,11 +42,13 @@
   <ItemGroup>
     <Compile Include="CustomFields\TB_Phase.cs" />
     <Compile Include="CustomFields\TB_Project.cs" />
+    <Compile Include="EN_Priority.cs" />
     <Compile Include="EN_TaskType.cs" />
     <Compile Include="EN_TaskStatus.cs" />
     <Compile Include="EN_PhaseStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceObjects\GetUserWithAssignmentResponse.cs" />
+    <Compile Include="TB_Comment.cs" />
     <Compile Include="TB_History.cs" />
     <Compile Include="TB_Phase.cs" />
     <Compile Include="TB_PhaseAssignment.cs" />

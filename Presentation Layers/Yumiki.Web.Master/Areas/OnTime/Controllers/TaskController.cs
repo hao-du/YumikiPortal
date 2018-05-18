@@ -41,6 +41,7 @@ namespace Yumiki.Web.OnTime.Controllers
             ViewBag.Projects = tube.Item3.Select(c => new MD_Project(c));
 
             ViewBag.Statuses = EnumHelper.GetDatasource<EN_TaskStatus>();
+            ViewBag.Priorities = EnumHelper.GetDatasource<EN_Priority>();
 
             return View();
         }

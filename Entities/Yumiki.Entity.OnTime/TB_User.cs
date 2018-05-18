@@ -14,6 +14,7 @@ namespace Yumiki.Entity.OnTime
             ProjectAssignments = new HashSet<TB_ProjectAssignment>();
             Tasks = new HashSet<TB_Task>();
             AssignedTasks = new HashSet<TB_Task>();
+            Comments = new HashSet<TB_Comment>();
         }
 
         public Guid ID { get; set; }
@@ -45,5 +46,7 @@ namespace Yumiki.Entity.OnTime
         public virtual ICollection<TB_Task> Tasks { get; set; }
 
         public virtual ICollection<TB_Task> AssignedTasks { get; set; }
+
+        public virtual ICollection<TB_Comment> Comments { get; set; }
     }
 }

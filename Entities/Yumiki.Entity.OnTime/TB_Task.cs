@@ -9,6 +9,7 @@ namespace Yumiki.Entity.OnTime
         public TB_Task()
         {
             Histories = new HashSet<TB_History>();
+            Comments = new HashSet<TB_Comment>();
         }
 
         public Guid ID { get; set; }
@@ -23,7 +24,9 @@ namespace Yumiki.Entity.OnTime
 
         public DateTime EndDate { get; set; }
 
-        public int Status { get; set; }
+        public EN_TaskStatus Status { get; set; }
+
+        public EN_Priority Priority { get; set; }
 
         public string TaskDescriptions { get; set; }
 
@@ -48,5 +51,7 @@ namespace Yumiki.Entity.OnTime
         public virtual TB_User User { get; set; }
 
         public virtual TB_User AssignedUser { get; set; }
+
+        public virtual ICollection<TB_Comment> Comments { get; set; }
     }
 }

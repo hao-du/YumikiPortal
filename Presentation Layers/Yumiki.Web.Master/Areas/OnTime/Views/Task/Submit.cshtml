@@ -4,7 +4,7 @@
 }
 
 <div class="container">
-    <h1>@ViewBag.Title</h1>
+    <h1>{{title}}</h1>
     <form (ngSubmit)="onSave()" #taskForm="ngForm">
         <div class="card bg-secondary">
             <div class="card-body p-2">
@@ -42,16 +42,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Assign To</label>
-                    <select class="form-control" name="assignedUserID" [(ngModel)]="task.AssignedUserID"
-                            required #assignedUserID="ngModel" [class.border-danger]="assignedUserID.invalid && (assignedUserID.dirty || assignedUserID.touched)">
+                    <select class="form-control" name="assignedUserID" [(ngModel)]="task.AssignedUserID">
                         <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
                         @foreach (MD_User user in ViewBag.Users)
                         {
                             <option value="@user.ID.ToString()">@user.FullName</option>
                         }
                     </select>
-
-                    <p *ngIf="assignedUserID.invalid && assignedUserID.errors.required && (assignedUserID.dirty || assignedUserID.touched)" class="text-danger">Assign To is required.</p>
                 </div>
             </div>
             <div class="col-md-6">
@@ -111,6 +108,21 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label>Priority</label>
+                    <select class="form-control" name="priority" [(ngModel)]="task.Priority"
+                            required #priority="ngModel" [class.border-danger]="priority.invalid && (priority.dirty || priority.touched)">
+                        <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                        @foreach (Yumiki.Commons.Entities.ExtendEnum priority in ViewBag.Priorities)
+                        {
+                            <option value="@priority.Value">@priority.DisplayText</option>
+                        }
+                    </select>
+
+                    <p *ngIf="priority.invalid && priority.errors.required && (priority.dirty || priority.touched)" class="text-danger">Priority is required.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" name="status" [(ngModel)]="task.Status"
                             required #status="ngModel" [class.border-danger]="status.invalid && (status.dirty || status.touched)">
@@ -123,8 +135,6 @@
 
                     <p *ngIf="status.invalid && status.errors.required && (status.dirty || status.touched)" class="text-danger">Status is required.</p>
                 </div>
-            </div>
-            <div class="col-md-6">
             </div>
         </div>
         <div class="row">

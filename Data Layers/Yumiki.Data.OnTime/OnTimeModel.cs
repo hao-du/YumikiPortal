@@ -19,6 +19,8 @@ namespace Yumiki.Data.OnTime
         public virtual DbSet<TB_Task> TB_Task { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
 
+        public virtual DbSet<TB_Comment> TB_Comment { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TB_Phase>()
@@ -57,6 +59,11 @@ namespace Yumiki.Data.OnTime
             modelBuilder.Entity<TB_Task>()
                 .HasMany(e => e.Histories)
                 .WithOptional(e => e.Task)
+                .HasForeignKey(e => e.TaskID);
+
+            modelBuilder.Entity<TB_Task>()
+                .HasMany(e => e.Comments)
+                .WithRequired(e => e.Task)
                 .HasForeignKey(e => e.TaskID);
 
             modelBuilder.Entity<TB_User>()
@@ -99,6 +106,11 @@ namespace Yumiki.Data.OnTime
                 .HasMany(e => e.AssignedTasks)
                 .WithOptional(e => e.AssignedUser)
                 .HasForeignKey(e => e.AssignedUserID);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.Comments)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID);
         }
     }
 }

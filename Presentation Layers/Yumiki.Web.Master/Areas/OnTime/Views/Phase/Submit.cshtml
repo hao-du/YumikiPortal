@@ -39,11 +39,11 @@
                         <div class="form-group">
                             <label>Estimated Start Date</label>
                             <div class="input-group date">
-                                <input type="text" [(ngModel)]="phase.EstimatedStartDate" class="form-control" name="estimatedStartDate"
-                                       bsDatepicker #estimatedStartDate="bsDatepicker"
-                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" triggers="none" />
-                                <div class="input-group-append input-group-calendar" (click)="estimatedStartDate.show()">
-                                    <span class="input-group-text">
+                                <input type="text" [(ngModel)]="phase.EstimatedStartDate" class="form-control border-right-0" name="estimatedStartDate"
+                                       bsDatepicker #estimatedStartDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
@@ -52,11 +52,11 @@
                         <div class="form-group">
                             <label>Estimated End Date</label>
                             <div class="input-group date">
-                                <input type="text" [(ngModel)]="phase.EstimatedEndDate" class="form-control" name="estimatedEndDate"
-                                       bsDatepicker #estimatedEndDate="bsDatepicker"
-                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" triggers="none" />
-                                <div class="input-group-append input-group-calendar" (click)="estimatedEndDate.show()">
-                                    <span class="input-group-text">
+                                <input type="text" [(ngModel)]="phase.EstimatedEndDate" class="form-control border-right-0" name="estimatedEndDate"
+                                       bsDatepicker #estimatedEndDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
@@ -66,11 +66,11 @@
                         <div class="form-group">
                             <label>Actual Start Date</label>
                             <div class="input-group date">
-                                <input type="text" [(ngModel)]="phase.ActualStartDate" class="form-control" name="actualStartDate"
-                                       bsDatepicker #actualStartDate="bsDatepicker"
-                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" triggers="none" />
-                                <div class="input-group-append input-group-calendar" (click)="actualStartDate.show()">
-                                    <span class="input-group-text">
+                                <input type="text" [(ngModel)]="phase.ActualStartDate" class="form-control border-right-0" name="actualStartDate"
+                                       bsDatepicker #actualStartDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
@@ -79,11 +79,11 @@
                         <div class="form-group">
                             <label>Actual End Date</label>
                             <div class="input-group date">
-                                <input type="text" [(ngModel)]="phase.ActualEndDate" class="form-control" name="actualEndDate"
-                                       bsDatepicker #actualEndDate="bsDatepicker"
-                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" triggers="none" />
-                                <div class="input-group-append input-group-calendar" (click)="actualEndDate.show()">
-                                    <span class="input-group-text">
+                                <input type="text" [(ngModel)]="phase.ActualEndDate" class="form-control border-right-0" name="actualEndDate"
+                                       bsDatepicker #actualEndDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
