@@ -61,6 +61,10 @@
       <Project>{04117F61-B63A-4414-A95D-63E6288449C6}</Project>
       <Name>Yumiki.Data.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
+      <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
       <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
       <Name>Yumiki.Commons</Name>

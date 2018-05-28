@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Yumiki.Data.OnTime.Interfaces;
 using Yumiki.Entity.OnTime;
+using Yumiki.Entity.OnTime.ServiceObjects;
 
 namespace Yumiki.Data.OnTime.Repositories
 {
@@ -11,70 +12,81 @@ namespace Yumiki.Data.OnTime.Repositories
         /// <summary>
         /// Get only tasks assign to logged user
         /// </summary>
-        public List<TB_Task> GetMyTasks(Guid userID, int? totalRecords)
+        public GetTaskResponse GetMyTasks(GetTaskRequest request)
         {
             IQueryable<TB_Task> taskQuery = Context.TB_Task
                                                 .Include("Project").Include("Phase").Include("AssignedUser")
-                                                .Where(c => c.AssignedUserID == userID
-                                                        && c.Phase.PhaseAssignments.Any(d => d.UserID == userID)
-                                                        && c.Project.ProjectAssignments.Any(d => d.UserID == userID))
-                                                .OrderByDescending(c => c.LastUpdateDate);
+                                                .Where(c => c.AssignedUserID == request.UserID
+                                                        && c.Phase.PhaseAssignments.Any(d => d.UserID == request.UserID)
+                                                        && c.Project.ProjectAssignments.Any(d => d.UserID == request.UserID)
+                                                        && c.PhaseID == request.PhaseID
+                                                        && (request.ProjectID == Guid.Empty || c.ProjectID == request.ProjectID));
 
-            return GetTasks(taskQuery, totalRecords);
+            return GetTasks(taskQuery, request);
         }
 
         /// <summary>
         /// Get only tasks which created by logged user
         /// </summary>
-        public List<TB_Task> GetMyCreatedTasks(Guid userID, int? totalRecords)
+        public GetTaskResponse GetMyCreatedTasks(GetTaskRequest request)
         {
             IQueryable<TB_Task> taskQuery = Context.TB_Task
                                             .Include("Project").Include("Phase").Include("AssignedUser")
-                                            .Where(c => c.UserID == userID
-                                                    && c.Phase.PhaseAssignments.Any(d => d.UserID == userID)
-                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == userID))
-                                            .OrderByDescending(c => c.LastUpdateDate);
+                                            .Where(c => c.UserID == request.UserID
+                                                    && c.Phase.PhaseAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.PhaseID == request.PhaseID
+                                                    && (request.ProjectID == Guid.Empty || c.ProjectID == request.ProjectID));
 
-            return GetTasks(taskQuery, totalRecords);
+            return GetTasks(taskQuery, request);
         }
 
         /// <summary>
         /// Get all tasks with order from newest to oldest
         /// </summary>
-        public List<TB_Task> GetTasks(Guid userID, int? totalRecords)
+        public GetTaskResponse GetTasks(GetTaskRequest request)
         {
             IQueryable<TB_Task> taskQuery = Context.TB_Task
                                             .Include("Project").Include("Phase").Include("AssignedUser")
-                                            .Where(c => c.Phase.PhaseAssignments.Any(d => d.UserID == userID)
-                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == userID))
-                                            .OrderByDescending(c => c.LastUpdateDate);
+                                            .Where(c => c.Phase.PhaseAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.PhaseID == request.PhaseID
+                                                    && (request.ProjectID == Guid.Empty || c.ProjectID == request.ProjectID));
 
-            return GetTasks(taskQuery, totalRecords);
+            return GetTasks(taskQuery, request);
         }
 
         /// <summary>
         /// Get all unassigned tasks
         /// </summary>
-        public List<TB_Task> GetUnassignedTasks(Guid userID, int? totalRecords)
+        public GetTaskResponse GetUnassignedTasks(GetTaskRequest request)
         {
             IQueryable<TB_Task> taskQuery = Context.TB_Task
                                             .Include("Project").Include("Phase").Include("AssignedUser")
-                                            .Where(c => c.Phase.PhaseAssignments.Any(d => d.UserID == userID)
-                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == userID)
-                                                    && c.AssignedUserID == null)
-                                            .OrderByDescending(c => c.LastUpdateDate);
+                                            .Where(c => c.Phase.PhaseAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.Project.ProjectAssignments.Any(d => d.UserID == request.UserID)
+                                                    && c.AssignedUserID == null
+                                                    && c.PhaseID == request.PhaseID
+                                                    && (request.ProjectID == Guid.Empty || c.ProjectID == request.ProjectID));
 
-            return GetTasks(taskQuery, totalRecords);
+            return GetTasks(taskQuery, request);
         }
 
-        private List<TB_Task> GetTasks(IQueryable<TB_Task> taskQuery, int? totalRecords)
+        private GetTaskResponse GetTasks(IQueryable<TB_Task> taskQuery, GetTaskRequest request)
         {
-            if (totalRecords.HasValue)
+            int count = taskQuery.Count();
+            if (request.EnablePaging)
             {
-                taskQuery = taskQuery.Take(totalRecords.Value);
+                taskQuery = taskQuery.OrderByDescending(c => c.LastUpdateDate).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
             }
 
-            return taskQuery.ToList();
+            return new GetTaskResponse
+            {
+                Records = taskQuery.ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = count
+            };
         }
 
         /// <summary>
@@ -119,9 +131,13 @@ namespace Yumiki.Data.OnTime.Repositories
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        public (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata()
+        public (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true)
         {
-            List<TB_User> users = this.GetAlternativeRepository<IUserAssignmentRepository>().GetUsers();
+            List<TB_User> users = new List<TB_User>();
+            if (getUser)
+            {
+                users = this.GetAlternativeRepository<IUserAssignmentRepository>().GetUsers();
+            }
 
             List<TB_Phase> phases = this.GetAlternativeRepository<IPhaseRepository>().GetAllPhases(true);
 

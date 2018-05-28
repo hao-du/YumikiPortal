@@ -21,13 +21,14 @@ export class TaskDashboardComponent implements OnInit {
 
     ngOnInit() {
         this.dashboard = new TaskDashboard();
-        this.getDashboard();
     }
 
-    getDashboard() {
+    getDashboard(message : string) {
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.getTaskDashboard().subscribe(
+        var ids: string[] = message.split('|');
+
+        this.service.getTaskDashboard(ids[0], ids[1]).subscribe(
             result => {
                 this.dashboard = result;
 

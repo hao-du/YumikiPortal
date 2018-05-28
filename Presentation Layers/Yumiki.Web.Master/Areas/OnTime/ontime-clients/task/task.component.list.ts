@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Task } from '../models/task.model.js'
+import { TaskPaging } from '../models/taskpaging.model.js'
 
 import { TaskService } from './task.service.js';
 import { Constants } from "../common/constants.js";
@@ -15,7 +15,7 @@ declare var yumiki: any;
 })
 export class TaskListComponent implements OnInit {
     title: string;
-    tasks: Task[];
+    tasks: TaskPaging;
 
     constructor(
         private route: ActivatedRoute,
@@ -53,7 +53,7 @@ export class TaskListComponent implements OnInit {
 
         yumiki.message.displayLoadingDialog(true);
 
-        this.service.getTasks(+type).subscribe(
+        this.service.getTasks(+type, '', '').subscribe(
             result => {
                 this.tasks = result;
 

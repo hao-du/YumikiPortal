@@ -5,6 +5,7 @@ using System.Web.Http;
 using Yumiki.Business.OnTime.Interfaces;
 using Yumiki.Commons.Settings;
 using Yumiki.Entity.OnTime;
+using Yumiki.Entity.OnTime.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.Ontime.Models;
 
@@ -15,11 +16,24 @@ namespace Yumiki.Web.OnTime.Controllers
     {
         [Route("getdashboard", Name = "GetDashboard")]
         [HttpGet()]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string phaseID, string projectID)
         {
             try
             {
-                var tube = BusinessService.GetAllTasksWithTypes(CurrentUser.UserID.ToString(), 10);
+                GetTaskRequest request = new GetTaskRequest();
+                request.UserID = CurrentUser.UserID;
+                request.PhaseID = Guid.Empty;
+                if (!string.IsNullOrWhiteSpace(phaseID))
+                {
+                    request.PhaseID = Guid.Parse(phaseID);
+                }
+                request.ProjectID = Guid.Empty;
+                if (!string.IsNullOrWhiteSpace(projectID))
+                {
+                    request.ProjectID = Guid.Parse(projectID);
+                }
+
+                var tube = BusinessService.GetAllTasksWithTypes(request);
 
                 MD_TaskDashBoard dashBoard = new MD_TaskDashBoard();
                 dashBoard.MyTasks = tube.Item1.Select(c=>new MD_Task(c));
@@ -37,13 +51,26 @@ namespace Yumiki.Web.OnTime.Controllers
 
         [Route("gettasks", Name = "GetTasks")]
         [HttpGet()]
-        public IHttpActionResult Get(int taskType)
+        public IHttpActionResult Get(int taskType, string phaseID, string projectID)
         {
             try
             {
-                IEnumerable<MD_Task> tasks = BusinessService.GetTasks(CurrentUser.UserID.ToString(), null, (EN_TaskType)taskType).Select(c=>new MD_Task(c));
+                GetTaskRequest request = new GetTaskRequest();
+                request.UserID = CurrentUser.UserID;
+                request.PhaseID = Guid.Empty;
+                if (!string.IsNullOrWhiteSpace(phaseID))
+                {
+                    request.PhaseID = Guid.Parse(phaseID);
+                }
+                request.ProjectID = Guid.Empty;
+                if (!string.IsNullOrWhiteSpace(projectID))
+                {
+                    request.ProjectID = Guid.Parse(projectID);
+                }
 
-                return Ok(tasks);
+                MD_TaskPaging response = new MD_TaskPaging(BusinessService.GetTasks(request, (EN_TaskType)taskType));
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

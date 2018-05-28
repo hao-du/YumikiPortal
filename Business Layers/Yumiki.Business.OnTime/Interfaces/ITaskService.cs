@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Yumiki.Entity.OnTime;
+using Yumiki.Entity.OnTime.ServiceObjects;
 
 namespace Yumiki.Business.OnTime.Interfaces
 {
@@ -21,7 +22,7 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata();
+        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true);
 
         /// <summary>
         /// Get all tasks with all task types which loggedin User has permission to access
@@ -33,7 +34,7 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// 3. Latest updated Tasks
         /// 4. Unassigned Tasks
         /// </returns>
-        (List<TB_Task>, List<TB_Task>, List<TB_Task>, List<TB_Task>) GetAllTasksWithTypes(string userID, int? totalRecords);
+        (IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>) GetAllTasksWithTypes(GetTaskRequest request);
 
         /// <summary>
         /// Get tasks will specific task type
@@ -45,6 +46,6 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// Unassigned Tasks
         /// </param>
         /// <returns></returns>
-        List<TB_Task> GetTasks(string userID, int? totalRecords, EN_TaskType taskType);
+        GetTaskResponse GetTasks(GetTaskRequest request, EN_TaskType taskType);
     }
 }

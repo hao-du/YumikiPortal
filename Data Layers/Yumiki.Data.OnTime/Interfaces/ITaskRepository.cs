@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Yumiki.Entity.OnTime;
+using Yumiki.Entity.OnTime.ServiceObjects;
 
 namespace Yumiki.Data.OnTime.Interfaces
 {
@@ -22,26 +23,26 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata();
+        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true);
 
         /// <summary>
         /// Get only tasks assign to logged user
         /// </summary>
-        List<TB_Task> GetMyTasks(Guid userID, int? totalRecords);
+        GetTaskResponse GetMyTasks(GetTaskRequest request);
 
         /// <summary>
         /// Get only tasks which created by logged user
         /// </summary>
-        List<TB_Task> GetMyCreatedTasks(Guid userID, int? totalRecords);
+        GetTaskResponse GetMyCreatedTasks(GetTaskRequest request);
 
         /// <summary>
         /// Get all tasks with order from newest to oldest
         /// </summary>
-        List<TB_Task> GetTasks(Guid userID, int? totalRecords);
+        GetTaskResponse GetTasks(GetTaskRequest request);
 
         /// <summary>
         /// Get all unassigned tasks
         /// </summary>
-        List<TB_Task> GetUnassignedTasks(Guid userID, int? totalRecords);
+        GetTaskResponse GetUnassignedTasks(GetTaskRequest request);
     }
 }

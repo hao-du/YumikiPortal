@@ -5,6 +5,7 @@ using Yumiki.Business.OnTime.Interfaces;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Data.OnTime.Interfaces;
 using Yumiki.Entity.OnTime;
+using Yumiki.Entity.OnTime.ServiceObjects;
 
 namespace Yumiki.Business.OnTime.Services
 {
@@ -60,25 +61,13 @@ namespace Yumiki.Business.OnTime.Services
         /// 3. Latest updated Tasks
         /// 4. Unassigned Tasks
         /// </returns>
-        public (List<TB_Task>, List<TB_Task>, List<TB_Task>, List<TB_Task>) GetAllTasksWithTypes(string userID, int? totalRecords)
+        public (IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>) GetAllTasksWithTypes(GetTaskRequest request)
         {
-            if (string.IsNullOrWhiteSpace(userID))
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
-            }
-
-            Guid convertedUserID = Guid.Empty;
-            Guid.TryParse(userID, out convertedUserID);
-            if (convertedUserID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
-            }
-
             return (
-                    GetTasks(userID, totalRecords, EN_TaskType.E_MY_TASK),
-                    GetTasks(userID, totalRecords, EN_TaskType.E_MY_CREATED_TASK),
-                    GetTasks(userID, totalRecords, EN_TaskType.E_LASTEST_TASK),
-                    GetTasks(userID, totalRecords, EN_TaskType.E_UNASSIGNED_TASK)
+                    GetTasks(request, EN_TaskType.E_MY_TASK).Records,
+                    GetTasks(request, EN_TaskType.E_MY_CREATED_TASK).Records,
+                    GetTasks(request, EN_TaskType.E_LASTEST_TASK).Records,
+                    GetTasks(request, EN_TaskType.E_UNASSIGNED_TASK).Records
                     );
         }
 
@@ -92,42 +81,30 @@ namespace Yumiki.Business.OnTime.Services
         /// Unassigned Tasks
         /// </param>
         /// <returns></returns>
-        public List<TB_Task> GetTasks(string userID, int? totalRecords, EN_TaskType taskType)
+        public GetTaskResponse GetTasks(GetTaskRequest request, EN_TaskType taskType)
         {
-            if (string.IsNullOrWhiteSpace(userID))
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "User ID cannot be empty.", Logger);
-            }
-
-            Guid convertedUserID = Guid.Empty;
-            Guid.TryParse(userID, out convertedUserID);
-            if (convertedUserID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "User ID must be GUID type.", Logger);
-            }
-
             switch (taskType)
             {
                 case EN_TaskType.E_MY_TASK:
-                    return Repository.GetMyTasks(convertedUserID, totalRecords);
+                    return Repository.GetMyTasks(request);
                 case EN_TaskType.E_MY_CREATED_TASK:
-                    return Repository.GetMyCreatedTasks(convertedUserID, totalRecords);
+                    return Repository.GetMyCreatedTasks(request);
                 case EN_TaskType.E_LASTEST_TASK:
-                    return Repository.GetTasks(convertedUserID, totalRecords);
+                    return Repository.GetTasks(request);
                 case EN_TaskType.E_UNASSIGNED_TASK:
-                    return Repository.GetUnassignedTasks(convertedUserID, totalRecords);
+                    return Repository.GetUnassignedTasks(request);
             }
 
-            return new List<TB_Task>();
+            return new GetTaskResponse();
         }
 
         /// <summary>
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) ITaskService.GetMetadata()
+        (List<TB_User>, List<TB_Phase>, List<TB_Project>) ITaskService.GetMetadata(bool getUser = true)
         {
-            return Repository.GetMetadata();
+            return Repository.GetMetadata(getUser);
         }
     }
 }

@@ -1,0 +1,31 @@
+﻿@using Yumiki.Web.Ontime.Models;
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Phase</label>
+            <select class="form-control" name="phaseID" [(ngModel)]="phaseID" (change)="onFilterChange()">
+                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                @foreach (MD_Phase phase in ViewBag.Phases)
+                {
+                    <option value="@phase.ID.ToString()">@phase.PhaseName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Project</label>
+            <select class="form-control" name="projectID" [(ngModel)]="projectID" (change)="onFilterChange()">
+                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown</option>
+                @foreach (MD_Project project in ViewBag.Projects)
+                {
+                    <option value="@project.ID.ToString()">@project.ProjectName</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>

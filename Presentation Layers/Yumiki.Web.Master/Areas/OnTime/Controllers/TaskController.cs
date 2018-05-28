@@ -32,6 +32,16 @@ namespace Yumiki.Web.OnTime.Controllers
             return View();
         }
 
+        public ActionResult Filter()
+        {
+            var tube = BusinessService.GetMetadata(false);
+
+            ViewBag.Phases = tube.Item2.Select(c => new MD_Phase(c));
+            ViewBag.Projects = tube.Item3.Select(c => new MD_Project(c));
+
+            return View();
+        }
+
         public ActionResult Submit()
         {
             var tube = BusinessService.GetMetadata();
