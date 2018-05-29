@@ -5,7 +5,7 @@ using Yumiki.Commons.Settings;
 using Yumiki.Entity.Base;
 using Yumiki.Entity.OnTime;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
     public abstract class MD_OnTimeBase<T> : Model<T> where T : IEntity
     {

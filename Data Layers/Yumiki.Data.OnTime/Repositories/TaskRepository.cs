@@ -131,19 +131,20 @@ namespace Yumiki.Data.OnTime.Repositories
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        public (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true)
+        public (List<TB_Phase>, List<TB_Project>, List<TB_User>) GetMetadata(bool excludeUsers = false)
         {
-            List<TB_User> users = new List<TB_User>();
-            if (getUser)
-            {
-                users = this.GetAlternativeRepository<IUserAssignmentRepository>().GetUsers();
-            }
-
             List<TB_Phase> phases = this.GetAlternativeRepository<IPhaseRepository>().GetAllPhases(true);
 
             List<TB_Project> projects = this.GetAlternativeRepository<IProjectRepository>().GetAllProjects(true);
 
-            return (users, phases, projects);
+            if (excludeUsers)
+            {
+                return (phases, projects, null);
+            }
+
+            List<TB_User> users = this.GetAlternativeRepository<IUserAssignmentRepository>().GetUsers();
+
+            return (phases, projects, users);
         }
     }
 }

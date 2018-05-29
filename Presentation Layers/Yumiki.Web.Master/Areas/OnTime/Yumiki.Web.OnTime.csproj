@@ -148,11 +148,9 @@
     <Content Include="Views\Phase\List.cshtml" />
     <Content Include="Views\Phase\Submit.cshtml" />
     <Content Include="Views\Task\Index.cshtml" />
-    <Content Include="Views\Task\List.cshtml" />
-    <Content Include="Views\Task\Submit.cshtml" />
-    <Content Include="Views\Task\Dashboard.cshtml" />
-    <Content Include="Views\Task\Landing.cshtml" />
-    <Content Include="Views\Task\Filter.cshtml" />
+    <Content Include="Views\Task\IndexContent.cshtml" />
+    <Content Include="Views\Task\DetailContent.cshtml" />
+    <Content Include="Views\Task\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -191,8 +189,7 @@
     <TypeScriptCompile Include="ontime-clients\models\ontimebase.model.ts" />
     <TypeScriptCompile Include="ontime-clients\models\task.model.ts" />
     <TypeScriptCompile Include="ontime-clients\models\phase.model.ts" />
-    <TypeScriptCompile Include="ontime-clients\models\taskpaging.model.ts" />
-    <TypeScriptCompile Include="ontime-clients\models\taskdashboard.model.ts" />
+    <TypeScriptCompile Include="ontime-clients\models\task.paging.model.ts" />
     <TypeScriptCompile Include="ontime-clients\models\user.model.ts" />
     <TypeScriptCompile Include="ontime-clients\phase\phase.bootstrap.ts" />
     <TypeScriptCompile Include="ontime-clients\phase\phase.component.list.ts" />
@@ -205,14 +202,12 @@
     <TypeScriptCompile Include="ontime-clients\project\project.module.ts" />
     <TypeScriptCompile Include="ontime-clients\project\project.bootstrap.ts" />
     <TypeScriptCompile Include="ontime-clients\models\project.model.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.component.filter.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.component.dashboard.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.component.landing.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.rounting.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.bootstrap.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.component.list.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.component.submit.ts" />
-    <TypeScriptCompile Include="ontime-clients\task\task.module.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.detail.bootstrap.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.list.bootstrap.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.list.component.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.detail.component.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.detail.module.ts" />
+    <TypeScriptCompile Include="ontime-clients\task\task.list.module.ts" />
     <TypeScriptCompile Include="ontime-clients\task\task.service.ts" />
   </ItemGroup>
   <ItemGroup>

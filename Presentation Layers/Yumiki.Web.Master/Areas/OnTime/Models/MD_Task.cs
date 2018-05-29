@@ -6,7 +6,7 @@ using Yumiki.Commons.Settings;
 using Yumiki.Entity.Base;
 using Yumiki.Entity.OnTime;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
     public class MD_Task : MD_OnTimeBase<TB_Task>
     {
@@ -69,6 +69,14 @@ namespace Yumiki.Web.Ontime.Models
             get
             {
                 return _internalItem.Phase?.PhaseName;
+            }
+        }
+
+        public int PhaseStatus
+        {
+            get
+            {
+                return (int)_internalItem.Phase?.Status;
             }
         }
 

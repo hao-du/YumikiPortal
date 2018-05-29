@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { Guid } from '../common/guid.js';
 import { Constants } from '../common/constants.js';
@@ -12,17 +11,16 @@ import { TaskService } from './task.service.js';
 declare var yumiki: any;
 
 @Component({
-    selector: 'task-submit',
-    templateUrl: '/Apps/OnTime/Task/Submit',
+    selector: 'ontime',
+    templateUrl: '/Apps/OnTime/Task/Detail',
 })
-export class TaskSubmitComponent implements OnInit {
-    @Input() task?: Task;
+export class TaskDetailComponent implements OnInit {
+    task?: Task;
     title: string;
 
     constructor(
         private route: ActivatedRoute,
-        private service: TaskService,
-        private location: Location
+        private service: TaskService
     ) {
         this.task = new Task();
     }
@@ -60,18 +58,11 @@ export class TaskSubmitComponent implements OnInit {
         }
     }
 
-    onClose() {
-        this.location.back();
-        return false;
-    }
-
     onSave() {
         yumiki.message.displayLoadingDialog(true);
 
         this.service.saveTask(this.task as Task).subscribe(
             () => {
-                this.onClose();
-
                 yumiki.message.displayLoadingDialog(false);
             },
             err => {

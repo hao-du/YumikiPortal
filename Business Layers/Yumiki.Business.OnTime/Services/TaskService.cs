@@ -52,26 +52,6 @@ namespace Yumiki.Business.OnTime.Services
         }
 
         /// <summary>
-        /// Get all tasks with all task types which loggedin User has permission to access
-        /// </summary>
-        /// <returns>
-        /// Tube type with order:
-        /// 1. My Tasks
-        /// 2. My Created Tasks
-        /// 3. Latest updated Tasks
-        /// 4. Unassigned Tasks
-        /// </returns>
-        public (IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>) GetAllTasksWithTypes(GetTaskRequest request)
-        {
-            return (
-                    GetTasks(request, EN_TaskType.E_MY_TASK).Records,
-                    GetTasks(request, EN_TaskType.E_MY_CREATED_TASK).Records,
-                    GetTasks(request, EN_TaskType.E_LASTEST_TASK).Records,
-                    GetTasks(request, EN_TaskType.E_UNASSIGNED_TASK).Records
-                    );
-        }
-
-        /// <summary>
         /// Get tasks will specific task type
         /// </summary>
         /// <param name="taskType">
@@ -102,9 +82,9 @@ namespace Yumiki.Business.OnTime.Services
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) ITaskService.GetMetadata(bool getUser = true)
+        (List<TB_Phase>, List<TB_Project>, List<TB_User>) ITaskService.GetMetadata(bool excludeUsers = false)
         {
-            return Repository.GetMetadata(getUser);
+            return Repository.GetMetadata(excludeUsers);
         }
     }
 }

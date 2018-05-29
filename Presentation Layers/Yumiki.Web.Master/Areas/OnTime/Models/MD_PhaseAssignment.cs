@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
     public class MD_PhaseAssignment
     {

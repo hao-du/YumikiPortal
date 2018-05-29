@@ -7,57 +7,28 @@ using Yumiki.Commons.Settings;
 using Yumiki.Entity.OnTime;
 using Yumiki.Entity.OnTime.ServiceObjects;
 using Yumiki.Web.Base;
-using Yumiki.Web.Ontime.Models;
+using Yumiki.Web.OnTime.Models;
 
 namespace Yumiki.Web.OnTime.Controllers
 {
     [RoutePrefix("api/ontime/task")]
     public class ApiTaskController : ApiBaseController<ITaskService>
     {
-        [Route("getdashboard", Name = "GetDashboard")]
-        [HttpGet()]
-        public IHttpActionResult Get(string phaseID, string projectID)
-        {
-            try
-            {
-                GetTaskRequest request = new GetTaskRequest();
-                request.UserID = CurrentUser.UserID;
-                request.PhaseID = Guid.Empty;
-                if (!string.IsNullOrWhiteSpace(phaseID))
-                {
-                    request.PhaseID = Guid.Parse(phaseID);
-                }
-                request.ProjectID = Guid.Empty;
-                if (!string.IsNullOrWhiteSpace(projectID))
-                {
-                    request.ProjectID = Guid.Parse(projectID);
-                }
-
-                var tube = BusinessService.GetAllTasksWithTypes(request);
-
-                MD_TaskDashBoard dashBoard = new MD_TaskDashBoard();
-                dashBoard.MyTasks = tube.Item1.Select(c=>new MD_Task(c));
-                dashBoard.MyCreatedTasks = tube.Item2.Select(c => new MD_Task(c));
-                dashBoard.LatestTasks = tube.Item3.Select(c => new MD_Task(c));
-                dashBoard.UnassignedTasks = tube.Item4.Select(c => new MD_Task(c));
-
-                return Ok(dashBoard);
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
-
         [Route("gettasks", Name = "GetTasks")]
         [HttpGet()]
-        public IHttpActionResult Get(int taskType, string phaseID, string projectID)
+        public IHttpActionResult Get(bool getDefaultMetadata, int taskType, string phaseID, string projectID)
         {
             try
             {
+                MD_Phase phase = new MD_Phase();
+                if (getDefaultMetadata && string.IsNullOrWhiteSpace(phaseID))
+                {
+                    phase = new MD_Phase(BusinessService.GetMetadata(true).Item1.FirstOrDefault(c=>c.Status == EN_PhaseStatus.E_IN_PROGRESS));
+                }
+
                 GetTaskRequest request = new GetTaskRequest();
                 request.UserID = CurrentUser.UserID;
-                request.PhaseID = Guid.Empty;
+                request.PhaseID = phase.ID;
                 if (!string.IsNullOrWhiteSpace(phaseID))
                 {
                     request.PhaseID = Guid.Parse(phaseID);
@@ -68,7 +39,9 @@ namespace Yumiki.Web.OnTime.Controllers
                     request.ProjectID = Guid.Parse(projectID);
                 }
 
-                MD_TaskPaging response = new MD_TaskPaging(BusinessService.GetTasks(request, (EN_TaskType)taskType));
+                MD_PagingTask response = new MD_PagingTask(BusinessService.GetTasks(request, (EN_TaskType)taskType));
+                response.DefaultPhaseID = request.PhaseID == Guid.Empty? string.Empty : request.PhaseID.ToString();
+                response.DefaultProjectID = request.ProjectID == Guid.Empty ? string.Empty : request.ProjectID.ToString();
 
                 return Ok(response);
             }

@@ -9,16 +9,21 @@ using Yumiki.Entity.Base;
 using Yumiki.Entity.OnTime;
 using Yumiki.Entity.OnTime.ServiceObjects;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
-    public class MD_TaskPaging : PagingEntity<MD_Task>
+    public class MD_PagingTask : PagingEntity<MD_Task>
     {
-        public MD_TaskPaging(GetTaskResponse response)
+        public MD_PagingTask(GetTaskResponse response)
         {
             this.Records = response.Records.Select(c => new MD_Task(c));
             this.CurrentPage = response.CurrentPage;
             this.ItemsPerPage = response.ItemsPerPage;
             this.TotalItems = response.TotalItems;
+            this.DefaultPhaseID = string.Empty;
+            this.DefaultProjectID = string.Empty;
         }
+
+        public string DefaultPhaseID { get; set; }
+        public string DefaultProjectID { get; set; }
     }
 }

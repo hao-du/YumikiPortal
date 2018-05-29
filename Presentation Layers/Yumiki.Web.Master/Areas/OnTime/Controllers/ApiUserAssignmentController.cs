@@ -7,7 +7,7 @@ using Yumiki.Commons.Settings;
 using Yumiki.Entity.OnTime;
 using Yumiki.Entity.OnTime.ServiceObjects;
 using Yumiki.Web.Base;
-using Yumiki.Web.Ontime.Models;
+using Yumiki.Web.OnTime.Models;
 
 namespace Yumiki.Web.OnTime.Controllers
 {

@@ -5,7 +5,7 @@ using Yumiki.Business.OnTime.Interfaces;
 using Yumiki.Commons.Helpers;
 using Yumiki.Entity.OnTime;
 using Yumiki.Web.Base;
-using Yumiki.Web.Ontime.Models;
+using Yumiki.Web.OnTime.Models;
 
 namespace Yumiki.Web.OnTime.Controllers
 {
@@ -17,39 +17,29 @@ namespace Yumiki.Web.OnTime.Controllers
             return View();
         }
 
-        public ActionResult Landing()
-        {
-            return View();
-        }
-
-        public ActionResult Dashboard()
-        {
-            return View();
-        }
-
-        public ActionResult List()
-        {
-            return View();
-        }
-
-        public ActionResult Filter()
+        public ActionResult IndexContent()
         {
             var tube = BusinessService.GetMetadata(false);
 
-            ViewBag.Phases = tube.Item2.Select(c => new MD_Phase(c));
-            ViewBag.Projects = tube.Item3.Select(c => new MD_Project(c));
+            ViewBag.Phases = tube.Item1.Select(c => new MD_Phase(c));
+            ViewBag.Projects = tube.Item2.Select(c => new MD_Project(c));
 
             return View();
         }
 
-        public ActionResult Submit()
+        public ActionResult Detail()
+        {
+            return View();
+        }
+
+        public ActionResult DetailContent()
         {
             var tube = BusinessService.GetMetadata();
 
-            ViewBag.Users = tube.Item1.Select(c=> new MD_User(c));
-            ViewBag.Phases = tube.Item2.Select(c => new MD_Phase(c));
-            ViewBag.Projects = tube.Item3.Select(c => new MD_Project(c));
-
+            ViewBag.Phases = tube.Item1.Select(c => new MD_Phase(c));
+            ViewBag.Projects = tube.Item2.Select(c => new MD_Project(c));
+            ViewBag.Users = tube.Item3.Select(c=> new MD_User(c));
+            
             ViewBag.Statuses = EnumHelper.GetDatasource<EN_TaskStatus>();
             ViewBag.Priorities = EnumHelper.GetDatasource<EN_Priority>();
 

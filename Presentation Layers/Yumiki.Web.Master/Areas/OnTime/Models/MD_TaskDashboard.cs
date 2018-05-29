@@ -7,7 +7,7 @@ using Yumiki.Commons.Settings;
 using Yumiki.Entity.Base;
 using Yumiki.Entity.OnTime;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
     public class MD_TaskDashBoard
     {

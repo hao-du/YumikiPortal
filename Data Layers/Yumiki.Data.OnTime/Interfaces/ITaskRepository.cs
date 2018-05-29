@@ -23,7 +23,7 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true);
+        (List<TB_Phase>, List<TB_Project>, List<TB_User>) GetMetadata(bool excludeUsers = false);
 
         /// <summary>
         /// Get only tasks assign to logged user

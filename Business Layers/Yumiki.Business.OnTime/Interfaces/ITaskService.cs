@@ -22,19 +22,7 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// Get Phases, Projects and Users to be metadata (e.g Binding dropdown controls)
         /// </summary>
         /// <returns>Tube Type</returns>
-        (List<TB_User>, List<TB_Phase>, List<TB_Project>) GetMetadata(bool getUser = true);
-
-        /// <summary>
-        /// Get all tasks with all task types which loggedin User has permission to access
-        /// </summary>
-        /// <returns>
-        /// Tube type with order:
-        /// 1. My Tasks
-        /// 2. My Created Tasks
-        /// 3. Latest updated Tasks
-        /// 4. Unassigned Tasks
-        /// </returns>
-        (IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>, IEnumerable<TB_Task>) GetAllTasksWithTypes(GetTaskRequest request);
+        (List<TB_Phase>, List<TB_Project>, List<TB_User>) GetMetadata(bool excludeUsers = false);
 
         /// <summary>
         /// Get tasks will specific task type

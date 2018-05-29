@@ -6,7 +6,7 @@ using Yumiki.Business.OnTime.Interfaces;
 using Yumiki.Commons.Settings;
 using Yumiki.Entity.OnTime;
 using Yumiki.Web.Base;
-using Yumiki.Web.Ontime.Models;
+using Yumiki.Web.OnTime.Models;
 
 namespace Yumiki.Web.OnTime.Controllers
 {

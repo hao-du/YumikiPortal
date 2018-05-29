@@ -1,0 +1,130 @@
+﻿@using Yumiki.Web.OnTime.Models;
+@{
+    Layout = null;
+}
+
+<div class="container">
+    <h1>Tasks</h1>
+    <div class="card">
+        <div class="card-header bg-secondary p-2">
+            <div class="btn-group">
+                <a href="#" routerLink="/Submit" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row form-group">
+                <div class="col-md">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" value="1" name="taskType" [(ngModel)]="view" (change)="onRefreshData()" checked="checked"> My Tasks
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" value="2" name="taskType" [(ngModel)]="view" (change)="onRefreshData()"> My Created Tasks
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" value="3" name="taskType" [(ngModel)]="view" (change)="onRefreshData()"> Newest Tasks
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" value="4" name="taskType" [(ngModel)]="view" (change)="onRefreshData()"> Unassigned Tasks
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Phase</label>
+                        <select class="form-control" [(ngModel)]="taskModelView.DefaultPhaseID" (change)="onRefreshData()">
+                            <option value="">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                            @foreach (MD_Phase phase in ViewBag.Phases)
+                            {
+                                <option value="@phase.ID.ToString()">@phase.PhaseName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Project</label>
+                        <select class="form-control" [(ngModel)]="taskModelView.DefaultProjectID" (change)="onRefreshData()">
+                            <option value="">@Yumiki.Commons.Dictionaries.CommonValues.SelectAllForDropDown</option>
+                            @foreach (MD_Project project in ViewBag.Projects)
+                            {
+                                <option value="@project.ID.ToString()">@project.ProjectName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Task Name
+                            </th>
+                            <th>
+                                Project
+                            </th>
+                            <th>
+                                Phase
+                            </th>
+                            <th>
+                                Priority
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Descriptions
+                            </th>
+                            <th>
+                                Last Update
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let task of taskModelView.Records">
+                            <td>
+                                <a href="Detail?id={{task.ID}}" title="Edit"><span class="fa fa-edit"></span></a>
+                            </td>
+                            <td>
+                                {{task.TaskName}}
+                            </td>
+                            <td>
+                                {{task.ProjectName}}
+                            </td>
+                            <td>
+                                {{task.PhaseName}}
+                            </td>
+                            <td>
+                                {{task.PriorityUI}}
+                            </td>
+                            <td>
+                                {{task.StatusUI}}
+                            </td>
+                            <td>
+                                {{task.TaskDescriptions}}
+                            </td>
+                            <td>
+                                {{task.LastUpdateDateUI}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

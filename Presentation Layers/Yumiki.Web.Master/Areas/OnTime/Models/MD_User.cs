@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Yumiki.Entity.OnTime;
 
-namespace Yumiki.Web.Ontime.Models
+namespace Yumiki.Web.OnTime.Models
 {
     public class MD_User : MD_OnTimeBase<TB_User>
     {
