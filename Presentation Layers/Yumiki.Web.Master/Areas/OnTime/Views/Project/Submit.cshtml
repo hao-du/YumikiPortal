@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+
+<div *ngIf="project">
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form (ngSubmit)="onSave()" #projectForm="ngForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            {{ project.ID == '' ? 'New Project' : 'Edit Project' }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <input [(ngModel)]="project.ProjectName" class="form-control" name="projectName" required #projectName="ngModel" [class.border-danger]="projectName.invalid && (projectName.dirty || projectName.touched)"/>
+                            <p *ngIf="projectName.invalid && projectName.errors.required && (projectName.dirty || projectName.touched)" class="text-danger">Project Name is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Prefix</label>
+                            <input type="text" [(ngModel)]="project.Prefix" class="form-control" name="prefix" maxlength="50" minlength="3" required #prefix="ngModel" [class.border-danger]="prefix.invalid && (prefix.dirty || prefix.touched)"/>
+                            <p *ngIf="prefix.invalid && prefix.errors.required && (prefix.dirty || prefix.touched)" class="text-danger">Prefix is required.</p>
+                            <p *ngIf="prefix.invalid && prefix.errors.minlength && (prefix.dirty || prefix.touched)" class="text-danger">Prefix must be at least 3 characters.</p>
+                            <p *ngIf="prefix.invalid && prefix.errors.maxlength && (prefix.dirty || prefix.touched)" class="text-danger">Prefix is over maximum 50 characters.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea [(ngModel)]="project.Descriptions" class="form-control" rows="5" name="descriptions"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" [(ngModel)]="project.IsActive" name="isactive">
+                            Is Active
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" [disabled]="!projectForm.form.valid">Save</button>
+                        <button class="btn" (click)="onClose()">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+﻿@section HeadScript {
+    @Html.Partial("_OntimeInclude")
+
+    <script>
+        System.import('/areas/ontime/ontime-clients/task/task.detail.bootstrap.js').catch(function (err) { console.error(err); });
+    </script>
+}
+
+@Html.Partial("_AppInclude")

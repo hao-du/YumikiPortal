@@ -1,0 +1,83 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "User Assignments";
+}
+
+<div class="container">
+    <h1>@ViewBag.Title</h1>
+    <div class="card bg-secondary">
+        <div class="card-body p-2">
+            <div class="btn-group">
+                <button routerLink="/User" class="btn">Back</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Project Name
+                            </th>
+                            <th>
+                                Prefix
+                            </th>
+                            <th>
+                                Descriptions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let project of user.ProjectAssignments">
+                            <td>
+                                <input type="checkbox" [(ngModel)]="project.IsAssigned" (change)="onProjectChange(project)"/>
+                            </td>
+                            <td>
+                                {{project.ProjectName}}
+                            </td>
+                            <td>
+                                {{project.Prefix}}
+                            </td>
+                            <td>
+                                {{project.Descriptions}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Phase Name
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let phase of user.PhaseAssignments">
+                            <td>
+                                <input type="checkbox" [(ngModel)]="phase.IsAssigned" (change)="onPhaseChange(phase)" />
+                            </td>
+                            <td>
+                                {{phase.PhaseName}}
+                            </td>
+                            <td>
+                                {{phase.StatusUI}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@{
+    Layout = null;
+}
+
+<div *ngIf="phase">
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <form (ngSubmit)="onSave()" #phaseForm="ngForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            {{ phase.ID == '' ? 'New Phase' : 'Edit Phase' }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Phase Name</label>
+                            <input [(ngModel)]="phase.PhaseName" class="form-control" name="phaseName" required #phaseName="ngModel" [class.border-danger]="phaseName.invalid && (phaseName.dirty || phaseName.touched)" />
+                            <p *ngIf="phaseName.invalid && phaseName.errors.required && (phaseName.dirty || phaseName.touched)" class="text-danger">Phase Name is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" name="status" [(ngModel)]="phase.Status"
+                                    required #status="ngModel" [class.border-danger]="status.invalid && (status.dirty || status.touched)">
+                                <option value="" selected="selected">@Yumiki.Commons.Dictionaries.CommonValues.SelectOneForDropDown</option>
+                                @foreach (Yumiki.Commons.Entities.ExtendEnum status in ViewBag.StatusList)
+                                {
+                                    <option value="@status.Value">@status.DisplayText</option>
+                                }
+                            </select>
+
+                            <p *ngIf="status.invalid && status.errors.required && (status.dirty || status.touched)" class="text-danger">Status is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Release Version</label>
+                            <input type="text" [(ngModel)]="phase.ReleaseVersion" class="form-control" name="releaseVersion" />
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated Start Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="phase.EstimatedStartDate" class="form-control border-right-0" name="estimatedStartDate"
+                                       bsDatepicker #estimatedStartDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Estimated End Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="phase.EstimatedEndDate" class="form-control border-right-0" name="estimatedEndDate"
+                                       bsDatepicker #estimatedEndDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Actual Start Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="phase.ActualStartDate" class="form-control border-right-0" name="actualStartDate"
+                                       bsDatepicker #actualStartDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Actual End Date</label>
+                            <div class="input-group date">
+                                <input type="text" [(ngModel)]="phase.ActualEndDate" class="form-control border-right-0" name="actualEndDate"
+                                       bsDatepicker #actualEndDate="ngModel"
+                                       [outsideClick]="true" [bsConfig]="{ dateInputFormat: 'DD MMM YYYY', containerClass: 'theme-default', showWeekNumbers : false }" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-white">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea [(ngModel)]="phase.Descriptions" class="form-control" rows="5" name="descriptions"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" [(ngModel)]="phase.IsActive" name="isactive">
+                            Is Active
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" [disabled]="!phaseForm.form.valid">Save</button>
+                        <button class="btn" (click)="onClose()">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

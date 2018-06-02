@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Phases";
+}
+
+<div class="container">
+    <h1>@ViewBag.Title</h1>
+    <div class="card bg-secondary">
+        <div class="card-body p-2">
+            <div class="btn-group">
+                <a href="#" (click)="onSelect(null)" class="btn btn-primary">Add</a>
+                <a href="#" (click)="onShowList()" class="btn btn-primary">{{ showActiveList ? 'Show Inactive' : 'Show Active' }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Phase Name
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Release Version
+                            </th>
+                            <th>
+                                Descriptions
+                            </th>
+                            <th>
+                                Last Update
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let phase of phases" [class.selected]="phase === selectedPhase">
+                            <td>
+                                <a href="#" (click)="onSelect(phase)" title="Edit"><span class="fa fa-edit"></span></a>
+                            </td>
+                            <td>
+                                {{phase.PhaseName}}
+                            </td>
+                            <td>
+                                {{phase.StatusUI}}
+                            </td>
+                            <td>
+                                {{phase.ReleaseVersion}}
+                            </td>
+                            <td>
+                                {{phase.Descriptions}}
+                            </td>
+                            <td>
+                                {{phase.LastUpdateDateUI}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<phase-submit [phase]="selectedPhase" (messageEvent)="onRefreshData($event)"></phase-submit>

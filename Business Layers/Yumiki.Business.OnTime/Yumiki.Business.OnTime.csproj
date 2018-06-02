@@ -41,15 +41,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IPhaseService.cs" />
+    <Compile Include="Interfaces\ITaskService.cs" />
+    <Compile Include="Interfaces\IUserAssignmentService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BankAccountService.cs" />
+    <Compile Include="Services\PhaseService.cs" />
+    <Compile Include="Services\TaskService.cs" />
+    <Compile Include="Services\UserAssignmentService.cs" />
+    <Compile Include="Services\ProjectService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Bases\Yumiki.Business.Base\Yumiki.Business.Base.csproj">
       <Project>{A2595517-2380-4FCA-8C7F-41EBBCADE68B}</Project>
       <Name>Yumiki.Business.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Data.Base\Yumiki.Data.Base.csproj">
+      <Project>{04117F61-B63A-4414-A95D-63E6288449C6}</Project>
+      <Name>Yumiki.Data.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
+      <Project>{85D7CF5B-AAAC-4D00-9287-94866E19545E}</Project>
+      <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data Layers\Yumiki.Data.OnTime\Yumiki.Data.OnTime.csproj">
       <Project>{de2bb2b4-8107-456d-9543-de96f016421f}</Project>

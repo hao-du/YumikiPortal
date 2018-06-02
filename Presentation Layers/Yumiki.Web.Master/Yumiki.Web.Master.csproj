@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="clients\scripts\init.js" />
+    <Content Include="clients\scripts\yumiki-url.js" />
     <Content Include="clients\scripts\yumiki-webform.js" />
     <Content Include="clients\scripts\yumiki-webform-validation.js" />
     <Content Include="clients\scripts\yumiki-angular.js" />

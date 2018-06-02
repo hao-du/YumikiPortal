@@ -1,0 +1,11 @@
+﻿@section HeadScript {
+    @Html.Partial("_OntimeInclude")
+
+    <script>
+        System.import('/areas/ontime/ontime-clients/assignment/assignment.bootstrap.js').catch(function (err) { console.error(err); });
+    </script>
+
+    <base href="~/Apps/Ontime/UserAssignment/Index">
+}
+
+@Html.Partial("_AppInclude")
