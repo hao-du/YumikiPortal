@@ -17,6 +17,11 @@ namespace Yumiki.Web.OnTime.Models
 
         public MD_Task(TB_Task task)
         {
+            if(task == null)
+            {
+                _internalItem = new TB_Task();
+                return;
+            }
             _internalItem = task;
         }
 
@@ -29,6 +34,19 @@ namespace Yumiki.Web.OnTime.Models
             set
             {
                 _internalItem.TaskName = value;
+            }
+        }
+
+        public string TaskNumber
+        {
+            get
+            {
+                string number = _internalItem.TaskNumber.ToString("D5");
+                if (_internalItem.Project != null)
+                {
+                    return $"{_internalItem.Project.Prefix}-{number}";
+                }
+                return number;
             }
         }
 
@@ -68,7 +86,7 @@ namespace Yumiki.Web.OnTime.Models
         {
             get
             {
-                return _internalItem.Phase?.PhaseName;
+                return _internalItem.Phase == null ? string.Empty : _internalItem.Phase.PhaseName;
             }
         }
 
@@ -76,7 +94,7 @@ namespace Yumiki.Web.OnTime.Models
         {
             get
             {
-                return (int)_internalItem.Phase?.Status;
+                return (int)(_internalItem.Phase == null ? EN_PhaseStatus.E_BACKLOG : _internalItem.Phase.Status);
             }
         }
 
@@ -156,14 +174,6 @@ namespace Yumiki.Web.OnTime.Models
             get
             {
                 return EnumHelper.GetDescription((EN_PhaseStatus)_internalItem.Status);
-            }
-        }
-
-        public string PriorityUI
-        {
-            get
-            {
-                return EnumHelper.GetDescription((EN_Priority)_internalItem.Priority);
             }
         }
 

@@ -57,7 +57,14 @@ namespace Yumiki.Web.OnTime.Controllers
         {
             try
             {
-                MD_Task task = new MD_Task(BusinessService.GetTask(id));
+                Guid taskID = Guid.Empty;
+                Guid.TryParse(id, out taskID);
+
+                int taskNumber = 0;
+                string[] numberString = id.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                int.TryParse(numberString.Length == 1 ? numberString[0] : numberString[1], out taskNumber);
+
+                MD_Task task = new MD_Task(BusinessService.GetTask(taskID.ToString(), taskNumber.ToString()));
 
                 return Ok(task);
             }

@@ -2,6 +2,7 @@ import { OnTimeBase } from './ontimebase.model.js';
 
 export class Task extends OnTimeBase {
     TaskName: string;
+    TaskNumber: string;
     ProjectID: string;
     ProjectName: string;
     PhaseID: string;

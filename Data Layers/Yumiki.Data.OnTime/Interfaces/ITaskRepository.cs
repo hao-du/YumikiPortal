@@ -11,7 +11,7 @@ namespace Yumiki.Data.OnTime.Interfaces
         /// Get a task by id
         /// </summary>
         /// <param name="id">Task ID</param>
-        TB_Task GetTask(Guid id);
+        TB_Task GetTask(Guid id, int taskNumber);
 
         /// <summary>
         /// Create/Update a Task

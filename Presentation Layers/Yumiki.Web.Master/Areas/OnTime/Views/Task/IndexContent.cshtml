@@ -8,7 +8,7 @@
     <div class="card">
         <div class="card-header bg-secondary p-2">
             <div class="btn-group">
-                <a href="#" routerLink="/Submit" class="btn btn-primary">Add</a>
+                <a href="Detail?id={{taskModelView.DefaultTaskID}}&phaseID={{taskModelView.DefaultPhaseID}}&projectID={{taskModelView.DefaultProjectID}}" class="btn btn-primary">Add</a>
             </div>
         </div>
         <div class="card-body">
@@ -71,7 +71,7 @@
                 <table class="table table-sm table-striped table-bordered table-hover">
                     <thead class="thead-dark">
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>
                                 Task Name
                             </th>
@@ -80,9 +80,6 @@
                             </th>
                             <th>
                                 Phase
-                            </th>
-                            <th>
-                                Priority
                             </th>
                             <th>
                                 Status
@@ -98,7 +95,9 @@
                     <tbody>
                         <tr *ngFor="let task of taskModelView.Records">
                             <td>
-                                <a href="Detail?id={{task.ID}}" title="Edit"><span class="fa fa-edit"></span></a>
+                                <i class="fa fa-exclamation-circle {{ task.Priority == 1 ? 'text-success' : (task.Priority == 2 ? 'text-info' : (task.Priority == 3 ? 'text-warning' : 'text-danger')) }}"></i>
+                                &nbsp;
+                                <a href="Detail?id={{task.TaskNumber}}" title="Edit">{{task.TaskNumber}}</a>
                             </td>
                             <td>
                                 {{task.TaskName}}
@@ -108,9 +107,6 @@
                             </td>
                             <td>
                                 {{task.PhaseName}}
-                            </td>
-                            <td>
-                                {{task.PriorityUI}}
                             </td>
                             <td>
                                 {{task.StatusUI}}

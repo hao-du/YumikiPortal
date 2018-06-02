@@ -10,7 +10,7 @@ namespace Yumiki.Business.OnTime.Interfaces
         /// Get a task by id
         /// </summary>
         /// <param name="id">Task ID</param>
-        TB_Task GetTask(string id);
+        TB_Task GetTask(string id, string taskNumber);
 
         /// <summary>
         /// Create/Update a Task

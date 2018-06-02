@@ -40,7 +40,6 @@ namespace Yumiki.Data.OnTime.Repositories
                 TB_Project dbProject = Context.TB_Project.Single(c => c.ID == project.ID);
                 dbProject.ProjectName = project.ProjectName;
                 dbProject.Prefix = project.Prefix;
-                dbProject.AssignedNumber = project.AssignedNumber;
                 dbProject.UserID = project.UserID;
                 dbProject.Descriptions = project.Descriptions;
                 dbProject.IsActive = project.IsActive;

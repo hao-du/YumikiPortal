@@ -7,4 +7,5 @@ export class PagingTask {
     TotalItems: number;
     DefaultPhaseID: string;
     DefaultProjectID: string;
+    DefaultTaskID: string;
 }

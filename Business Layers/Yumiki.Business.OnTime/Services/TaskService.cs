@@ -15,21 +15,31 @@ namespace Yumiki.Business.OnTime.Services
         /// Get a task by id
         /// </summary>
         /// <param name="id">Task ID</param>
-        public TB_Task GetTask(string id)
+        public TB_Task GetTask(string id, string taskNumber)
         {
-            if (string.IsNullOrWhiteSpace(id))
+            if (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(taskNumber))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Task ID cannot be empty.", Logger);
             }
 
             Guid convertedID = Guid.Empty;
-            Guid.TryParse(id, out convertedID);
-            if (convertedID == Guid.Empty)
+            if (!Guid.TryParse(id, out convertedID))
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Task ID must be GUID type.", Logger);
             }
 
-            return Repository.GetTask(convertedID);
+            int number = 0;
+            if (!string.IsNullOrWhiteSpace(taskNumber))
+            {
+                string[] numberString = taskNumber.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (!int.TryParse(numberString.Length == 1 ? numberString[0] : numberString[1], out number))
+                {
+                    throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Unknown Task Number.", Logger);
+                }
+            }
+
+            return Repository.GetTask(convertedID, number);
         }
 
         /// <summary>

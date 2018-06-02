@@ -73,7 +73,6 @@ CREATE TABLE [dbo].[TB_Project](
 	[ID] [uniqueidentifier] NOT NULL,
 	[ProjectName] [nvarchar](50) NOT NULL,
 	[UserID] [uniqueidentifier] NOT NULL,
-	[AssignedNumber] [int] NOT NULL,
 	[Prefix] [varchar](4) NULL,
 	[Descriptions] [nvarchar](255) NULL,
 	[IsActive] [bit] NOT NULL,
@@ -258,4 +257,8 @@ SET [Priority] = 1
 GO
 ALTER TABLE [dbo].[TB_Task]
 ALTER COLUMN [Priority] INT  NOT NULL
+GO
+
+ALTER TABLE [dbo].[TB_Task]
+ADD [TaskNumber] [int] IDENTITY(1,1) NOT NULL
 GO

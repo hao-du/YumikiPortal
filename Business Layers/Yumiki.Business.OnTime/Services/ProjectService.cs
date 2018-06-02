@@ -55,11 +55,6 @@ namespace Yumiki.Business.OnTime.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Prefix is required.", Logger);
             }
 
-            if (project.AssignedNumber < 0)
-            {
-                throw new YumikiException(ExceptionCode.E_INVALID_VALUE, "Assigned Number cannot less then 0.", Logger);
-            }
-
             Repository.SaveProject(project);
         }
     }

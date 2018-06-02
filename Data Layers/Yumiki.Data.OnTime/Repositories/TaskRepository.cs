@@ -93,9 +93,14 @@ namespace Yumiki.Data.OnTime.Repositories
         /// Get a task by id
         /// </summary>
         /// <param name="id">Task ID</param>
-        public TB_Task GetTask(Guid id)
+        public TB_Task GetTask(Guid id, int taskNumber)
         {
-            return Context.TB_Task.SingleOrDefault(c => c.ID == id);
+            return Context.TB_Task
+                .Include("Project")
+                .SingleOrDefault(
+                    c => (id == Guid.Empty || c.ID == id)
+                    && (taskNumber == 0 || c.TaskNumber == taskNumber)
+                );
         }
 
         /// <summary>

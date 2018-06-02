@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { Guid } from '../common/guid.js';
 import { Constants } from '../common/constants.js';
@@ -12,29 +11,30 @@ declare var yumiki: any;
 
 @Component({
     selector: 'ontime',
-    templateUrl: '/Apps/OnTime/Task/Detail',
+    templateUrl: '/Apps/OnTime/Task/DetailContent',
 })
 export class TaskDetailComponent implements OnInit {
     task?: Task;
     title: string;
 
     constructor(
-        private route: ActivatedRoute,
         private service: TaskService
     ) {
         this.task = new Task();
     }
 
     ngOnInit() {
-        const id: string = this.route.snapshot.paramMap.get('id') as string;
+        const id: string = yumiki.url.getURLParameter('id');
+        const phaseID: string = yumiki.url.getURLParameter('phaseID');
+        const projectID: string = yumiki.url.getURLParameter('projectID');
 
-        if (!id) {
+        if (!id || id == Guid.empty) {
             this.title = "Create New Task"
 
             this.task = new Task();
             this.task.ID = Guid.empty;
-            this.task.PhaseID = '';
-            this.task.ProjectID = '';
+            this.task.PhaseID = phaseID;
+            this.task.ProjectID = projectID;
             this.task.AssignedUserID = '';
             this.task.Status = '';
             this.task.Priority = '';
@@ -47,7 +47,7 @@ export class TaskDetailComponent implements OnInit {
                 result => {
                     this.task = result;
 
-                    this.title = "Edit Task: " + this.task.TaskName;
+                    this.title = "Edit Task: " + this.task.TaskNumber;
 
                     yumiki.message.displayLoadingDialog(false);
                 },
@@ -63,11 +63,19 @@ export class TaskDetailComponent implements OnInit {
 
         this.service.saveTask(this.task as Task).subscribe(
             () => {
-                yumiki.message.displayLoadingDialog(false);
+                window.location.href = "/Detail/else";
+
+                this.onBack();
             },
             err => {
                 yumiki.message.displayLoadingDialog(false);
                 yumiki.message.clientMessage(err, '', Constants.ErrorType);
             });
+    }
+
+    onBack() {
+        if (this.task) {
+            window.location.href = "Index?phaseID=" + this.task.PhaseID + "&projectID=" + this.task.ProjectID;
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace Yumiki.Entity.OnTime
 
         public string TaskName { get; set; }
 
+        public int TaskNumber { get; set; }
+
         public Guid ProjectID { get; set; }
 
         public Guid PhaseID { get; set; }

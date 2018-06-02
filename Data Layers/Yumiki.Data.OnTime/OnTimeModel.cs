@@ -66,6 +66,10 @@ namespace Yumiki.Data.OnTime
                 .WithRequired(e => e.Task)
                 .HasForeignKey(e => e.TaskID);
 
+            modelBuilder.Entity<TB_Task>()
+                .Property(i => i.TaskNumber)
+                .HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+
             modelBuilder.Entity<TB_User>()
                 .Property(e => e.UserLoginName)
                 .IsUnicode(false);

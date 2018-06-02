@@ -31,18 +31,6 @@ namespace Yumiki.Web.OnTime.Models
             }
         }
 
-        public int AssignedNumber
-        {
-            get
-            {
-                return _internalItem.AssignedNumber;
-            }
-            set
-            {
-                _internalItem.AssignedNumber = value;
-            }
-        }
-
         public string Prefix
         {
             get
