@@ -407,7 +407,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            string sqlStament = PrepareQueryStament(obj, isActive, true, getLinkDisplayName);
+            string sqlStament = PrepareQueryStament(obj, isActive, true, true, getLinkDisplayName);
 
             live.Datasource = GetDynamicRecords(sqlStament).AsEnumerable();
 
@@ -437,7 +437,7 @@ namespace Yumiki.Data.WellCovered.Repositories
                 live.ColumnNames.Add(field.DisplayName, field.FieldType);
             }
 
-            string sqlStament = PrepareQueryStament(obj, null, false, false);
+            string sqlStament = PrepareQueryStament(obj, null, false, false, false);
 
             string whereStament = string.Format(" WHERE [0].ID = '{0}' ", recordID.ToString());
 
@@ -452,7 +452,7 @@ namespace Yumiki.Data.WellCovered.Repositories
         /// <param name="obj"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        private string PrepareQueryStament(TB_Object obj, bool? isActive, bool orderBy, bool getLinkDisplayName = true)
+        private string PrepareQueryStament(TB_Object obj, bool? isActive, bool orderBy, bool checkAttachment, bool getLinkDisplayName)
         {
             StringBuilder sqlSelectBuilder = new StringBuilder(" SELECT [0].ID ");
 
@@ -495,6 +495,11 @@ namespace Yumiki.Data.WellCovered.Repositories
                 }
 
                 aliasUniqueID++;
+            }
+
+            if (checkAttachment)
+            {
+                sqlSelectBuilder.AppendFormat(" , (SELECT COUNT([ATTAC].[ID]) AS [{0}] FROM [TB_Attachment] AS [ATTAC] WHERE [ATTAC].[LiveRecordID] = [0].[ID]) AS [{1}] ", CommonProperties.Attachments, CommonProperties.Attachments);
             }
 
             //WHERE

@@ -14,5 +14,6 @@ namespace Yumiki.Commons.Dictionaries
         public const string Descriptions = "Descriptions";
         public const string CreateDate = "CreateDate";
         public const string LastUpdateDate = "LastUpdateDate";
+        public const string Attachments = "Attachments";
     }
 }

@@ -148,7 +148,7 @@
                 <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
                 <input name="objectID" type="hidden" value="@Model.ObjectID" />
 
-                <div class="input-group">
+                <div class="input-group form-group">
                     <input name="file" type="file" class="form-control" />
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">
@@ -162,29 +162,74 @@
 
     @if (Model.Attachments != null)
     {
-        foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model.Attachments)
-        {
-            <div class="row">
-                <div class="col-xs-1">
+        string[] extension = new string[] { "jpg", "bmp", "gif", "png" };
+        <div class="d-flex flex-wrap yumiki-thumbnail">
+            @foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model.Attachments)
+            {
+                <div class="yumiki-panel border form-group">
+                    @if (extension.Any(d => attachment.FileName.EndsWith($".{d}")))
+                    {
+                        <img src="../Attachment/Download/@attachment.ID.ToString()" alt="@attachment.FileName" />
+                    }
+                    else
+                    {
+                        <a href="../Attachment/Download/@attachment.ID.ToString()" title="@attachment.FileName" class="btn btn-link">
+                            <i class="fa fa-file"></i>
+                        </a>
+                        <p>
+                            @attachment.FileName
+                        </p>
+                    }
                     @using (Html.BeginForm("Delete", "Attachment", FormMethod.Post))
                     {
                         <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />
                         <input name="recordID" type="hidden" value="@Model.LiveRecordID" />
                         <input name="objectID" type="hidden" value="@Model.ObjectID" />
-                        <input name="attachmentID" type="hidden" value="@attachment.ID.ToString()" />
+                            <input name="attachmentID" type="hidden" value="@attachment.ID.ToString()" />
 
-                        <button type="submit" class="btn btn-link">
-                            <i class="fa fa-remove"></i>
-                        </button>
+                            <button type="submit" class="btn btn-link">
+                                <i class="fa fa-remove"></i>
+                            </button>
                     }
                 </div>
-                <div class="col-xs-5">
-                    @Html.ActionLink(attachment.FileName, "Download", "Attachment", new { id = attachment.ID.ToString() }, new { @class = "btn btn-link" })
-                </div>
-            </div>
-        }
+            }
+        </div>
     }
 </div>
+@section HeadScript {
+    <style type="text/css">
+        .yumiki-thumbnail {
+            text-align: center;
+        }
+
+            .yumiki-thumbnail .yumiki-panel {
+                width: 150px;
+                margin: 15px;
+                position: relative;
+            }
+
+        .yumiki-panel form {
+            position:absolute;
+            width:100%;
+            bottom:0;
+        }
+
+        .yumiki-thumbnail img {
+            max-height: 150px;
+            max-width: 150px;
+            margin-bottom: 40px;
+        }
+
+        .yumiki-thumbnail a i {
+            font-size: 120px;
+        }
+
+        .yumiki-thumbnail p {
+            word-wrap: break-word;
+            margin-bottom: 40px;
+        }
+    </style>
+}
 @section BottomScript{
     @Html.Partial("_WellCoveredInclude")
 

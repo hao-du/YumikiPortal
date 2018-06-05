@@ -1,4 +1,6 @@
-﻿@model Yumiki.Entity.WellCovered.MD_Live
+﻿@using Yumiki.Commons.Dictionaries;
+
+@model Yumiki.Entity.WellCovered.MD_Live
 
 @{
     ViewBag.Title = $"\"{Model.LiveName}\" objects";
@@ -30,12 +32,14 @@
                     <thead class="thead-dark">
                         <tr>
                             <th></th>
+                            <th class="text-right"><i class="fa fa-paperclip"></i></th>
                             @foreach (KeyValuePair<string, Yumiki.Entity.WellCovered.EN_DataType> columnName in Model.ColumnNames)
                             {
                                 <th>
                                     @Html.DisplayName(columnName.Key)
                                 </th>
                             }
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +51,16 @@
                                     <td>
                                         @Html.ActionLink(" ", "Edit", new { objectID = Model.ObjectID.ToString(), recordID = item[Yumiki.Commons.Dictionaries.CommonProperties.ID].ToString() }, new { @class = "fa fa-edit", title = "Edit" })
                                     </td>
+                                    @if (item[CommonProperties.Attachments] != null)
+                                    {
+                                        <td align="right">
+                                            @item[CommonProperties.Attachments].ToString()
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
                                     @foreach (KeyValuePair<string, Yumiki.Entity.WellCovered.EN_DataType> columnName in Model.ColumnNames)
                                     {
                                         object obj = item[columnName.Key];
