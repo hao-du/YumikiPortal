@@ -139,14 +139,15 @@ namespace Yumiki.Data.Administration.Repositories
         {
             IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Group.FieldName.Privileges)
                                                         .Where(c => c.ID == groupID)
-                                                        .SelectMany(c => c.Privileges).Where(c => c.IsActive).AsEnumerable();
+                                                        .SelectMany(c => c.Privileges).Where(c => c.IsActive)
+                                                        .OrderBy(c=>c.PagePath).AsEnumerable();
             if (showAssginedPrivilege)
             {
                 return assginedPrivileges.ToList();
             }
             else
             {
-                return Context.TB_Privilege.Where(c => c.IsActive).Except(assginedPrivileges).ToList();
+                return Context.TB_Privilege.Where(c => c.IsActive).Except(assginedPrivileges).OrderBy(c => c.PagePath).ToList();
             }
         }
 
