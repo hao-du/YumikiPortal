@@ -52,7 +52,7 @@
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <asp:Literal runat="server" ID="lblYumikiTitle" Text="YUMIKI PORTAL"></asp:Literal></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
