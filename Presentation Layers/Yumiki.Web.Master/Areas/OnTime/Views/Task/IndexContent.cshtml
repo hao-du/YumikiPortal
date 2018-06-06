@@ -106,7 +106,7 @@
                                 {{task.StatusUI}}
                             </td>
                             <td>
-                                {{(task.TaskDescriptions | slice:0:50) + '...'}}
+                                {{ task.TaskDescriptions.length > 50 ? (task.TaskDescriptions | slice:0:50) + '...' : task.TaskDescriptions }}
                             </td>
                             <td>
                                 {{task.LastUpdateDateUI}}
