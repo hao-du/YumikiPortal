@@ -173,7 +173,7 @@ namespace Yumiki.Web.OnTime.Models
         {
             get
             {
-                return EnumHelper.GetDescription((EN_PhaseStatus)_internalItem.Status);
+                return EnumHelper.GetDescription((EN_TaskStatus)_internalItem.Status);
             }
         }
 

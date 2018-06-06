@@ -92,7 +92,7 @@
                     <tbody>
                         <tr *ngFor="let task of taskModelView.Records">
                             <td>
-                                <i class="fa fa-exclamation-circle {{ task.Priority == 1 ? 'text-success' : (task.Priority == 2 ? 'text-info' : (task.Priority == 3 ? 'text-warning' : 'text-danger')) }}"></i>
+                                <i class="fa {{ task.Priority == 1 ? 'fa-exclamation-circle text-success' : (task.Priority == 2 ? 'fa-exclamation-circle text-warning' : (task.Priority == 3 ? 'fa-exclamation-circle text-danger' : 'fa-exclamation-triangle text-danger')) }}"></i>
                                 &nbsp;
                                 <a href="Detail?id={{task.TaskNumber}}" title="Edit">{{task.TaskNumber}}</a>
                             </td>
