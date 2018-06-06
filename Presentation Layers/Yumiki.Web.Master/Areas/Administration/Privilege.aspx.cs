@@ -152,6 +152,7 @@ namespace Yumiki.Web.Administration
                 hdnID.Value = privilege.ID.ToString();
                 txtPrivilegeName.Text = privilege.PrivilegeName;
                 txtPagePath.Text = privilege.PagePath;
+                txtOrder.Text = privilege.PrivilegeOrder.ToString();
                 ckbIsDisplayable.Checked = privilege.IsDisplayable;
                 txtDescription.Text = privilege.Descriptions;
                 ckbIsActive.Checked = privilege.IsActive;
@@ -199,6 +200,7 @@ namespace Yumiki.Web.Administration
                 }
                 privilege.PrivilegeName = txtPrivilegeName.Text;
                 privilege.PagePath = txtPagePath.Text;
+                privilege.PrivilegeOrder = int.Parse(txtOrder.Text);
                 privilege.IsDisplayable = ckbIsDisplayable.Checked;
                 privilege.Descriptions = txtDescription.Text;
                 privilege.IsActive = ckbIsActive.Checked;

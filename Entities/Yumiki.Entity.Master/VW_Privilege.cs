@@ -10,5 +10,6 @@ namespace Yumiki.Entity.Master
         public bool IsDisplayable { get; set; }
         public Guid? ParentPrivilegeID { get; set; }
         public Guid UserID { get; set; }
+        public int PrivilegeOrder { get; set; }
     }
 }

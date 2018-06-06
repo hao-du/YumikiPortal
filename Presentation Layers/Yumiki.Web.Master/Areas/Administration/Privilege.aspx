@@ -43,9 +43,9 @@
                                         <th></th>
                                         <th>Privilege Name</th>
                                         <th>Page Path</th>
+                                        <th>Order</th>
                                         <th>Displayable on UI</th>
                                         <th>Descriptions</th>
-                                        <th>Active Status</th>
                                         <th>Modify Date</th>
                                     </tr>
                                 </thead>
@@ -60,16 +60,16 @@
                                     <asp:LinkButton ID="btnShowChilden" runat="server" CssClass="btn-link" Text='<%# Eval("PrivilegeName") %>' OnClick="btnShowChilden_Click" CommandArgument='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.ID).ToString() + Yumiki.Commons.Dictionaries.CommonValues.SeparateCharUnique +  Eval(Yumiki.Entity.Administration.TB_Privilege.FieldName.PrivilegeName).ToString()%>' CausesValidation="false"></asp:LinkButton>
                                 </td>
                                 <td>
-                                    <asp:Literal runat="server" ID="Literal1" Text='<%# Eval("PagePath") %>'></asp:Literal>
+                                    <asp:Literal runat="server" ID="lblPagePath" Text='<%# Eval("PagePath") %>'></asp:Literal>
+                                </td>
+                                <td>
+                                    <asp:Literal runat="server" ID="lblOrder" Text='<%# Eval("PrivilegeOrder") %>'></asp:Literal>
                                 </td>
                                 <td>
                                     <asp:CheckBox runat="server" ID="ckbIsDisplayable" Checked='<%# (bool)Eval("IsDisplayable") ? true : false %>' Enabled="false" />
                                 </td>
                                 <td>
                                     <asp:Literal runat="server" ID="lblDescription" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.Descriptions) %>'></asp:Literal>
-                                </td>
-                                <td>
-                                    <asp:CheckBox runat="server" ID="ckbIsActiveDisplay" Checked='<%# (bool)Eval(Yumiki.Commons.Dictionaries.CommonProperties.IsActive) ? true : false %>' Enabled="false" />
                                 </td>
                                 <td>
                                     <asp:Literal runat="server" ID="lblModifyDate" Text='<%# Eval(Yumiki.Commons.Dictionaries.CommonProperties.LastUpdateDateUI) %>'></asp:Literal>
@@ -104,6 +104,12 @@
                                     <label>Page Path</label>
                                     <asp:TextBox runat="server" ID="txtPagePath" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="txtPagePath" Display="None" ErrorMessage="Page Path is required." />
+                                </div>
+                                <div class="form-group">
+                                    <label>Order</label>
+                                    <asp:TextBox runat="server" ID="txtOrder" CssClass="form-control" ></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="txtOrder" Text="0" Display="None" ErrorMessage="Order is required." />
+                                    <asp:RangeValidator runat="server" Type="Integer" MinimumValue="0" MaximumValue="99999" ControlToValidate="txtOrder" ErrorMessage="Value must be a number between 0 and 99999" />
                                 </div>
                                 <div class="form-group">
                                     <asp:CheckBox runat="server" ID="ckbIsDisplayable" Checked="true" Text="Is Displayable on UI" />

@@ -33,7 +33,7 @@ namespace Yumiki.Data.Administration.Repositories
                 }
             }
 
-            return queryable.OrderBy(c => c.PagePath).ToList();
+            return queryable.OrderBy(c => c.PrivilegeOrder).ToList();
         }
 
         /// <summary>
@@ -86,6 +86,7 @@ namespace Yumiki.Data.Administration.Repositories
                 TB_Privilege dbPrivilege = Context.TB_Privilege.Single(c => c.ID == privilege.ID);
                 dbPrivilege.PrivilegeName = privilege.PrivilegeName;
                 dbPrivilege.PagePath = privilege.PagePath;
+                dbPrivilege.PrivilegeOrder = privilege.PrivilegeOrder;
                 dbPrivilege.ParentPrivilegeID = privilege.ParentPrivilegeID;
                 dbPrivilege.IsDisplayable = privilege.IsDisplayable;
                 dbPrivilege.Descriptions = privilege.Descriptions;

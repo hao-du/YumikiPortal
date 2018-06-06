@@ -15,6 +15,7 @@ namespace Yumiki.Entity.Administration
         public Guid ID { get; set; }
         public string PrivilegeName { get; set; }
         public string PagePath { get; set; }
+        public int PrivilegeOrder { get; set; }
         public bool IsDisplayable { get; set; }
         public Guid? ParentPrivilegeID { get; set; }
         public string Descriptions { get; set; }

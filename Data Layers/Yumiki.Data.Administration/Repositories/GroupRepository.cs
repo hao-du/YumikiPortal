@@ -140,7 +140,7 @@ namespace Yumiki.Data.Administration.Repositories
             IEnumerable<TB_Privilege> assginedPrivileges = Context.TB_Group.Include(TB_Group.FieldName.Privileges)
                                                         .Where(c => c.ID == groupID)
                                                         .SelectMany(c => c.Privileges).Where(c => c.IsActive)
-                                                        .OrderBy(c=>c.PagePath).AsEnumerable();
+                                                        .OrderBy(c=>c.PrivilegeOrder).AsEnumerable();
             if (showAssginedPrivilege)
             {
                 return assginedPrivileges.ToList();

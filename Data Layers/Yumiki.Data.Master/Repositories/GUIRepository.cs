@@ -17,7 +17,7 @@ namespace Yumiki.Data.Master.Repositories
         /// <returns></returns>
         public List<VW_Privilege> GetPrivilege(Guid userID)
         {
-            return Context.VW_Privilege.Where(c => c.UserID == userID).ToList();
+            return Context.VW_Privilege.Where(c => c.UserID == userID).OrderBy(c=>c.PrivilegeOrder).ToList();
         }
     }
 }
