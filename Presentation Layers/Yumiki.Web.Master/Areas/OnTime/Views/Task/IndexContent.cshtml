@@ -106,7 +106,7 @@
                                 {{task.StatusUI}}
                             </td>
                             <td>
-                                {{task.TaskDescriptions}}
+                                {{(task.TaskDescriptions | slice:0:50) + '...'}}
                             </td>
                             <td>
                                 {{task.LastUpdateDateUI}}

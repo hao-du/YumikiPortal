@@ -18,8 +18,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Task Name</label>
-                    <input [(ngModel)]="task.TaskName" class="form-control" name="taskName" required #taskName="ngModel" [class.border-danger]="taskName.invalid && (taskName.dirty || taskName.touched)" />
+                    <input [(ngModel)]="task.TaskName" class="form-control" name="taskName" maxlength="50" required #taskName="ngModel" [class.border-danger]="taskName.invalid && (taskName.dirty || taskName.touched)" />
                     <p *ngIf="taskName.invalid && taskName.errors.required && (taskName.dirty || taskName.touched)" class="text-danger">Task Name is required.</p>
+                    <p *ngIf="taskName.invalid && taskName.errors.maxlength && (taskName.dirty || taskName.touched)" class="text-danger">Task Name exceeds 50 characters.</p>
                 </div>
             </div>
             <div class="col-md-6">
