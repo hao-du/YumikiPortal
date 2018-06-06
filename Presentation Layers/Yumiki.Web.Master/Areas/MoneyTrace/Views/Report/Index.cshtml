@@ -27,7 +27,8 @@
                 '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.Tags': '',
                 '@GetReportRequest.FieldName.TransactionTypes': '@CommonValues.EmptyValue',
-                '@GetReportRequest.FieldName.CalculateTotal': false
+                '@GetReportRequest.FieldName.CalculateTotal': false,
+                '@GetReportRequest.FieldName.SplitIncomeOutcomeView': false
             },
             {
                 currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
@@ -140,6 +141,11 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" ng-checked="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" /> <b>Split Income/Outcome View</b>
+                        </label>
+                    </div>
                 </div>
             </div>
         </form>

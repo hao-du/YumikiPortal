@@ -24,7 +24,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             IQueryable<TB_Trace> reportData = Context.TB_Trace.Where(c => c.IsActive
                                                                         && c.UserID == request.UserID
                                                                         && c.CurrencyID == request.CurrencyID
-                                                                        && (request.StartDate < c.TraceDate && c.TraceDate < request.EndDate))
+                                                                        && (request.StartDate <= c.TraceDate && c.TraceDate <= request.EndDate))
                                                               .AsExpandable();
 
             if (!string.IsNullOrWhiteSpace(request.Tags))
@@ -41,7 +41,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 reportData = reportData.Where(tagExpression);
             }
 
-            if(request.TransactionTypes != null && request.TransactionTypes.Any())
+            if (request.TransactionTypes != null && request.TransactionTypes.Any())
             {
                 Expression<Func<TB_Trace, bool>> transactionTypeExpression = PredicateBuilder.New<TB_Trace>(false);
 
@@ -70,24 +70,15 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 reportData = reportData.Where(transactionTypeExpression);
             }
 
-            if (request.CalculateTotal)
-            {
-                decimal totalAmount = reportData.Sum(c => c.Amount);
-
-                List<TraceReport> summaryRecord = new List<TraceReport>();
-                summaryRecord.Add(new TraceReport(request.StartDate.ToString(Formats.DateTime.ServerShortYearMonth), totalAmount));
-
-                return new GetReportResponse()
-                {
-                    Records = summaryRecord
-                };
-            }
+            string incomeLabel = "Income";
+            string outcomeLabel = "Outcome";
 
             return new GetReportResponse()
             {
                 Records = reportData
                                 .AsEnumerable()
-                                .GroupBy(c => c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth))
+                                .GroupBy(c => string.Format("{0} {1}", request.CalculateTotal ? request.StartDate.ToString(Formats.DateTime.ServerShortYearMonth) : c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth)
+                                                                    , request.SplitIncomeOutcomeView ? (c.Amount > 0 ? incomeLabel : outcomeLabel) : string.Empty).Trim())
                                 .OrderBy(c => c.Key)
                                 .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount))).ToList()
             };
