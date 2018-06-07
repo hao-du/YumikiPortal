@@ -177,7 +177,6 @@
     <Content Include="clients\scripts\yumiki-message.js" />
     <Content Include="clients\scripts\yumiki-side-bar.js" />
     <Content Include="clients\scripts\yumiki.js" />
-    <Content Include="deployment-tool.js" />
     <Content Include="Global.asax" />
     <None Include="clients\styles\site.scss" />
     <Content Include="Pages\Security\TestLogin.aspx" />
