@@ -15,7 +15,7 @@ $msbuildPath = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
 Set-Alias msbuild $msbuildPath
 
 # Get Source Code directory
-$sourceDirectory = "E:\Project\Source"
+$sourceDirectory = Split-Path (Split-Path (Split-Path $MyInvocation.MyCommand.Path))
 
 #IIS Host Folder
 $inetpub = "C:\inetpub\wwwroot\YumikiPortal"
@@ -46,6 +46,7 @@ Write-Host ""
 Write-Host ""
 Write-Host "##### Moving Dlls from Areas' Bin folder to Master's Bin folder #####" -ForegroundColor "Green"
 Start-Sleep -m 2000
+
 # Copy all dlls from All Modules to Master Bin folder
 robocopy ($inetpub + '\Areas\Administration\bin') ($inetpub + '\bin') /MIR /xx /ETA /nfl
 robocopy ($inetpub + '\Areas\MoneyTrace\bin') ($inetpub + '\bin') /MIR /xx /ETA /nfl
