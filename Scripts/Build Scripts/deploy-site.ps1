@@ -15,7 +15,7 @@ Write-Host "##### Copying files from local to server... #####" -ForegroundColor 
 Write-Host ""
 Write-Host ""
 Start-Sleep -m 2000
-robocopy $localFolder $serverFolder /MIR /xx /ETA /ndl /ns
+robocopy $localFolder $serverFolder /MIR /xx /ETA /ndl /ns /xf TestLogin.aspx *.js.map
 
 Read-Host 'Press Enter to continue…' | Out-Null
 cls
