@@ -67,5 +67,12 @@ namespace Yumiki.Data.MoneyTrace.Interfaces
         /// <param name="keyword">Keyword to filter tag results.</param>
         /// <returns>List of tags after filter.</returns>
         List<string> GetTags(string keyword);
+
+        /// <summary>
+        /// Get a specific Trac Template.
+        /// </summary>
+        /// <param name="traceID">Specify id for Trace Template need to be retrieved.</param>
+        /// <returns>Trace Template Object</returns>
+        TB_TraceTemplate GetTraceTemplate(Guid templateID);
     }
 }

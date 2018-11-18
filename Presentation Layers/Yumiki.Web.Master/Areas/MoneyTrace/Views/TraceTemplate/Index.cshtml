@@ -27,19 +27,25 @@
                 '@CommonProperties.Descriptions': '',
                 '@CommonProperties.IsActive': true
             },
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_Trace.FieldName.TraceDate': '@ViewBag.CurrentDate'
+            },
             '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetAll, null)',
             '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetByID, null)',
             '@Url.HttpRouteUrl(RouteNames.TraceTemplateSave, null)',
             '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetTags, null)',
             '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
             '@Url.HttpRouteUrl(RouteNames.UserGetAll, null)',
-            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+            '@Url.HttpRouteUrl(RouteNames.TracePublish, null)',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR',
+            '@Yumiki.Commons.Logging.LogLevel.INFO'
         );
     </script>
 }
 <div ng-app="traceTemplate">
     <div class="container" ng-controller="traceTemplateController" ng-init="loadData();">
-        <h1>TraceTemplate</h1>
+        <h1>Trace Template</h1>
         <div class="card bg-secondary">
             <div class="card-body p-2">
                 <div class="btn-group">
@@ -48,6 +54,7 @@
                 </div>
             </div>
         </div>
+        <p class="text-info"><i>Auto value for Description field:</i> <b>{date}, {month}, {year}</b></p>
         <div class="table-responsive">
             <table id="tblTraceTemplate" class="table table-sm table-striped table-bordered table-hover">
                 <thead class="thead-dark">
@@ -63,7 +70,10 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="traceTemplate in traceTemplateList">
-                        <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>
+                            <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                            <a href="#" id="btnPublish" title="Publish" ng-click="showConfirmMessageDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-cloud-upload"></span></a>
+                        </td>
                         <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.TemplateName }}</td>
                         <td class="text-right">{{ traceTemplate.@TB_TraceTemplate.FieldName.Amount | number:2 }}</td>
                         <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.CurrencyName }}</td>
@@ -73,6 +83,37 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!--Message Dialog-->
+        <div id="dlgConfirmMessageDialog" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form name="traceForm" ng-submit="publish(traceForm.$valid)" novalidate>
+                        <div class="modal-body">
+                            <h3 class="text-left">Are you sure to publish template to actual trace?</h3>
+
+                            <div class="form-group">
+                                <label>Trace Date</label>
+                                <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="publishObject.@TB_Trace.FieldName.TraceDate">
+                                    <input type="text" name="traceDate" ng-model="publishObject.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : traceForm.traceDate.$invalid && traceForm.traceDate.$dirty }" />
+                                    <div class="input-group-append input-group-calendar">
+                                        <span class="input-group-text">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="traceTemplateID" ng-model="publishObject.@CommonProperties.ID" />
+                        </div>
+                        <div class="modal-footer bg-dark">
+                            <button type="submit" class="btn btn-primary" ng-disabled="traceForm.$invalid">Yes</button>
+                            <button type="button" class="btn btn-default" ng-click="closeConfirmDialog()">No</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

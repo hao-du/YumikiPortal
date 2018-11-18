@@ -3,21 +3,23 @@
         showActiveText: 'Show Active Template',
         showInactiveText: 'Show Inactive Template',
         errorLogType: '',
+        infoLogType: '',
 
-        initTraceTemplate: function (defaultObject, getAllTemplatesUrl, getTemplateByIdUrl, saveTemplateUrl, getTagUrl, getCurrencyUrl, getUserUrl, errorLogType) {
-            var app = angular.module('traceTemplate', ['ui.bootstrap']);
+        initTraceTemplate: function (defaultObject, publishObject, getAllTemplatesUrl, getTemplateByIdUrl, saveTemplateUrl, getTagUrl, getCurrencyUrl, getUserUrl, publishTemplateUrl, errorLogType, infoLogType) {
+            var app = angular.module('traceTemplate', ['ui.bootstrap', 'yumiki-module']);
 
-            yumiki.moneyTrace.traceTemplate.initService(app, getAllTemplatesUrl, getTemplateByIdUrl, saveTemplateUrl, getCurrencyUrl, getUserUrl);
-            yumiki.moneyTrace.traceTemplate.initTraceTemplateListController(app);
+            yumiki.moneyTrace.traceTemplate.initService(app, getAllTemplatesUrl, getTemplateByIdUrl, saveTemplateUrl, getCurrencyUrl, getUserUrl, publishTemplateUrl);
+            yumiki.moneyTrace.traceTemplate.initTraceTemplateListController(app, publishObject);
             yumiki.moneyTrace.traceTemplate.initTraceTemplateDialogController(app, defaultObject);
 
             yumiki.jquery.autocomplete('.auto-complete', getTagUrl);
 
             yumiki.moneyTrace.traceTemplate.errorLogType = errorLogType;
+            yumiki.moneyTrace.traceTemplate.infoLogType = infoLogType;
         },
 
         //Service to communicate with Server.
-        initService: function (app, getAllTraceTemplateUrl, getTraceTemplateByIdUrl, saveTraceTemplateUrl, getCurrencyUrl, getUserUrl) {
+        initService: function (app, getAllTraceTemplateUrl, getTraceTemplateByIdUrl, saveTraceTemplateUrl, getCurrencyUrl, getUserUrl, publishTemplateUrl) {
             app.service('DataService', function ($http) {
                 this.getTraceTemplateList = function (showInactive) {
                     return $http.get(getAllTraceTemplateUrl, { params: { 'showInactive': showInactive } });
@@ -29,6 +31,10 @@
 
                 this.save = function (traceTemplate) {
                     return $http.post(saveTraceTemplateUrl, traceTemplate);
+                };
+
+                this.publishTemplateToTrace = function (publishObject) {
+                    return $http.post(publishTemplateUrl, publishObject);
                 };
 
                 this.getCurrencyList = function () {
@@ -43,7 +49,7 @@
         },
 
         //Controller to display items' list
-        initTraceTemplateListController: function (app) {
+        initTraceTemplateListController: function (app, publishObject) {
             app.controller('traceTemplateController', function ($scope, $rootScope, $http, DataService) {
                 $scope.inactiveButtonName = yumiki.moneyTrace.traceTemplate.showInactiveText;
 
@@ -98,6 +104,47 @@
                 $scope.loadDataWithStatus = function () {
                     $scope.isStatusChanged = true;
                     $scope.loadData();
+                };
+
+                //Open Publish Template to Trace Record Dialog
+                $scope.showConfirmMessageDialog = function (templateID) {
+                    $scope.publishObject = $scope.resetPublish();
+
+                    $scope.publishObject.ID = templateID;
+
+                    $('#dlgConfirmMessageDialog').modal({ backdrop: 'static' });
+                }
+
+                //Publish Template to Trace Record
+                $scope.publish = function (isValid) {
+                    if (isValid) {
+                        yumiki.message.displayLoadingDialog(true);
+
+                        DataService.publishTemplateToTrace($scope.publishObject)
+                            .then(function mySucces(response) {
+                                yumiki.message.displayLoadingDialog(false);
+
+                                yumiki.message.clientMessage("Published to Trace.", '', yumiki.moneyTrace.traceTemplate.infoLogType);
+                            }, function myError(response) {
+                                yumiki.message.displayLoadingDialog(false);
+
+                                yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.traceTemplate.errorLogType);
+                            });
+
+                        $('#dlgConfirmMessageDialog').modal('hide');
+                    }
+                };
+
+                //Hide Publish Template Dialog and reset Datetime value to Current Date
+                $scope.closeConfirmDialog = function () {
+                    $scope.publishObject = $scope.resetPublish();
+                    $('#dlgConfirmMessageDialog').modal('hide');
+                }
+
+                //Reset object in new mode.
+                $scope.resetPublish = function () {
+                    $scope.traceForm.$setPristine();
+                    return publishObject;
                 }
             });
         },

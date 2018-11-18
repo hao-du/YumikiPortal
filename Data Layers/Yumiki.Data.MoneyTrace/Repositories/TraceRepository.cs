@@ -200,5 +200,17 @@ namespace Yumiki.Data.MoneyTrace.Repositories
 
             return dbTrace.ID;
         }
+
+        /// <summary>
+        /// Get a specific Trac Template.
+        /// </summary>
+        /// <param name="traceID">Specify id for Trace Template need to be retrieved.</param>
+        /// <returns>Trace Template Object</returns>
+        public TB_TraceTemplate GetTraceTemplate(Guid templateID)
+        {
+            ITraceTemplateRepository repo = GetAlternativeRepository<TraceTemplateRepository>();
+
+            return repo.GetTraceTemplate(templateID);
+        }
     }
 }
