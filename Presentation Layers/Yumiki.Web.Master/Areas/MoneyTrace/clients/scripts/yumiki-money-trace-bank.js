@@ -10,6 +10,8 @@
             yumiki.moneyTrace.bank.initService(app, getAllBankUrl, getBankByIdUrl, saveBankUrl);
             yumiki.moneyTrace.bank.initBankListController(app);
             yumiki.moneyTrace.bank.initBankDialogController(app, defaultObject);
+
+            yumiki.moneyTrace.bank.errorLogType = errorLogType;
         },
 
         //Service to communicate with Server.

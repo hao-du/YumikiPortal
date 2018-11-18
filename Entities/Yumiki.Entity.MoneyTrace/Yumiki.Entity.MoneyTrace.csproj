@@ -44,6 +44,7 @@
     <Compile Include="CustomFields\TB_BankAccount.cs" />
     <Compile Include="CustomFields\TB_Bank.cs" />
     <Compile Include="CustomFields\TB_Tag.cs" />
+    <Compile Include="CustomFields\TB_TraceTemplate.cs" />
     <Compile Include="CustomFields\TB_Trace.cs" />
     <Compile Include="CustomFields\TB_Currency.cs" />
     <Compile Include="CustomFields\TB_User.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="TB_BankAccount.cs" />
     <Compile Include="TB_Tag.cs" />
     <Compile Include="TB_Currency.cs" />
+    <Compile Include="TB_TraceTemplate.cs" />
     <Compile Include="TB_Trace.cs" />
     <Compile Include="EN_TransactionType.cs" />
     <Compile Include="TB_User.cs" />

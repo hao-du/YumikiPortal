@@ -1,0 +1,147 @@
+﻿@using Yumiki.Web.MoneyTrace.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.MoneyTrace;
+@using SquishIt.Framework;
+
+@{
+    ViewBag.Title = "Trace Templates";
+}
+
+@section BottomScript{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
+        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-trace-template.js")
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_#.js"))
+
+    <script type="text/javascript">
+        yumiki.moneyTrace.traceTemplate.initTraceTemplate(
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_TraceTemplate.FieldName.TemplateName': '',
+                '@TB_TraceTemplate.FieldName.Amount': 0,
+                '@TB_TraceTemplate.FieldName.Tags': '',
+                '@TB_TraceTemplate.FieldName.CurrencyID': '',
+                '@TB_TraceTemplate.FieldName.TransferredUserID': '',
+                '@CommonProperties.Descriptions': '',
+                '@CommonProperties.IsActive': true
+            },
+            '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.TraceTemplateSave, null)',
+            '@Url.HttpRouteUrl(RouteNames.TraceTemplateGetTags, null)',
+            '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
+            '@Url.HttpRouteUrl(RouteNames.UserGetAll, null)',
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+    </script>
+}
+<div ng-app="traceTemplate">
+    <div class="container" ng-controller="traceTemplateController" ng-init="loadData();">
+        <h1>TraceTemplate</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="showDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="loadDataWithStatus();">{{inactiveButtonName}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tblTraceTemplate" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Template</th>
+                        <th class="text-right">Amount</th>
+                        <th>Currency</th>
+                        <th>Transferred To</th>
+                        <th>Descriptions</th>
+                        <th>Modify Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="traceTemplate in traceTemplateList">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="showDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.TemplateName }}</td>
+                        <td class="text-right">{{ traceTemplate.@TB_TraceTemplate.FieldName.Amount | number:2 }}</td>
+                        <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.CurrencyName }}</td>
+                        <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.TransferredUserName }}</td>
+                        <td>{{ traceTemplate.@CommonProperties.Descriptions }}</td>
+                        <td>{{ traceTemplate.@CommonProperties.LastUpdateDateUI }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgTraceTemplate" class="modal fade" role="dialog" ng-controller="traceTemplateDialogController" ng-init="bindControls();">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="traceTemplateForm" ng-submit="save(traceTemplateForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Template Name</label>
+                            <input type="text" name="templateName" ng-model="traceTemplate.@TB_TraceTemplate.FieldName.TemplateName" class="form-control" ng-class="{ 'border-danger' : traceTemplateForm.templateName.$invalid && traceTemplateForm.templateName.$dirty }" ng-required="true" />
+                            <p ng-show="traceTemplateForm.templateName.$error.required && traceTemplateForm.templateName.$dirty" class="text-danger">Template Name is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="traceTemplate.@TB_TraceTemplate.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : traceTemplateForm.amount.$invalid && traceTemplateForm.amount.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ traceTemplate.@TB_TraceTemplate.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="traceTemplateForm.amount.$error.required && traceTemplateForm.amount.$dirty" class="text-danger">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transferred User</label>
+                            <select class="form-control selectpicker" name="transferredUser"
+                                    ng-model="traceTemplate.@TB_TraceTemplate.FieldName.TransferredUserID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_User.FieldName.FullName for item in userList">
+                                <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <select class="form-control selectpicker" name="currency" ng-required="true"
+                                    ng-model="traceTemplate.@TB_TraceTemplate.FieldName.CurrencyID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList"
+                                    ng-class="{ 'border-danger' : traceTemplateForm.currency.$invalid && traceTemplateForm.currency.$dirty }">
+                                <option value="@CommonValues.EmptyValue" selected="selected">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="traceTemplateForm.currency.$error.required && traceTemplateForm.currency.$dirty" class="text-danger">Currency is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="traceTemplate.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tags (with ',' separator)</label>
+                            <textarea ng-model="traceTemplate.@TB_TraceTemplate.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="traceTemplate.@CommonProperties.IsActive" ng-checked="traceTemplate.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="traceTemplateForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

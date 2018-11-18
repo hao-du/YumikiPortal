@@ -44,6 +44,7 @@
     <Compile Include="Interfaces\IBankAccountService.cs" />
     <Compile Include="Interfaces\IBankService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
+    <Compile Include="Interfaces\ITraceTemplateService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\ITraceService.cs" />
     <Compile Include="Interfaces\ICurrencyService.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Services\BankAccountService.cs" />
     <Compile Include="Services\BankService.cs" />
     <Compile Include="Services\ReportService.cs" />
+    <Compile Include="Services\TraceTemplateService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\TraceService.cs" />
     <Compile Include="Services\CurrencyService.cs" />

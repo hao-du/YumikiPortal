@@ -10,6 +10,8 @@
             yumiki.moneyTrace.currency.initService(app, getAllCurrencyUrl, getCurrencyByIdUrl, saveCurrencyUrl);
             yumiki.moneyTrace.currency.initCurrencyListController(app);
             yumiki.moneyTrace.currency.initCurrencyDialogController(app, defaultObject);
+
+            yumiki.moneyTrace.currency.errorLogType = errorLogType;
         },
 
         //Service to communicate with Server.
