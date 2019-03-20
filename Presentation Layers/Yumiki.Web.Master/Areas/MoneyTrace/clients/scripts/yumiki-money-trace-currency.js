@@ -131,7 +131,7 @@
                 //Reset object in new mode.
                 $scope.resetCurrency = function () {
                     $scope.currencyForm.$setPristine();
-                    return defaultObject;
+                    return angular.copy(defaultObject);
                 }
 
                 //Save new or update object

@@ -51,6 +51,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             else
             {
                 dbTraceTemplate = Context.TB_TraceTemplate.Single(c => c.ID == traceTemplate.ID);
+                dbTraceTemplate.TemplateName = traceTemplate.TemplateName;
                 dbTraceTemplate.Amount = traceTemplate.Amount;
                 dbTraceTemplate.Tags = traceTemplate.Tags;
                 dbTraceTemplate.CurrencyID = traceTemplate.CurrencyID;

@@ -188,7 +188,7 @@
                 //Reset object in new mode.
                 $scope.resetTraceTemplate = function () {
                     $scope.traceTemplateForm.$setPristine();
-                    return defaultObject;
+                    return angular.copy(defaultObject);
                 }
 
                 //Save new or update object
