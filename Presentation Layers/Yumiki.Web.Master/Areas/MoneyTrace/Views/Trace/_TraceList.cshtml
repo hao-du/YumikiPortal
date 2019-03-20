@@ -55,11 +55,18 @@
                                     <th>Currency</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody ng-init="total = 0">
                                 <tr ng-repeat="trace in traceBankingSummaryList">
                                     <td>{{ trace.@TraceSummary.FieldName.BankName }}</td>
-                                    <td class="text-align-right">{{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}</td>
+                                    <td class="text-right" ng-init="total = total + trace.@TraceSummary.FieldName.TotalAmount">
+                                        {{ trace.@TraceSummary.FieldName.TotalAmount | number:2 }}
+                                    </td>
                                     <td>{{ trace.@TraceSummary.FieldName.CurrencyShortName }}</td>
+                                </tr>
+                                <tr class="bg-secondary text-white">
+                                    <td></td>
+                                    <td class="text-right">Total: {{ total | number:2 }}</td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

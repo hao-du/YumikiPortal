@@ -335,6 +335,7 @@ namespace Yumiki.Business.MoneyTrace.Services
 
                 interestTrace.Amount = bankAccount.Interest.Value;
                 interestTrace.BankID = bankAccount.BankID;
+                interestTrace.GroupTokenID = bankingTrace.GroupTokenID;
                 interestTrace.CurrencyID = bankAccount.CurrencyID;
                 interestTrace.TraceDate = bankAccount.WithdrawDate.Value;
                 interestTrace.Descriptions = bankAccount.Descriptions;

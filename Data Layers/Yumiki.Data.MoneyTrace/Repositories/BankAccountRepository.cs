@@ -86,6 +86,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                 dbBankAccount = new TB_BankAccount();
                 Context.TB_BankAccount.Add(dbBankAccount);
 
+                dbBankAccount.ID = Guid.NewGuid();
                 dbBankAccount.Descriptions = trace.Descriptions;
                 dbBankAccount.Traces.Add(dbTrace);
             }
@@ -97,6 +98,13 @@ namespace Yumiki.Data.MoneyTrace.Repositories
             dbBankAccount.CurrencyID = trace.CurrencyID;
             dbBankAccount.Tags = trace.Tags;
             dbBankAccount.IsActive = trace.IsActive;
+
+            //Update Bank Account Id to Related Trace Logs
+            IEnumerable<TB_Trace> dbTraceLogs = Context.TB_Trace.Where(c => c.GroupTokenID.HasValue && c.GroupTokenID == dbTrace.GroupTokenID);
+            foreach(TB_Trace traceLog in dbTraceLogs)
+            {
+                traceLog.BankAccountID = dbBankAccount.ID;
+            }
 
             Save();
         }

@@ -60,6 +60,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th></th>
+                        <th></th>
                         <th>Template</th>
                         <th class="text-right">Amount</th>
                         <th>Currency</th>
@@ -72,6 +73,8 @@
                     <tr ng-repeat="traceTemplate in traceTemplateList">
                         <td>
                             <a href="#" id="btnEdit" title="Edit" ng-click="showDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                        </td>
+                        <td>
                             <a href="#" id="btnPublish" title="Publish" ng-click="showConfirmMessageDialog(traceTemplate.@CommonProperties.ID);"><span class="fa fa-cloud-upload"></span></a>
                         </td>
                         <td>{{ traceTemplate.@TB_TraceTemplate.FieldName.TemplateName }}</td>

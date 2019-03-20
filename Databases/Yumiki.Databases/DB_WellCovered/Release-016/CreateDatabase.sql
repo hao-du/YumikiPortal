@@ -52,4 +52,17 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Store keywords such as "Shopping, Deposit ABC Bank, Buy stuff" for filter purpose. Keywords are splitted by '','' and save in TB_Tag' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_TraceTemplate', @level2type=N'COLUMN',@level2name=N'Tags'
 GO
 
+-------------------------------------------------------------------------------------------------------------------------------------
+--Fix NULL VALUE FOR E_BANKING TYPE
+UPDATE TA
+SET TA.BankAccountID = TB.BankAccountID
+FROM TB_Trace TA
+	INNER JOIN TB_Trace TB ON TA.GroupTokenID = TB.GroupTokenID AND TA.ID <> TB.ID
+WHERE TA.BankAccountID IS NULL AND TA.BankID IS NOT NULL
+
+UPDATE TA
+SET TA.GroupTokenID = TB.GroupTokenID
+FROM TB_Trace TA
+	INNER JOIN TB_Trace TB ON TA.BankAccountID = TB.BankAccountID AND TA.ID <> TB.ID AND TA.BankID = TB.BankID AND TB.TransactionType = 2 AND TB.TraceDate = TA.TraceDate
+WHERE TA.GroupTokenID IS NULL AND TA.BankID IS NOT NULL 
 

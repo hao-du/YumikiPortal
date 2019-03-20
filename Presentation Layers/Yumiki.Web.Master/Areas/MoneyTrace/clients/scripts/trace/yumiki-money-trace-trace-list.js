@@ -70,6 +70,11 @@
                     DataService.getBankSummaryTraces().then(
                         function mySucces(response) {
                             $scope.traceBankingSummaryList = response.data;
+
+                            $scope.total = 0;
+                            for (var i = 0; i < response.data.length; i++) {
+                                $scope.total += response.data[i][yumiki.moneyTrace.trace.totalAmountFieldName];
+                            }
                         },
                         function myError(response) {
                             yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.traceType.errorLog);

@@ -3,6 +3,7 @@
         currentDate: '',
         monthYearFormat: '',
         longDateFormat: '',
+        totalAmountFieldName: '',
 
         traceType: {},
 
@@ -10,11 +11,12 @@
 
         app: {},
 
-        init: function (serviceUrls, currentDate, monthYearFormat, longDateFormat, traceType, errorLog) {
+        init: function (serviceUrls, currentDate, monthYearFormat, longDateFormat, traceType, errorLog, totalAmountFieldName) {
 
             yumiki.moneyTrace.trace.currentDate = currentDate;
             yumiki.moneyTrace.trace.monthYearFormat = monthYearFormat;
             yumiki.moneyTrace.trace.longDateFormat = longDateFormat;
+            yumiki.moneyTrace.trace.totalAmountFieldName = totalAmountFieldName;
             yumiki.moneyTrace.trace.traceType = traceType;
             yumiki.moneyTrace.trace.errorLog = errorLog;
 
