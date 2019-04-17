@@ -335,6 +335,7 @@ namespace Yumiki.Business.MoneyTrace.Services
 
                 interestTrace.Amount = bankAccount.Interest.Value;
                 interestTrace.BankID = bankAccount.BankID;
+                interestTrace.GroupTokenID = bankingTrace.GroupTokenID;
                 interestTrace.CurrencyID = bankAccount.CurrencyID;
                 interestTrace.TraceDate = bankAccount.WithdrawDate.Value;
                 interestTrace.Descriptions = bankAccount.Descriptions;
@@ -342,6 +343,36 @@ namespace Yumiki.Business.MoneyTrace.Services
 
                 SaveTrace(interestTrace);
             }
+        }
+
+        /// <summary>
+        /// Publish Trace Template to Actual Trace
+        /// </summary>
+        /// <returns></returns>
+        public Guid PublishTemplate(Guid templateID, DateTime dateTime, Guid userID)
+        {
+            TB_TraceTemplate template = Repository.GetTraceTemplate(templateID);
+
+            if(template == null)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Template doesn't exist.", Logger);
+            }
+
+            TB_Trace newTrace = new TB_Trace();
+
+            newTrace.TraceDate = dateTime;
+            newTrace.TransactionType = template.TransactionType;
+            newTrace.Amount = template.Amount;
+            newTrace.CurrencyID = template.CurrencyID;
+            newTrace.Descriptions = template.Descriptions?.Replace("{date}", DateTimeExtension.GetSystemDatetime().Day.ToString())
+                                                          .Replace("{month}", DateTimeExtension.GetSystemDatetime().Month.ToString())
+                                                          .Replace("{year}", DateTimeExtension.GetSystemDatetime().Year.ToString());
+
+            newTrace.Tags = template.Tags;
+            newTrace.TransferredUserID = template.TransferredUserID;
+            newTrace.UserID = userID;
+
+            return SaveTrace(newTrace);
         }
     }
 }

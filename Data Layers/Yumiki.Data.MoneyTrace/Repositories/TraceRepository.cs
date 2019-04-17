@@ -10,7 +10,7 @@ using Yumiki.Entity.MoneyTrace.ServiceObjects;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
 {
-    public class TraceRepository : MoneyTraceRepository, ITraceRepository
+    public class TraceRepository : TagRepository, ITraceRepository
     {
         /// <summary>
         /// Get all Traces with filters from Database.
@@ -202,40 +202,15 @@ namespace Yumiki.Data.MoneyTrace.Repositories
         }
 
         /// <summary>
-        /// Save tags in "Tag A, Tag B, Tag C" string to TB_Tag table.
+        /// Get a specific Trac Template.
         /// </summary>
-        /// <param name="tags">Tags with ',' separated char.</param>
-        /// <param name="userID">User who creates tags.</param>
-        private void SaveTags(string tags, Guid userID)
+        /// <param name="traceID">Specify id for Trace Template need to be retrieved.</param>
+        /// <returns>Trace Template Object</returns>
+        public TB_TraceTemplate GetTraceTemplate(Guid templateID)
         {
-            if (!string.IsNullOrWhiteSpace(tags))
-            {
-                string[] tagList = tags.Split(new char[] { CommonValues.SeparateCharComma }, StringSplitOptions.RemoveEmptyEntries);
+            ITraceTemplateRepository repo = GetAlternativeRepository<TraceTemplateRepository>();
 
-                //From existed tags to get the new tags which are not in db.
-                IEnumerable<TB_Tag> existedTags = Context.TB_Tag.Where(c => tagList.Any(d => d.ToLower() == c.TagName.ToLower())).AsEnumerable();
-                IEnumerable<string> newTags = tagList.Where(c => !existedTags.Any(d => d.TagName.Equals(c, StringComparison.InvariantCultureIgnoreCase)));
-
-                foreach (string tag in newTags)
-                {
-                    TB_Tag dbTag = new TB_Tag();
-                    dbTag.TagName = tag;
-                    dbTag.UserID = userID;
-
-                    Context.TB_Tag.Add(dbTag);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Get tags from keyword.
-        /// </summary>
-        /// <param name="keyword">Keyword to filter tag results.</param>
-        /// <returns>List of tags after filter.</returns>
-        public List<string> GetTags(string keyword)
-        {
-            return Context.TB_Tag.Where(c => c.TagName.Contains(keyword)).Select(c => c.TagName).ToList();
+            return repo.GetTraceTemplate(templateID);
         }
     }
 }

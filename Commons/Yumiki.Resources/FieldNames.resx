@@ -126,6 +126,9 @@
   <data name="E_INCOME" xml:space="preserve">
     <value>Income</value>
   </data>
+  <data name="E_INVALID" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
   <data name="E_OUTCOME" xml:space="preserve">
     <value>Outcome</value>
   </data>

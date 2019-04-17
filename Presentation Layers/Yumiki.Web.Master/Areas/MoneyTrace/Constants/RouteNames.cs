@@ -31,8 +31,14 @@ namespace Yumiki.Web.MoneyTrace.Constants
         public const string TraceGetByID = "TraceGetByID";
         public const string TraceGetTags = "TraceGetTags";
         public const string TraceSave = "TraceSave";
+        public const string TracePublish = "TracePublish";
         public const string SaveBankingWithdrawingTrace = "SaveBankingWithdrawingTrace";
 
+        public const string TraceTemplateGetAll = "TraceTemplateGetAll";
+        public const string TraceTemplateGetByID = "TraceTemplateGetByID";
+        public const string TraceTemplateGetTags = "TraceTemplateGetTags";
+        public const string TraceTemplateSave = "TraceTemplateSave";
+        
         public const string ReportGenerateReport = "ReportGenerateReport";
         public const string ReportGetReportTypes = "ReportGetReportTypes";
         public const string ReportGetTransactionTypes = "ReportGetTransactionTypes";

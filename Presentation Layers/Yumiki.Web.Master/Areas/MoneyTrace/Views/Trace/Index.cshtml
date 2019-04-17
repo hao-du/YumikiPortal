@@ -54,7 +54,8 @@
                 exchange: '@((int)EN_TransactionType.E_EXCHANGE)',
                 transfer: '@((int)EN_TransactionType.E_TRANSFER)'
             },
-            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+            '@Yumiki.Commons.Logging.LogLevel.ERROR',
+            '@TraceSummary.FieldName.TotalAmount'
         );
 
         yumiki.moneyTrace.trace.controls.init('@ViewBag.CurrentDate', '@Formats.DateTime.ClientShortMonthYear', '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)');

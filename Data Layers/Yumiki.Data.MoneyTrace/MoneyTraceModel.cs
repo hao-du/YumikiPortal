@@ -19,6 +19,7 @@ namespace Yumiki.Data.MoneyTrace
         public virtual DbSet<TB_Currency> TB_Currency { get; set; }
         public virtual DbSet<TB_Tag> TB_Tag { get; set; }
         public virtual DbSet<TB_Trace> TB_Trace { get; set; }
+        public virtual DbSet<TB_TraceTemplate> TB_TraceTemplate { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -42,6 +43,12 @@ namespace Yumiki.Data.MoneyTrace
 
             modelBuilder.Entity<TB_Currency>()
                 .HasMany(e => e.Traces)
+                .WithRequired(e => e.Currency)
+                .HasForeignKey(e => e.CurrencyID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Currency>()
+                .HasMany(e => e.TraceTemplates)
                 .WithRequired(e => e.Currency)
                 .HasForeignKey(e => e.CurrencyID)
                 .WillCascadeOnDelete(false);
@@ -82,6 +89,18 @@ namespace Yumiki.Data.MoneyTrace
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.TransferredTraces)
+                .WithOptional(e => e.TransferredUser)
+                .HasForeignKey(e => e.TransferredUserID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.TraceTemplates)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.TransferredTraceTemplates)
                 .WithOptional(e => e.TransferredUser)
                 .HasForeignKey(e => e.TransferredUserID)
                 .WillCascadeOnDelete(false);

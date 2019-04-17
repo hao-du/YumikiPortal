@@ -19,7 +19,7 @@ namespace Yumiki.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class FieldNames {
@@ -84,6 +84,15 @@ namespace Yumiki.Resources {
         public static string E_INCOME {
             get {
                 return ResourceManager.GetString("E_INCOME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid.
+        /// </summary>
+        public static string E_INVALID {
+            get {
+                return ResourceManager.GetString("E_INVALID", resourceCulture);
             }
         }
         

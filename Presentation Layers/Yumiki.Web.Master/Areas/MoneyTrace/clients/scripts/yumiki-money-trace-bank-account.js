@@ -177,7 +177,7 @@
                 //Reset object in new mode.
                 $scope.resetBankAccount = function () {
                     $scope.bankAccountForm.$setPristine();
-                    return defaultObject;
+                    return angular.copy(defaultObject);
                 }
 
                 //Save new or update object

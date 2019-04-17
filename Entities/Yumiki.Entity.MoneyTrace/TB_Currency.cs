@@ -9,6 +9,7 @@ namespace Yumiki.Entity.MoneyTrace
         public TB_Currency()
         {
             Traces = new HashSet<TB_Trace>();
+            TraceTemplates = new HashSet<TB_TraceTemplate>();
             BankAccounts = new HashSet<TB_BankAccount>();
         }
 
@@ -33,6 +34,8 @@ namespace Yumiki.Entity.MoneyTrace
         public virtual TB_User User { get; set; }
 
         public virtual ICollection<TB_Trace> Traces { get; set; }
+
+        public virtual ICollection<TB_TraceTemplate> TraceTemplates { get; set; }
 
         public virtual ICollection<TB_BankAccount> BankAccounts { get; set; }
     }

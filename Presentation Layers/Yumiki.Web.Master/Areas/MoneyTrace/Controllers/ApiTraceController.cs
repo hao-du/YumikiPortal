@@ -8,6 +8,7 @@ using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
+using Yumiki.Web.MoneyTrace.Models;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
@@ -159,6 +160,27 @@ namespace Yumiki.Web.MoneyTrace.Controllers
                 };
 
                 BusinessService.SaveBankingWithdrawingTrace(bankingTraceRequest, interestTraceRequest, item);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Publish the Trace Template to Actual Records
+        /// </summary>
+        /// <param name="publishObject"></param>
+        /// <returns></returns>
+        [Route("publish", Name = RouteNames.TracePublish)]
+        [HttpPost()]
+        public IHttpActionResult Publish([FromBody] TraceTemplatePublishObject publishObject)
+        {
+            try
+            {
+                BusinessService.PublishTemplate(publishObject.ID, publishObject.TraceDate, CurrentUser.UserID);
 
                 return Ok();
             }

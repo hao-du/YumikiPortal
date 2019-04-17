@@ -11,7 +11,7 @@ Write-Host "##### Script Loading...             #####" -ForegroundColor "Green"
 Start-Sleep -m 1000
 
 # Get MsBuild.exe location
-$msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\msbuild.exe"
+$msbuildPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\15.0\Bin\msbuild.exe"
 Set-Alias msbuild $msbuildPath
 
 # Get Source Code directory
