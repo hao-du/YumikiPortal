@@ -19,13 +19,30 @@ namespace Yumiki.Business.Shopper.Services
             return Repository.GetFeeTypes(showInactive);
         }
 
-        public TB_FeeType GetFeeType(Guid feeTypeID)
+        public TB_FeeType GetFeeType(string feeTypeID)
         {
-            return Repository.GetFeeType(feeTypeID);
+            if (string.IsNullOrWhiteSpace(feeTypeID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Fee Type ID cannot be empty.", Logger);
+            }
+
+            Guid convertedFeeTypeID = Guid.Empty;
+            Guid.TryParse(feeTypeID, out convertedFeeTypeID);
+            if (convertedFeeTypeID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Fee Type ID must be GUID type.", Logger);
+            }
+
+            return Repository.GetFeeType(convertedFeeTypeID);
         }
 
         public void SaveFeeType(TB_FeeType feeType)
         {
+            if (string.IsNullOrWhiteSpace(feeType.FeeTypeName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Fee Type Name is required.", Logger);
+            }
+
             Repository.SaveFeeType(feeType);
         }
     }

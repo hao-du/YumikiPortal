@@ -134,7 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiFeeTypeController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
+    <Compile Include="Controllers\FeeTypeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShopperAreaRegistration.cs" />

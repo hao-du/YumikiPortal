@@ -9,6 +9,10 @@ namespace Yumiki.Web.Shopper.Constants
     {
         public const string DefaultMVCRoute = "Shopper_default";
 
+        public const string FeeTypeGetAll = "FeeTypeGetAll";
+        public const string FeeTypeGetByID = "FeeTypeGetByID";
+        public const string FeeTypeSave = "FeeTypeSave";
+
         public const string ProductGetAll = "ProductGetAll";
         public const string ProductGetByID = "ProductGetByID";
         public const string ProductSave = "ProductSave";
