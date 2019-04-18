@@ -12,7 +12,7 @@ using Yumiki.Entity.Shopper;
 
 namespace Yumiki.Business.Shopper.Services
 {
-    public class PurchaseService : BaseService<IProductRepository>, IPurchaseService
+    public class ReceiptService : BaseService<IProductRepository>, IReceiptService
     {
         
     }

@@ -10,6 +10,37 @@ namespace Yumiki.Data.Shopper.Repositories
 {
     public class ProductRepository : ShopperRepository, IProductRepository
     {
-        
+        public List<TB_Product> GetProducts(bool showInactive)
+        {
+            return Context.TB_Product.Where(c => c.IsActive == !showInactive).ToList();
+        }
+
+        public TB_Product GetProduct(Guid productID)
+        {
+            return Context.TB_Product.SingleOrDefault(c => c.ID == productID);
+        }
+
+        public void SaveProduct(TB_Product product)
+        {
+            if (product.ID == Guid.Empty)
+            {
+                Context.TB_Product.Add(product);
+            }
+            else
+            {
+                TB_Product dbProduct = Context.TB_Product.Single(c => c.ID == product.ID);
+                dbProduct.ProductName = product.ProductName;
+                dbProduct.ProductCode = product.ProductCode;
+                dbProduct.Price = product.Price;
+                dbProduct.FeaturedImage = product.FeaturedImage;
+                dbProduct.SourceUrl = product.SourceUrl;
+                dbProduct.Keywords = product.Keywords;
+
+                dbProduct.Descriptions = product.Descriptions;
+                dbProduct.IsActive = product.IsActive;
+            }
+
+            Save();
+        }
     }
 }

@@ -11,7 +11,12 @@ using Yumiki.Entity.Shopper;
 
 namespace Yumiki.Business.Shopper.Interfaces
 {
-    public interface IOtherFeeService
+    public interface IAdditionalFeeService
     {
+        List<TB_AdditionalFee> GetAdditionalFees(bool showInactive);
+
+        TB_AdditionalFee GetAdditionalFee(Guid additionalFeeID);
+
+        void SaveAdditionalFee(TB_AdditionalFee additionalFee);
     }
 }

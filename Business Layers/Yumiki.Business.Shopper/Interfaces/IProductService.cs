@@ -13,5 +13,10 @@ namespace Yumiki.Business.Shopper.Interfaces
 {
     public interface IProductService
     {
+        List<TB_Product> GetProducts(bool showInactive);
+
+        TB_Product GetProduct(Guid productID);
+
+        void SaveProduct(TB_Product product);
     }
 }

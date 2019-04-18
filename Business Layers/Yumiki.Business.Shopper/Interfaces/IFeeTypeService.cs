@@ -13,5 +13,10 @@ namespace Yumiki.Business.Shopper.Interfaces
 {
     public interface IFeeTypeService
     {
+        List<TB_FeeType> GetFeeTypes(bool showInactive);
+
+        TB_FeeType GetFeeType(Guid feeTypeID);
+
+        void SaveFeeType(TB_FeeType feeType);
     }
 }

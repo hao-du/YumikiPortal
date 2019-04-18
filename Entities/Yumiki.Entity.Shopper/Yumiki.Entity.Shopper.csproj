@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomFields\TB_FeeType.cs" />
+    <Compile Include="CustomFields\TB_AdditionalFee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TB_AdditionalFee.cs" />
     <Compile Include="TB_FeeType.cs" />
@@ -58,6 +60,10 @@
     <ProjectReference Include="..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">
       <Project>{85d7cf5b-aaac-4d00-9287-94866e19545e}</Project>
       <Name>Yumiki.Entity.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Commons\Yumiki.Commons\Yumiki.Commons.csproj">
+      <Project>{7C58DEB3-E136-4086-B9A5-44C5CB28B269}</Project>
+      <Name>Yumiki.Commons</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

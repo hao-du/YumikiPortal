@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Yumiki.Data.Shopper.Interfaces;
+using Yumiki.Data.Base;
 using Yumiki.Entity.Shopper;
 
-namespace Yumiki.Data.Shopper.Repositories
+namespace Yumiki.Data.Shopper.Interfaces
 {
-    public class PurchaseRepository : ShopperRepository, IPurchaseRepository
+    public interface IReceiptRepository
     {
         
     }

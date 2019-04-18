@@ -252,7 +252,7 @@ CREATE TABLE [dbo].[TB_Product](
 
     [Price] [decimal](18, 2) NOT NULL, 
 
-    [FeaturedImage] [nvarchar](255) NOT NULL, 
+    [FeaturedImage] [nvarchar](2000) NOT NULL, 
 
     [SourceUrl] [nvarchar](2000) NULL, 
 

@@ -14,6 +14,19 @@ namespace Yumiki.Business.Shopper.Services
 {
     public class ProductService : BaseService<IProductRepository>, IProductService
     {
-        
+        public List<TB_Product> GetProducts(bool showInactive)
+        {
+            return Repository.GetProducts(showInactive);
+        }
+
+        public TB_Product GetProduct(Guid productID)
+        {
+            return Repository.GetProduct(productID);
+        }
+
+        public void SaveProduct(TB_Product product)
+        {
+            Repository.SaveProduct(product);
+        }
     }
 }
