@@ -52,6 +52,7 @@
     <None Include="DB_Master\Release-015\AlterView.sql" />
     <Content Include="DB_MoneyTrace\Release-008\InsertData.sql" />
     <Content Include="DB_Ontime\CreateDatabase.sql" />
+    <None Include="DB_Shopper\CreateDatabase.sql" />
     <Content Include="DB_WellCovered\Release-008\PROC_PerformSearch.sql" />
     <None Include="DB_WellCovered\Release-009\CreateDatabase.sql" />
     <None Include="DB_WellCovered\Release-011\CreateDatabase.sql" />

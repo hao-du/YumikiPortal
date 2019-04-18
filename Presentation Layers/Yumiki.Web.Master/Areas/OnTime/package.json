@@ -2,7 +2,10 @@
   "name": "yumiki-portal-ontime",
   "version": "1.0.0",
   "description": "Ontime System to manage tasks.",
-  "keywords": [ "yumiki", "ontime" ],
+  "keywords": [
+    "yumiki",
+    "ontime"
+  ],
   "license": "Yumiki Portal",
   "dependencies": {
     "@angular/common": "~6.0.2",
@@ -13,7 +16,6 @@
     "@angular/platform-browser": "~6.0.2",
     "@angular/platform-browser-dynamic": "~6.0.2",
     "@angular/router": "~6.0.2",
-
     "systemjs": "0.21.3",
     "core-js": "^2.5.6",
     "rxjs": "6.1.0",
