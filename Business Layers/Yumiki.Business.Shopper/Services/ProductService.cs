@@ -16,7 +16,17 @@ namespace Yumiki.Business.Shopper.Services
     {
         public List<TB_Product> GetProducts(bool showInactive)
         {
-            return Repository.GetProducts(showInactive);
+            return Repository.GetProducts(showInactive, null);
+        }
+
+        public List<TB_Product> GetProducts(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Search Term cannot be empty.", Logger);
+            }
+
+            return Repository.GetProducts(false, term);
         }
 
         public TB_Product GetProduct(string productID)

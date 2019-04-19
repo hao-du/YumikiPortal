@@ -5,14 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
+using LinqKit;
+using System.Linq.Expressions;
 
 namespace Yumiki.Data.Shopper.Repositories
 {
     public class ProductRepository : ShopperRepository, IProductRepository
     {
-        public List<TB_Product> GetProducts(bool showInactive)
+        public List<TB_Product> GetProducts(bool showInactive, string term)
         {
-            return Context.TB_Product.Where(c => c.IsActive == !showInactive).ToList();
+            Expression<Func<TB_Product, bool>> expression = PredicateBuilder.New<TB_Product>(true);
+            expression.And(c => c.IsActive == !showInactive);
+            expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
+
+            return Context.TB_Product.Where(expression).ToList();
         }
 
         public TB_Product GetProduct(Guid productID)

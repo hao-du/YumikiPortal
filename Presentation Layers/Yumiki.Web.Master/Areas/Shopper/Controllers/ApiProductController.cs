@@ -31,6 +31,22 @@ namespace Yumiki.Web.Shopper.Controllers
             }
         }
 
+        [Route("getbyterm", Name = RouteNames.ProductGetByTerm)]
+        [HttpGet()]
+        public IHttpActionResult Get(string term)
+        {
+            try
+            {
+                List<TB_Product> products = BusinessService.GetProducts(term);
+
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("get", Name = RouteNames.ProductGetByID)]
         [HttpGet()]
         public IHttpActionResult GetById(string productId)

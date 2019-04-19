@@ -10,7 +10,7 @@ namespace Yumiki.Data.Shopper.Interfaces
 {
     public interface IProductRepository
     {
-        List<TB_Product> GetProducts(bool showInactive);
+        List<TB_Product> GetProducts(bool showInactive, string term);
 
         TB_Product GetProduct(Guid productID);
 

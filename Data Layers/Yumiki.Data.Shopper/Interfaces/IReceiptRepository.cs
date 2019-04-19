@@ -10,6 +10,10 @@ namespace Yumiki.Data.Shopper.Interfaces
 {
     public interface IReceiptRepository
     {
-        
+        List<TB_Receipt> GetReceipts(bool showInactive);
+
+        TB_Receipt GetReceipt(Guid receiptID);
+
+        void SaveReceipt(TB_Receipt receipt);
     }
 }

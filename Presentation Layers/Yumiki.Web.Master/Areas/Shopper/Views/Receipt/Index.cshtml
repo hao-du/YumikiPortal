@@ -1,0 +1,138 @@
+﻿@using Yumiki.Web.Shopper.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.Shopper;
+@using SquishIt.Framework;
+
+@{
+    ViewBag.Title = "Fee Types";
+}
+
+@section BottomScript{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-additional-fee.js")
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_shopper_#.js"))
+
+    <script type="text/javascript">
+        yumiki.shopper.init (
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+
+        yumiki.shopper.defaultObject = {
+            '@CommonProperties.ID': undefined,
+            '@TB_AdditionalFee.FieldName.FeeTypeID': 0,
+            '@TB_AdditionalFee.FieldName.Amount': 0,
+            '@TB_AdditionalFee.FieldName.FeeIssueDate': '',
+            '@CommonProperties.Descriptions': '',
+            '@CommonProperties.IsActive': true
+        };
+
+        yumiki.shopper.additionalFee.init(
+            {
+                getAllUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeGetAll, null)',
+                getByIdUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeGetByID, null)',
+                getFeeTypesUrl: '@Url.HttpRouteUrl(RouteNames.FeeTypeGetAll, null)',
+                saveUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeSave, null)'
+            },
+            '@Formats.DateTime.ClientMomentLongDate'
+        );
+    </script>
+}
+<div ng-app="shopperAdditionalFee">
+    <div class="container" ng-controller="additionalFeeController" ng-init="onLoad();">
+        <h1>Additional Fee</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tblCurrency" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Fee Type Name</th>
+                        <th class="text-right">Amount</th>
+                        <th>Issue Date</th>
+                        <th>Descriptions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in list">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ item.@TB_AdditionalFee.FieldName.FeeTypeName }}</td>
+                        <td class="text-right">{{ item.@TB_AdditionalFee.FieldName.Amount | number:2 }}</td>
+                        <td>{{ item.@TB_AdditionalFee.FieldName.FeeIssueDateUI }}</td>
+                        <td>{{ item.@CommonProperties.Descriptions }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="additionalFeeDialogController" ng-init="onLoad();">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Fee Type</label>
+                            <select class="form-control selectpicker" name="feeType" ng-required="true"
+                                    ng-model="object.@TB_AdditionalFee.FieldName.FeeTypeID"
+                                    ng-options="item.@CommonProperties.ID as item.@TB_FeeType.FieldName.FeeTypeName for item in feeTypes"
+                                    ng-class="{ 'border-danger' : dialogForm.feeType.$invalid && dialogForm.feeType.$dirty }">
+                                <option value="@CommonValues.EmptyValue" selected="selected">@CommonValues.SelectOneForDropDown</option>
+                            </select>
+                            <p ng-show="dialogForm.feeType.$error.required && dialogForm.feeType.$dirty" class="text-danger">Fee Type is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Issue Date</label>
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_AdditionalFee.FieldName.FeeIssueDate">
+                                <input type="text" name="feeIssuedDate" ng-model="object.@TB_AdditionalFee.FieldName.FeeIssueDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : dialogForm.feeIssuedDate.$invalid && dialogForm.feeIssuedDate.$dirty }" />
+                                <div class="input-group-append input-group-calendar">
+                                    <span class="input-group-text">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <p ng-show="dialogForm.feeIssuedDate.$error.required && dialogForm.feeIssuedDate.$dirty" class="text-danger">Issued Date is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="object.@TB_AdditionalFee.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_AdditionalFee.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="dialogForm.amount.$error.required && dialogForm.amount.$dirty" class="text-danger">Amount is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

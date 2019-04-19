@@ -81,13 +81,13 @@ namespace Yumiki.Entity.Shopper
 
             modelBuilder.Entity<TB_Product>()
                 .HasMany(e => e.ReceiptDetails)
-                .WithRequired(e => e.TB_Product)
+                .WithRequired(e => e.Product)
                 .HasForeignKey(e => e.ProductID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Receipt>()
                 .HasMany(e => e.ReceiptDetails)
-                .WithRequired(e => e.TB_Receipt)
+                .WithRequired(e => e.Receipt)
                 .HasForeignKey(e => e.ReceiptID)
                 .WillCascadeOnDelete(false);
 

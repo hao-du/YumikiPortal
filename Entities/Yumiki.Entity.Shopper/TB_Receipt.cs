@@ -22,7 +22,7 @@ namespace Yumiki.Entity.Shopper
 
         public DateTime ReceiptDate { get; set; }
 
-        public int Status { get; set; }
+        public EN_ReceiptStatus Status { get; set; }
 
         public Guid UserID { get; set; }
 

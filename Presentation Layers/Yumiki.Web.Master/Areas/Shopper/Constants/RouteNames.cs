@@ -14,11 +14,16 @@ namespace Yumiki.Web.Shopper.Constants
         public const string FeeTypeSave = "FeeTypeSave";
 
         public const string ProductGetAll = "ProductGetAll";
+        public const string ProductGetByTerm = "ProductGetByTerm";
         public const string ProductGetByID = "ProductGetByID";
         public const string ProductSave = "ProductSave";
 
         public const string AdditionalFeeGetAll = "AdditionalFeeGetAll";
         public const string AdditionalFeeGetByID = "AdditionalFeeGetByID";
         public const string AdditionalFeeSave = "AdditionalFeeSave";
+
+        public const string ReceiptGetAll = "ReceiptGetAll";
+        public const string ReceiptGetByID = "ReceiptGetByID";
+        public const string ReceiptSave = "ReceiptSave";
     }
 }

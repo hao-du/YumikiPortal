@@ -13,5 +13,10 @@ namespace Yumiki.Business.Shopper.Interfaces
 {
     public interface IReceiptService
     {
+        List<TB_Receipt> GetReceipts(bool showInactive);
+
+        TB_Receipt GetReceipt(string receiptID);
+
+        void SaveReceipt(TB_Receipt receipt);
     }
 }

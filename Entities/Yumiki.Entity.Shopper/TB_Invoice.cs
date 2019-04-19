@@ -30,7 +30,7 @@ namespace Yumiki.Entity.Shopper
 
         public DateTime InvoiceDate { get; set; }
 
-        public int Status { get; set; }
+        public EN_InvoiceStatus Status { get; set; }
 
         public Guid UserID { get; set; }
 

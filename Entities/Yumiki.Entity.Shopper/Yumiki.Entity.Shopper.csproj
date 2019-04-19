@@ -44,6 +44,8 @@
     <Compile Include="CustomFields\TB_Product.cs" />
     <Compile Include="CustomFields\TB_FeeType.cs" />
     <Compile Include="CustomFields\TB_AdditionalFee.cs" />
+    <Compile Include="EN_InvoiceStatus.cs" />
+    <Compile Include="EN_ReceiptStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TB_AdditionalFee.cs" />
     <Compile Include="TB_FeeType.cs" />
