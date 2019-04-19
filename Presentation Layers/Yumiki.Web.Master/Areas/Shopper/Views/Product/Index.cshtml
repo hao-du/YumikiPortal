@@ -4,14 +4,14 @@
 @using SquishIt.Framework;
 
 @{
-    ViewBag.Title = "Product";
+    ViewBag.Title = "Products";
 }
 
 @section BottomScript{
     @MvcHtmlString.Create(
         Bundle.JavaScript()
         .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
-        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-fee-type.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-product.js")
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_shopper_#.js"))
 
@@ -22,24 +22,26 @@
 
         yumiki.shopper.defaultObject = {
             '@CommonProperties.ID': undefined,
-            '@TB_FeeType.FieldName.FeeTypeName': '',
-            '@TB_FeeType.FieldName.ShowInAdditionalFee': false,
-            '@TB_FeeType.FieldName.ShowInReceipt': false,
-            '@TB_FeeType.FieldName.ShowInInvoice': false,
+            '@TB_Product.FieldName.ProductName': '',
+            '@TB_Product.FieldName.ProductCode': '',
+            '@TB_Product.FieldName.Price': 0,
+            '@TB_Product.FieldName.FeaturedImage': '',
+            '@TB_Product.FieldName.SourceUrl': '',
+            '@TB_Product.FieldName.Keywords': '',
             '@CommonProperties.Descriptions': '',
             '@CommonProperties.IsActive': true
         };
 
-        yumiki.shopper.feeType.init(
-            '@Url.HttpRouteUrl(RouteNames.FeeTypeGetAll, null)',
-            '@Url.HttpRouteUrl(RouteNames.FeeTypeGetByID, null)',
-            '@Url.HttpRouteUrl(RouteNames.FeeTypeSave, null)',
+        yumiki.shopper.product.init(
+            '@Url.HttpRouteUrl(RouteNames.ProductGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.ProductGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.ProductSave, null)',
         );
     </script>
 }
-<div ng-app="shopperFeeType">
-    <div class="container" ng-controller="feeTypeController" ng-init="onLoad();">
-        <h1>Fee Types</h1>
+<div ng-app="shopperProduct">
+    <div class="container" ng-controller="productController" ng-init="onLoad();">
+        <h1>Products</h1>
         <div class="card bg-secondary">
             <div class="card-body p-2">
                 <div class="btn-group">
@@ -53,10 +55,10 @@
                 <thead class="thead-dark">
                     <tr>
                         <th></th>
-                        <th>Fee Type Name</th>
-                        <th>Applied to Additional Fee</th>
-                        <th>Applied to Receipt</th>
-                        <th>Applied to Invoice</th>
+                        <th></th>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th class="text-right">Price</th>
                         <th>Descriptions</th>
                         <th>Modified Date</th>
                     </tr>
@@ -64,10 +66,10 @@
                 <tbody>
                     <tr ng-repeat="item in list">
                         <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                        <td>{{ item.@TB_FeeType.FieldName.FeeTypeName }}</td>
-                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInAdditionalFee }}" disabled="disabled" /></td>
-                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInReceipt }}" disabled="disabled" /></td>
-                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInInvoice }}" disabled="disabled" /></td>
+                        <td></td>
+                        <td>{{ item.@TB_Product.FieldName.ProductCode }}</td>
+                        <td>{{ item.@TB_Product.FieldName.ProductName }}</td>
+                        <td class="text-right">{{ item.@TB_Product.FieldName.Price | number:2 }}</td>
                         <td>{{ item.@CommonProperties.Descriptions }}</td>
                         <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
                     </tr>
@@ -77,7 +79,7 @@
     </div>
 
     <!-- Modal -->
-    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="feeTypeDialogController">
+    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="productDialogController">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <!-- Modal content-->
             <div class="modal-content">
@@ -87,24 +89,33 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Fee Type Name</label>
-                            <input type="text" name="feeTypeName" ng-model="object.@TB_FeeType.FieldName.FeeTypeName" class="form-control" ng-class="{ 'border-danger' : dialogForm.feeTypeName.$invalid && dialogForm.feeTypeName.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.feeTypeName.$error.required && dialogForm.feeTypeName.$dirty" class="text-danger">Fee Type Name is required.</p>
+                            <label>Product Code</label>
+                            <input type="text" name="productCode" ng-model="object.@TB_Product.FieldName.ProductCode" class="form-control" ng-class="{ 'border-danger' : dialogForm.productCode.$invalid && dialogForm.productCode.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.productCode.$error.required && dialogForm.productCode.$dirty" class="text-danger">Product Code is required.</p>
                         </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInAdditionalFee" ng-checked="object.@TB_FeeType.FieldName.ShowInAdditionalFee" /> Applied to Additional Fee.
-                            </label>
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" name="productName" ng-model="object.@TB_Product.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product Name is required.</p>
                         </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInReceipt" ng-checked="object.@TB_FeeType.FieldName.ShowInReceipt" /> Applied to Receipt.
-                            </label>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="text" name="price" ng-model="object.@TB_Product.FieldName.Price" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.price.$invalid && dialogForm.price.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_Product.FieldName.Price | number:2 }}</div>
+                            <p ng-show="dialogForm.price.$error.required && dialogForm.price.$dirty" class="text-danger">Price is required.</p>
                         </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInInvoice" ng-checked="object.@TB_FeeType.FieldName.ShowInInvoice" /> Applied to Invoice.
-                            </label>
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <input type="text" name="featuredImage" ng-model="object.@TB_Product.FieldName.FeaturedImage" class="form-control" ng-class="{ 'border-danger' : dialogForm.featuredImage.$invalid && dialogForm.featuredImage.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.featuredImage.$error.required && dialogForm.featuredImage.$dirty" class="text-danger">Featured Image is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Source Url</label>
+                            <input type="text" ng-model="object.@TB_Product.FieldName.SourceUrl" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Keywords</label>
+                            <input type="text" ng-model="object.@TB_Product.FieldName.Keywords" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label>Descriptions</label>

@@ -1,0 +1,128 @@
+﻿@using Yumiki.Web.Shopper.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.Shopper;
+@using SquishIt.Framework;
+
+@{
+    ViewBag.Title = "Fee Types";
+}
+
+@section BottomScript{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-fee-type.js")
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_shopper_#.js"))
+
+    <script type="text/javascript">
+        yumiki.shopper.init (
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+
+        yumiki.shopper.defaultObject = {
+            '@CommonProperties.ID': undefined,
+            '@TB_FeeType.FieldName.FeeTypeName': '',
+            '@TB_FeeType.FieldName.ShowInAdditionalFee': false,
+            '@TB_FeeType.FieldName.ShowInReceipt': false,
+            '@TB_FeeType.FieldName.ShowInInvoice': false,
+            '@CommonProperties.Descriptions': '',
+            '@CommonProperties.IsActive': true
+        };
+
+        yumiki.shopper.feeType.init(
+            '@Url.HttpRouteUrl(RouteNames.FeeTypeGetAll, null)',
+            '@Url.HttpRouteUrl(RouteNames.FeeTypeGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.FeeTypeSave, null)',
+        );
+    </script>
+}
+<div ng-app="shopperFeeType">
+    <div class="container" ng-controller="feeTypeController" ng-init="onLoad();">
+        <h1>Fee Types</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tblCurrency" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Fee Type Name</th>
+                        <th>Applied to Additional Fee</th>
+                        <th>Applied to Receipt</th>
+                        <th>Applied to Invoice</th>
+                        <th>Descriptions</th>
+                        <th>Modified Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in list">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ item.@TB_FeeType.FieldName.FeeTypeName }}</td>
+                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInAdditionalFee }}" disabled="disabled" /></td>
+                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInReceipt }}" disabled="disabled" /></td>
+                        <td><input type="checkbox" ng-checked="{{ item.@TB_FeeType.FieldName.ShowInInvoice }}" disabled="disabled" /></td>
+                        <td>{{ item.@CommonProperties.Descriptions }}</td>
+                        <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="feeTypeDialogController">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Fee Type Name</label>
+                            <input type="text" name="feeTypeName" ng-model="object.@TB_FeeType.FieldName.FeeTypeName" class="form-control" ng-class="{ 'border-danger' : dialogForm.feeTypeName.$invalid && dialogForm.feeTypeName.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.feeTypeName.$error.required && dialogForm.feeTypeName.$dirty" class="text-danger">Fee Type Name is required.</p>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInAdditionalFee" ng-checked="object.@TB_FeeType.FieldName.ShowInAdditionalFee" /> Applied to Additional Fee.
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInReceipt" ng-checked="object.@TB_FeeType.FieldName.ShowInReceipt" /> Applied to Receipt.
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="object.@TB_FeeType.FieldName.ShowInInvoice" ng-checked="object.@TB_FeeType.FieldName.ShowInInvoice" /> Applied to Invoice.
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

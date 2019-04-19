@@ -17,11 +17,13 @@ namespace Yumiki.Web.Shopper.Controllers
     {
         [Route("getall", Name = RouteNames.ProductGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive, int currentPage, int itemsPerPage)
+        public IHttpActionResult Get(bool showInactive)
         {
             try
             {
-                return Ok();
+                List<TB_Product> products = BusinessService.GetProducts(showInactive);
+
+                return Ok(products);
             }
             catch (Exception ex)
             {
@@ -35,7 +37,9 @@ namespace Yumiki.Web.Shopper.Controllers
         {
             try
             {
-                return Ok();
+                TB_Product product = BusinessService.GetProduct(productId);
+
+                return Ok(product);
             }
             catch (Exception ex)
             {
@@ -45,10 +49,14 @@ namespace Yumiki.Web.Shopper.Controllers
 
         [Route("save", Name = RouteNames.ProductSave)]
         [HttpPost()]
-        public IHttpActionResult Create([FromBody] object item)
+        public IHttpActionResult Create([FromBody] TB_Product product)
         {
             try
             {
+                product.UserID = CurrentUser.UserID;
+
+                BusinessService.SaveProduct(product);
+
                 return Ok();
             }
             catch (Exception ex)

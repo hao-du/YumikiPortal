@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomFields\TB_Product.cs" />
     <Compile Include="CustomFields\TB_FeeType.cs" />
     <Compile Include="CustomFields\TB_AdditionalFee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

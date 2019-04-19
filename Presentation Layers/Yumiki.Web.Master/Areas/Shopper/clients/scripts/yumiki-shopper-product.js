@@ -1,14 +1,14 @@
 ﻿(function (win, doc, $, yumiki) {
-    yumiki.shopper.feeType = {
-        showActiveText: 'Show Active Fee Types',
-        showInactiveText: 'Show Inactive Fee Types',
+    yumiki.shopper.product = {
+        showActiveText: 'Show Active Products',
+        showInactiveText: 'Show Inactive Products',
 
         init: function (getAllUrl, getByIdUrl, saveUrl) {
-            var app = angular.module('shopperFeeType', ['ui.bootstrap']);
+            var app = angular.module('shopperProduct', ['ui.bootstrap']);
 
-            yumiki.shopper.feeType.initService(app, getAllUrl, getByIdUrl, saveUrl);
-            yumiki.shopper.feeType.initListController(app);
-            yumiki.shopper.feeType.initDialogController(app, 'Fee Type');
+            yumiki.shopper.product.initService(app, getAllUrl, getByIdUrl, saveUrl);
+            yumiki.shopper.product.initListController(app);
+            yumiki.shopper.product.initDialogController(app, 'Product');
         },
 
         //Service to communicate with Server.
@@ -19,7 +19,7 @@
                 };
 
                 this.getByID = function (id) {
-                    return $http.get(getByIdUrl, { params: { 'feeTypeId': id } });
+                    return $http.get(getByIdUrl, { params: { 'productId': id } });
                 };
 
                 this.save = function (currency) {
@@ -31,8 +31,8 @@
 
         //CONTROLLER FOR LIST
         initListController: function (app) {
-            app.controller('feeTypeController', function ($scope, $rootScope, DataService) {
-                $scope.inactiveButtonName = yumiki.shopper.feeType.showInactiveText;
+            app.controller('productController', function ($scope, $rootScope, DataService) {
+                $scope.inactiveButtonName = yumiki.shopper.product.showInactiveText;
 
                 //To determine when load active or inactive list.
                 $scope.isStatusChanged = false;
@@ -51,7 +51,7 @@
                 //Load data
                 $scope.onLoad = function () {
                     var showInactive = true;
-                    if ($scope.inactiveButtonName == yumiki.shopper.feeType.showInactiveText) {
+                    if ($scope.inactiveButtonName == yumiki.shopper.product.showInactiveText) {
                         showInactive = false;
                     }
 
@@ -88,10 +88,10 @@
 
                 //Private function
                 function setButtonName() {
-                    if ($scope.inactiveButtonName == yumiki.shopper.feeType.showInactiveText) {
-                        $scope.inactiveButtonName = yumiki.shopper.feeType.showActiveText;
+                    if ($scope.inactiveButtonName == yumiki.shopper.product.showInactiveText) {
+                        $scope.inactiveButtonName = yumiki.shopper.product.showActiveText;
                     } else {
-                        $scope.inactiveButtonName = yumiki.shopper.feeType.showInactiveText;
+                        $scope.inactiveButtonName = yumiki.shopper.product.showInactiveText;
                     }
                 }
             });
@@ -99,7 +99,7 @@
 
         //CONTROLLER FOR DIALOG
         initDialogController: function (app, dialogName) {
-            app.controller('feeTypeDialogController', function ($scope, $rootScope, DataService) {
+            app.controller('productDialogController', function ($scope, $rootScope, DataService) {
                 $scope.id = undefined;
                 $scope.isActiveDisabled = false;
 

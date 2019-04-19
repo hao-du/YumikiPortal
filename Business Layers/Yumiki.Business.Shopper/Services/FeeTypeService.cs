@@ -43,6 +43,11 @@ namespace Yumiki.Business.Shopper.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Fee Type Name is required.", Logger);
             }
 
+            if (!feeType.ShowInAdditionalFee && !feeType.ShowInInvoice && !feeType.ShowInReceipt)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Fee Type must be applied to at least one free.", Logger);
+            }
+
             Repository.SaveFeeType(feeType);
         }
     }

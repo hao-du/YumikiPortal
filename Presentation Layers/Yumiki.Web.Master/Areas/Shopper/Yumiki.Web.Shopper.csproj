@@ -123,16 +123,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\yumiki-shopper-product.js" />
     <Content Include="clients\scripts\yumiki-shopper-fee-type.js" />
     <Content Include="clients\scripts\yumiki-shopper.js" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\FeeType\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

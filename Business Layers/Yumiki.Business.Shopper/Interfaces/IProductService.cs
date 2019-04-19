@@ -15,7 +15,7 @@ namespace Yumiki.Business.Shopper.Interfaces
     {
         List<TB_Product> GetProducts(bool showInactive);
 
-        TB_Product GetProduct(Guid productID);
+        TB_Product GetProduct(string productID);
 
         void SaveProduct(TB_Product product);
     }
