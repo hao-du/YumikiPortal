@@ -1,29 +1,36 @@
 ﻿(function (win, doc, $, yumiki) {
-    yumiki.shopper.feeType = {
-        showActiveText: 'Show Active Fee Types',
-        showInactiveText: 'Show Inactive Fee Types',
+    yumiki.shopper.additionalFee = {
+        showActiveText: 'Show Active Products',
+        showInactiveText: 'Show Inactive Products',
+        longDateFormat: '',
 
-        init: function (getAllUrl, getByIdUrl, saveUrl) {
-            var app = angular.module('shopperFeeType', ['ui.bootstrap']);
+        init: function (serviceUrls, longDateFormat) {
+            yumiki.shopper.additionalFee.longDateFormat = longDateFormat;
 
-            yumiki.shopper.feeType.initService(app, getAllUrl, getByIdUrl, saveUrl);
-            yumiki.shopper.feeType.initListController(app);
-            yumiki.shopper.feeType.initDialogController(app, 'Fee Type');
+            var app = angular.module('shopperAdditionalFee', ['ui.bootstrap', 'yumiki-module']);
+
+            yumiki.shopper.additionalFee.initService(app, serviceUrls);
+            yumiki.shopper.additionalFee.initListController(app);
+            yumiki.shopper.additionalFee.initDialogController(app, 'Additional Fee');
         },
 
         //Service to communicate with Server.
-        initService: function (app, getAllUrl, getByIdUrl, saveUrl) {
+        initService: function (app, serviceUrls) {
             app.service('DataService', function ($http) {
                 this.getList = function (showInactive) {
-                    return $http.get(getAllUrl, { params: { 'showInactive': showInactive } });
+                    return $http.get(serviceUrls.getAllUrl, { params: { 'showInactive': showInactive } });
                 };
 
                 this.getByID = function (id) {
-                    return $http.get(getByIdUrl, { params: { 'feeTypeId': id } });
+                    return $http.get(serviceUrls.getByIdUrl, { params: { 'additionalFeeId': id } });
                 };
 
-                this.save = function (object) {
-                    return $http.post(saveUrl, object);
+                this.getFeeTypes = function () {
+                    return $http.get(serviceUrls.getFeeTypesUrl, { params: { 'showInactive': false } });
+                };
+
+                this.save = function (currency) {
+                    return $http.post(serviceUrls.saveUrl, currency);
                 };
             });
 
@@ -31,8 +38,8 @@
 
         //CONTROLLER FOR LIST
         initListController: function (app) {
-            app.controller('feeTypeController', function ($scope, $rootScope, DataService) {
-                $scope.inactiveButtonName = yumiki.shopper.feeType.showInactiveText;
+            app.controller('additionalFeeController', function ($scope, $rootScope, DataService) {
+                $scope.inactiveButtonName = yumiki.shopper.additionalFee.showInactiveText;
 
                 //To determine when load active or inactive list.
                 $scope.isStatusChanged = false;
@@ -51,7 +58,7 @@
                 //Load data
                 $scope.onLoad = function () {
                     var showInactive = true;
-                    if ($scope.inactiveButtonName == yumiki.shopper.feeType.showInactiveText) {
+                    if ($scope.inactiveButtonName == yumiki.shopper.additionalFee.showInactiveText) {
                         showInactive = false;
                     }
 
@@ -88,10 +95,10 @@
 
                 //Private function
                 function setButtonName() {
-                    if ($scope.inactiveButtonName == yumiki.shopper.feeType.showInactiveText) {
-                        $scope.inactiveButtonName = yumiki.shopper.feeType.showActiveText;
+                    if ($scope.inactiveButtonName == yumiki.shopper.additionalFee.showInactiveText) {
+                        $scope.inactiveButtonName = yumiki.shopper.additionalFee.showActiveText;
                     } else {
-                        $scope.inactiveButtonName = yumiki.shopper.feeType.showInactiveText;
+                        $scope.inactiveButtonName = yumiki.shopper.additionalFee.showInactiveText;
                     }
                 }
             });
@@ -99,9 +106,19 @@
 
         //CONTROLLER FOR DIALOG
         initDialogController: function (app, dialogName) {
-            app.controller('feeTypeDialogController', function ($scope, $rootScope, DataService) {
+            app.controller('additionalFeeDialogController', function ($scope, $rootScope, DataService) {
                 $scope.id = undefined;
                 $scope.isActiveDisabled = false;
+
+                $scope.onLoad = function () {
+                    DataService.getFeeTypes().then(
+                        function success(response) {
+                            $scope.feeTypes = response.data;
+                        },
+                        function error(response) {
+                            yumiki.message.clientMessage(response.data, '', yumiki.moneyTrace.trace.errorLog);
+                        });
+                };
 
                 //Deligate event is called by other controllers.
                 $rootScope.$on('OnLoad', function (event, id) {
@@ -117,6 +134,9 @@
                         DataService.getByID($scope.id).then(
                             function success(response) {
                                 $scope.object = response.data;
+
+                                //Format date to display on TraceDate input
+                                $scope.object.FeeIssueDate = moment($scope.object.FeeIssuedDate).format(yumiki.shopper.additionalFee.longDateFormat);
 
                                 yumiki.message.displayLoadingDialog(false);
                             },

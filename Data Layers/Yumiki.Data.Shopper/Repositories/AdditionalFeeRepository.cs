@@ -12,12 +12,12 @@ namespace Yumiki.Data.Shopper.Repositories
     {
         public List<TB_AdditionalFee> GetAdditionalFees(bool showInactive)
         {
-            return Context.TB_AdditionalFee.Include(TB_FeeType.FieldName.TB_FeeType).Where(c => c.IsActive == !showInactive).ToList();
+            return Context.TB_AdditionalFee.Include(TB_AdditionalFee.FieldName.FeeType).Where(c => c.IsActive == !showInactive).ToList();
         }
 
         public TB_AdditionalFee GetAdditionalFee(Guid additionalFeeID)
         {
-            return Context.TB_AdditionalFee.Include(TB_FeeType.FieldName.TB_FeeType).SingleOrDefault(c => c.ID == additionalFeeID);
+            return Context.TB_AdditionalFee.Include(TB_AdditionalFee.FieldName.FeeType).SingleOrDefault(c => c.ID == additionalFeeID);
         }
 
         public void SaveAdditionalFee(TB_AdditionalFee additionalFee)

@@ -22,8 +22,8 @@
                     return $http.get(getByIdUrl, { params: { 'productId': id } });
                 };
 
-                this.save = function (currency) {
-                    return $http.post(saveUrl, currency);
+                this.save = function (object) {
+                    return $http.post(saveUrl, object);
                 };
             });
 

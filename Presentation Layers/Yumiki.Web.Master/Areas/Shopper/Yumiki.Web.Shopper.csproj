@@ -123,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\yumiki-shopper-additional-fee.js" />
     <Content Include="clients\scripts\yumiki-shopper-product.js" />
     <Content Include="clients\scripts\yumiki-shopper-fee-type.js" />
     <Content Include="clients\scripts\yumiki-shopper.js" />
@@ -135,12 +136,15 @@
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\AdditionalFee\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\RouteNames.cs" />
+    <Compile Include="Controllers\ApiAdditionalFeeController.cs" />
     <Compile Include="Controllers\ApiFeeTypeController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
+    <Compile Include="Controllers\AdditionalFeeController.cs" />
     <Compile Include="Controllers\FeeTypeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

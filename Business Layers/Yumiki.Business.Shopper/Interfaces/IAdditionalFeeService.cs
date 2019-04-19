@@ -15,7 +15,7 @@ namespace Yumiki.Business.Shopper.Interfaces
     {
         List<TB_AdditionalFee> GetAdditionalFees(bool showInactive);
 
-        TB_AdditionalFee GetAdditionalFee(Guid additionalFeeID);
+        TB_AdditionalFee GetAdditionalFee(string additionalFeeID);
 
         void SaveAdditionalFee(TB_AdditionalFee additionalFee);
     }

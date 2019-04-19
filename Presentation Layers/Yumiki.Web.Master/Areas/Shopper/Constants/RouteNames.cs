@@ -16,5 +16,9 @@ namespace Yumiki.Web.Shopper.Constants
         public const string ProductGetAll = "ProductGetAll";
         public const string ProductGetByID = "ProductGetByID";
         public const string ProductSave = "ProductSave";
+
+        public const string AdditionalFeeGetAll = "AdditionalFeeGetAll";
+        public const string AdditionalFeeGetByID = "AdditionalFeeGetByID";
+        public const string AdditionalFeeSave = "AdditionalFeeSave";
     }
 }

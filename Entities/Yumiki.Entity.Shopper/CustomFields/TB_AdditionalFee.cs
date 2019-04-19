@@ -34,7 +34,12 @@ namespace Yumiki.Entity.Shopper
         public class FieldName
         {
             public const string TB_AdditionalFee = "TB_AdditionalFee";
-            public const string FeeTypeName = "FeeIssueDateUI";
+
+            public const string FeeType = "FeeType";
+            public const string FeeTypeName = "FeeTypeName";
+            public const string FeeTypeID = "FeeTypeID";
+            public const string Amount = "Amount";
+            public const string FeeIssueDate = "FeeIssueDate";
             public const string FeeIssueDateUI = "FeeIssueDateUI";
         }
     }
