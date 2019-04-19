@@ -12,7 +12,7 @@ using Yumiki.Web.Shopper.Constants;
 
 namespace Yumiki.Web.Shopper.Controllers
 {
-    [RoutePrefix("api/shopperproduct")]
+    [RoutePrefix("api/shopperfeetype")]
     public class ApiFeeTypeController : ApiBaseController<IFeeTypeService>
     {
         [Route("getall", Name = RouteNames.FeeTypeGetAll)]
@@ -49,10 +49,14 @@ namespace Yumiki.Web.Shopper.Controllers
 
         [Route("save", Name = RouteNames.FeeTypeSave)]
         [HttpPost()]
-        public IHttpActionResult Create([FromBody] object item)
+        public IHttpActionResult Create([FromBody] TB_FeeType feeType)
         {
             try
             {
+                feeType.UserID = CurrentUser.UserID;
+
+                BusinessService.SaveFeeType(feeType);
+
                 return Ok();
             }
             catch (Exception ex)
