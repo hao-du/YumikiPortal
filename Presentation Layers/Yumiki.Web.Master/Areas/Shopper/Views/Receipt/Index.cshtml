@@ -28,17 +28,40 @@
             '@TB_Receipt.FieldName.Status':  '@((int)EN_ReceiptStatus.E_ORDERED)',
             '@TB_Receipt.FieldName.TotalAmount': 0,
             '@CommonProperties.Descriptions': '',
-            '@CommonProperties.IsActive': true
+            '@CommonProperties.IsActive': true,
+            '@TB_Receipt.FieldName.ReceiptDetails': {},
+            '@TB_Receipt.FieldName.ReceiptExtraFees': {}
         };
 
         yumiki.shopper.receipt.init(
             {
                 getAllUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptGetAll, null)',
                 getByIdUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptGetByID, null)',
-                getFeeTypesUrl: '@Url.HttpRouteUrl(RouteNames.ProductGetByTerm, null)',
+                getProductsByTerm: '@Url.HttpRouteUrl(RouteNames.ProductGetByTerm, null)',
                 saveUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptSave, null)'
             },
-            '@Formats.DateTime.ClientMomentLongDate'
+            '@Formats.DateTime.ClientMomentLongDate',
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_ReceiptDetail.FieldName.ReceiptID': undefined,
+                '@TB_ReceiptDetail.FieldName.ProductID': undefined,
+                '@TB_ReceiptDetail.FieldName.ProductCode': '',
+                '@TB_ReceiptDetail.FieldName.ProductName':  '',
+                '@TB_ReceiptDetail.FieldName.UnitPrice': 0,
+                '@TB_ReceiptDetail.FieldName.Quantity': 0,
+                '@TB_ReceiptDetail.FieldName.Amount': 0,
+                '@CommonProperties.Descriptions': '',
+                '@CommonProperties.IsActive': true
+            },
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_ReceiptExtraFee.FieldName.ReceiptID': undefined,
+                '@TB_ReceiptExtraFee.FieldName.FeeTypeID': undefined,
+                '@TB_ReceiptExtraFee.FieldName.FeeTypeName': '',
+                '@TB_ReceiptExtraFee.FieldName.Amount':  0,
+                '@CommonProperties.Descriptions': '',
+                '@CommonProperties.IsActive': true
+            }
         );
     </script>
 }
@@ -87,63 +110,147 @@
                         <h5 class="modal-title">{{ dialogTitle }}</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Receipt Number</label>
-                            <input type="text" name="externalReceiptID" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptID" class="form-control"
-                                   ng-class="{ 'border-danger' : dialogForm.externalReceiptID.$invalid && dialogForm.externalReceiptID.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.externalReceiptID.$error.required && dialogForm.externalReceiptID.$dirty" class="text-danger">Receipt Number is required.</p>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>Receipt Number</label>
+                                <input type="text" name="externalReceiptID" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptID" class="form-control"
+                                       ng-class="{ 'border-danger' : dialogForm.externalReceiptID.$invalid && dialogForm.externalReceiptID.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.externalReceiptID.$error.required && dialogForm.externalReceiptID.$dirty" class="text-danger">Receipt Number is required.</p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Status</label>
+                                <select class="form-control selectpicker" name="status" ng-required="true"
+                                        ng-model="object.@TB_Receipt.FieldName.Status"
+                                        ng-class="{ 'border-danger' : dialogForm.status.$invalid && dialogForm.status.$dirty }">
+                                    @foreach (SelectListItem status in ViewBag.Statuses)
+                                    {
+                                        <option value="@status.Value">@status.Text</option>
+                                    }
+                                </select>
+                                <p ng-show="dialogForm.status.$error.required && dialogForm.status.$dirty" class="text-danger">Status is required.</p>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Receipt External Url</label>
+                                <input type="text" name="externalReceiptUrl" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptUrl" class="form-control"
+                                       ng-class="{ 'border-danger' : dialogForm.externalReceiptUrl.$invalid && dialogForm.externalReceiptUrl.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.externalReceiptUrl.$error.required && dialogForm.externalReceiptUrl.$dirty" class="text-danger">Receipt External Url is required.</p>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Receipt External Url</label>
-                            <input type="text" name="externalReceiptUrl" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptUrl" class="form-control"
-                                   ng-class="{ 'border-danger' : dialogForm.externalReceiptUrl.$invalid && dialogForm.externalReceiptUrl.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.externalReceiptUrl.$error.required && dialogForm.externalReceiptUrl.$dirty" class="text-danger">Receipt External Url is required.</p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Receipt Date</label>
-                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_Receipt.FieldName.ReceiptDate">
-                                <input type="text" name="receiptDate" ng-model="object.@TB_Receipt.FieldName.ReceiptDate" class="form-control"
-                                       ng-required="true" ng-class="{ 'border-danger' : dialogForm.append.$invalid && dialogForm.append.$dirty }" />
-                                <div class="input-group-append input-group-calendar">
-                                    <span class="input-group-text">
-                                        <span class="fa fa-calendar"></span>
-                                    </span>
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Receipt Date</label>
+                                    <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_Receipt.FieldName.ReceiptDate">
+                                        <input type="text" name="receiptDate" ng-model="object.@TB_Receipt.FieldName.ReceiptDate" class="form-control"
+                                               ng-required="true" ng-class="{ 'border-danger' : dialogForm.append.$invalid && dialogForm.append.$dirty }" />
+                                        <div class="input-group-append input-group-calendar">
+                                            <span class="input-group-text">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p ng-show="dialogForm.append.$error.required && dialogForm.append.$dirty" class="text-danger">Receipt Date is required.</p>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                                    </label>
                                 </div>
                             </div>
-                            <p ng-show="dialogForm.append.$error.required && dialogForm.append.$dirty" class="text-danger">Receipt Date is required.</p>
+                            <div class="form-group col-md-9">
+                                <label>Descriptions</label>
+                                <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tblDetails" class="table table-sm table-striped table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th><button type="button" class="btn btn-info" ng-click="onShowDetailDialog();">New...</button></th>
+                                        <th>Product</th>
+                                        <th class="text-right">Price</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th class="text-right">Amount</th>
+                                        <th>Descriptions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="detail in object.@TB_Receipt.FieldName.ReceiptDetails">
+                                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDetailDialog(detail);"><span class="fa fa-edit"></span></a></td>
+                                        <td>{{ detail.@TB_ReceiptDetail.FieldName.ProductCode + ' - ' + detail.@TB_ReceiptDetail.FieldName.ProductName }}</td>
+                                        <td class="text-right">{{ detail.@TB_ReceiptDetail.FieldName.UnitPrice | number:2 }}</td>
+                                        <td class="text-right">{{ detail.@TB_ReceiptDetail.FieldName.Quantity }}</td>
+                                        <td class="text-right">{{ detail.@TB_ReceiptDetail.FieldName.Amount | number:2 }}</td>
+                                        <td>{{ detail.@CommonProperties.Descriptions }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive col-md-9">
+                                <table id="tblExtraFees" class="table table-sm table-striped table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th><button type="button" class="btn btn-info">New...</button></th>
+                                            <th>Fee Name</th>
+                                            <th class="text-right">Amount</th>
+                                            <th>Descriptions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="detail in object.@TB_Receipt.FieldName.ReceiptExtraFees">
+                                            <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(detail.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                                            <td>{{ detail.@TB_ReceiptExtraFee.FieldName.FeeTypeName }}</td>
+                                            <td class="text-right">{{ detail.@TB_ReceiptExtraFee.FieldName.Amount | number:2 }}</td>
+                                            <td>{{ detail.@CommonProperties.Descriptions }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Total Amount</label>
+                                <input type="text" name="amount" ng-model="object.@TB_Receipt.FieldName.TotalAmount" class="form-control text-right"
+                                       ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" readonly="readonly" />
+                                <div class="text-right">{{ object.@TB_Receipt.FieldName.TotalAmount | number:2 }}</div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Total Amount</label>
-                            <input type="text" name="amount" ng-model="object.@TB_Receipt.FieldName.TotalAmount" class="form-control text-right"
-                                   ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" ng-required="true" />
-                            <div class="text-right">{{ object.@TB_Receipt.FieldName.TotalAmount | number:2 }}</div>
-                            <p ng-show="dialogForm.amount.$error.required && dialogForm.amount.$dirty" class="text-danger">Total Amount is required.</p>
+                        <div class="modal-footer bg-dark">
+                            <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                            <button type="button" class="btn" data-dismiss="modal">Close</button>
                         </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Receipt Detail Modal -->
+    <div id="dlgAddEditDetail" class="modal fade" role="dialog" ng-controller="detailDialogController">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
                         <div class="form-group">
-                            <label>Status</label>
-                            <select class="form-control selectpicker" name="status" ng-required="true"
-                                    ng-model="object.@TB_Receipt.FieldName.Status"
-                                    ng-class="{ 'border-danger' : dialogForm.status.$invalid && dialogForm.status.$dirty }">
-                                @foreach (SelectListItem status in ViewBag.Statuses)
-                                {
-                                    <option value="@status.Value">@status.Text</option>
-                                }
-                            </select>
-                            <p ng-show="dialogForm.status.$error.required && dialogForm.status.$dirty" class="text-danger">Status is required.</p>
+                            <label>Product</label>
+                            <input type="text" name="productName" productautocomplete ng-model="object.@TB_ReceiptDetail.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product is required.</p>
                         </div>
-
                         <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                            <label>Price</label>
+                            <input type="text" name="unitPrice" ng-model="object.@TB_ReceiptDetail.FieldName.UnitPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.unitPrice.$invalid && dialogForm.unitPrice.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_ReceiptDetail.FieldName.UnitPrice | number:2 }}</div>
+                            <p ng-show="dialogForm.unitPrice.$error.required && dialogForm.unitPrice.$dirty" class="text-danger">Price is required.</p>
                         </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
-                            </label>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="text" name="quantity" ng-model="object.@TB_ReceiptDetail.FieldName.Quantity" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.quantity.$invalid && dialogForm.quantity.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_ReceiptDetail.FieldName.Quantity | number:2 }}</div>
+                            <p ng-show="dialogForm.quantity.$error.required && dialogForm.quantity.$dirty" class="text-danger">Quantity is required.</p>
                         </div>
                     </div>
                     <div class="modal-footer bg-dark">

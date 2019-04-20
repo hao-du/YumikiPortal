@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomFields\TB_ReceiptExtraFee.cs" />
+    <Compile Include="CustomFields\TB_ReceiptDetail.cs" />
     <Compile Include="CustomFields\TB_Receipt.cs" />
     <Compile Include="CustomFields\TB_Product.cs" />
     <Compile Include="CustomFields\TB_FeeType.cs" />

@@ -4,14 +4,14 @@
         showInactiveText: 'Show Inactive Receipts',
         longDateFormat: '',
 
-        init: function (serviceUrls, longDateFormat) {
+        init: function (serviceUrls, longDateFormat, defaultDetailObject, defaultExtraFeeObject) {
             yumiki.shopper.receipt.longDateFormat = longDateFormat;
 
             var app = angular.module('shopperReceipt', ['ui.bootstrap', 'yumiki-module']);
 
             yumiki.shopper.receipt.initService(app, serviceUrls);
             yumiki.shopper.receipt.initListController(app);
-            yumiki.shopper.receipt.initDialogController(app, 'Receipt');
+            yumiki.shopper.receipt.initDialogController(app, 'Receipt', defaultDetailObject, defaultExtraFeeObject);
         },
 
         //Service to communicate with Server.
@@ -45,8 +45,8 @@
                                         function success(result) {
                                             response($.map(result.data, function (item) {
                                                 return {
-                                                    label: item.ProductName,
-                                                    value: item.ProductName,
+                                                    label: item.ProductCode + ' ' + item.ProductName,
+                                                    value: item.ProductCode + ' ' + item.ProductName,
                                                     data: item
                                                 };
                                             }));
@@ -144,7 +144,7 @@
         },
 
         //CONTROLLER FOR DIALOG
-        initDialogController: function (app, dialogName) {
+        initDialogController: function (app, dialogName, defaultDetailObject, defaultExtraFeeObject) {
             app.controller('receiptDialogController', function ($scope, $rootScope, DataService) {
                 $scope.id = undefined;
                 $scope.isActiveDisabled = false;
@@ -186,6 +186,16 @@
                     return angular.copy(yumiki.shopper.defaultObject);
                 }
 
+                //Display Details dialog and pass data to Dialog.
+                $scope.onShowDetailDialog = function (detail) {
+                    //Call DialogController
+                    $rootScope.$broadcast("OnDetailLoad", detail);
+                };
+
+                $rootScope.$on('OnDetailChanged', function (event, detail) {
+                    detail.ReceiptID = $scope.object.ID;
+                });
+
                 //Save new or update object
                 $scope.save = function (isValid) {
                     if (isValid) {
@@ -207,9 +217,49 @@
                 };
 
                 //After saving, reload list.
-                function reload () {
+                function reload() {
                     $rootScope.$broadcast("OnReload");
+                }
+            });
+
+            app.controller('detailDialogController', function ($scope, $rootScope) {
+                //Deligate event is called by other controllers.
+                $rootScope.$on('OnDetailLoad', function (event, detail) {
+                    $('#dlgAddEditDetail').modal({ backdrop: 'static' });
+
+                    if (detail) {
+                        $scope.dialogTitle = "Edit Detail...";
+                        $scope.object = detail;
+                    } else {
+                        $scope.dialogTitle = "New Detail...";
+                        $scope.object = reset();
+
+                        $scope.object.ID = '' + Date.now();
+                    }
+                });
+
+                //Reset object in new mode.
+                function reset() {
+                    $scope.dialogForm.$setPristine();
+                    return angular.copy(defaultDetailObject);
+                }
+
+                //Save new or update object
+                $scope.save = function (isValid) {
+                    if (isValid) {
+                        $scope.object.ProductID = $scope.selected_object.ID;
+                        $scope.object.ProductName = $scope.selected_object.ProductName;
+                        $scope.object.ProductCode = $scope.selected_object.ProductCode;
+
+                        $('#dlgAddEditDetail').modal('hide');
+                        reload();
+                    }
                 };
+
+                //After saving, pass object to parent form
+                function reload() {
+                    $rootScope.$broadcast("OnDetailChanged", $scope.object);
+                }
             });
         }
     };

@@ -99,22 +99,22 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
-        private List<MD_ReceiptDetail> _details = null;
-        public List<MD_ReceiptDetail> Details
+        private List<MD_ReceiptDetail> _receiptDetails = null;
+        public List<MD_ReceiptDetail> ReceiptDetails
         {
             get
             {
-                if (_details == null)
+                if (_receiptDetails == null)
                 {
-                    _details =_internalItem.ReceiptDetails.Select(c => new MD_ReceiptDetail(c)).ToList();
+                    _receiptDetails =_internalItem.ReceiptDetails.Select(c => new MD_ReceiptDetail(c)).ToList();
                 }
 
-                if (_details == null)
+                if (_receiptDetails == null)
                 {
-                    _details = new List<MD_ReceiptDetail>();
+                    _receiptDetails = new List<MD_ReceiptDetail>();
                 }
 
-                return _details;
+                return _receiptDetails;
             }
             set
             {

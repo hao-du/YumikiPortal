@@ -30,7 +30,7 @@ namespace Yumiki.Web.Shopper.Models
         {
             get
             {
-                return _internalItem.FeeType == null ? string.Empty : _internalItem.FeeType.FeeTypeName;
+                return _internalItem.FeeTypeName;
             }
         }
 

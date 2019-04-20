@@ -30,7 +30,7 @@ namespace Yumiki.Web.Shopper.Models
         {
             get
             {
-                return _internalItem.Product == null ? string.Empty : _internalItem.Product.ProductName;
+                return _internalItem.ProductName;
             }
         }
 
@@ -38,7 +38,7 @@ namespace Yumiki.Web.Shopper.Models
         {
             get
             {
-                return _internalItem.Product == null ? string.Empty : _internalItem.Product.ProductCode;
+                return _internalItem.ProductCode;
             }
         }
 
@@ -51,6 +51,18 @@ namespace Yumiki.Web.Shopper.Models
             set
             {
                 _internalItem.ProductID = value;
+            }
+        }
+
+        public Guid ReceiptID
+        {
+            get
+            {
+                return _internalItem.ReceiptID;
+            }
+            set
+            {
+                _internalItem.ReceiptID = value;
             }
         }
 
