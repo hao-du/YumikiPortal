@@ -4,14 +4,14 @@
 @using SquishIt.Framework;
 
 @{
-    ViewBag.Title = "Fee Types";
+    ViewBag.Title = "Receipts";
 }
 
 @section BottomScript{
     @MvcHtmlString.Create(
         Bundle.JavaScript()
         .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
-        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-additional-fee.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-receipt.js")
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_shopper_#.js"))
 
@@ -22,27 +22,29 @@
 
         yumiki.shopper.defaultObject = {
             '@CommonProperties.ID': undefined,
-            '@TB_AdditionalFee.FieldName.FeeTypeID': 0,
-            '@TB_AdditionalFee.FieldName.Amount': 0,
-            '@TB_AdditionalFee.FieldName.FeeIssueDate': '',
+            '@TB_Receipt.FieldName.ExternalReceiptID': '',
+            '@TB_Receipt.FieldName.ExternalReceiptUrl': '',
+            '@TB_Receipt.FieldName.ReceiptDate': '@ViewBag.CurrentDate',
+            '@TB_Receipt.FieldName.Status':  '@((int)EN_ReceiptStatus.E_ORDERED)',
+            '@TB_Receipt.FieldName.TotalAmount': 0,
             '@CommonProperties.Descriptions': '',
             '@CommonProperties.IsActive': true
         };
 
-        yumiki.shopper.additionalFee.init(
+        yumiki.shopper.receipt.init(
             {
-                getAllUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeGetAll, null)',
-                getByIdUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeGetByID, null)',
-                getFeeTypesUrl: '@Url.HttpRouteUrl(RouteNames.FeeTypeGetAll, null)',
-                saveUrl: '@Url.HttpRouteUrl(RouteNames.AdditionalFeeSave, null)'
+                getAllUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptGetAll, null)',
+                getByIdUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptGetByID, null)',
+                getFeeTypesUrl: '@Url.HttpRouteUrl(RouteNames.ProductGetByTerm, null)',
+                saveUrl: '@Url.HttpRouteUrl(RouteNames.ReceiptSave, null)'
             },
             '@Formats.DateTime.ClientMomentLongDate'
         );
     </script>
 }
-<div ng-app="shopperAdditionalFee">
-    <div class="container" ng-controller="additionalFeeController" ng-init="onLoad();">
-        <h1>Additional Fee</h1>
+<div ng-app="shopperReceipt">
+    <div class="container" ng-controller="receiptController" ng-init="onLoad();">
+        <h1>Receipts</h1>
         <div class="card bg-secondary">
             <div class="card-body p-2">
                 <div class="btn-group">
@@ -56,18 +58,18 @@
                 <thead class="thead-dark">
                     <tr>
                         <th></th>
-                        <th>Fee Type Name</th>
-                        <th class="text-right">Amount</th>
-                        <th>Issue Date</th>
+                        <th>Receipt Number</th>
+                        <th class="text-right">Receipt Date</th>
+                        <th class="text-right">Total Amount</th>
                         <th>Descriptions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in list">
                         <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                        <td>{{ item.@TB_AdditionalFee.FieldName.FeeTypeName }}</td>
-                        <td class="text-right">{{ item.@TB_AdditionalFee.FieldName.Amount | number:2 }}</td>
-                        <td>{{ item.@TB_AdditionalFee.FieldName.FeeIssueDateUI }}</td>
+                        <td>{{ item.@TB_Receipt.FieldName.ExternalReceiptID }}</td>
+                        <td class="text-right">{{ item.@TB_Receipt.FieldName.ReceiptDateUI }}</td>
+                        <td class="text-right">{{ item.@TB_Receipt.FieldName.TotalAmount | number:2 }}</td>
                         <td>{{ item.@CommonProperties.Descriptions }}</td>
                     </tr>
                 </tbody>
@@ -76,7 +78,7 @@
     </div>
 
     <!-- Modal -->
-    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="additionalFeeDialogController" ng-init="onLoad();">
+    <div id="dlgAddEditObject" class="modal fade y-modal-full y-modal-content-compact" role="dialog" ng-controller="receiptDialogController" ng-init="onLoad();">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <!-- Modal content-->
             <div class="modal-content">
@@ -86,34 +88,52 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Fee Type</label>
-                            <select class="form-control selectpicker" name="feeType" ng-required="true"
-                                    ng-model="object.@TB_AdditionalFee.FieldName.FeeTypeID"
-                                    ng-options="item.@CommonProperties.ID as item.@TB_FeeType.FieldName.FeeTypeName for item in feeTypes"
-                                    ng-class="{ 'border-danger' : dialogForm.feeType.$invalid && dialogForm.feeType.$dirty }">
-                                <option value="@CommonValues.EmptyValue" selected="selected">@CommonValues.SelectOneForDropDown</option>
-                            </select>
-                            <p ng-show="dialogForm.feeType.$error.required && dialogForm.feeType.$dirty" class="text-danger">Fee Type is required.</p>
+                            <label>Receipt Number</label>
+                            <input type="text" name="externalReceiptID" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptID" class="form-control"
+                                   ng-class="{ 'border-danger' : dialogForm.externalReceiptID.$invalid && dialogForm.externalReceiptID.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.externalReceiptID.$error.required && dialogForm.externalReceiptID.$dirty" class="text-danger">Receipt Number is required.</p>
                         </div>
 
                         <div class="form-group">
-                            <label>Issue Date</label>
-                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_AdditionalFee.FieldName.FeeIssueDate">
-                                <input type="text" name="feeIssuedDate" ng-model="object.@TB_AdditionalFee.FieldName.FeeIssueDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : dialogForm.feeIssuedDate.$invalid && dialogForm.feeIssuedDate.$dirty }" />
+                            <label>Receipt External Url</label>
+                            <input type="text" name="externalReceiptUrl" ng-model="object.@TB_Receipt.FieldName.ExternalReceiptUrl" class="form-control"
+                                   ng-class="{ 'border-danger' : dialogForm.externalReceiptUrl.$invalid && dialogForm.externalReceiptUrl.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.externalReceiptUrl.$error.required && dialogForm.externalReceiptUrl.$dirty" class="text-danger">Receipt External Url is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Receipt Date</label>
+                            <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_Receipt.FieldName.ReceiptDate">
+                                <input type="text" name="receiptDate" ng-model="object.@TB_Receipt.FieldName.ReceiptDate" class="form-control"
+                                       ng-required="true" ng-class="{ 'border-danger' : dialogForm.append.$invalid && dialogForm.append.$dirty }" />
                                 <div class="input-group-append input-group-calendar">
                                     <span class="input-group-text">
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                 </div>
                             </div>
-                            <p ng-show="dialogForm.feeIssuedDate.$error.required && dialogForm.feeIssuedDate.$dirty" class="text-danger">Issued Date is required.</p>
+                            <p ng-show="dialogForm.append.$error.required && dialogForm.append.$dirty" class="text-danger">Receipt Date is required.</p>
                         </div>
 
                         <div class="form-group">
-                            <label>Amount</label>
-                            <input type="text" name="amount" ng-model="object.@TB_AdditionalFee.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" ng-required="true" />
-                            <div class="text-right">{{ object.@TB_AdditionalFee.FieldName.Amount | number:2 }}</div>
-                            <p ng-show="dialogForm.amount.$error.required && dialogForm.amount.$dirty" class="text-danger">Amount is required.</p>
+                            <label>Total Amount</label>
+                            <input type="text" name="amount" ng-model="object.@TB_Receipt.FieldName.TotalAmount" class="form-control text-right"
+                                   ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_Receipt.FieldName.TotalAmount | number:2 }}</div>
+                            <p ng-show="dialogForm.amount.$error.required && dialogForm.amount.$dirty" class="text-danger">Total Amount is required.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control selectpicker" name="status" ng-required="true"
+                                    ng-model="object.@TB_Receipt.FieldName.Status"
+                                    ng-class="{ 'border-danger' : dialogForm.status.$invalid && dialogForm.status.$dirty }">
+                                @foreach (SelectListItem status in ViewBag.Statuses)
+                                {
+                                    <option value="@status.Value">@status.Text</option>
+                                }
+                            </select>
+                            <p ng-show="dialogForm.status.$error.required && dialogForm.status.$dirty" class="text-danger">Status is required.</p>
                         </div>
 
                         <div class="form-group">

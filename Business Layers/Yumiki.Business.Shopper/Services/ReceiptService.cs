@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.Shopper.Interfaces;
+using Yumiki.Commons.Entities;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Shopper.Interfaces;
@@ -44,6 +45,11 @@ namespace Yumiki.Business.Shopper.Services
             }
 
             Repository.SaveReceipt(receipt);
+        }
+
+        public List<ExtendEnum> GetStatuses()
+        {
+            return EnumHelper.GetDatasource<EN_ReceiptStatus>();
         }
     }
 }

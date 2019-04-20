@@ -20,3 +20,31 @@
 .table-sm td, .table-sm th {
     white-space: nowrap;
 }
+
+.y-modal-full {
+    padding: 15px;
+}
+
+.y-modal-full .modal-dialog {
+    max-width: 100%;
+    width: 100%;
+}
+
+.y-modal-content-compact label{
+    margin-bottom:0px;
+}
+
+.y-modal-content-compact input,
+.y-modal-content-compact select {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    height:30px !important;
+}
+
+.y-modal-content-compact input[type=checkbox] {
+    height: 20px !important;
+}
+
+.y-modal-content-compact .form-group {
+    margin-bottom:10px;
+}

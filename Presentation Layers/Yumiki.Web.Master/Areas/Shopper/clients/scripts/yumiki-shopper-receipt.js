@@ -7,7 +7,7 @@
         init: function (serviceUrls, longDateFormat) {
             yumiki.shopper.receipt.longDateFormat = longDateFormat;
 
-            var app = angular.module('shopperReceipt', ['ui.bootstrap']);
+            var app = angular.module('shopperReceipt', ['ui.bootstrap', 'yumiki-module']);
 
             yumiki.shopper.receipt.initService(app, serviceUrls);
             yumiki.shopper.receipt.initListController(app);
