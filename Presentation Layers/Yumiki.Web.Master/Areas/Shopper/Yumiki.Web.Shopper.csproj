@@ -152,6 +152,8 @@
     <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Models\MD_Base.cs" />
+    <Compile Include="Models\MD_FeeType.cs" />
+    <Compile Include="Models\MD_Product.cs" />
     <Compile Include="Models\MD_ReceiptExtraFee.cs" />
     <Compile Include="Models\MD_ReceiptDetail.cs" />
     <Compile Include="Models\MD_Receipt.cs" />

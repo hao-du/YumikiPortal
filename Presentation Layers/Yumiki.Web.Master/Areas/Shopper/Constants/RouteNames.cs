@@ -11,6 +11,7 @@ namespace Yumiki.Web.Shopper.Constants
 
         public const string FeeTypeGetAll = "FeeTypeGetAll";
         public const string FeeTypeGetByID = "FeeTypeGetByID";
+        public const string FeeTypeGetByTerm = "FeeTypeGetByTerm";
         public const string FeeTypeSave = "FeeTypeSave";
 
         public const string ProductGetAll = "ProductGetAll";

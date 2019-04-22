@@ -27,7 +27,7 @@ namespace Yumiki.Entity.Shopper
         {
             get
             {
-                return FeeIssueDate.ToString(Formats.DateTime.ShortDate);
+                return FeeIssueDate.ToString(Formats.DateTime.LongDate);
             }
         }
 

@@ -31,6 +31,22 @@ namespace Yumiki.Web.Shopper.Controllers
             }
         }
 
+        [Route("getbyterm", Name = RouteNames.FeeTypeGetByTerm)]
+        [HttpGet()]
+        public IHttpActionResult Get(string term)
+        {
+            try
+            {
+                List<TB_FeeType> feeTypes = BusinessService.GetFeeTypes(term);
+
+                return Ok(feeTypes);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("get", Name = RouteNames.FeeTypeGetByID)]
         [HttpGet()]
         public IHttpActionResult GetById(string feeTypeId)

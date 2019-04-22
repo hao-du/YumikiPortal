@@ -15,6 +15,8 @@ namespace Yumiki.Business.Shopper.Interfaces
     {
         List<TB_FeeType> GetFeeTypes(bool showInactive);
 
+        List<TB_FeeType> GetFeeTypes(string term);
+
         TB_FeeType GetFeeType(string feeTypeID);
 
         void SaveFeeType(TB_FeeType feeType);

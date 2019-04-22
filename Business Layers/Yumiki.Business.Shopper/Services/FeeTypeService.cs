@@ -16,7 +16,16 @@ namespace Yumiki.Business.Shopper.Services
     {
         public List<TB_FeeType> GetFeeTypes(bool showInactive)
         {
-            return Repository.GetFeeTypes(showInactive);
+            return Repository.GetFeeTypes(showInactive, null);
+        }
+        public List<TB_FeeType> GetFeeTypes(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Search Term cannot be empty.", Logger);
+            }
+
+            return Repository.GetFeeTypes(false, term);
         }
 
         public TB_FeeType GetFeeType(string feeTypeID)

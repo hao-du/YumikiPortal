@@ -26,6 +26,14 @@ namespace Yumiki.Web.Shopper.Models
             _internalItem = extraFee;
         }
 
+        public MD_FeeType FeeType
+        {
+            get
+            {
+                return new MD_FeeType(_internalItem.FeeType);
+            }
+        }
+
         public string FeeTypeName
         {
             get

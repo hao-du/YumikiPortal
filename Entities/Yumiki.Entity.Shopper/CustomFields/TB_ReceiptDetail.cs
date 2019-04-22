@@ -35,6 +35,7 @@ namespace Yumiki.Entity.Shopper
         {
             public const string TB_ReceiptDetail = "TB_ReceiptDetail";
 
+            public const string Product = "Product";
             public const string ProductName = "ProductName";
             public const string ProductCode = "ProductCode";
             public const string ProductID = "ProductID";

@@ -57,8 +57,8 @@
                     <tr>
                         <th></th>
                         <th>Fee Type Name</th>
+                        <th class="text-right">Issue Date</th>
                         <th class="text-right">Amount</th>
-                        <th>Issue Date</th>
                         <th>Descriptions</th>
                     </tr>
                 </thead>
@@ -66,8 +66,8 @@
                     <tr ng-repeat="item in list">
                         <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                         <td>{{ item.@TB_AdditionalFee.FieldName.FeeTypeName }}</td>
+                        <td class="text-right">{{ item.@TB_AdditionalFee.FieldName.FeeIssueDateUI }}</td>
                         <td class="text-right">{{ item.@TB_AdditionalFee.FieldName.Amount | number:2 }}</td>
-                        <td>{{ item.@TB_AdditionalFee.FieldName.FeeIssueDateUI }}</td>
                         <td>{{ item.@CommonProperties.Descriptions }}</td>
                     </tr>
                 </tbody>

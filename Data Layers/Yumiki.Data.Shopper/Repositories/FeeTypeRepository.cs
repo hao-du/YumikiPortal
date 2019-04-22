@@ -1,6 +1,8 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
 
@@ -8,9 +10,17 @@ namespace Yumiki.Data.Shopper.Repositories
 {
     public class FeeTypeRepository : ShopperRepository, IFeeTypeRepository
     {
-        public List<TB_FeeType> GetFeeTypes(bool showInactive)
+        public List<TB_FeeType> GetFeeTypes(bool showInactive, string term)
         {
-            return Context.TB_FeeType.Where(c => c.IsActive == !showInactive).ToList();
+            Expression<Func<TB_FeeType, bool>> expression = PredicateBuilder.New<TB_FeeType>(true);
+            expression = expression.And(c => c.IsActive != showInactive);
+
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                expression = expression.And(c => c.FeeTypeName.Contains(term));
+            }
+
+            return Context.TB_FeeType.Where(expression).ToList();
         }
 
         public TB_FeeType GetFeeType(Guid feeTypeID)

@@ -26,6 +26,14 @@ namespace Yumiki.Web.Shopper.Models
             _internalItem = receiptDetail;
         }
 
+        public MD_Product Product
+        {
+            get
+            {
+                return new MD_Product(_internalItem.Product);
+            }
+        }
+
         public string ProductName
         {
             get

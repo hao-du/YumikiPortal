@@ -15,8 +15,12 @@ namespace Yumiki.Data.Shopper.Repositories
         public List<TB_Product> GetProducts(bool showInactive, string term)
         {
             Expression<Func<TB_Product, bool>> expression = PredicateBuilder.New<TB_Product>(true);
-            expression.And(c => c.IsActive == !showInactive);
-            expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
+            expression = expression.And(c => c.IsActive != showInactive);
+
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                expression = expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
+            }
 
             return Context.TB_Product.Where(expression).ToList();
         }

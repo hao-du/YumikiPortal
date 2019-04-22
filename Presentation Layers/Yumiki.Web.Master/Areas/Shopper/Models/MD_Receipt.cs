@@ -52,15 +52,15 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
-        public int Status
+        public string Status
         {
             get
             {
-                return (int)_internalItem.Status;
+                return ((int)_internalItem.Status).ToString();
             }
             set
             {
-                _internalItem.Status = (EN_ReceiptStatus)value;
+                _internalItem.Status = (EN_ReceiptStatus)int.Parse(value);
             }
         }
 
@@ -152,6 +152,14 @@ namespace Yumiki.Web.Shopper.Models
         public override TB_Receipt ToObject()
         {
             _internalItem.UserID = CurrentUser.UserID;
+
+            List<TB_ReceiptDetail> details = new List<TB_ReceiptDetail>();
+            details.AddRange(ReceiptDetails.Select(c => c.ToObject()));
+            _internalItem.ReceiptDetails = details;
+
+            List< TB_ReceiptExtraFee> extraFees = new List<TB_ReceiptExtraFee>();
+            extraFees.AddRange(ReceiptExtraFees.Select(c => c.ToObject()));
+            _internalItem.ReceiptExtraFees = extraFees;
 
             return base.ToObject();
         }

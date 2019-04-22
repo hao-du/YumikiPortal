@@ -27,6 +27,7 @@ namespace Yumiki.Entity.Shopper
         {
             public const string TB_ReceiptExtraFee = "TB_ReceiptExtraFee";
 
+            public const string FeeType = "FeeType";
             public const string FeeTypeName = "FeeTypeName";
             public const string FeeTypeID = "FeeTypeID";
             public const string ReceiptID = "ReceiptID";
