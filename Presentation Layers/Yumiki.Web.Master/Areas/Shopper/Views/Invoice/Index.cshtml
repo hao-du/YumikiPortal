@@ -1,0 +1,359 @@
+﻿@using Yumiki.Web.Shopper.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.Shopper;
+@using SquishIt.Framework;
+
+@{
+    ViewBag.Title = "Invoices";
+}
+
+@section BottomScript{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-invoice.js")
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_shopper_#.js"))
+
+    <script type="text/javascript">
+        yumiki.shopper.init (
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+
+        yumiki.shopper.defaultObject = {
+            '@CommonProperties.ID': undefined,
+            '@TB_Invoice.FieldName.InvoiceNumber': '',
+            '@TB_Invoice.FieldName.CustomerName': '',
+            '@TB_Invoice.FieldName.CustomerAddress': '',
+            '@TB_Invoice.FieldName.CustomerPhone': '',
+            '@TB_Invoice.FieldName.CustomerEmail': '',
+            '@TB_Invoice.FieldName.CustomerNote': '',
+            '@TB_Invoice.FieldName.InvoiceDate': '@ViewBag.CurrentDate',
+            '@TB_Invoice.FieldName.Status':  '@((int)EN_InvoiceStatus.E_CREATED)',
+            '@TB_Invoice.FieldName.TotalAmount': 0,
+            '@CommonProperties.Descriptions': '',
+            '@CommonProperties.IsActive': true,
+            '@TB_Invoice.FieldName.InvoiceDetails': [],
+            '@TB_Invoice.FieldName.InvoiceExtraFees': []
+        };
+
+        yumiki.shopper.invoice.init(
+            {
+                getAllUrl: '@Url.HttpRouteUrl(RouteNames.InvoiceGetAll, null)',
+                getByIdUrl: '@Url.HttpRouteUrl(RouteNames.InvoiceGetByID, null)',
+                getProductsByTerm: '@Url.HttpRouteUrl(RouteNames.ProductGetByTerm, null)',
+                getFeeTypeByTerm: '@Url.HttpRouteUrl(RouteNames.FeeTypeGetByTerm, null)',
+                saveUrl: '@Url.HttpRouteUrl(RouteNames.InvoiceSave, null)'
+            },
+            '@Formats.DateTime.ClientMomentLongDate',
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_InvoiceDetail.FieldName.InvoiceID': undefined,
+                '@TB_InvoiceDetail.FieldName.Product': undefined,
+                '@TB_InvoiceDetail.FieldName.ProductID': undefined,
+                '@TB_InvoiceDetail.FieldName.ProductCode': '',
+                '@TB_InvoiceDetail.FieldName.ProductName': '',
+                '@TB_InvoiceDetail.FieldName.OriginalPrice': 0,
+                '@TB_InvoiceDetail.FieldName.UnitPrice': 0,
+                '@TB_InvoiceDetail.FieldName.Quantity': 0,
+                '@TB_InvoiceDetail.FieldName.Amount': 0,
+                '@CommonProperties.Descriptions': '',
+                '@CommonProperties.IsActive': true
+            },
+            {
+                '@CommonProperties.ID': undefined,
+                '@TB_InvoiceExtraFee.FieldName.InvoiceID': undefined,
+                '@TB_InvoiceExtraFee.FieldName.FeeType': undefined,
+                '@TB_InvoiceExtraFee.FieldName.FeeTypeID': undefined,
+                '@TB_InvoiceExtraFee.FieldName.FeeTypeName': '',
+                '@TB_InvoiceExtraFee.FieldName.Amount':  0,
+                '@CommonProperties.Descriptions': '',
+                '@CommonProperties.IsActive': true
+            }
+        );
+    </script>
+}
+<div ng-app="shopperInvoice">
+    <div class="container" ng-controller="invoiceController" ng-init="onLoad();">
+        <h1>Invoices</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tblCurrency" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Invoice Number</th>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Customer Address</th>
+                        <th class="text-right">Invoice Date</th>
+                        <th class="text-right">Total Amount</th>
+                        <th>Descriptions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in list">
+                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                        <td>{{ item.@TB_Invoice.FieldName.InvoiceNumber }}</td>
+                        <td>{{ item.@TB_Invoice.FieldName.CustomerName }}</td>
+                        <td>{{ item.@TB_Invoice.FieldName.CustomerPhone }}</td>
+                        <td>{{ item.@TB_Invoice.FieldName.CustomerAddress }}</td>
+                        <td class="text-right">{{ item.@TB_Invoice.FieldName.InvoiceDate }}</td>
+                        <td class="text-right">{{ item.@TB_Invoice.FieldName.TotalAmount | number:2 }}</td>
+                        <td>{{ item.@CommonProperties.Descriptions }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgAddEditObject" class="modal fade y-modal-full y-modal-content-compact" role="dialog" ng-controller="invoiceDialogController" ng-init="onLoad();">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Invoice Number</label>
+                                <input type="text" name="invoiceNumber" ng-model="object.@TB_Invoice.FieldName.InvoiceNumber" class="form-control"
+                                       ng-class="{ 'border-danger' : dialogForm.invoiceNumber.$invalid && dialogForm.invoiceNumber.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.invoiceNumber.$error.required && dialogForm.invoiceNumber.$dirty" class="text-danger">Invoice Number is required.</p>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Status</label>
+                                <select class="form-control selectpicker" name="status" ng-required="true"
+                                        ng-model="object.@TB_Invoice.FieldName.Status"
+                                        ng-class="{ 'border-danger' : dialogForm.status.$invalid && dialogForm.status.$dirty }">
+                                    @foreach (SelectListItem status in ViewBag.Statuses)
+                                    {
+                                        <option value="@status.Value">@status.Text</option>
+                                    }
+                                </select>
+                                <p ng-show="dialogForm.status.$error.required && dialogForm.status.$dirty" class="text-danger">Status is required.</p>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Invoice Date</label>
+                                <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="object.@TB_Invoice.FieldName.InvoiceDate">
+                                    <input type="text" name="invoiceDate" ng-model="object.@TB_Invoice.FieldName.InvoiceDate" class="form-control"
+                                           ng-required="true" ng-class="{ 'border-danger' : dialogForm.invoiceDate.$invalid && dialogForm.invoiceDate.$dirty }" />
+                                    <div class="input-group-append input-group-calendar">
+                                        <span class="input-group-text">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <p ng-show="dialogForm.invoiceDate.$error.required && dialogForm.invoiceDate.$dirty" class="text-danger">Invoice Date is required.</p>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Customer Name</label>
+                                    <input type="text" name="customerName" ng-model="object.@TB_Invoice.FieldName.CustomerName" class="form-control bg-warning"
+                                           ng-class="{ 'border-danger' : dialogForm.customerName.$invalid && dialogForm.customerName.$dirty }" ng-required="true" />
+                                    <p ng-show="dialogForm.customerName.$error.required && dialogForm.customerName.$dirty" class="text-danger">Customer Name is required.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Customer Address</label>
+                                    <input type="text" name="customerAddress" ng-model="object.@TB_Invoice.FieldName.CustomerAddress" class="form-control bg-warning"
+                                           ng-class="{ 'border-danger' : dialogForm.customerAddress.$invalid && dialogForm.customerAddress.$dirty }" ng-required="true" />
+                                    <p ng-show="dialogForm.customerAddress.$error.required && dialogForm.customerAddress.$dirty" class="text-danger">Customer Address is required.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Customer Phone</label>
+                                    <input type="text" name="customerPhone" ng-model="object.@TB_Invoice.FieldName.CustomerPhone" class="form-control bg-warning"
+                                           ng-class="{ 'border-danger' : dialogForm.customerPhone.$invalid && dialogForm.customerPhone.$dirty }" ng-required="true" />
+                                    <p ng-show="dialogForm.customerPhone.$error.required && dialogForm.customerPhone.$dirty" class="text-danger">Customer Phone is required.</p>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-group">
+                                    <label>Customer Email</label>
+                                    <input type="text" name="customerEmail" ng-model="object.@TB_Invoice.FieldName.CustomerEmail" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Customer Note</label>
+                                    <textarea ng-model="object.@TB_Invoice.FieldName.CustomerNote" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Descriptions</label>
+                                    <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                                </div>
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tblDetails" class="table table-sm table-striped table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th><button type="button" class="btn btn-warning" ng-click="onShowDetailDialog();">New...</button></th>
+                                        <th>Product</th>
+                                        <th class="text-right">Old Price</th>
+                                        <th class="text-right">Price</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th class="text-right">Amount</th>
+                                        <th>Descriptions</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="detail in object.@TB_Invoice.FieldName.InvoiceDetails">
+                                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDetailDialog(detail);"><span class="fa fa-edit"></span></a></td>
+                                        <td>{{ detail.@TB_InvoiceDetail.FieldName.ProductCode + ' - ' + detail.@TB_InvoiceDetail.FieldName.ProductName }}</td>
+                                        <td class="text-right">{{ detail.@TB_InvoiceDetail.FieldName.OriginalPrice | number:2 }}</td>
+                                        <td class="text-right">{{ detail.@TB_InvoiceDetail.FieldName.UnitPrice | number:2 }}</td>
+                                        <td class="text-right">{{ detail.@TB_InvoiceDetail.FieldName.Quantity }}</td>
+                                        <td class="text-right">{{ detail.@TB_InvoiceDetail.FieldName.Amount | number:2 }}</td>
+                                        <td>{{ detail.@CommonProperties.Descriptions }}</td>
+                                        <td>
+                                            <a href="#" id="btnDelete" title="Delete" ng-click="onDeleteDetail(detail);"><span class="fa fa-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive col-md-9">
+                                <table id="tblExtraFees" class="table table-sm table-striped table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th><button type="button" class="btn btn-danger" ng-click="onShowExtraFeeDialog();">New...</button></th>
+                                            <th>Fee Name</th>
+                                            <th class="text-right">Amount</th>
+                                            <th>Descriptions</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="extraFee in object.@TB_Invoice.FieldName.InvoiceExtraFees">
+                                            <td>
+                                                <a href="#" id="btnEdit" title="Edit" ng-click="onShowExtraFeeDialog(extraFee);"><span class="fa fa-edit"></span></a>
+                                            </td>
+                                            <td>{{ extraFee.@TB_InvoiceExtraFee.FieldName.FeeTypeName }}</td>
+                                            <td class="text-right">{{ extraFee.@TB_InvoiceExtraFee.FieldName.Amount | number:2 }}</td>
+                                            <td>{{ extraFee.@CommonProperties.Descriptions }}</td>
+                                            <td>
+                                                <a href="#" id="btnDelete" title="Delete" ng-click="onDeleteExtraFee(extraFee);"><span class="fa fa-trash"></span></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Total Amount</label>
+                                <input type="text" name="amount" ng-model="object.@TB_Invoice.FieldName.TotalAmount" class="text-white bg-success form-control text-right"
+                                       ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" readonly="readonly" />
+                                <div class="text-right">{{ object.@TB_Invoice.FieldName.TotalAmount | number:2 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-primary text-white">
+                        <button type="submit" class="btn btn-success" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Detail Modal -->
+    <div id="dlgAddEditDetail" class="modal fade" role="dialog" ng-controller="detailDialogController">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Product</label>
+                            <input type="text" name="productName" productautocomplete ng-model="object.@TB_InvoiceDetail.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Old Price</label>
+                            <input type="text" name="oldPrice" ng-model="object.@TB_InvoiceDetail.FieldName.OriginalPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.oldPrice.$invalid && dialogForm.oldPrice.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_InvoiceDetail.FieldName.OriginalPrice | number:2 }}</div>
+                            <p ng-show="dialogForm.oldPrice.$error.required && dialogForm.oldPrice.$dirty" class="text-danger">Old Price is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="text" name="unitPrice" ng-model="object.@TB_InvoiceDetail.FieldName.UnitPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.unitPrice.$invalid && dialogForm.unitPrice.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_InvoiceDetail.FieldName.UnitPrice | number:2 }}</div>
+                            <p ng-show="dialogForm.unitPrice.$error.required && dialogForm.unitPrice.$dirty" class="text-danger">Price is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="text" name="quantity" ng-model="object.@TB_InvoiceDetail.FieldName.Quantity" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.quantity.$invalid && dialogForm.quantity.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_InvoiceDetail.FieldName.Quantity | number:2 }}</div>
+                            <p ng-show="dialogForm.quantity.$error.required && dialogForm.quantity.$dirty" class="text-danger">Quantity is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Extra Fee Modal -->
+    <div id="dlgAddEditExtraFee" class="modal fade" role="dialog" ng-controller="extraFeeDialogController">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Fee Type</label>
+                            <input type="text" name="feeTypeName" feetypeautocomplete ng-model="object.@TB_InvoiceExtraFee.FieldName.FeeTypeName" class="form-control" ng-class="{ 'border-danger' : dialogForm.feeTypeName.$invalid && dialogForm.feeTypeName.$dirty }" ng-required="true" />
+                            <p ng-show="dialogForm.feeTypeName.$error.required && dialogForm.feeTypeName.$dirty" class="text-danger">Fee Type is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount</label>
+                            <input type="text" name="amount" ng-model="object.@TB_InvoiceExtraFee.FieldName.Amount" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.amount.$invalid && dialogForm.amount.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_InvoiceDetail.FieldName.Amount | number:2 }}</div>
+                            <p ng-show="dialogForm.amount.$error.required && dialogForm.amount.$dirty" class="text-danger">Price is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

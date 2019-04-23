@@ -10,6 +10,104 @@ namespace Yumiki.Data.Shopper.Repositories
 {
     public class InvoiceRepository : ShopperRepository, IInvoiceRepository
     {
-        
+        public List<TB_Invoice> GetInvoices(bool showInactive)
+        {
+            return Context.TB_Invoice
+                .Include(TB_Invoice.FieldName.InvoiceDetails)
+                .Include($"{TB_Invoice.FieldName.InvoiceDetails}.{TB_InvoiceDetail.FieldName.Product}")
+                .Include(TB_Invoice.FieldName.InvoiceExtraFees)
+                .Include($"{TB_Invoice.FieldName.InvoiceExtraFees}.{TB_InvoiceExtraFee.FieldName.FeeType}")
+                .Where(c => c.IsActive == !showInactive).ToList();
+        }
+
+        public TB_Invoice GetInvoice(Guid invoiceID)
+        {
+            return Context.TB_Invoice
+                .Include(TB_Invoice.FieldName.InvoiceDetails)
+                .Include(TB_Invoice.FieldName.InvoiceExtraFees)
+                .SingleOrDefault(c => c.ID == invoiceID);
+        }
+
+        public void SaveInvoice(TB_Invoice invoice)
+        {
+            if (invoice.ID == Guid.Empty)
+            {
+                Context.TB_Invoice.Add(invoice);
+            }
+            else
+            {
+                TB_Invoice dbInvoice = Context.TB_Invoice
+                    .Include(TB_Invoice.FieldName.InvoiceDetails)
+                    .Include(TB_Invoice.FieldName.InvoiceExtraFees)
+                    .Single(c => c.ID == invoice.ID);
+
+                dbInvoice.InvoiceNumber = invoice.InvoiceNumber;
+                dbInvoice.CustomerName = invoice.CustomerName;
+                dbInvoice.CustomerAddress = invoice.CustomerAddress;
+                dbInvoice.CustomerPhone = invoice.CustomerPhone;
+                dbInvoice.CustomerEmail = invoice.CustomerEmail;
+                dbInvoice.CustomerNote = invoice.CustomerNote;
+
+                dbInvoice.TotalAmount = invoice.TotalAmount;
+                dbInvoice.InvoiceDate = invoice.InvoiceDate;
+                dbInvoice.Status = invoice.Status;
+
+                dbInvoice.Descriptions = invoice.Descriptions;
+                dbInvoice.IsActive = invoice.IsActive;
+
+                Guid[] detailIDs = invoice.InvoiceDetails.Select(c => c.ID).ToArray();
+                IEnumerable<TB_InvoiceDetail> deletingDetails = dbInvoice.InvoiceDetails.Where(c => !detailIDs.Contains(c.ID));
+
+                Context.TB_InvoiceDetail.RemoveRange(deletingDetails);
+
+                foreach (TB_InvoiceDetail detail in invoice.InvoiceDetails)
+                {
+                    if (detail.ID == Guid.Empty)
+                    {
+                        dbInvoice.InvoiceDetails.Add(detail);
+                    }
+                    else
+                    {
+                        TB_InvoiceDetail dbInvoiceDetail = dbInvoice.InvoiceDetails.SingleOrDefault(c => c.ID == detail.ID);
+
+                        if (dbInvoiceDetail != null)
+                        {
+                            dbInvoiceDetail.ProductID = detail.ProductID;
+                            dbInvoiceDetail.OriginalPrice = detail.OriginalPrice;
+                            dbInvoiceDetail.UnitPrice = detail.UnitPrice;
+                            dbInvoiceDetail.Quantity = detail.Quantity;
+                            dbInvoiceDetail.Amount = detail.Amount;
+                            dbInvoiceDetail.Descriptions = detail.Descriptions;
+                        }
+                    }
+                }
+
+                Guid[] extraFeeIDs = invoice.InvoiceExtraFees.Select(c => c.ID).ToArray();
+                IEnumerable<TB_InvoiceExtraFee> deletingExtraFees = dbInvoice.InvoiceExtraFees.Where(c => !extraFeeIDs.Contains(c.ID));
+
+                Context.TB_InvoiceExtraFee.RemoveRange(deletingExtraFees);
+
+                foreach (TB_InvoiceExtraFee extraFee in invoice.InvoiceExtraFees)
+                {
+                    if (extraFee.ID == Guid.Empty)
+                    {
+                        dbInvoice.InvoiceExtraFees.Add(extraFee);
+                    }
+                    else
+                    {
+                        TB_InvoiceExtraFee dbExtraFee = dbInvoice.InvoiceExtraFees.SingleOrDefault(c => c.ID == extraFee.ID);
+
+                        if (dbExtraFee != null)
+                        {
+                            dbExtraFee.FeeTypeID = extraFee.FeeTypeID;
+                            dbExtraFee.Amount = extraFee.Amount;
+                            dbExtraFee.Descriptions = extraFee.Descriptions;
+                        }
+                    }
+                }
+            }
+
+            Save();
+        }
     }
 }
