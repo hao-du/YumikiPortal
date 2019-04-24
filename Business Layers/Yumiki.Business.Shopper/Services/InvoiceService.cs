@@ -69,7 +69,7 @@ namespace Yumiki.Business.Shopper.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice Details is required.", Logger);
             }
 
-            if (invoice.TotalAmount <= decimal.Zero)
+            if (invoice.TotalAmount <= decimal.Zero && invoice.Status != EN_InvoiceStatus.E_UNPACKED)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Total Amount must be greater than 0.", Logger);
             }

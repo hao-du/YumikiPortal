@@ -178,7 +178,6 @@
     <Content Include="clients\scripts\yumiki-side-bar.js" />
     <Content Include="clients\scripts\yumiki.js" />
     <Content Include="Global.asax" />
-    <None Include="clients\styles\site.scss" />
     <Content Include="Pages\Security\TestLogin.aspx" />
     <Content Include="Pages\Security\Login.aspx" />
     <Content Include="third-party-clients\angular-js-1.6.9\angular.min.js" />
@@ -268,6 +267,7 @@
       <DependentUpon>Yumiki.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
+    <Content Include="clients\styles\site.scss" />
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Views\Shared\_BlankLayout.cshtml" />
