@@ -8,7 +8,7 @@ namespace Yumiki.Entity.Shopper
     {
         public TB_InvoiceDetail()
         {
-            Stock = new HashSet<TB_Stock>();
+            Stocks = new HashSet<TB_Stock>();
         }
 
         public Guid ID { get; set; }
@@ -41,6 +41,6 @@ namespace Yumiki.Entity.Shopper
 
         public virtual TB_User User { get; set; }
 
-        public virtual ICollection<TB_Stock> Stock { get; set; }
+        public virtual ICollection<TB_Stock> Stocks { get; set; }
     }
 }

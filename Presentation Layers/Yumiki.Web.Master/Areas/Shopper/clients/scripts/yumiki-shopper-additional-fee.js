@@ -26,7 +26,7 @@
                 };
 
                 this.getFeeTypes = function () {
-                    return $http.get(serviceUrls.getFeeTypesUrl, { params: { 'showInactive': false } });
+                    return $http.get(serviceUrls.getFeeTypesUrl, { params: { 'showInactive': false, 'forReceipt': false, 'forInvoice': false, 'forAdditionFee': true } });
                 };
 
                 this.save = function (currency) {

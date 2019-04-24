@@ -17,11 +17,11 @@ namespace Yumiki.Web.Shopper.Controllers
     {
         [Route("getall", Name = RouteNames.FeeTypeGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive)
+        public IHttpActionResult Get(bool showInactive, bool forReceipt = false, bool forInvoice = false, bool forAdditionFee = false)
         {
             try
             {
-                List<TB_FeeType> feeTypes = BusinessService.GetFeeTypes(showInactive);
+                List<TB_FeeType> feeTypes = BusinessService.GetFeeTypes(showInactive, forReceipt, forInvoice, forAdditionFee);
 
                 return Ok(feeTypes);
             }
@@ -33,11 +33,11 @@ namespace Yumiki.Web.Shopper.Controllers
 
         [Route("getbyterm", Name = RouteNames.FeeTypeGetByTerm)]
         [HttpGet()]
-        public IHttpActionResult Get(string term)
+        public IHttpActionResult Get(string term, bool forReceipt, bool forInvoice, bool forAdditionFee)
         {
             try
             {
-                List<TB_FeeType> feeTypes = BusinessService.GetFeeTypes(term);
+                List<TB_FeeType> feeTypes = BusinessService.GetFeeTypes(term, forReceipt, forInvoice, forAdditionFee);
 
                 return Ok(feeTypes);
             }

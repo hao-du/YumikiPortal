@@ -69,9 +69,10 @@ namespace Yumiki.Entity.Shopper
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_InvoiceDetail>()
-                .HasMany(e => e.Stock)
-                .WithOptional(e => e.InvoiceDetails)
-                .HasForeignKey(e => e.InvoiceDetailID);
+                .HasMany(e => e.Stocks)
+                .WithOptional(e => e.InvoiceDetail)
+                .HasForeignKey(e => e.InvoiceDetailID)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<TB_Product>()
                 .HasMany(e => e.InvoiceDetails)
@@ -81,6 +82,12 @@ namespace Yumiki.Entity.Shopper
 
             modelBuilder.Entity<TB_Product>()
                 .HasMany(e => e.ReceiptDetails)
+                .WithRequired(e => e.Product)
+                .HasForeignKey(e => e.ProductID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Product>()
+                .HasMany(e => e.Stocks)
                 .WithRequired(e => e.Product)
                 .HasForeignKey(e => e.ProductID)
                 .WillCascadeOnDelete(false);
@@ -99,8 +106,9 @@ namespace Yumiki.Entity.Shopper
 
             modelBuilder.Entity<TB_ReceiptDetail>()
                 .HasMany(e => e.Stocks)
-                .WithOptional(e => e.ReceiptDetails)
-                .HasForeignKey(e => e.ReceiptDetailID);
+                .WithOptional(e => e.ReceiptDetail)
+                .HasForeignKey(e => e.ReceiptDetailID)
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<TB_User>()
                 .Property(e => e.UserLoginName)

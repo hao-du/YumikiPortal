@@ -10,7 +10,7 @@ namespace Yumiki.Data.Shopper.Interfaces
 {
     public interface IFeeTypeRepository
     {
-        List<TB_FeeType> GetFeeTypes(bool showInactive, string term);
+        List<TB_FeeType> GetFeeTypes(bool showInactive, string term, bool forReceipt, bool forInvoice, bool forAdditionFee);
 
         TB_FeeType GetFeeType(Guid feeTypeID);
 

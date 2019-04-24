@@ -7,6 +7,14 @@
     ViewBag.Title = "Products";
 }
 
+@section HeadScript{
+    <style type="text/css">
+        .ymk-thumbnail {
+            width:70px;
+        }
+    </style>
+}
+
 @section BottomScript{
     @MvcHtmlString.Create(
         Bundle.JavaScript()
@@ -24,6 +32,7 @@
             '@CommonProperties.ID': undefined,
             '@TB_Product.FieldName.ProductName': '',
             '@TB_Product.FieldName.ProductCode': '',
+            '@TB_Product.FieldName.OriginalPrice': 0,
             '@TB_Product.FieldName.Price': 0,
             '@TB_Product.FieldName.FeaturedImage': '',
             '@TB_Product.FieldName.SourceUrl': '',
@@ -55,9 +64,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th></th>
-                        <th></th>
-                        <th>Product Code</th>
-                        <th>Product Name</th>
+                        <th colspan="2">Product</th>
                         <th class="text-right">Price</th>
                         <th>Descriptions</th>
                         <th>Modified Date</th>
@@ -66,9 +73,11 @@
                 <tbody>
                     <tr ng-repeat="item in list">
                         <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                        <td></td>
-                        <td>{{ item.@TB_Product.FieldName.ProductCode }}</td>
-                        <td>{{ item.@TB_Product.FieldName.ProductName }}</td>
+                        <td>
+                            <img ng-src="{{ item.@TB_Product.FieldName.FeaturedImage }}"
+                                 alt="{{ item.@TB_Product.FieldName.ProductCode + ' - ' + item.@TB_Product.FieldName.ProductName }}" class="img-fluid img-thumbnail ymk-thumbnail" />
+                        </td>
+                        <td>{{ item.@TB_Product.FieldName.ProductCode }} - {{ item.@TB_Product.FieldName.ProductName | limitTo: 50 }}{{ (item.@TB_Product.FieldName.ProductName).length > 50 ? '...' : ''}} </td>
                         <td class="text-right">{{ item.@TB_Product.FieldName.Price | number:2 }}</td>
                         <td>{{ item.@CommonProperties.Descriptions }}</td>
                         <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
@@ -97,6 +106,12 @@
                             <label>Product Name</label>
                             <input type="text" name="productName" ng-model="object.@TB_Product.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
                             <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product Name is required.</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Old Price</label>
+                            <input type="text" name="oldPrice" ng-model="object.@TB_Product.FieldName.OriginalPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.oldPrice.$invalid && dialogForm.oldPrice.$dirty }" ng-required="true" />
+                            <div class="text-right">{{ object.@TB_Product.FieldName.OriginalPrice | number:2 }}</div>
+                            <p ng-show="dialogForm.oldPrice.$error.required && dialogForm.oldPrice.$dirty" class="text-danger">Old Price is required.</p>
                         </div>
                         <div class="form-group">
                             <label>Price</label>

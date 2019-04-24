@@ -7,6 +7,8 @@ namespace Yumiki.Entity.Shopper
     {
         public Guid ID { get; set; }
 
+        public Guid ProductID { get; set; }
+
         public Guid? InvoiceDetailID { get; set; }
 
         public Guid? ReceiptDetailID { get; set; }
@@ -23,8 +25,10 @@ namespace Yumiki.Entity.Shopper
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual TB_InvoiceDetail InvoiceDetails { get; set; }
+        public virtual TB_Product Product { get; set; }
 
-        public virtual TB_ReceiptDetail ReceiptDetails { get; set; }
+        public virtual TB_InvoiceDetail InvoiceDetail { get; set; }
+
+        public virtual TB_ReceiptDetail ReceiptDetail { get; set; }
     }
 }

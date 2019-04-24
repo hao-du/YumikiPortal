@@ -63,6 +63,11 @@ namespace Yumiki.Business.Shopper.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Featured Image is required.", Logger);
             }
 
+            if (product.OriginalPrice <= decimal.Zero)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Old Price must be greater than 0.", Logger);
+            }
+
             if (product.Price <= decimal.Zero)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Price must be greater than 0.", Logger);

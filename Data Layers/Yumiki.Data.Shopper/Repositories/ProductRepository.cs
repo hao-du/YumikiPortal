@@ -41,6 +41,7 @@ namespace Yumiki.Data.Shopper.Repositories
                 TB_Product dbProduct = Context.TB_Product.Single(c => c.ID == product.ID);
                 dbProduct.ProductName = product.ProductName;
                 dbProduct.ProductCode = product.ProductCode;
+                dbProduct.OriginalPrice = product.OriginalPrice;
                 dbProduct.Price = product.Price;
                 dbProduct.FeaturedImage = product.FeaturedImage;
                 dbProduct.SourceUrl = product.SourceUrl;

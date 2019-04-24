@@ -10,10 +10,21 @@ namespace Yumiki.Data.Shopper.Repositories
 {
     public class FeeTypeRepository : ShopperRepository, IFeeTypeRepository
     {
-        public List<TB_FeeType> GetFeeTypes(bool showInactive, string term)
+        public List<TB_FeeType> GetFeeTypes(bool showInactive, string term, bool forReceipt, bool forInvoice, bool forAdditionFee)
         {
             Expression<Func<TB_FeeType, bool>> expression = PredicateBuilder.New<TB_FeeType>(true);
             expression = expression.And(c => c.IsActive != showInactive);
+
+            Expression<Func<TB_FeeType, bool>> displayExpression = PredicateBuilder.New<TB_FeeType>(false);
+            bool hasDiplay = false;
+            if (forReceipt) { displayExpression = displayExpression.Or(c => c.ShowInReceipt); hasDiplay = true; }
+            if (forInvoice) { displayExpression = displayExpression.Or(c => c.ShowInInvoice); hasDiplay = true; }
+            if (forAdditionFee) { displayExpression = displayExpression.Or(c => c.ShowInAdditionalFee); hasDiplay = true; }
+
+            if (hasDiplay)
+            {
+                expression = expression.And(displayExpression);
+            }
 
             if (!string.IsNullOrWhiteSpace(term))
             {

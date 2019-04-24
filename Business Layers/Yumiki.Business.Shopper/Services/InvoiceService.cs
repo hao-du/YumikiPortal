@@ -24,7 +24,7 @@ namespace Yumiki.Business.Shopper.Services
         {
             if (string.IsNullOrWhiteSpace(invoiceID))
             {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice ID cannot be empty.", Logger);
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice ID is required.", Logger);
             }
 
             Guid convertedInvoiceID = Guid.Empty;
@@ -39,6 +39,41 @@ namespace Yumiki.Business.Shopper.Services
 
         public void SaveInvoice(TB_Invoice invoice)
         {
+            if (string.IsNullOrWhiteSpace(invoice.InvoiceNumber))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice Number is required.", Logger);
+            }
+
+            if (string.IsNullOrWhiteSpace(invoice.CustomerName))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Customer Name is required.", Logger);
+            }
+
+            if (string.IsNullOrWhiteSpace(invoice.CustomerAddress))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Customer Address is required.", Logger);
+            }
+
+            if (string.IsNullOrWhiteSpace(invoice.CustomerPhone))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Customer Phone is required.", Logger);
+            }
+
+            if (invoice.InvoiceDate == DateTime.MinValue)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice Date is required.", Logger);
+            }
+
+            if (!invoice.InvoiceDetails.Any())
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Invoice Details is required.", Logger);
+            }
+
+            if (invoice.Status <= 0)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Status is required.", Logger);
+            }
+
             if (invoice.TotalAmount <= decimal.Zero)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Total Amount must be greater than 0.", Logger);

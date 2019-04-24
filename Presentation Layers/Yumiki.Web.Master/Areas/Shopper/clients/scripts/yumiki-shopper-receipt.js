@@ -31,7 +31,7 @@
                     };
 
                     this.getFeeTypeByTerm = function (term) {
-                        return $http.get(serviceUrls.getFeeTypeByTerm, { params: { 'term': term } });
+                        return $http.get(serviceUrls.getFeeTypeByTerm, { params: { 'term': term, 'forReceipt': true, 'forInvoice': false, 'forAdditionFee': false } });
                     };
 
                     this.save = function (object) {

@@ -13,9 +13,9 @@ namespace Yumiki.Business.Shopper.Interfaces
 {
     public interface IFeeTypeService
     {
-        List<TB_FeeType> GetFeeTypes(bool showInactive);
+        List<TB_FeeType> GetFeeTypes(bool showInactive, bool forReceipt, bool forInvoice, bool forAdditionFee);
 
-        List<TB_FeeType> GetFeeTypes(string term);
+        List<TB_FeeType> GetFeeTypes(string term, bool forReceipt, bool forInvoice, bool forAdditionFee);
 
         TB_FeeType GetFeeType(string feeTypeID);
 

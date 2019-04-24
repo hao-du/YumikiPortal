@@ -39,6 +39,26 @@ namespace Yumiki.Business.Shopper.Services
 
         public void SaveReceipt(TB_Receipt receipt)
         {
+            if (string.IsNullOrWhiteSpace(receipt.ExternalReceiptID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Receipt Number is required.", Logger);
+            }
+
+            if (receipt.ReceiptDate == DateTime.MinValue)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Receipt Date is required.", Logger);
+            }
+
+            if (receipt.Status <= 0)
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Status is required.", Logger);
+            }
+
+            if (!receipt.ReceiptDetails.Any())
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Receipt Details is required.", Logger);
+            }
+
             if (receipt.TotalAmount <= decimal.Zero)
             {
                 throw new YumikiException(ExceptionCode.E_WRONG_VALUE, "Total Amount must be greater than 0.", Logger);

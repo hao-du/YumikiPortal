@@ -31,7 +31,7 @@
                     };
 
                     this.getFeeTypeByTerm = function (term) {
-                        return $http.get(serviceUrls.getFeeTypeByTerm, { params: { 'term': term } });
+                        return $http.get(serviceUrls.getFeeTypeByTerm, { params: { 'term': term, 'forReceipt': false, 'forInvoice': true, 'forAdditionFee': false } });
                     };
 
                     this.save = function (object) {
@@ -64,6 +64,10 @@
                                 select: function (event, ui) {
                                     ngModel.$setViewValue(ui.item.value);
                                     scope.selected_product = ui.item.data;
+
+                                    scope.object.OriginalPrice = scope.selected_product.OriginalPrice;
+                                    scope.object.UnitPrice = scope.selected_product.Price;
+
                                     scope.$apply();
                                 },
                                 create: function () {

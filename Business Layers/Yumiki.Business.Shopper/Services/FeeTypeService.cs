@@ -14,18 +14,18 @@ namespace Yumiki.Business.Shopper.Services
 {
     public class FeeTypeService : BaseService<IFeeTypeRepository>, IFeeTypeService
     {
-        public List<TB_FeeType> GetFeeTypes(bool showInactive)
+        public List<TB_FeeType> GetFeeTypes(bool showInactive, bool forReceipt, bool forInvoice, bool forAdditionFee)
         {
-            return Repository.GetFeeTypes(showInactive, null);
+            return Repository.GetFeeTypes(showInactive, null, forReceipt, forInvoice, forAdditionFee);
         }
-        public List<TB_FeeType> GetFeeTypes(string term)
+        public List<TB_FeeType> GetFeeTypes(string term, bool forReceipt, bool forInvoice, bool forAdditionFee)
         {
             if (string.IsNullOrWhiteSpace(term))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Search Term cannot be empty.", Logger);
             }
 
-            return Repository.GetFeeTypes(false, term);
+            return Repository.GetFeeTypes(false, term, forReceipt, forInvoice, forAdditionFee);
         }
 
         public TB_FeeType GetFeeType(string feeTypeID)

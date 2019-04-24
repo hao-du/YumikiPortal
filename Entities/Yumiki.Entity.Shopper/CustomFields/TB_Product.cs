@@ -21,6 +21,7 @@ namespace Yumiki.Entity.Shopper
 
             public const string ProductName = "ProductName";
             public const string ProductCode = "ProductCode";
+            public const string OriginalPrice = "OriginalPrice";
             public const string Price = "Price";
             public const string FeaturedImage = "FeaturedImage";
             public const string SourceUrl = "SourceUrl";
