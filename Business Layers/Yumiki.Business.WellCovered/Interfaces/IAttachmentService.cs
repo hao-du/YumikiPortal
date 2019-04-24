@@ -15,6 +15,13 @@ namespace Yumiki.Business.WellCovered.Interfaces
     public interface IAttachmentService
     {
         /// <summary>
+        /// Get all attachment from live record
+        /// </summary>
+        /// <param name="recordID">Id of relevent live record</param>
+        /// <returns>List of attachments</returns>
+        IEnumerable<TB_Attachment> GetAllAttachments(string recordID);
+
+        /// <summary>
         /// Return specific attachment by id
         /// </summary>
         /// <param name="id">TB_Attachment Guid ID</param>

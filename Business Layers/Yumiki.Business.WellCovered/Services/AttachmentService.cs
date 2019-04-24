@@ -17,6 +17,28 @@ namespace Yumiki.Business.WellCovered.Services
     public class AttachmentService : BaseService<IAttachmentRepository>, IAttachmentService
     {
         /// <summary>
+        /// Get all attachment from live record
+        /// </summary>
+        /// <param name="recordID">Id of relevent live record</param>
+        /// <returns>List of attachments</returns>
+        public IEnumerable<TB_Attachment> GetAllAttachments(string recordID)
+        {
+            if (string.IsNullOrWhiteSpace(recordID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Live Record ID cannot be empty.", Logger);
+            }
+
+            Guid convertedID = Guid.Empty;
+            Guid.TryParse(recordID, out convertedID);
+            if (convertedID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Live Record ID must be GUID type.", Logger);
+            }
+
+            return Repository.GetAllAttachments(convertedID);
+        }
+
+        /// <summary>
         /// Return specific attachment by id
         /// </summary>
         /// <param name="id">TB_Attachment Guid ID</param>

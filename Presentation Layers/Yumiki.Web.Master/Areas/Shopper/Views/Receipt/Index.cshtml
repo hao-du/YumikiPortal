@@ -227,6 +227,10 @@
                                     <div class="text-right">{{ object.@TB_Receipt.FieldName.TotalAmount | number:2 }}</div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Attachments</label>
+                                <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + object.@CommonProperties.ID }}"></iframe>
+                            </div>
                         </div>
                         <div class="modal-footer bg-primary text-white">
                             <button type="submit" class="btn btn-success" ng-disabled="dialogForm.$invalid">Save</button>

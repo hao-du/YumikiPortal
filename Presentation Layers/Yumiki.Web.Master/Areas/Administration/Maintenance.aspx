@@ -33,7 +33,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label>Database Names</label>
-                    <asp:TextBox ID="txtDatabases" runat="server" TextMode="MultiLine" CssClass="form-control form-area" Text="DB_Administration,DB_Master,DB_MoneyTrace,DB_WellCovered,DB_OnTime"></asp:TextBox>
+                    <asp:TextBox ID="txtDatabases" runat="server" TextMode="MultiLine" CssClass="form-control form-area" Text="DB_Administration,DB_Master,DB_MoneyTrace,DB_WellCovered,DB_OnTime,DB_Shopper"></asp:TextBox>
                     <asp:RequiredFieldValidator runat="server" ValidationGroup="valBackup" ControlToValidate="txtDatabases" Display="Dynamic" ErrorMessage="Database Name is required." />
                 </div>
                 <div class="form-group">

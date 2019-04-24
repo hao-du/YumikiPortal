@@ -141,6 +141,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
+    <Content Include="Views\Attachment\Widget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Bases\Yumiki.Entity.Base\Yumiki.Entity.Base.csproj">

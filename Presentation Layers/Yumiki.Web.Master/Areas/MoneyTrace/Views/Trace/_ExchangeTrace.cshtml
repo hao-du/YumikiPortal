@@ -76,6 +76,11 @@
                             <input type="checkbox" class="form-check-input" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
                         </label>
                     </div>
+
+                    <div class="form-group">
+                        <label>Attachments</label>
+                        <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + trace.@CommonProperties.ID }}"></iframe>
+                    </div>
                 </div>
                 <div class="modal-footer bg-dark">
                     <button type="submit" class="btn btn-primary" ng-disabled="exchangeTraceForm.$invalid" ng-show="trace.@TB_Trace.FieldName.AllowSaving || trace.@CommonProperties.ID == undefined">Save</button>

@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label>Trace Date</label>
                         <div class='input-group date' datetimepicker datetimeformat="'@Formats.DateTime.ClientMomentLongDate'" ng-model="trace.@TB_Trace.FieldName.TraceDate">
-                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : traceForm.traceDate.$invalid && traceForm.traceDate.$dirty }"/>
+                            <input type="text" name="traceDate" ng-model="trace.@TB_Trace.FieldName.TraceDate" class="form-control" ng-required="true" ng-class="{ 'border-danger' : traceForm.traceDate.$invalid && traceForm.traceDate.$dirty }" />
                             <div class="input-group-append input-group-calendar">
                                 <span class="input-group-text">
                                     <span class="fa fa-calendar"></span>
@@ -57,6 +57,11 @@
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" ng-model="trace.@CommonProperties.IsActive" ng-checked="trace.@CommonProperties.IsActive" ng-disabled="isActiveCheckboxDisabled" /> Is Active
                         </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Attachments</label>
+                        <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + trace.@CommonProperties.ID }}"></iframe>
                     </div>
                 </div>
                 <div class="modal-footer bg-dark">

@@ -1,0 +1,62 @@
+﻿@model  IEnumerable<Yumiki.Web.WellCovered.Models.MD_Attachment>
+
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm("Widget", "Attachment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <input name="recordID" type="hidden" value="@ViewBag.RecordID" />
+
+                <div class="input-group form-group">
+                    <input name="file" type="file" class="form-control" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-upload"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @{ string[] extension = new string[] { "jpg", "bmp", "gif", "png" }; }
+    <div class="d-flex flex-wrap y-thumbnail-attachment">
+        @foreach (Yumiki.Web.WellCovered.Models.MD_Attachment attachment in Model)
+        {
+            <div class="y-panel border form-group">
+                @if (extension.Any(d => attachment.FileName.EndsWith($".{d}")))
+                {
+                    <img src="../Attachment/Download/@attachment.ID.ToString()" alt="@attachment.FileName" />
+                }
+                else
+                {
+                    <a href="../Attachment/Download/@attachment.ID.ToString()" title="@attachment.FileName" class="btn btn-link">
+                        <i class="fa fa-file"></i>
+                    </a>
+                    <p>
+                        @attachment.FileName
+                    </p>
+                }
+                @using (Html.BeginForm("Widget", "Attachment", FormMethod.Post))
+                {
+                    <input name="X-HTTP-Method-Override" type="hidden" value="DELETE" />
+                    <input name="recordID" type="hidden" value="@ViewBag.RecordID" />
+                    <input name="attachmentID" type="hidden" value="@attachment.ID.ToString()" />
+
+                    <button type="submit" class="btn btn-link">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section BottomScript{
+    @Html.Partial("_WellCoveredInclude")
+}
+

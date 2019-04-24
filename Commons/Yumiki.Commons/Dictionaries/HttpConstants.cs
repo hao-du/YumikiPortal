@@ -27,5 +27,10 @@ namespace Yumiki.Commons.Dictionaries
             public const string WebFormMasterPrefix = "Pages";
             public const string WebFormAreaPrefix = "Apps";
         }
+
+        public class CommonPages
+        {
+            public const string AttachmentWidget = "/Apps/WellCovered/Attachment/Widget?recordID=";
+        }
     }
 }

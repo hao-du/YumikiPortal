@@ -1,0 +1,100 @@
+﻿@using Yumiki.Commons.Helpers
+@using SquishIt.Framework
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@(string.IsNullOrWhiteSpace(ViewBag.Title) ? string.Empty : string.Format("{0} - ", ViewBag.Title))YUMIKI PORTAL</title>
+    <!--3rd Libraries-->
+    @MvcHtmlString.Create(
+        Bundle.Css()
+        .Add("~/third-party-clients/jquery-3.3.1/jquery-ui.min.css")
+        .Add("~/third-party-clients/bootstrap-4.1.0/css/bootstrap.min.css")
+        .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.css")
+        .Add("~/third-party-clients/font-awesome-4.7.0/css/font-awesome.min.css")
+        .Add("~/clients/styles/site.scss")
+        .Render("~/cache/yumiki_#.css"))
+
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/third-party-clients/jquery-3.3.1/jquery.min.js")
+        .Add("~/third-party-clients/jquery-3.3.1/jquery-ui.min.js")
+        .Add("~/third-party-clients/angular-js-1.6.9/angular.min.js")
+        .Add("~/third-party-clients/bootstrap-4.1.0/js/bootstrap.min.js")
+        .Add("~/third-party-clients/angular-ui-bootstrap-2.5.0/angular-ui-bootstrap.min.js")
+        .Add("~/third-party-clients/moment-js-2.18.1/moment.min.js")
+        .Add("~/third-party-clients/bootstrap-datetimepicker-4.17.43/bootstrap-datetimepicker.min.js")
+        .Add("~/third-party-clients/mark-js-8.9.1/jquery.mark.min.js")
+        .Add("~/third-party-clients/chart-js-2.7.0/chart.min.js")
+        .Add("~/clients/scripts/yumiki.js")
+        .Add("~/clients/scripts/yumiki-angular.js")
+        .Add("~/clients/scripts/yumiki-jquery.js")
+        .Add("~/clients/scripts/yumiki-menu.js")
+        .Add("~/clients/scripts/yumiki-message.js")
+        .Add("~/clients/scripts/yumiki-side-bar.js")
+        .Add("~/clients/scripts/yumiki-url.js")
+        .Add("~/clients/scripts/init.js")
+        .Render("~/cache/yumiki_#.js"))
+
+    @RenderSection("HeadScript", required: false)
+
+    <script type="text/javascript">
+        //Overide NoSession variable
+        yumiki.noSession = '@Yumiki.Commons.Exceptions.ExceptionCode.E_NO_SESSION.ToString()';
+
+        $(document).ready(function () {
+            //In MVC app, ViewBag.Message to send message from Server side to Client side
+            @{
+                if(ViewBag.Message != null)
+                {
+                    Yumiki.Commons.Entities.Message message = (Yumiki.Commons.Entities.Message)ViewBag.Message;
+                    <text>
+                        yumiki.message.clientMessage('@message.Msg', '@message.Details', '@message.LogType');
+                    </text>
+                }
+            }
+        });
+    </script>
+</head>
+<body class="y-blank">
+    
+    @RenderBody()
+    
+    <!--Loading Progress Bar-->
+    <div id="dlgLoadingBar" class="modal">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    Now Loading... <i class="fa fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Message Dialog-->
+    <div id="dlgMessageDialog" class="modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="txtDialogTitle"></h4>
+                </div>
+                <div class="modal-body">
+                    <div id="txtMessage"></div>
+                    <div id="txtDetails" class="card collapse">
+                        <div class="card-header">Details...</div>
+                        <div id="txtMessageDetails" class="card-body">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <button type="button" id="btnMessageDetails" class="btn btn-primary" data-toggle="collapse" data-target="#txtDetails">Details...</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("BottomScript", required: false)
+</body>
+</html>

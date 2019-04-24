@@ -3,6 +3,11 @@
     padding-bottom: 60px;
 }
 
+body.y-blank {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 .card {
     border-radius: 0;
 }
@@ -53,4 +58,41 @@
 
 .y-modal-content-compact .form-group {
     margin-bottom: 10px;
+}
+
+iframe.y-modal-attachment {
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.y-thumbnail-attachment {
+    text-align: center;
+}
+
+.y-thumbnail-attachment .y-panel {
+    width: 150px;
+    margin: 15px;
+    position: relative;
+}
+
+.y-thumbnail-attachment .y-panel form {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.y-thumbnail-attachment img {
+    max-height: 150px;
+    max-width: 150px;
+    margin-bottom: 40px;
+}
+
+.y-thumbnail-attachment a i {
+    font-size: 120px;
+}
+
+.y-thumbnail-attachment p {
+    word-wrap: break-word;
+    margin-bottom: 40px;
 }

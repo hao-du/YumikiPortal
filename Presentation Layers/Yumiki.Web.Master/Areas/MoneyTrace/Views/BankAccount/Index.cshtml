@@ -149,6 +149,11 @@
                                         <input type="checkbox" class="form-check-input" ng-model="bankAccount.@CommonProperties.IsActive" ng-checked="bankAccount.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active
                                     </label>
                                 </div>
+
+                                <div class="form-group">
+                                    <label>Attachments</label>
+                                    <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + bankAccount.@CommonProperties.ID }}"></iframe>
+                                </div>
                             </div>
                             <div class="modal-footer bg-dark">
                                 <button type="button" class="btn btn-warning" ng-disabled="isWithdrawDisabled || bankAccountForm.$invalid" ng-click="openWithdrawMessageDialog()">Withdraw</button>

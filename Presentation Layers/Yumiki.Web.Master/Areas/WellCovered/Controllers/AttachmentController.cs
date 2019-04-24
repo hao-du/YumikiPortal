@@ -72,5 +72,56 @@ namespace Yumiki.Web.WellCovered.Controllers
         {
             return RedirectToAction("Edit", "Live", new { objectID, recordID });
         }
+
+        public ActionResult Widget(string recordID)
+        {
+            if (string.IsNullOrWhiteSpace(recordID))
+            {
+                return Content(string.Empty);
+            }
+
+            IEnumerable<MD_Attachment> attachments = BusinessService.GetAllAttachments(recordID).Select(c => new MD_Attachment(c));
+
+            ViewBag.RecordID = recordID;
+
+            return View(attachments);
+        }
+
+       [HttpPost]
+        public ActionResult Widget(string recordID, HttpPostedFileBase file)
+        {
+            try
+            {
+                MD_Attachment attachment = new MD_Attachment();
+                attachment.FileName = file.FileName;
+                attachment.LiveRecordID = Guid.Parse(recordID);
+
+                BusinessService.Save(attachment.ToObject(), SystemSettings.DefaultUploadFolderPath, file.InputStream);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return RedirectToAction("Widget", "Attachment", new { recordID });
+        }
+
+        [HttpDelete]
+        public ActionResult Widget(string recordID, string attachmentID)
+        {
+            try
+            {
+                MD_Attachment attachment = new MD_Attachment();
+                attachment.ID = Guid.Parse(attachmentID);
+
+                BusinessService.Delete(attachment.ToObject(), SystemSettings.DefaultUploadFolderPath);
+            }
+            catch (Exception ex)
+            {
+                SendError(ex);
+            }
+
+            return RedirectToAction("Widget", "Attachment", new { recordID });
+        }
     }
 }
