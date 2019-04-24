@@ -32,6 +32,7 @@
             '@CommonProperties.ID': undefined,
             '@TB_Product.FieldName.ProductName': '',
             '@TB_Product.FieldName.ProductCode': '',
+            '@TB_Product.FieldName.StockQuantity': 0,
             '@TB_Product.FieldName.OriginalPrice': 0,
             '@TB_Product.FieldName.Price': 0,
             '@TB_Product.FieldName.FeaturedImage': '',
@@ -66,6 +67,7 @@
                         <th></th>
                         <th colspan="2">Product</th>
                         <th class="text-right">Price</th>
+                        <th class="text-right">In Stock</th>
                         <th>Descriptions</th>
                         <th>Modified Date</th>
                     </tr>
@@ -79,6 +81,7 @@
                         </td>
                         <td>{{ item.@TB_Product.FieldName.ProductCode }} - {{ item.@TB_Product.FieldName.ProductName | limitTo: 50 }}{{ (item.@TB_Product.FieldName.ProductName).length > 50 ? '...' : ''}} </td>
                         <td class="text-right">{{ item.@TB_Product.FieldName.Price | number:2 }}</td>
+                        <td class="text-right">{{ item.@TB_Product.FieldName.StockQuantity | number:0 }}</td>
                         <td>{{ item.@CommonProperties.Descriptions }}</td>
                         <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
                     </tr>
@@ -94,7 +97,7 @@
             <div class="modal-content">
                 <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                        <h5 class="modal-title">{{ dialogTitle }} - In Stock: {{ object.@TB_Product.FieldName.StockQuantity }}</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">

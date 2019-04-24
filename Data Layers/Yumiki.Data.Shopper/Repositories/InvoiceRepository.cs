@@ -13,10 +13,6 @@ namespace Yumiki.Data.Shopper.Repositories
         public List<TB_Invoice> GetInvoices(bool showInactive)
         {
             return Context.TB_Invoice
-                .Include(TB_Invoice.FieldName.InvoiceDetails)
-                .Include($"{TB_Invoice.FieldName.InvoiceDetails}.{TB_InvoiceDetail.FieldName.Product}")
-                .Include(TB_Invoice.FieldName.InvoiceExtraFees)
-                .Include($"{TB_Invoice.FieldName.InvoiceExtraFees}.{TB_InvoiceExtraFee.FieldName.FeeType}")
                 .Where(c => c.IsActive == !showInactive).ToList();
         }
 
@@ -24,7 +20,9 @@ namespace Yumiki.Data.Shopper.Repositories
         {
             return Context.TB_Invoice
                 .Include(TB_Invoice.FieldName.InvoiceDetails)
+                .Include($"{TB_Invoice.FieldName.InvoiceDetails}.{TB_InvoiceDetail.FieldName.Product}")
                 .Include(TB_Invoice.FieldName.InvoiceExtraFees)
+                .Include($"{TB_Invoice.FieldName.InvoiceExtraFees}.{TB_InvoiceExtraFee.FieldName.FeeType}")
                 .SingleOrDefault(c => c.ID == invoiceID);
         }
 
@@ -39,6 +37,7 @@ namespace Yumiki.Data.Shopper.Repositories
                 TB_Invoice dbInvoice = Context.TB_Invoice
                     .Include(TB_Invoice.FieldName.InvoiceDetails)
                     .Include(TB_Invoice.FieldName.InvoiceExtraFees)
+                    .Include($"{TB_Invoice.FieldName.InvoiceDetails}.{TB_InvoiceDetail.FieldName.Stocks}")
                     .Single(c => c.ID == invoice.ID);
 
                 dbInvoice.InvoiceNumber = invoice.InvoiceNumber;
@@ -64,7 +63,17 @@ namespace Yumiki.Data.Shopper.Repositories
                 {
                     if (detail.ID == Guid.Empty)
                     {
-                        dbInvoice.InvoiceDetails.Add(detail);
+                        TB_Stock stock = new TB_Stock();
+                        detail.Stocks.Add(stock);
+
+                        stock.UserID = detail.UserID;
+                        stock.ProductID = detail.ProductID;
+                        stock.Quantity = -detail.Quantity;
+
+                        if(dbInvoice.Status != EN_InvoiceStatus.E_CANCELLED)
+                        {
+                            dbInvoice.InvoiceDetails.Add(detail);
+                        }
                     }
                     else
                     {
@@ -78,6 +87,32 @@ namespace Yumiki.Data.Shopper.Repositories
                             dbInvoiceDetail.Quantity = detail.Quantity;
                             dbInvoiceDetail.Amount = detail.Amount;
                             dbInvoiceDetail.Descriptions = detail.Descriptions;
+
+                            TB_Stock dbStock = dbInvoiceDetail.Stocks.SingleOrDefault();
+                            if (dbStock == null)
+                            {
+                                if (dbInvoice.Status != EN_InvoiceStatus.E_CANCELLED)
+                                {
+                                    dbStock = new TB_Stock();
+                                    dbStock.UserID = detail.UserID;
+                                    dbStock.ProductID = detail.ProductID;
+                                    dbStock.Quantity = -detail.Quantity;
+
+                                    dbInvoiceDetail.Stocks.Add(dbStock);
+                                }
+                            }
+                            else
+                            {
+                                if (dbInvoice.Status != EN_InvoiceStatus.E_CANCELLED)
+                                {
+                                    dbStock.ProductID = detail.ProductID;
+                                    dbStock.Quantity = -detail.Quantity;
+                                }
+                                else
+                                {
+                                    Context.TB_Stock.RemoveRange(dbInvoiceDetail.Stocks);
+                                }
+                            }
                         }
                     }
                 }

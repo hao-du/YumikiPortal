@@ -43,6 +43,7 @@ namespace Yumiki.Entity.Shopper
             public const string UnitPrice = "UnitPrice";
             public const string Quantity = "Quantity";
             public const string Amount = "Amount";
+            public const string Stocks = "Stocks";
         }
     }
 }

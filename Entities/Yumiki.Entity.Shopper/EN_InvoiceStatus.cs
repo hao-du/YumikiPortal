@@ -10,8 +10,15 @@ namespace Yumiki.Entity.Shopper
         E_IN_PROCESS,
         [Description("Waiting COD")]
         E_WAITING_COD,
+        /// <summary>
+        /// Customer cancels order before products are sent to transporter
+        /// In transit but Customer cancels in the middle and products are returned back to Stock.
+        /// </summary>
         [Description("Cancelled")]
         E_CANCELLED,
+        /// <summary>
+        /// In transit but Customer cancels in the middle and products are not returned back.
+        /// </summary>
         [Description("Cancelled and Lost")]
         E_CANCELLED_LOST,
         [Description("Completed")]

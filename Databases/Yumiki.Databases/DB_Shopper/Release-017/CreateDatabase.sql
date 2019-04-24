@@ -2,6 +2,8 @@
 GO
 EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_Receipt', @level2type=N'COLUMN',@level2name=N'ExternalReceiptID'
 GO
+ALTER TABLE [dbo].[TB_Stock] DROP CONSTRAINT [FK_TB_Stock_TB_User]
+GO
 ALTER TABLE [dbo].[TB_Stock] DROP CONSTRAINT [FK_TB_Stock_TB_ReceiptDetail]
 GO
 ALTER TABLE [dbo].[TB_Stock] DROP CONSTRAINT [FK_TB_Stock_TB_Product]
@@ -44,40 +46,40 @@ ALTER TABLE [dbo].[TB_AdditionalFee] DROP CONSTRAINT [FK_TB_AdditionalFee_TB_Use
 GO
 ALTER TABLE [dbo].[TB_AdditionalFee] DROP CONSTRAINT [FK_TB_AdditionalFee_TB_FeeType]
 GO
-/****** Object:  Table [dbo].[TB_User]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_User]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_User]
 GO
-/****** Object:  Table [dbo].[TB_Stock]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Stock]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_Stock]
 GO
-/****** Object:  Table [dbo].[TB_ReceiptExtraFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_ReceiptExtraFee]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_ReceiptExtraFee]
 GO
-/****** Object:  Table [dbo].[TB_ReceiptDetail]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_ReceiptDetail]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_ReceiptDetail]
 GO
-/****** Object:  Table [dbo].[TB_Receipt]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Receipt]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_Receipt]
 GO
-/****** Object:  Table [dbo].[TB_Product]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Product]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_Product]
 GO
-/****** Object:  Table [dbo].[TB_InvoiceExtraFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_InvoiceExtraFee]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_InvoiceExtraFee]
 GO
-/****** Object:  Table [dbo].[TB_InvoiceDetail]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_InvoiceDetail]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_InvoiceDetail]
 GO
-/****** Object:  Table [dbo].[TB_Invoice]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Invoice]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_Invoice]
 GO
-/****** Object:  Table [dbo].[TB_FeeType]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_FeeType]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_FeeType]
 GO
-/****** Object:  Table [dbo].[TB_AdditionalFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_AdditionalFee]    Script Date: 4/24/2019 3:59:28 PM ******/
 DROP TABLE [dbo].[TB_AdditionalFee]
 GO
-/****** Object:  Table [dbo].[TB_AdditionalFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_AdditionalFee]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -98,7 +100,7 @@ CREATE TABLE [dbo].[TB_AdditionalFee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_FeeType]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_FeeType]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -120,7 +122,7 @@ CREATE TABLE [dbo].[TB_FeeType](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_Invoice]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Invoice]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -147,7 +149,7 @@ CREATE TABLE [dbo].[TB_Invoice](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_InvoiceDetail]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_InvoiceDetail]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -171,7 +173,7 @@ CREATE TABLE [dbo].[TB_InvoiceDetail](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_InvoiceExtraFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_InvoiceExtraFee]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -192,7 +194,7 @@ CREATE TABLE [dbo].[TB_InvoiceExtraFee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_Product]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Product]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -217,7 +219,7 @@ CREATE TABLE [dbo].[TB_Product](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_Receipt]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Receipt]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +242,7 @@ CREATE TABLE [dbo].[TB_Receipt](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_ReceiptDetail]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_ReceiptDetail]    Script Date: 4/24/2019 3:59:28 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -263,7 +265,7 @@ CREATE TABLE [dbo].[TB_ReceiptDetail](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_ReceiptExtraFee]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_ReceiptExtraFee]    Script Date: 4/24/2019 3:59:29 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -284,7 +286,7 @@ CREATE TABLE [dbo].[TB_ReceiptExtraFee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_Stock]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_Stock]    Script Date: 4/24/2019 3:59:29 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -306,7 +308,7 @@ CREATE TABLE [dbo].[TB_Stock](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_User]    Script Date: 4/24/2019 1:21:02 PM ******/
+/****** Object:  Table [dbo].[TB_User]    Script Date: 4/24/2019 3:59:29 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -433,6 +435,11 @@ REFERENCES [dbo].[TB_ReceiptDetail] ([ID])
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[TB_Stock] CHECK CONSTRAINT [FK_TB_Stock_TB_ReceiptDetail]
+GO
+ALTER TABLE [dbo].[TB_Stock]  WITH CHECK ADD  CONSTRAINT [FK_TB_Stock_TB_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[TB_User] ([ID])
+GO
+ALTER TABLE [dbo].[TB_Stock] CHECK CONSTRAINT [FK_TB_Stock_TB_User]
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'This is the Receipt ID from External System' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_Receipt', @level2type=N'COLUMN',@level2name=N'ExternalReceiptID'
 GO

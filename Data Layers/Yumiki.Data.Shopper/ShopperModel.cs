@@ -10,6 +10,7 @@ namespace Yumiki.Entity.Shopper
         public ShopperModel()
             : base("name=ShopperModel")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<TB_AdditionalFee> TB_AdditionalFee { get; set; }
@@ -168,6 +169,12 @@ namespace Yumiki.Entity.Shopper
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.ReceiptExtraFees)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.Stocks)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);

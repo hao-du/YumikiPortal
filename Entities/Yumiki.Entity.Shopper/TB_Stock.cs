@@ -25,6 +25,8 @@ namespace Yumiki.Entity.Shopper
 
         public DateTime? LastUpdateDate { get; set; }
 
+        public virtual TB_User User { get; set; }
+
         public virtual TB_Product Product { get; set; }
 
         public virtual TB_InvoiceDetail InvoiceDetail { get; set; }

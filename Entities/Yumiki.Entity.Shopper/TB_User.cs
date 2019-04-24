@@ -17,6 +17,7 @@ namespace Yumiki.Entity.Shopper
             Receipts = new HashSet<TB_Receipt>();
             ReceiptDetails = new HashSet<TB_ReceiptDetail>();
             ReceiptExtraFees = new HashSet<TB_ReceiptExtraFee>();
+            Stocks = new HashSet<TB_Stock>();
         }
 
         public Guid ID { get; set; }
@@ -36,6 +37,8 @@ namespace Yumiki.Entity.Shopper
         public DateTime CreateDate { get; set; }
 
         public DateTime? LastUpdateDate { get; set; }
+
+        public virtual ICollection<TB_Stock> Stocks { get; set; }
 
         public virtual ICollection<TB_AdditionalFee> AdditionalFees { get; set; }
 

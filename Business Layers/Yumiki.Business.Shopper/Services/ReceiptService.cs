@@ -49,11 +49,6 @@ namespace Yumiki.Business.Shopper.Services
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Receipt Date is required.", Logger);
             }
 
-            if (receipt.Status <= 0)
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Status is required.", Logger);
-            }
-
             if (!receipt.ReceiptDetails.Any())
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Receipt Details is required.", Logger);

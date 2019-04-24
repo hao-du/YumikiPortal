@@ -22,12 +22,12 @@ namespace Yumiki.Data.Shopper.Repositories
                 expression = expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
             }
 
-            return Context.TB_Product.Where(expression).ToList();
+            return Context.TB_Product.Include(TB_Product.FieldName.Stocks).Where(expression).ToList();
         }
 
         public TB_Product GetProduct(Guid productID)
         {
-            return Context.TB_Product.SingleOrDefault(c => c.ID == productID);
+            return Context.TB_Product.Include(TB_Product.FieldName.Stocks).SingleOrDefault(c => c.ID == productID);
         }
 
         public void SaveProduct(TB_Product product)

@@ -246,7 +246,7 @@
                     var isExisted = false;
 
                     angular.forEach($scope.object.InvoiceDetails, function (item) {
-                        if (item.ID == detail.ID) {
+                        if (item.ID == detail.ID || item.ProductCode == detail.ProductCode) {
                             item.InvoiceID = detail.InvoiceID;
                             item.ProductID = detail.ProductID;
                             item.ProductCode = detail.ProductCode;
