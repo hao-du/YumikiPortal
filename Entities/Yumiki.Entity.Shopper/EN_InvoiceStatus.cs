@@ -22,6 +22,8 @@ namespace Yumiki.Entity.Shopper
         [Description("Cancelled and Lost")]
         E_CANCELLED_LOST,
         [Description("Completed")]
-        E_COMPLETED
+        E_COMPLETED,
+        [Description("Unpacked")]
+        E_UNPACKED
     }
 }
