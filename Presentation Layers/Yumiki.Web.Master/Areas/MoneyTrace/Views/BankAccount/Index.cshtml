@@ -152,7 +152,7 @@
 
                                 <div class="form-group">
                                     <label>Attachments</label>
-                                    <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + bankAccount.@CommonProperties.ID }}"></iframe>
+                                    <iframe class="y-modal-attachment" src="{{ bankAccount.@CommonProperties.ID ? '@HttpConstants.CommonPages.AttachmentWidget' + bankAccount.@CommonProperties.ID : '' }}"></iframe>
                                 </div>
                             </div>
                             <div class="modal-footer bg-dark">

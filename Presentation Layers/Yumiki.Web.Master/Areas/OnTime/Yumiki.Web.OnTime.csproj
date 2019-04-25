@@ -184,6 +184,7 @@
     <TypeScriptCompile Include="ontime-clients\assignment\assignment.rounting.ts" />
     <TypeScriptCompile Include="ontime-clients\assignment\assignment.service.ts" />
     <TypeScriptCompile Include="ontime-clients\base\base.service.ts" />
+    <TypeScriptCompile Include="ontime-clients\common\module.safepipe.ts" />
     <TypeScriptCompile Include="ontime-clients\common\constants.ts" />
     <TypeScriptCompile Include="ontime-clients\common\guid.ts" />
     <TypeScriptCompile Include="ontime-clients\models\ontimebase.model.ts" />

@@ -16,6 +16,7 @@ declare var yumiki: any;
 export class TaskDetailComponent implements OnInit {
     task?: Task;
     title: string;
+    attachmentTaskID: string;
 
     constructor(
         private service: TaskService
@@ -39,6 +40,8 @@ export class TaskDetailComponent implements OnInit {
             this.task.Status = '';
             this.task.Priority = '';
             this.task.IsActive = true;
+
+            this.attachmentTaskID = '';
         }
         else {
             yumiki.message.displayLoadingDialog(true);
@@ -48,6 +51,8 @@ export class TaskDetailComponent implements OnInit {
                     this.task = result;
 
                     this.title = "Edit Task: " + this.task.TaskNumber;
+
+                    this.attachmentTaskID = this.task.ID;
 
                     yumiki.message.displayLoadingDialog(false);
                 },

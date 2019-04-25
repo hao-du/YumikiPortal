@@ -79,7 +79,7 @@
 
                     <div class="form-group">
                         <label>Attachments</label>
-                        <iframe class="y-modal-attachment" src="{{ '@HttpConstants.CommonPages.AttachmentWidget' + trace.@CommonProperties.ID }}"></iframe>
+                        <iframe class="y-modal-attachment" src="{{ trace.@CommonProperties.ID ? '@HttpConstants.CommonPages.AttachmentWidget' + trace.@CommonProperties.ID : '' }}"></iframe>
                     </div>
                 </div>
                 <div class="modal-footer bg-dark">

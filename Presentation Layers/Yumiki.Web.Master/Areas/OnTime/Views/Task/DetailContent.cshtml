@@ -1,4 +1,5 @@
 ﻿@using Yumiki.Web.OnTime.Models;
+@using Yumiki.Commons.Dictionaries;
 @{
     Layout = null;
 }
@@ -145,6 +146,14 @@
                     <textarea [(ngModel)]="task.TaskDescriptions" class="form-control" rows="5"
                               name="descriptions" required #descriptions="ngModel" [class.border-danger]="descriptions.invalid && (descriptions.dirty || descriptions.touched)"></textarea>
                     <p *ngIf="descriptions.invalid && descriptions.errors.required && (descriptions.dirty || descriptions.touched)" class="text-danger">Task Descriptions field is required.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Attachments</label>
+                    <iframe class="y-modal-attachment" [src]="(attachmentTaskID ? '@HttpConstants.CommonPages.AttachmentWidget' + attachmentTaskID : '') | safe"></iframe>
                 </div>
             </div>
         </div>
