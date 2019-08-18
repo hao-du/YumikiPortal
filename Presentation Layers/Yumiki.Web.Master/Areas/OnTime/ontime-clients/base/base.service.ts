@@ -15,11 +15,11 @@ export class BaseService {
         this.httpClient = httpClient;
     }
 
-    doGet<T>(url: string): Observable<T> {
+    doGet<T>(url: string): Observable<any> {
         return this.httpClient.get<T>(url).pipe(catchError(this.errorHandler));
     }
 
-    doPost<T>(url: string, obj: T): Observable<T> {
+    doPost<T>(url: string, obj: T): Observable<any> {
         return this.httpClient.post<T>(url, obj, httpOptions).pipe(catchError(this.errorHandler));
     }
 

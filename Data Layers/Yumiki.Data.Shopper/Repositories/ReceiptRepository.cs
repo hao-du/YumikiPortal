@@ -13,7 +13,9 @@ namespace Yumiki.Data.Shopper.Repositories
         public List<TB_Receipt> GetReceipts(bool showInactive)
         {
             return Context.TB_Receipt
-                .Where(c => c.IsActive == !showInactive).ToList();
+                .Where(c => c.IsActive == !showInactive)
+                .OrderByDescending(c => c.ReceiptDate)
+                .ToList();
         }
 
         public TB_Receipt GetReceipt(Guid receiptID)
@@ -31,6 +33,20 @@ namespace Yumiki.Data.Shopper.Repositories
             if (receipt.ID == Guid.Empty)
             {
                 Context.TB_Receipt.Add(receipt);
+
+                foreach (TB_ReceiptDetail detail in receipt.ReceiptDetails)
+                {
+                    if (receipt.Status == EN_ReceiptStatus.E_COMPLETED)
+                    {
+                        TB_Stock stock = new TB_Stock();
+
+                        stock.UserID = detail.UserID;
+                        stock.ProductID = detail.ProductID;
+                        stock.Quantity = detail.Quantity;
+
+                        detail.Stocks.Add(stock);
+                    }
+                }
             }
             else
             {
@@ -58,16 +74,17 @@ namespace Yumiki.Data.Shopper.Repositories
                 {
                     if (detail.ID == Guid.Empty)
                     {
-                        TB_Stock stock = new TB_Stock();
-                        detail.Stocks.Add(stock);
-
-                        stock.UserID = detail.UserID;
-                        stock.ProductID = detail.ProductID;
-                        stock.Quantity = detail.Quantity;
+                        dbReceipt.ReceiptDetails.Add(detail);
 
                         if (dbReceipt.Status == EN_ReceiptStatus.E_COMPLETED)
                         {
-                            dbReceipt.ReceiptDetails.Add(detail);
+                            TB_Stock stock = new TB_Stock();
+
+                            stock.UserID = detail.UserID;
+                            stock.ProductID = detail.ProductID;
+                            stock.Quantity = detail.Quantity;
+
+                            detail.Stocks.Add(stock);
                         }
                     }
                     else

@@ -99,6 +99,14 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
+        public string ReceiptDateUI
+        {
+            get
+            {
+                return _internalItem.ReceiptDateUI;
+            }
+        }
+
         private List<MD_ReceiptDetail> _receiptDetails = null;
         public List<MD_ReceiptDetail> ReceiptDetails
         {

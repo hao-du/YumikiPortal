@@ -11,6 +11,7 @@
     <style type="text/css">
         .ymk-thumbnail {
             width:70px;
+            max-width:inherit;
         }
     </style>
 }
@@ -45,117 +46,160 @@
         yumiki.shopper.product.init(
             '@Url.HttpRouteUrl(RouteNames.ProductGetAll, null)',
             '@Url.HttpRouteUrl(RouteNames.ProductGetByID, null)',
+            '@Url.HttpRouteUrl(RouteNames.InvoiceGetByProductID, null)',
             '@Url.HttpRouteUrl(RouteNames.ProductSave, null)',
         );
     </script>
 }
-<div ng-app="shopperProduct">
-    <div class="container" ng-controller="productController" ng-init="onLoad();">
-        <h1>Products</h1>
-        <div class="card bg-secondary">
-            <div class="card-body p-2">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
-                    <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+    <div ng-app="shopperProduct">
+        <div class="container" ng-controller="productController" ng-init="onLoad();">
+            <h1>Products</h1>
+            <div class="card bg-secondary">
+                <div class="card-body p-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
+                        <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="tblProduct" class="table table-sm table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th>Thumb</th>
+                            <th>SKU</th>
+                            <th>Product</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">In Stock</th>
+                            <th>Modified Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in list" ng-class="{'table-warning' : item.@TB_Product.FieldName.StockQuantity < 1}">
+                            <td>
+                                <a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                                <a href="#" id="btnViewInvoices" title="View Invoices" ng-click="onShowInvoiceListDialog(item.@CommonProperties.ID);"><span class="fa fa-list-ol"></span></a>
+                            </td>
+                            <td>
+                                <img ng-src="{{ item.@TB_Product.FieldName.FeaturedImage }}"
+                                     alt="{{ item.@TB_Product.FieldName.ProductCode + ' - ' + item.@TB_Product.FieldName.ProductName }}" class="img-fluid img-thumbnail ymk-thumbnail" />
+                            </td>
+                            <td>{{ item.@TB_Product.FieldName.ProductCode }}</td>
+                            <td> {{ item.@TB_Product.FieldName.ProductName | limitTo: 50 }}{{ (item.@TB_Product.FieldName.ProductName).length > 50 ? '...' : ''}} </td>
+                            <td class="text-right">{{ item.@TB_Product.FieldName.Price | number:2 }}</td>
+                            <td class="text-right">{{ item.@TB_Product.FieldName.StockQuantity | number:0 }}</td>
+                            <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="productDialogController">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ dialogTitle }} - In Stock: {{ object.@TB_Product.FieldName.StockQuantity }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Product Code (SKU)</label>
+                                <input type="text" name="productCode" ng-model="object.@TB_Product.FieldName.ProductCode" class="form-control" ng-class="{ 'border-danger' : dialogForm.productCode.$invalid && dialogForm.productCode.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.productCode.$error.required && dialogForm.productCode.$dirty" class="text-danger">Product Code is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" name="productName" ng-model="object.@TB_Product.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product Name is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Old Price</label>
+                                <input type="text" name="oldPrice" ng-model="object.@TB_Product.FieldName.OriginalPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.oldPrice.$invalid && dialogForm.oldPrice.$dirty }" ng-required="true" />
+                                <div class="text-right">{{ object.@TB_Product.FieldName.OriginalPrice | number:2 }}</div>
+                                <p ng-show="dialogForm.oldPrice.$error.required && dialogForm.oldPrice.$dirty" class="text-danger">Old Price is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Price</label>
+                                <input type="text" name="price" ng-model="object.@TB_Product.FieldName.Price" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.price.$invalid && dialogForm.price.$dirty }" ng-required="true" />
+                                <div class="text-right">{{ object.@TB_Product.FieldName.Price | number:2 }}</div>
+                                <p ng-show="dialogForm.price.$error.required && dialogForm.price.$dirty" class="text-danger">Price is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Featured Image</label>
+                                <input type="text" name="featuredImage" ng-model="object.@TB_Product.FieldName.FeaturedImage" class="form-control" ng-class="{ 'border-danger' : dialogForm.featuredImage.$invalid && dialogForm.featuredImage.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.featuredImage.$error.required && dialogForm.featuredImage.$dirty" class="text-danger">Featured Image is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Source Url</label>
+                                <input type="text" ng-model="object.@TB_Product.FieldName.SourceUrl" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Keywords</label>
+                                <input type="text" ng-model="object.@TB_Product.FieldName.Keywords" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Descriptions</label>
+                                <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Attachments</label>
+                                <iframe class="y-modal-attachment" src="{{ object.@CommonProperties.ID ? '@HttpConstants.CommonPages.AttachmentWidget' + object.@CommonProperties.ID : '' }}"></iframe>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-dark">
+                            <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                            <button type="button" class="btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="table-responsive">
-            <table id="tblCurrency" class="table table-sm table-striped table-bordered table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th></th>
-                        <th colspan="2">Product</th>
-                        <th class="text-right">Price</th>
-                        <th class="text-right">In Stock</th>
-                        <th>Descriptions</th>
-                        <th>Modified Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in list">
-                        <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
-                        <td>
-                            <img ng-src="{{ item.@TB_Product.FieldName.FeaturedImage }}"
-                                 alt="{{ item.@TB_Product.FieldName.ProductCode + ' - ' + item.@TB_Product.FieldName.ProductName }}" class="img-fluid img-thumbnail ymk-thumbnail" />
-                        </td>
-                        <td>{{ item.@TB_Product.FieldName.ProductCode }} - {{ item.@TB_Product.FieldName.ProductName | limitTo: 50 }}{{ (item.@TB_Product.FieldName.ProductName).length > 50 ? '...' : ''}} </td>
-                        <td class="text-right">{{ item.@TB_Product.FieldName.Price | number:2 }}</td>
-                        <td class="text-right">{{ item.@TB_Product.FieldName.StockQuantity | number:0 }}</td>
-                        <td>{{ item.@CommonProperties.Descriptions }}</td>
-                        <td>{{ item.@CommonProperties.LastUpdateDateUI }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <!-- Modal -->
-    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="productDialogController">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+        <div id="dlgInvoiceListObject" class="modal fade" role="dialog" ng-controller="invoiceListDialogController">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ dialogTitle }} - In Stock: {{ object.@TB_Product.FieldName.StockQuantity }}</h5>
+                        <h5 class="modal-title">Invoices</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Product Code</label>
-                            <input type="text" name="productCode" ng-model="object.@TB_Product.FieldName.ProductCode" class="form-control" ng-class="{ 'border-danger' : dialogForm.productCode.$invalid && dialogForm.productCode.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.productCode.$error.required && dialogForm.productCode.$dirty" class="text-danger">Product Code is required.</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" name="productName" ng-model="object.@TB_Product.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product Name is required.</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Old Price</label>
-                            <input type="text" name="oldPrice" ng-model="object.@TB_Product.FieldName.OriginalPrice" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.oldPrice.$invalid && dialogForm.oldPrice.$dirty }" ng-required="true" />
-                            <div class="text-right">{{ object.@TB_Product.FieldName.OriginalPrice | number:2 }}</div>
-                            <p ng-show="dialogForm.oldPrice.$error.required && dialogForm.oldPrice.$dirty" class="text-danger">Old Price is required.</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <input type="text" name="price" ng-model="object.@TB_Product.FieldName.Price" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.price.$invalid && dialogForm.price.$dirty }" ng-required="true" />
-                            <div class="text-right">{{ object.@TB_Product.FieldName.Price | number:2 }}</div>
-                            <p ng-show="dialogForm.price.$error.required && dialogForm.price.$dirty" class="text-danger">Price is required.</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Featured Image</label>
-                            <input type="text" name="featuredImage" ng-model="object.@TB_Product.FieldName.FeaturedImage" class="form-control" ng-class="{ 'border-danger' : dialogForm.featuredImage.$invalid && dialogForm.featuredImage.$dirty }" ng-required="true" />
-                            <p ng-show="dialogForm.featuredImage.$error.required && dialogForm.featuredImage.$dirty" class="text-danger">Featured Image is required.</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Source Url</label>
-                            <input type="text" ng-model="object.@TB_Product.FieldName.SourceUrl" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Keywords</label>
-                            <input type="text" ng-model="object.@TB_Product.FieldName.Keywords" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <label>Attachments</label>
-                            <iframe class="y-modal-attachment" src="{{ object.@CommonProperties.ID ? '@HttpConstants.CommonPages.AttachmentWidget' + object.@CommonProperties.ID : '' }}"></iframe>
+                        <div class="table-responsive">
+                            <table id="tblInvoiceList" class="table table-sm table-striped table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Customer Name</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th class="text-right">Price</th>
+                                        <th>Modified Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in invoiceList">
+                                        <td>{{ item.@TB_Invoice.FieldName.InvoiceNumber }}</td>
+                                        <td>{{ item.@TB_Invoice.FieldName.CustomerName }}</td>
+                                        <td class="text-right">{{ item.@TB_InvoiceDetail.FieldName.Quantity }}</td>
+                                        <td class="text-right">{{ item.@TB_InvoiceDetail.FieldName.UnitPrice | number:2 }}</td>
+                                        <td>{{ item.@TB_Invoice.FieldName.InvoiceDateUI }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer bg-dark">
-                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
                         <button type="button" class="btn" data-dismiss="modal">Close</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 

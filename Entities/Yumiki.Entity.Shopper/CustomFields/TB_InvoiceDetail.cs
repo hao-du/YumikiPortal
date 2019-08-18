@@ -31,6 +31,30 @@ namespace Yumiki.Entity.Shopper
             }
         }
 
+        public string InvoiceNumber
+        {
+            get
+            {
+                return Invoice == null ? string.Empty : Invoice.InvoiceNumber;
+            }
+        }
+
+        public string CustomerName
+        {
+            get
+            {
+                return Invoice == null ? string.Empty : Invoice.CustomerName;
+            }
+        }
+
+        public string InvoiceDateUI
+        {
+            get
+            {
+                return Invoice == null ? string.Empty : Invoice.InvoiceDateUI;
+            }
+        }
+
         public class FieldName
         {
             public const string TB_InvoiceDetail = "TB_InvoiceDetail";
@@ -39,6 +63,7 @@ namespace Yumiki.Entity.Shopper
             public const string ProductName = "ProductName";
             public const string ProductCode = "ProductCode";
             public const string ProductID = "ProductID";
+            public const string Invoice = "Invoice";
             public const string InvoiceID = "InvoiceID";
             public const string OriginalPrice = "OriginalPrice";
             public const string UnitPrice = "UnitPrice";

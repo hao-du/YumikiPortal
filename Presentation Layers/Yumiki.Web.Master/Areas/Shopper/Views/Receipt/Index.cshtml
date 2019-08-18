@@ -85,18 +85,21 @@
                         <tr>
                             <th></th>
                             <th>Receipt Number</th>
-                            <th class="text-right">Receipt Date</th>
+                            <th>Status</th>
                             <th class="text-right">Total Amount</th>
-                            <th>Descriptions</th>
+                            <th class="text-right">Receipt Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in list">
-                            <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
+                            <td>
+                                <a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                                <a href="{{ item.@TB_Receipt.FieldName.ExternalReceiptUrl }}" id="btnViewExternalData" title="View External Data" target="_blank"><span class="fa fa-external-link"></span></a>
+                            </td>
                             <td>{{ item.@TB_Receipt.FieldName.ExternalReceiptID }}</td>
-                            <td class="text-right">{{ item.@TB_Receipt.FieldName.ReceiptDate }}</td>
+                            <td>{{ item.@TB_Receipt.FieldName.StatusUI }}</td>
                             <td class="text-right">{{ item.@TB_Receipt.FieldName.TotalAmount | number:2 }}</td>
-                            <td>{{ item.@CommonProperties.Descriptions }}</td>
+                            <td class="text-right">{{ item.@TB_Receipt.FieldName.ReceiptDateUI }}</td>
                         </tr>
                     </tbody>
                 </table>

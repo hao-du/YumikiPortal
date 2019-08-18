@@ -23,6 +23,14 @@ namespace Yumiki.Entity.Shopper
             }
         }
 
+        public string StatusUI
+        {
+            get
+            {
+                return EnumHelper.GetDescription(this.Status);
+            }
+        }
+
         public class FieldName
         {
             public const string TB_Invoice = "TB_Invoice";
@@ -35,7 +43,9 @@ namespace Yumiki.Entity.Shopper
             public const string CustomerNote = "CustomerNote";
             public const string TotalAmount = "TotalAmount";
             public const string InvoiceDate = "InvoiceDate";
+            public const string InvoiceDateUI = "InvoiceDateUI";
             public const string Status = "Status";
+            public const string StatusUI = "StatusUI";
             public const string InvoiceDetails = "InvoiceDetails";
             public const string InvoiceExtraFees = "InvoiceExtraFees";
         }

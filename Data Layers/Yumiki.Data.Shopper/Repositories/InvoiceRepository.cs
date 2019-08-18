@@ -13,7 +13,9 @@ namespace Yumiki.Data.Shopper.Repositories
         public List<TB_Invoice> GetInvoices(bool showInactive)
         {
             return Context.TB_Invoice
-                .Where(c => c.IsActive == !showInactive).ToList();
+                .Where(c => c.IsActive == !showInactive)
+                .OrderByDescending(c => c.InvoiceDate)
+                .ToList();
         }
 
         public TB_Invoice GetInvoice(Guid invoiceID)
@@ -25,12 +27,34 @@ namespace Yumiki.Data.Shopper.Repositories
                 .Include($"{TB_Invoice.FieldName.InvoiceExtraFees}.{TB_InvoiceExtraFee.FieldName.FeeType}")
                 .SingleOrDefault(c => c.ID == invoiceID);
         }
+        public List<TB_InvoiceDetail> GetInvoicesByProductID(Guid productID)
+        {
+            return Context.TB_InvoiceDetail
+                .Include(TB_InvoiceDetail.FieldName.Invoice)
+                .Where(c => c.ProductID == productID)
+                .OrderByDescending(c => c.Invoice.InvoiceDate)
+                .ToList();
+        }
 
         public void SaveInvoice(TB_Invoice invoice)
         {
             if (invoice.ID == Guid.Empty)
             {
                 Context.TB_Invoice.Add(invoice);
+
+                foreach (TB_InvoiceDetail detail in invoice.InvoiceDetails)
+                {
+                    if (invoice.Status != EN_InvoiceStatus.E_CANCELLED)
+                    {
+                        TB_Stock stock = new TB_Stock();
+
+                        stock.UserID = detail.UserID;
+                        stock.ProductID = detail.ProductID;
+                        stock.Quantity = -detail.Quantity;
+
+                        detail.Stocks.Add(stock);
+                    }
+                }
             }
             else
             {
@@ -63,16 +87,16 @@ namespace Yumiki.Data.Shopper.Repositories
                 {
                     if (detail.ID == Guid.Empty)
                     {
-                        TB_Stock stock = new TB_Stock();
-                        detail.Stocks.Add(stock);
+                        dbInvoice.InvoiceDetails.Add(detail);
 
-                        stock.UserID = detail.UserID;
-                        stock.ProductID = detail.ProductID;
-                        stock.Quantity = -detail.Quantity;
-
-                        if(dbInvoice.Status != EN_InvoiceStatus.E_CANCELLED)
+                        if (dbInvoice.Status != EN_InvoiceStatus.E_CANCELLED)
                         {
-                            dbInvoice.InvoiceDetails.Add(detail);
+                            TB_Stock stock = new TB_Stock();
+                            detail.Stocks.Add(stock);
+
+                            stock.UserID = detail.UserID;
+                            stock.ProductID = detail.ProductID;
+                            stock.Quantity = -detail.Quantity;
                         }
                     }
                     else

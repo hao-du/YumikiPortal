@@ -18,6 +18,8 @@ namespace Yumiki.Business.Shopper.Interfaces
 
         TB_Invoice GetInvoice(string invoiceID);
 
+        List<TB_InvoiceDetail> GetInvoicesByProductID(string productID);
+
         void SaveInvoice(TB_Invoice invoice);
 
         List<ExtendEnum> GetStatuses();

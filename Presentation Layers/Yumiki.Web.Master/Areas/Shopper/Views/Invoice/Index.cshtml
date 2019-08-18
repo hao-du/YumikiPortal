@@ -91,23 +91,19 @@
                         <th></th>
                         <th>Invoice Number</th>
                         <th>Customer Name</th>
-                        <th>Customer Phone</th>
-                        <th>Customer Address</th>
-                        <th class="text-right">Invoice Date</th>
+                        <th>Status</th>
                         <th class="text-right">Total Amount</th>
-                        <th>Descriptions</th>
+                        <th class="text-right">Invoice Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in list">
+                    <tr ng-repeat="item in list" ng-class="{'table-warning' : item.@TB_Invoice.FieldName.TotalAmount < 1}">
                         <td><a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a></td>
                         <td>{{ item.@TB_Invoice.FieldName.InvoiceNumber }}</td>
                         <td>{{ item.@TB_Invoice.FieldName.CustomerName }}</td>
-                        <td>{{ item.@TB_Invoice.FieldName.CustomerPhone }}</td>
-                        <td>{{ item.@TB_Invoice.FieldName.CustomerAddress }}</td>
+                        <td>{{ item.@TB_Invoice.FieldName.StatusUI}}</td>
                         <td class="text-right">{{ item.@TB_Invoice.FieldName.InvoiceDate }}</td>
                         <td class="text-right">{{ item.@TB_Invoice.FieldName.TotalAmount | number:2 }}</td>
-                        <td>{{ item.@CommonProperties.Descriptions }}</td>
                     </tr>
                 </tbody>
             </table>

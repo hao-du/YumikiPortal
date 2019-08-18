@@ -29,6 +29,7 @@ namespace Yumiki.Web.Shopper.Constants
 
         public const string InvoiceGetAll = "InvoiceGetAll";
         public const string InvoiceGetByID = "InvoiceGetByID";
+        public const string InvoiceGetByProductID = "InvoiceGetByProductID";
         public const string InvoiceSave = "InvoiceSave";
     }
 }

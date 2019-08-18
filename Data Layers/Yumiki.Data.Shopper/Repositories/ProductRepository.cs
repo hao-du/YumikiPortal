@@ -22,7 +22,11 @@ namespace Yumiki.Data.Shopper.Repositories
                 expression = expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
             }
 
-            return Context.TB_Product.Include(TB_Product.FieldName.Stocks).Where(expression).ToList();
+            return Context.TB_Product
+                .Include(TB_Product.FieldName.Stocks)
+                .Where(expression)
+                .OrderByDescending(c => c.LastUpdateDate)
+                .ToList();
         }
 
         public TB_Product GetProduct(Guid productID)

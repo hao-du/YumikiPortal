@@ -50,6 +50,30 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
+        public string InvoiceNumber
+        {
+            get
+            {
+                return _internalItem.InvoiceNumber;
+            }
+        }
+
+        public string CustomerName
+        {
+            get
+            {
+                return _internalItem.CustomerName;
+            }
+        }
+
+        public string InvoiceDateUI
+        {
+            get
+            {
+                return _internalItem.InvoiceDateUI;
+            }
+        }
+
         public Guid ProductID
         {
             get

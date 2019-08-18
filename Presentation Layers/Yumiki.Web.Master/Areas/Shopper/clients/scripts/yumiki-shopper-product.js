@@ -3,16 +3,17 @@
         showActiveText: 'Show Active Products',
         showInactiveText: 'Show Inactive Products',
 
-        init: function (getAllUrl, getByIdUrl, saveUrl) {
+        init: function (getAllUrl, getByIdUrl, getInvoicesByProductIDUrl, saveUrl) {
             var app = angular.module('shopperProduct', ['ui.bootstrap']);
 
-            yumiki.shopper.product.initService(app, getAllUrl, getByIdUrl, saveUrl);
+            yumiki.shopper.product.initService(app, getAllUrl, getByIdUrl, getInvoicesByProductIDUrl, saveUrl);
             yumiki.shopper.product.initListController(app);
             yumiki.shopper.product.initDialogController(app, 'Product');
+            yumiki.shopper.product.initInvoiceListDialogController(app);
         },
 
         //Service to communicate with Server.
-        initService: function (app, getAllUrl, getByIdUrl, saveUrl) {
+        initService: function (app, getAllUrl, getByIdUrl, getInvoicesByProductIDUrl, saveUrl) {
             app.service('DataService', function ($http) {
                 this.getList = function (showInactive) {
                     return $http.get(getAllUrl, { params: { 'showInactive': showInactive } });
@@ -20,6 +21,10 @@
 
                 this.getByID = function (id) {
                     return $http.get(getByIdUrl, { params: { 'productId': id } });
+                };
+
+                this.getInvoicesByProductID = function (productID) {
+                    return $http.get(getInvoicesByProductIDUrl, { params: { 'productId': productID } });
                 };
 
                 this.save = function (object) {
@@ -43,6 +48,12 @@
                     $rootScope.$broadcast("OnLoad", id);
                 };
 
+                //Display dialog and pass data to Dialog.
+                $scope.onShowInvoiceListDialog = function (productid) {
+                    //Call DialogController
+                    $rootScope.$broadcast("OnInvoiceListLoad", productid);
+                };
+
                 //Event for other controllers to reload data.
                 $rootScope.$on('OnReload', function (event) {
                     $scope.onLoad();
@@ -51,7 +62,7 @@
                 //Load data
                 $scope.onLoad = function () {
                     var showInactive = true;
-                    if ($scope.inactiveButtonName == yumiki.shopper.product.showInactiveText) {
+                    if ($scope.inactiveButtonName === yumiki.shopper.product.showInactiveText) {
                         showInactive = false;
                     }
 
@@ -88,7 +99,7 @@
 
                 //Private function
                 function setButtonName() {
-                    if ($scope.inactiveButtonName == yumiki.shopper.product.showInactiveText) {
+                    if ($scope.inactiveButtonName === yumiki.shopper.product.showInactiveText) {
                         $scope.inactiveButtonName = yumiki.shopper.product.showActiveText;
                     } else {
                         $scope.inactiveButtonName = yumiki.shopper.product.showInactiveText;
@@ -164,6 +175,33 @@
                 function reload () {
                     $rootScope.$broadcast("OnReload");
                 };
+            });
+        },
+
+        //CONTROLLER FOR INVOICE LIST DIALOG
+        initInvoiceListDialogController: function (app) {
+            app.controller('invoiceListDialogController', function ($scope, $rootScope, DataService) {
+                //Deligate event is called by other controllers.
+                $rootScope.$on('OnInvoiceListLoad', function (event, productID) {
+                    $('#dlgInvoiceListObject').modal({ backdrop: 'static' });
+
+                    if (productID) {
+                        yumiki.message.displayLoadingDialog(true);
+
+                        DataService.getInvoicesByProductID(productID).then(
+                            function success(response) {
+                                $scope.invoiceList = response.data;
+
+                                yumiki.message.displayLoadingDialog(false);
+                            },
+                            function error(response) {
+                                yumiki.message.displayLoadingDialog(false);
+                                yumiki.message.clientMessage(response.data, '', yumiki.shopper.errorLogType);
+                            });
+                    } else {
+                        $scope.invoiceList = null;
+                    }
+                });
             });
         }
     };

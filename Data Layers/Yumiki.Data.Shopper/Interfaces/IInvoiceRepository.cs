@@ -14,6 +14,8 @@ namespace Yumiki.Data.Shopper.Interfaces
 
         TB_Invoice GetInvoice(Guid invoiceID);
 
+        List<TB_InvoiceDetail> GetInvoicesByProductID(Guid productID);
+
         void SaveInvoice(TB_Invoice invoice);
     }
 }
