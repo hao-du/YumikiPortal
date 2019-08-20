@@ -5,18 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.Shopper.Interfaces;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 
 namespace Yumiki.Business.Shopper.Services
 {
     public class AdditionalFeeService : BaseService<IAdditionalFeeRepository>, IAdditionalFeeService
     {
-        public List<TB_AdditionalFee> GetAdditionalFees(bool showInactive)
+        public GetResponse<TB_AdditionalFee> GetAdditionalFees(GetShopperRequest<TB_AdditionalFee> request)
         {
-            return Repository.GetAdditionalFees(showInactive);
+            return Repository.GetAdditionalFees(request);
         }
 
         public TB_AdditionalFee GetAdditionalFee(string additionalFeeID)

@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 
 namespace Yumiki.Data.Shopper.Repositories
 {
     public class ReceiptRepository : ShopperRepository, IReceiptRepository
     {
-        public List<TB_Receipt> GetReceipts(bool showInactive)
+        public GetResponse<TB_Receipt> GetReceipts(GetShopperRequest<TB_Receipt> request)
         {
-            return Context.TB_Receipt
-                .Where(c => c.IsActive == !showInactive)
-                .OrderByDescending(c => c.ReceiptDate)
-                .ToList();
+            IQueryable<TB_Receipt> query = Context.TB_Receipt.Where(c => c.IsActive == !request.ShowInactive).OrderByDescending(c => c.ReceiptDate);
+
+            int count = 0;
+            if (request.EnablePaging)
+            {
+                count = query.Count();
+                query = query.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
+            }
+
+            return new GetResponse<TB_Receipt>
+            {
+                Records = query.ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = count
+            };
         }
 
         public TB_Receipt GetReceipt(Guid receiptID)

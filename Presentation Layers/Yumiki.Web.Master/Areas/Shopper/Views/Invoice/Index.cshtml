@@ -108,6 +108,9 @@
                 </tbody>
             </table>
         </div>
+        <div>
+            <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="pagingIndexChange();" class="pagination" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
+        </div>
     </div>
 
     <!-- Modal -->

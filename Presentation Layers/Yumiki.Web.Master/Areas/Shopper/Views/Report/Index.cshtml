@@ -26,10 +26,11 @@
         yumiki.shopper.report.initReport(
             'cvReportChart',
             {
-                '@GetReportRequest.FieldName.ReportType': @((int)EN_ReportType.E_MONTH),
+                '@GetReportRequest.FieldName.ReportType': @((int)EN_ReportType.E_YEAR),
                 '@GetReportRequest.FieldName.StartDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
-                '@GetReportRequest.FieldName.SplitIncomeOutcomeView': false
+                '@GetReportRequest.FieldName.SplitIncomeOutcomeView': true,
+                '@GetReportRequest.FieldName.CalculateTotal': false
             },
             {
                 reportGetReportTypesUrl: '@Url.HttpRouteUrl(RouteNames.ReportGetReportRevenueTypes, null)',
@@ -61,13 +62,25 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Report Type</label>
-                        <select class="form-control selectpicker" 
+                        <select class="form-control selectpicker"
                                 ng-class="{ 'border-danger' : reportForm.reportType.$invalid && reportForm.reportType.$dirty }"
                                 name="reportType" ng-required="true"
                                 ng-model="requestObject.@GetReportRequest.FieldName.ReportType"
                                 ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes"
                                 ng-change="updateReportType()"></select>
                         <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="text-danger">Report Type is required.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check mt-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.CalculateTotal" ng-checked="requestObject.@GetReportRequest.FieldName.CalculateTotal" /> <b>Calculate Only Total Amount</b>
+                        </label>
+                    </div>
+                    <div class="form-check mt-3 mb-2">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" ng-checked="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" /> <b>Split Income/Outcome View</b>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -97,22 +110,6 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.CalculateTotal" ng-checked="requestObject.@GetReportRequest.FieldName.CalculateTotal" /> <b>Calculate Only Total Amount</b>
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" ng-model="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" ng-checked="requestObject.@GetReportRequest.FieldName.SplitIncomeOutcomeView" /> <b>Split Income/Outcome View</b>
-                        </label>
                     </div>
                 </div>
             </div>

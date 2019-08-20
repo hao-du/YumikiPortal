@@ -44,11 +44,14 @@
         };
 
         yumiki.shopper.product.init(
-            '@Url.HttpRouteUrl(RouteNames.ProductGetAll, null)',
-            '@Url.HttpRouteUrl(RouteNames.ProductGetByID, null)',
-            '@Url.HttpRouteUrl(RouteNames.InvoiceGetByProductID, null)',
-            '@Url.HttpRouteUrl(RouteNames.ReceiptGetByProductID, null)',
-            '@Url.HttpRouteUrl(RouteNames.ProductSave, null)',
+            {
+                getAllUrl:'@Url.HttpRouteUrl(RouteNames.ProductGetAll, null)',
+                getByIdUrl:'@Url.HttpRouteUrl(RouteNames.ProductGetByID, null)',
+                getInvoicesByProductIDUrl:'@Url.HttpRouteUrl(RouteNames.InvoiceGetByProductID, null)',
+                getReceiptsByProductIDUrl:'@Url.HttpRouteUrl(RouteNames.ReceiptGetByProductID, null)',
+                saveUrl:'@Url.HttpRouteUrl(RouteNames.ProductSave, null)',
+                getProductOffsets:'@Url.HttpRouteUrl(RouteNames.ProductOffsetGetAll, null)'
+            }
         );
     </script>
 }
@@ -95,6 +98,9 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" ng-change="pagingIndexChange();" class="pagination" boundary-link-numbers="true" rotate="true" items-per-page="itemsPerPage"></ul>
             </div>
         </div>
 
@@ -228,6 +234,13 @@
                                         <td class="text-right">{{ item.@TB_ReceiptDetail.FieldName.Quantity }}</td>
                                         <td class="text-right">{{ item.@TB_ReceiptDetail.FieldName.UnitPrice | number:2 }}</td>
                                         <td>{{ item.@TB_Receipt.FieldName.ReceiptDateUI }}</td>
+                                    </tr>
+
+                                    <tr ng-repeat="item in offSetList" class="table-warning">
+                                        <td>Offset</td>
+                                        <td class="text-right">{{ item.@TB_ProductQuantityOffset.FieldName.Quantity }}</td>
+                                        <td class="text-right">N/A</td>
+                                        <td>{{ item.@TB_ProductQuantityOffset.FieldName.OffsetDateUI }}</td>
                                     </tr>
                                 </tbody>
                             </table>

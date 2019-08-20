@@ -22,7 +22,7 @@ namespace Yumiki.Business.Shopper.Services
             if (!string.IsNullOrWhiteSpace(productID))
             {
                 Guid convertedProductID = Guid.Empty;
-                if (Guid.TryParse(productID, out convertedProductID))
+                if (!Guid.TryParse(productID, out convertedProductID))
                 {
                     throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Product ID must be GUID type.", Logger);
                 }

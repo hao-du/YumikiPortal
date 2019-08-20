@@ -18,8 +18,8 @@
         initService: function (app, serviceUrls) {
             app
                 .service('DataService', function ($http) {
-                    this.getList = function (showInactive) {
-                        return $http.get(serviceUrls.getAllUrl, { params: { 'showInactive': showInactive } });
+                    this.getList = function (showInactive, currentPage, itemsPerPage) {
+                        return $http.get(serviceUrls.getAllUrl, { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
                     };
 
                     this.getByID = function (id) {
@@ -127,6 +127,13 @@
             app.controller('invoiceController', function ($scope, $rootScope, DataService) {
                 $scope.inactiveButtonName = yumiki.shopper.invoice.showInactiveText;
 
+                //For paging
+                $scope.viewby = 30;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.maxSize = 5; //Number of pager buttons to show
+
                 //To determine when load active or inactive list.
                 $scope.isStatusChanged = false;
 
@@ -153,9 +160,12 @@
                     }
 
                     yumiki.message.displayLoadingDialog(true);
-                    DataService.getList(showInactive).then(
+                    DataService.getList(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
                         function success(response) {
-                            $scope.list = response.data;
+                            $scope.list = response.data.Records;
+                            $scope.currentPage = response.data.CurrentPage;
+                            $scope.totalItems = response.data.TotalItems;
+                            $scope.itemsPerPage = response.data.ItemsPerPage;
 
                             if ($scope.isStatusChanged) {
                                 setButtonName();
@@ -171,6 +181,12 @@
                             yumiki.message.displayLoadingDialog(false);
                             yumiki.message.clientMessage(response.data, '', yumiki.shopper.errorLogType);
                         });
+                };
+
+                $scope.pagingIndexChange = function () {
+                    if ($scope.totalItems > $scope.viewby) {
+                        $scope.onLoad();
+                    }
                 };
 
                 //When click on "ShowInActiveButton", reload data with active status.

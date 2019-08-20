@@ -160,6 +160,11 @@
         }, 
 
         initReportChart: function (reportControlID) {
+            var commaify = function (value) {
+                var result = ('' + value).replace(/^(-?\d+)(\d{3})/, '$1,$2');
+                return value == result ? result : commaify(result);
+            };
+
             var options = {
                 elements: {
                     line: {
@@ -189,6 +194,18 @@
                             return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         }
                     }
+                },
+                plugins: {
+                    datalabels: {
+                        anchor: 'center',
+                        align: 'center',
+                        formatter: function (value) {
+                            return commaify(value);
+                        },
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
                 }
             };
 
@@ -197,8 +214,8 @@
                 data: {
                     labels: [],
                     datasets: [{
-                        backgroundColor: '#f00',
-                        borderColor: '#f00',
+                        backgroundColor: '#0ff',
+                        borderColor: '#0ff',
                         data: [],
                         label: '',
                         fill: 'false'

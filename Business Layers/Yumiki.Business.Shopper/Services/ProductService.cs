@@ -5,28 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.Shopper.Interfaces;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 
 namespace Yumiki.Business.Shopper.Services
 {
     public class ProductService : BaseService<IProductRepository>, IProductService
     {
-        public List<TB_Product> GetProducts(bool showInactive)
+        public GetResponse<TB_Product> GetProducts(GetShopperRequest<TB_Product> request)
         {
-            return Repository.GetProducts(showInactive, null);
+            return Repository.GetProducts(request);
         }
 
-        public List<TB_Product> GetProducts(string term)
+        public GetResponse<TB_Product> GetProductsByTerm(GetShopperRequest<TB_Product> request)
         {
-            if (string.IsNullOrWhiteSpace(term))
+            if (string.IsNullOrWhiteSpace(request.ProductTerm))
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Search Term cannot be empty.", Logger);
             }
 
-            return Repository.GetProducts(false, term);
+            return Repository.GetProducts(request);
         }
 
         public TB_Product GetProduct(string productID)

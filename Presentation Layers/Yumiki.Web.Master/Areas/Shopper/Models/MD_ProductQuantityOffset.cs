@@ -50,6 +50,14 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
+        public string OffsetDateUI
+        {
+            get
+            {
+                return _internalItem.OffsetDateUI;
+            }
+        }
+
         public Guid ProductID
         {
             get

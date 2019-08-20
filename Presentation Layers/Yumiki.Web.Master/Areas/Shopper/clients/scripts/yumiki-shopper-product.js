@@ -3,16 +3,10 @@
         showActiveText: 'Show Active Products',
         showInactiveText: 'Show Inactive Products',
 
-        init: function (getAllUrl, getByIdUrl, getInvoicesByProductIDUrl, getReceiptsByProductIDUrl, saveUrl) {
+        init: function (serviceUrls) {
             var app = angular.module('shopperProduct', ['ui.bootstrap']);
 
-            yumiki.shopper.product.initService(app,
-                getAllUrl,
-                getByIdUrl,
-                getInvoicesByProductIDUrl,
-                getReceiptsByProductIDUrl,
-                saveUrl);
-
+            yumiki.shopper.product.initService(app, serviceUrls);
 
             yumiki.shopper.product.initListController(app);
             yumiki.shopper.product.initDialogController(app, 'Product');
@@ -21,26 +15,30 @@
         },
 
         //Service to communicate with Server.
-        initService: function (app, getAllUrl, getByIdUrl, getInvoicesByProductIDUrl, getReceiptsByProductIDUrl, saveUrl) {
+        initService: function (app, serviceUrls) {
             app.service('DataService', function ($http) {
-                this.getList = function (showInactive) {
-                    return $http.get(getAllUrl, { params: { 'showInactive': showInactive } });
+                this.getList = function (showInactive, currentPage, itemsPerPage) {
+                    return $http.get(serviceUrls.getAllUrl, { params: { 'showInactive': showInactive, 'currentPage': currentPage, 'itemsPerPage': itemsPerPage } });
                 };
 
                 this.getByID = function (id) {
-                    return $http.get(getByIdUrl, { params: { 'productId': id } });
+                    return $http.get(serviceUrls.getByIdUrl, { params: { 'productId': id } });
                 };
 
                 this.getInvoicesByProductID = function (productID) {
-                    return $http.get(getInvoicesByProductIDUrl, { params: { 'productId': productID } });
+                    return $http.get(serviceUrls.getInvoicesByProductIDUrl, { params: { 'productId': productID } });
                 };
 
                 this.getReceiptsByProductID = function (productID) {
-                    return $http.get(getReceiptsByProductIDUrl, { params: { 'productId': productID } });
+                    return $http.get(serviceUrls.getReceiptsByProductIDUrl, { params: { 'productId': productID } });
+                };
+
+                this.getOffsetsByProductID = function (productid) {
+                    return $http.get(serviceUrls.getProductOffsets, { params: { 'showInactive': false, 'productID': productid } });
                 };
 
                 this.save = function (object) {
-                    return $http.post(saveUrl, object);
+                    return $http.post(serviceUrls.saveUrl, object);
                 };
             });
 
@@ -50,6 +48,13 @@
         initListController: function (app) {
             app.controller('productController', function ($scope, $rootScope, DataService) {
                 $scope.inactiveButtonName = yumiki.shopper.product.showInactiveText;
+
+                //For paging
+                $scope.viewby = 20;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.maxSize = 5; //Number of pager buttons to show
 
                 //To determine when load active or inactive list.
                 $scope.isStatusChanged = false;
@@ -89,9 +94,12 @@
                     }
 
                     yumiki.message.displayLoadingDialog(true);
-                    DataService.getList(showInactive).then(
+                    DataService.getList(showInactive, $scope.currentPage, $scope.itemsPerPage).then(
                         function success(response) {
-                            $scope.list = response.data;
+                            $scope.list = response.data.Records;
+                            $scope.currentPage = response.data.CurrentPage;
+                            $scope.totalItems = response.data.TotalItems;
+                            $scope.itemsPerPage = response.data.ItemsPerPage;
 
                             if ($scope.isStatusChanged) {
                                 setButtonName();
@@ -107,6 +115,12 @@
                             yumiki.message.displayLoadingDialog(false);
                             yumiki.message.clientMessage(response.data, '', yumiki.shopper.errorLogType);
                         });
+                };
+
+                $scope.pagingIndexChange = function () {
+                    if ($scope.totalItems > $scope.viewby) {
+                        $scope.onLoad();
+                    }
                 };
 
                 //When click on "ShowInActiveButton", reload data with active status.
@@ -233,18 +247,38 @@
                     if (productID) {
                         yumiki.message.displayLoadingDialog(true);
 
+                        var isGetReceiptCompleted, isGetOffsetCompleted;
+                        isGetReceiptCompleted = isGetOffsetCompleted = false;
+
                         DataService.getReceiptsByProductID(productID).then(
                             function success(response) {
                                 $scope.receiptList = response.data;
 
+                                if (isGetOffsetCompleted) {
+                                    yumiki.message.displayLoadingDialog(false);
+                                }
+                                isGetReceiptCompleted = true;
+                            },
+                            function error(response) {
                                 yumiki.message.displayLoadingDialog(false);
+                                yumiki.message.clientMessage(response.data, '', yumiki.shopper.errorLogType);
+                            });
+
+                        DataService.getOffsetsByProductID(productID).then(
+                            function success(response) {
+                                $scope.offSetList = response.data;
+
+                                if (isGetReceiptCompleted) {
+                                    yumiki.message.displayLoadingDialog(false);
+                                }
+                                isGetOffsetCompleted = true;
                             },
                             function error(response) {
                                 yumiki.message.displayLoadingDialog(false);
                                 yumiki.message.clientMessage(response.data, '', yumiki.shopper.errorLogType);
                             });
                     } else {
-                        $scope.receiptList = null;
+                        $scope.offSetList = $scope.receiptList = null;
                     }
                 });
             });

@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceObjects\GetReportRequest.cs" />
     <Compile Include="ServiceObjects\GetReportResponse.cs" />
+    <Compile Include="ServiceObjects\GetInvoiceRequest.cs" />
     <Compile Include="TB_AdditionalFee.cs" />
     <Compile Include="TB_FeeType.cs" />
     <Compile Include="TB_Invoice.cs" />

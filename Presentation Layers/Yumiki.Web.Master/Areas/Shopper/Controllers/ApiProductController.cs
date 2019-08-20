@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Yumiki.Business.Shopper.Interfaces;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Commons.Settings;
 using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 using Yumiki.Web.Base;
 using Yumiki.Web.Shopper.Constants;
 
@@ -17,13 +19,20 @@ namespace Yumiki.Web.Shopper.Controllers
     {
         [Route("getall", Name = RouteNames.ProductGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive)
+        public IHttpActionResult Get(bool showInactive, int currentPage, int itemsPerPage)
         {
             try
             {
-                List<TB_Product> products = BusinessService.GetProducts(showInactive);
+                GetShopperRequest<TB_Product> request = new GetShopperRequest<TB_Product>
+                {
+                    ShowInactive = showInactive,
+                    CurrentPage = currentPage,
+                    ItemsPerPage = itemsPerPage
+                };
 
-                return Ok(products);
+                GetResponse<TB_Product> response = BusinessService.GetProducts(request);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -37,9 +46,16 @@ namespace Yumiki.Web.Shopper.Controllers
         {
             try
             {
-                List<TB_Product> products = BusinessService.GetProducts(term);
+                GetShopperRequest<TB_Product> request = new GetShopperRequest<TB_Product>
+                {
+                    ShowInactive = false,
+                    EnablePaging = false,
+                    ProductTerm = term
+                };
 
-                return Ok(products);
+                GetResponse<TB_Product> response = BusinessService.GetProducts(request);
+
+                return Ok(response.Records);
             }
             catch (Exception ex)
             {

@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Data.Shopper.Interfaces;
+using Yumiki.Entity.Shopper.ServiceObjects;
 using Yumiki.Entity.Shopper;
 
 namespace Yumiki.Data.Shopper.Repositories
 {
     public class InvoiceRepository : ShopperRepository, IInvoiceRepository
     {
-        public List<TB_Invoice> GetInvoices(bool showInactive)
+        public GetResponse<TB_Invoice> GetInvoices(GetShopperRequest<TB_Invoice> request)
         {
-            return Context.TB_Invoice
-                .Where(c => c.IsActive == !showInactive)
-                .OrderByDescending(c => c.InvoiceDate)
-                .ToList();
+            IQueryable<TB_Invoice> query = Context.TB_Invoice.Where(c => c.IsActive == !request.ShowInactive).OrderByDescending(c => c.InvoiceDate);
+
+            int count = 0;
+            if (request.EnablePaging)
+            {
+                count = query.Count();
+                query = query.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
+            }
+
+            return new GetResponse<TB_Invoice>
+            {
+                Records = query.ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = count
+            };
         }
 
         public TB_Invoice GetInvoice(Guid invoiceID)

@@ -31,6 +31,14 @@ namespace Yumiki.Entity.Shopper
             }
         }
 
+        public string OffsetDateUI
+        {
+            get
+            {
+                return (LastUpdateDate.HasValue ? LastUpdateDate.Value : CreateDate).ToString(Formats.DateTime.LongDate);
+            }
+        }
+
         public class FieldName
         {
             public const string TB_ProductQuantityOffset = "TB_ProductQuantityOffset";
@@ -40,6 +48,7 @@ namespace Yumiki.Entity.Shopper
             public const string ProductCode = "ProductCode";
             public const string ProductID = "ProductID";
             public const string Quantity = "Quantity";
+            public const string OffsetDateUI = "OffsetDateUI";
             public const string Stocks = "Stocks";
         }
     }

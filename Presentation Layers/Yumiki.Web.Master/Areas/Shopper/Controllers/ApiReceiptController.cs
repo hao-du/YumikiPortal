@@ -10,6 +10,8 @@ using Yumiki.Entity.Shopper;
 using Yumiki.Web.Base;
 using Yumiki.Web.Shopper.Models;
 using Yumiki.Web.Shopper.Constants;
+using Yumiki.Entity.Shopper.ServiceObjects;
+using Yumiki.Commons.Entities.Parameters;
 
 namespace Yumiki.Web.Shopper.Controllers
 {
@@ -18,13 +20,26 @@ namespace Yumiki.Web.Shopper.Controllers
     {
         [Route("getall", Name = RouteNames.ReceiptGetAll)]
         [HttpGet()]
-        public IHttpActionResult Get(bool showInactive)
+        public IHttpActionResult Get(bool showInactive, int currentPage, int itemsPerPage)
         {
             try
             {
-                List<TB_Receipt> receipts = BusinessService.GetReceipts(showInactive);
+                GetShopperRequest<TB_Receipt> request = new GetShopperRequest<TB_Receipt>
+                {
+                    ShowInactive = showInactive,
+                    CurrentPage = currentPage,
+                    ItemsPerPage = itemsPerPage
+                };
 
-                IEnumerable<MD_Receipt> viewModel = receipts.Select(c => new MD_Receipt(c));
+                GetResponse<TB_Receipt> response = BusinessService.GetReceipts(request);
+
+                GetResponse<MD_Receipt> viewModel = new GetResponse<MD_Receipt>()
+                {
+                    Records = response.Records.Select(c => new MD_Receipt(c)),
+                    CurrentPage = response.CurrentPage,
+                    ItemsPerPage = response.ItemsPerPage,
+                    TotalItems = response.TotalItems
+                };
 
                 return Ok(viewModel);
             }

@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 using Yumiki.Business.Base;
 using Yumiki.Business.Shopper.Interfaces;
 using Yumiki.Commons.Entities;
+using Yumiki.Commons.Entities.Parameters;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 
 namespace Yumiki.Business.Shopper.Services
 {
     public class ReceiptService : BaseService<IReceiptRepository>, IReceiptService
     {
-        public List<TB_Receipt> GetReceipts(bool showInactive)
+        public GetResponse<TB_Receipt> GetReceipts(GetShopperRequest<TB_Receipt> request)
         {
-            return Repository.GetReceipts(showInactive);
+            return Repository.GetReceipts(request);
         }
 
         public TB_Receipt GetReceipt(string receiptID)

@@ -7,26 +7,39 @@ using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
 using LinqKit;
 using System.Linq.Expressions;
+using Yumiki.Entity.Shopper.ServiceObjects;
+using Yumiki.Commons.Entities.Parameters;
 
 namespace Yumiki.Data.Shopper.Repositories
 {
     public class ProductRepository : ShopperRepository, IProductRepository
     {
-        public List<TB_Product> GetProducts(bool showInactive, string term)
+        public GetResponse<TB_Product> GetProducts(GetShopperRequest<TB_Product> request)
         {
             Expression<Func<TB_Product, bool>> expression = PredicateBuilder.New<TB_Product>(true);
-            expression = expression.And(c => c.IsActive != showInactive);
+            expression = expression.And(c => c.IsActive != request.ShowInactive);
 
-            if (!string.IsNullOrWhiteSpace(term))
+            if (!string.IsNullOrWhiteSpace(request.ProductTerm))
             {
-                expression = expression.And(c => c.ProductCode.Contains(term) || c.ProductName.Contains(term));
+                expression = expression.And(c => c.ProductCode.Contains(request.ProductTerm) || c.ProductName.Contains(request.ProductTerm));
             }
 
-            return Context.TB_Product
-                .Include(TB_Product.FieldName.Stocks)
-                .Where(expression)
-                .OrderByDescending(c => c.LastUpdateDate)
-                .ToList();
+            IQueryable<TB_Product> query = Context.TB_Product.Include(TB_Product.FieldName.Stocks).Where(expression).OrderByDescending(c => c.LastUpdateDate);
+
+            int count = 0;
+            if (request.EnablePaging)
+            {
+                count = query.Count();
+                query = query.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
+            }
+
+            return new GetResponse<TB_Product>
+            {
+                Records = query.ToList(),
+                CurrentPage = request.CurrentPage,
+                ItemsPerPage = request.ItemsPerPage,
+                TotalItems = count
+            };
         }
 
         public TB_Product GetProduct(Guid productID)
