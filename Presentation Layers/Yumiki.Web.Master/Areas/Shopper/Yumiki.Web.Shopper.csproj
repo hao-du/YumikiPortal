@@ -123,8 +123,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="clients\scripts\yumiki-shopper-revenue-report.js" />
     <Content Include="clients\scripts\yumiki-shopper-additional-fee.js" />
     <Content Include="clients\scripts\yumiki-shopper-invoice.js" />
+    <Content Include="clients\scripts\yumiki-shopper-product-offset.js" />
     <Content Include="clients\scripts\yumiki-shopper-receipt.js" />
     <Content Include="clients\scripts\yumiki-shopper-product.js" />
     <Content Include="clients\scripts\yumiki-shopper-fee-type.js" />
@@ -141,6 +143,8 @@
     <Content Include="Views\AdditionalFee\Index.cshtml" />
     <Content Include="Views\Receipt\Index.cshtml" />
     <Content Include="Views\Invoice\Index.cshtml" />
+    <Content Include="Views\ProductQuantityOffset\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -151,16 +155,21 @@
     <Compile Include="Controllers\ApiReceiptController.cs" />
     <Compile Include="Controllers\ApiProductController.cs" />
     <Compile Include="Controllers\AdditionalFeeController.cs" />
+    <Compile Include="Controllers\ApiReportController.cs" />
     <Compile Include="Controllers\FeeTypeController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
+    <Compile Include="Controllers\ApiProductQuantityOffsetController.cs" />
+    <Compile Include="Controllers\ProductQuantityOffsetController.cs" />
     <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Models\MD_Base.cs" />
     <Compile Include="Models\MD_FeeType.cs" />
     <Compile Include="Models\MD_Product.cs" />
     <Compile Include="Models\MD_Invoice.cs" />
     <Compile Include="Models\MD_InvoiceDetail.cs" />
     <Compile Include="Models\MD_InvoiceExtraFee.cs" />
+    <Compile Include="Models\MD_ProductQuantityOffset.cs" />
     <Compile Include="Models\MD_ReceiptExtraFee.cs" />
     <Compile Include="Models\MD_ReceiptDetail.cs" />
     <Compile Include="Models\MD_Receipt.cs" />

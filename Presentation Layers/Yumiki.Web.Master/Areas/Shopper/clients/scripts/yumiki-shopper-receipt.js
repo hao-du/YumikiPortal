@@ -140,7 +140,7 @@
                 //Load data
                 $scope.onLoad = function () {
                     var showInactive = true;
-                    if ($scope.inactiveButtonName == yumiki.shopper.receipt.showInactiveText) {
+                    if ($scope.inactiveButtonName === yumiki.shopper.receipt.showInactiveText) {
                         showInactive = false;
                     }
 
@@ -177,7 +177,7 @@
 
                 //Private function
                 function setButtonName() {
-                    if ($scope.inactiveButtonName == yumiki.shopper.receipt.showInactiveText) {
+                    if ($scope.inactiveButtonName === yumiki.shopper.receipt.showInactiveText) {
                         $scope.inactiveButtonName = yumiki.shopper.receipt.showActiveText;
                     } else {
                         $scope.inactiveButtonName = yumiki.shopper.receipt.showInactiveText;
@@ -242,7 +242,7 @@
                     var isExisted = false;
 
                     angular.forEach($scope.object.ReceiptDetails, function (item) {
-                        if (item.ID == detail.ID || item.ProductCode == detail.ProductCode) {
+                        if (item.ID === detail.ID || item.ProductCode === detail.ProductCode) {
                             item.ReceiptID = detail.ReceiptID;
                             item.ProductID = detail.ProductID;
                             item.ProductCode = detail.ProductCode;
@@ -283,7 +283,7 @@
                     var isExisted = false;
 
                     angular.forEach($scope.object.ReceiptExtraFees, function (item) {
-                        if (item.ID == extraFee.ID) {
+                        if (item.ID === extraFee.ID) {
                             item.ReceiptID = extraFee.ReceiptID;
                             item.FeeTypeID = extraFee.FeeTypeID;
                             item.FeeTypeName = extraFee.FeeTypeName;

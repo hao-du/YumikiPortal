@@ -25,11 +25,19 @@ namespace Yumiki.Web.Shopper.Constants
 
         public const string ReceiptGetAll = "ReceiptGetAll";
         public const string ReceiptGetByID = "ReceiptGetByID";
+        public const string ReceiptGetByProductID = "ReceiptGetByProductID";
         public const string ReceiptSave = "ReceiptSave";
 
         public const string InvoiceGetAll = "InvoiceGetAll";
         public const string InvoiceGetByID = "InvoiceGetByID";
         public const string InvoiceGetByProductID = "InvoiceGetByProductID";
         public const string InvoiceSave = "InvoiceSave";
+
+        public const string ProductOffsetGetAll = "ProductOffsetGetAll";
+        public const string ProductOffsetByID = "ProductOffsetByID";
+        public const string ProductOffsetSave = "ProductOffsetSave";
+
+        public const string ReportGenerateRevenueReport = "ReportGenerateRevenueReport";
+        public const string ReportGetReportRevenueTypes = "ReportGetReportRevenueTypes";
     }
 }

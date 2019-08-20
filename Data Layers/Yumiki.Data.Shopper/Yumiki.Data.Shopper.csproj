@@ -54,13 +54,17 @@
     <Compile Include="Interfaces\IAdditionalFeeRepository.cs" />
     <Compile Include="Interfaces\IInvoiceRepository.cs" />
     <Compile Include="Interfaces\IFeeTypeRepository.cs" />
+    <Compile Include="Interfaces\IProductQuantityOffsetRepository.cs" />
     <Compile Include="Interfaces\IReceiptRepository.cs" />
     <Compile Include="Interfaces\IProductRepository.cs" />
+    <Compile Include="Interfaces\IReportRepository.cs" />
     <Compile Include="Repositories\AdditionalFeeRepository.cs" />
     <Compile Include="Repositories\InvoiceRepository.cs" />
     <Compile Include="Repositories\FeeTypeRepository.cs" />
+    <Compile Include="Repositories\ProductQuantityOffsetRepository.cs" />
     <Compile Include="Repositories\ReceiptRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="ShopperModel.cs" />
     <Compile Include="ShopperRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

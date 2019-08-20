@@ -18,6 +18,7 @@ namespace Yumiki.Entity.Shopper
             ReceiptDetails = new HashSet<TB_ReceiptDetail>();
             ReceiptExtraFees = new HashSet<TB_ReceiptExtraFee>();
             Stocks = new HashSet<TB_Stock>();
+            ProductQuantityOffsets = new HashSet<TB_ProductQuantityOffset>();
         }
 
         public Guid ID { get; set; }
@@ -55,6 +56,8 @@ namespace Yumiki.Entity.Shopper
         public virtual ICollection<TB_Receipt> Receipts { get; set; }
 
         public virtual ICollection<TB_ReceiptDetail> ReceiptDetails { get; set; }
+
+        public virtual ICollection<TB_ProductQuantityOffset> ProductQuantityOffsets { get; set; }
 
         public virtual ICollection<TB_ReceiptExtraFee> ReceiptExtraFees { get; set; }
     }

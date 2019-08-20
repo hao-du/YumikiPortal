@@ -37,6 +37,23 @@ namespace Yumiki.Business.Shopper.Services
             return Repository.GetReceipt(convertedReceiptID);
         }
 
+        public List<TB_ReceiptDetail> GetReceiptsByProductID(string productID)
+        {
+            if (string.IsNullOrWhiteSpace(productID))
+            {
+                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "product ID is required.", Logger);
+            }
+
+            Guid convertedProductID = Guid.Empty;
+            Guid.TryParse(productID, out convertedProductID);
+            if (convertedProductID == Guid.Empty)
+            {
+                throw new YumikiException(ExceptionCode.E_WRONG_TYPE, "Receipt ID must be GUID type.", Logger);
+            }
+
+            return Repository.GetReceiptsByProductID(convertedProductID);
+        }
+
         public void SaveReceipt(TB_Receipt receipt)
         {
             if (string.IsNullOrWhiteSpace(receipt.ExternalReceiptID))

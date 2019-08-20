@@ -3,32 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Yumiki.Business.Base;
-using Yumiki.Business.MoneyTrace.Interfaces;
+using Yumiki.Business.Shopper.Interfaces;
 using Yumiki.Commons.Dictionaries;
 using Yumiki.Commons.Exceptions;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Report;
 using Yumiki.Commons.Settings;
-using Yumiki.Data.MoneyTrace.Interfaces;
-using Yumiki.Entity.MoneyTrace;
-using Yumiki.Entity.MoneyTrace.ServiceObjects;
+using Yumiki.Data.Shopper.Interfaces;
+using Yumiki.Entity.Shopper;
+using Yumiki.Entity.Shopper.ServiceObjects;
 
-namespace Yumiki.Business.MoneyTrace.Services
+namespace Yumiki.Business.Shopper.Services
 {
     public class ReportService : BaseService<IReportRepository>, IReportService
     {
-        /// <summary>
-        /// Get Trace Report
-        /// </summary>
-        /// <param name="request">Request contains filters</param>
-        /// <returns>Report result with label/value</returns>
-        public GetReportResponse GetTraceReport(GetReportRequest request)
+        public GetReportResponse GetRevenueReport(GetReportRequest request)
         {
-            if(request.CurrencyID == Guid.Empty)
-            {
-                throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Currency is required.", Logger);
-            }
-
             switch (request.ReportType)
             {
                 case EN_ReportType.E_MONTH:
@@ -45,17 +35,12 @@ namespace Yumiki.Business.MoneyTrace.Services
                     break;
             }
 
-            if(request.TransactionTypes == null || !request.TransactionTypes.Any())
-            {
-                request.TransactionTypes = new EN_TransactionType[] { EN_TransactionType.E_INCOME, EN_TransactionType.E_OUTCOME, EN_TransactionType.E_TRANSFER  };
-            }
-
             if (request.StartDate > request.EndDate)
             {
                 throw new YumikiException(ExceptionCode.E_EMPTY_VALUE, "Start Date cannot be greater than End Date.", Logger);
             }
 
-            return Repository.GetTraceReport(request);
+            return Repository.GetRevenueReport(request);
         }
     }
 }

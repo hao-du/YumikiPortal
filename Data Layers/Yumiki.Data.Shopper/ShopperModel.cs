@@ -24,6 +24,7 @@ namespace Yumiki.Entity.Shopper
         public virtual DbSet<TB_ReceiptExtraFee> TB_ReceiptExtraFee { get; set; }
         public virtual DbSet<TB_Stock> TB_Stock { get; set; }
         public virtual DbSet<TB_User> TB_User { get; set; }
+        public virtual DbSet<TB_ProductQuantityOffset> TB_ProductQuantityOffset { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -88,6 +89,12 @@ namespace Yumiki.Entity.Shopper
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TB_Product>()
+                .HasMany(e => e.ProductQuantityOffsets)
+                .WithRequired(e => e.Product)
+                .HasForeignKey(e => e.ProductID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_Product>()
                 .HasMany(e => e.Stocks)
                 .WithRequired(e => e.Product)
                 .HasForeignKey(e => e.ProductID)
@@ -109,6 +116,12 @@ namespace Yumiki.Entity.Shopper
                 .HasMany(e => e.Stocks)
                 .WithOptional(e => e.ReceiptDetail)
                 .HasForeignKey(e => e.ReceiptDetailID)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<TB_ProductQuantityOffset>()
+                .HasMany(e => e.Stocks)
+                .WithOptional(e => e.ProductQuantityOffset)
+                .HasForeignKey(e => e.ProductQuantityOffsetID)
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<TB_User>()
@@ -163,6 +176,12 @@ namespace Yumiki.Entity.Shopper
 
             modelBuilder.Entity<TB_User>()
                 .HasMany(e => e.ReceiptDetails)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TB_User>()
+                .HasMany(e => e.ProductQuantityOffsets)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.UserID)
                 .WillCascadeOnDelete(false);

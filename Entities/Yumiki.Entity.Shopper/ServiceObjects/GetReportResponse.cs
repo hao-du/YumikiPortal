@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Yumiki.Commons.Report;
 using Yumiki.Entity.Base;
 
-namespace Yumiki.Entity.MoneyTrace.ServiceObjects
+namespace Yumiki.Entity.Shopper.ServiceObjects
 {
     public class GetReportResponse : PagingEntity<ReportObject>
     {

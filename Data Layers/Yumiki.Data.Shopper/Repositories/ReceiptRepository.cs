@@ -28,6 +28,15 @@ namespace Yumiki.Data.Shopper.Repositories
                 .SingleOrDefault(c => c.ID == receiptID);
         }
 
+        public List<TB_ReceiptDetail> GetReceiptsByProductID(Guid productID)
+        {
+            return Context.TB_ReceiptDetail
+                .Include(TB_ReceiptDetail.FieldName.Receipt)
+                .Where(c => c.ProductID == productID)
+                .OrderByDescending(c => c.Receipt.ReceiptDate)
+                .ToList();
+        }
+
         public void SaveReceipt(TB_Receipt receipt)
         {
             if (receipt.ID == Guid.Empty)

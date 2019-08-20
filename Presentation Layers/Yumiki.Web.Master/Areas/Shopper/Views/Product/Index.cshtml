@@ -47,6 +47,7 @@
             '@Url.HttpRouteUrl(RouteNames.ProductGetAll, null)',
             '@Url.HttpRouteUrl(RouteNames.ProductGetByID, null)',
             '@Url.HttpRouteUrl(RouteNames.InvoiceGetByProductID, null)',
+            '@Url.HttpRouteUrl(RouteNames.ReceiptGetByProductID, null)',
             '@Url.HttpRouteUrl(RouteNames.ProductSave, null)',
         );
     </script>
@@ -79,7 +80,8 @@
                         <tr ng-repeat="item in list" ng-class="{'table-warning' : item.@TB_Product.FieldName.StockQuantity < 1}">
                             <td>
                                 <a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
-                                <a href="#" id="btnViewInvoices" title="View Invoices" ng-click="onShowInvoiceListDialog(item.@CommonProperties.ID);"><span class="fa fa-list-ol"></span></a>
+                                <a href="#" id="btnViewInvoices" title="View Invoices" ng-click="onShowInvoiceListDialog(item.@CommonProperties.ID);"><span class="fa fa-outdent"></span></a>
+                                <a href="#" id="btnViewReceipts" title="View Invoices" ng-click="onShowReceiptListDialog(item.@CommonProperties.ID);"><span class="fa fa-indent"></span></a>
                             </td>
                             <td>
                                 <img ng-src="{{ item.@TB_Product.FieldName.FeaturedImage }}"
@@ -190,6 +192,42 @@
                                         <td class="text-right">{{ item.@TB_InvoiceDetail.FieldName.Quantity }}</td>
                                         <td class="text-right">{{ item.@TB_InvoiceDetail.FieldName.UnitPrice | number:2 }}</td>
                                         <td>{{ item.@TB_Invoice.FieldName.InvoiceDateUI }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dlgReceiptListObject" class="modal fade" role="dialog" ng-controller="receiptListDialogController">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Receipts</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="tblInvoiceList" class="table table-sm table-striped table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Receipt #</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th class="text-right">Price</th>
+                                        <th>Receipt Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in receiptList">
+                                        <td>{{ item.@TB_Receipt.FieldName.ExternalReceiptID }}</td>
+                                        <td class="text-right">{{ item.@TB_ReceiptDetail.FieldName.Quantity }}</td>
+                                        <td class="text-right">{{ item.@TB_ReceiptDetail.FieldName.UnitPrice | number:2 }}</td>
+                                        <td>{{ item.@TB_Receipt.FieldName.ReceiptDateUI }}</td>
                                     </tr>
                                 </tbody>
                             </table>

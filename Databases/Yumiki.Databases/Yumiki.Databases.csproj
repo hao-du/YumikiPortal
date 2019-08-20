@@ -55,6 +55,8 @@
     <Content Include="DB_MoneyTrace\Release-008\InsertData.sql" />
     <Content Include="DB_Ontime\CreateDatabase.sql" />
     <None Include="DB_Shopper\Release-017\CreateDatabase.sql" />
+    <None Include="DB_Shopper\Release-018\CreateDatabase.sql" />
+    <Content Include="DB_Administration\Release-018\InsertData.sql" />
     <Content Include="DB_WellCovered\Release-008\PROC_PerformSearch.sql" />
     <None Include="DB_WellCovered\Release-009\CreateDatabase.sql" />
     <None Include="DB_WellCovered\Release-011\CreateDatabase.sql" />

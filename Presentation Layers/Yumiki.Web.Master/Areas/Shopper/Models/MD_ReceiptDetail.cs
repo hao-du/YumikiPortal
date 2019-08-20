@@ -42,6 +42,22 @@ namespace Yumiki.Web.Shopper.Models
             }
         }
 
+        public string ExternalReceiptID
+        {
+            get
+            {
+                return _internalItem.ExternalReceiptID;
+            }
+        }
+
+        public string ReceiptDateUI
+        {
+            get
+            {
+                return _internalItem.ReceiptDateUI;
+            }
+        }
+
         public string ProductCode
         {
             get

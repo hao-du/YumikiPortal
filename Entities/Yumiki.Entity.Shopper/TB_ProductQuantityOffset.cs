@@ -1,19 +1,19 @@
 namespace Yumiki.Entity.Shopper
 {
     using System;
+    using System.Collections.Generic;
     using Yumiki.Entity.Base;
 
-    public partial class TB_Stock : IEntity
+    public partial class TB_ProductQuantityOffset : IEntity
     {
+        public TB_ProductQuantityOffset()
+        {
+            Stocks = new HashSet<TB_Stock>();
+        }
+
         public Guid ID { get; set; }
 
         public Guid ProductID { get; set; }
-
-        public Guid? InvoiceDetailID { get; set; }
-
-        public Guid? ReceiptDetailID { get; set; }
-
-        public Guid? ProductQuantityOffsetID { get; set; }
 
         public int Quantity { get; set; }
 
@@ -27,14 +27,10 @@ namespace Yumiki.Entity.Shopper
 
         public DateTime? LastUpdateDate { get; set; }
 
-        public virtual TB_User User { get; set; }
-
         public virtual TB_Product Product { get; set; }
 
-        public virtual TB_InvoiceDetail InvoiceDetail { get; set; }
+        public virtual TB_User User { get; set; }
 
-        public virtual TB_ReceiptDetail ReceiptDetail { get; set; }
-
-        public virtual TB_ProductQuantityOffset ProductQuantityOffset { get; set; }
+        public virtual ICollection<TB_Stock> Stocks { get; set; }
     }
 }

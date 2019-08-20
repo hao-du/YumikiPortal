@@ -14,6 +14,8 @@ namespace Yumiki.Data.Shopper.Interfaces
 
         TB_Receipt GetReceipt(Guid receiptID);
 
+        List<TB_ReceiptDetail> GetReceiptsByProductID(Guid productID);
+
         void SaveReceipt(TB_Receipt receipt);
     }
 }

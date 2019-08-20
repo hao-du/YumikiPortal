@@ -9,6 +9,7 @@ using Yumiki.Entity.MoneyTrace;
 using Yumiki.Entity.MoneyTrace.ServiceObjects;
 using System.Linq.Expressions;
 using LinqKit;
+using Yumiki.Commons.Report;
 
 namespace Yumiki.Data.MoneyTrace.Repositories
 {
@@ -80,7 +81,7 @@ namespace Yumiki.Data.MoneyTrace.Repositories
                                 .GroupBy(c => string.Format("{0} {1}", request.CalculateTotal ? request.StartDate.ToString(Formats.DateTime.ServerShortYearMonth) : c.TraceDate.ToString(Formats.DateTime.ServerShortYearMonth)
                                                                     , request.SplitIncomeOutcomeView ? (c.Amount > 0 ? incomeLabel : outcomeLabel) : string.Empty).Trim())
                                 .OrderBy(c => c.Key)
-                                .Select(c => new TraceReport(c.Key, c.Sum(d => d.Amount))).ToList()
+                                .Select(c => new ReportObject(c.Key, c.Sum(d => d.Amount))).ToList()
             };
         }
     }

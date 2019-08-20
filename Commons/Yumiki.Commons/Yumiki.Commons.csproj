@@ -78,6 +78,8 @@
     <Compile Include="ExtensionMethods\StringExtension.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
+    <Compile Include="Report\EN_ReportType.cs" />
+    <Compile Include="Report\TraceReport.cs" />
     <Compile Include="Settings\SystemSettings.cs" />
     <Compile Include="Settings\YumikiConfigLoader.cs" />
     <Compile Include="Dictionaries\CommonProperties.cs" />

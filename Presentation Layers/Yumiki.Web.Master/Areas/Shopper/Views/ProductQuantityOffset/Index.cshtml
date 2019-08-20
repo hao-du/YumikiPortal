@@ -1,0 +1,130 @@
+﻿@using Yumiki.Web.Shopper.Constants
+@using Yumiki.Commons.Dictionaries;
+@using Yumiki.Entity.Shopper;
+@using SquishIt.Framework;
+
+@{
+    ViewBag.Title = "Product Quantity Offsets";
+}
+
+@section BottomScript{
+    @MvcHtmlString.Create(
+        Bundle.JavaScript()
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-product-offset.js")
+        .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
+        .Render("~/cache/yumiki_shopper_#.js"))
+
+    <script type="text/javascript">
+        yumiki.shopper.init (
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+
+        yumiki.shopper.defaultObject = {
+            '@CommonProperties.ID': undefined,
+            '@TB_ProductQuantityOffset.FieldName.ProductID': undefined,
+            '@TB_ProductQuantityOffset.FieldName.Product': undefined,
+            '@TB_ProductQuantityOffset.FieldName.ProductCode': '',
+            '@TB_ProductQuantityOffset.FieldName.ProductName': '',
+            '@TB_ProductQuantityOffset.FieldName.Quantity': 1,
+            '@CommonProperties.Descriptions': '',
+            '@CommonProperties.IsActive': true
+        };
+
+        yumiki.shopper.productOffset.init(
+            {
+                getAllUrl: '@Url.HttpRouteUrl(RouteNames.ProductOffsetGetAll, null)',
+                getByIdUrl: '@Url.HttpRouteUrl(RouteNames.ProductOffsetByID, null)',
+                getProductsByTerm: '@Url.HttpRouteUrl(RouteNames.ProductGetByTerm, null)',
+                saveUrl: '@Url.HttpRouteUrl(RouteNames.ProductOffsetSave, null)'
+            },
+            'Offset'
+        );
+    </script>
+}
+<div ng-app="shopperProductOffset">
+    <div class="container" ng-controller="productOffsetController" ng-init="onLoad();">
+        <h1>Product Quantity Offsets</h1>
+        <div class="card bg-secondary">
+            <div class="card-body p-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" ng-click="onShowDialog();">Add</button>
+                    <button type="button" class="btn" ng-click="onActiveStatusChanged();">{{inactiveButtonName}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tblCurrency" class="table table-sm table-striped table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th class="text-right">Quantity</th>
+                        <th class="text-right">Updated Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in list">
+                        <td>
+                            <a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
+                        </td>
+                        <td>{{ item.@TB_ProductQuantityOffset.FieldName.ProductName }}</td>
+                        <td class="text-right">{{ item.@TB_ProductQuantityOffset.FieldName.Quantity | number:2 }}</td>
+                        <td class="text-right">{{ item.@CommonProperties.LastUpdateDateUI }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="dlgAddEditObject" class="modal fade" role="dialog" ng-controller="productOffsetDialogController" ng-init="onLoad();">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form name="dialogForm" ng-submit="save(dialogForm.$valid)" novalidate>
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">{{ dialogTitle }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ dialogTitle }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Product</label>
+                                <input type="text" name="productName" productautocomplete ng-model="object.@TB_ProductQuantityOffset.FieldName.ProductName" class="form-control" ng-class="{ 'border-danger' : dialogForm.productName.$invalid && dialogForm.productName.$dirty }" ng-required="true" />
+                                <p ng-show="dialogForm.productName.$error.required && dialogForm.productName.$dirty" class="text-danger">Product is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="text" name="quantity" ng-model="object.@TB_ProductQuantityOffset.FieldName.Quantity" class="form-control text-right" ng-class="{ 'border-danger' : dialogForm.quantity.$invalid && dialogForm.quantity.$dirty }" ng-required="true" />
+                                <div class="text-right">{{ object.@TB_ProductQuantityOffset.FieldName.Quantity | number:2 }}</div>
+                                <p ng-show="dialogForm.quantity.$error.required && dialogForm.quantity.$dirty" class="text-danger">Quantity is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Descriptions</label>
+                                <textarea name="descriptions" ng-model="object.@CommonProperties.Descriptions" class="form-control" rows="5" ng-class="{ 'border-danger' : dialogForm.descriptions.$invalid && dialogForm.descriptions.$dirty }" ng-required="true"></textarea>
+                                <p ng-show="dialogForm.descriptions.$error.required && dialogForm.descriptions.$dirty" class="text-danger">Descriptions is required for offset reason.</p>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" ng-model="object.@CommonProperties.IsActive" ng-checked="object.@CommonProperties.IsActive" ng-disabled="isActiveDisabled" /> Is Active.
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Attachments</label>
+                                <iframe class="y-modal-attachment" src="{{ object.@CommonProperties.ID ? '@HttpConstants.CommonPages.AttachmentWidget' + object.@CommonProperties.ID : '' }}"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="submit" class="btn btn-primary" ng-disabled="dialogForm.$invalid">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

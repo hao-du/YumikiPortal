@@ -10,6 +10,7 @@ namespace Yumiki.Entity.Shopper
         {
             InvoiceDetails = new HashSet<TB_InvoiceDetail>();
             ReceiptDetails = new HashSet<TB_ReceiptDetail>();
+            ProductQuantityOffsets = new HashSet<TB_ProductQuantityOffset>();
             Stocks = new HashSet<TB_Stock>();
         }
 
@@ -44,6 +45,8 @@ namespace Yumiki.Entity.Shopper
         public virtual TB_User User { get; set; }
 
         public virtual ICollection<TB_ReceiptDetail> ReceiptDetails { get; set; }
+
+        public virtual ICollection<TB_ProductQuantityOffset> ProductQuantityOffsets { get; set; }
 
         public virtual ICollection<TB_Stock> Stocks { get; set; }
     }

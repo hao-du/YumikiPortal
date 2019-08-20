@@ -1,10 +1,10 @@
-﻿@using Yumiki.Web.MoneyTrace.Constants
+﻿@using Yumiki.Web.Shopper.Constants
 @using Yumiki.Commons.Dictionaries;
 @using Yumiki.Commons.Entities;
-@using Yumiki.Commons.Report;
-@using Yumiki.Entity.MoneyTrace.ServiceObjects;
+@using Yumiki.Entity.Shopper.ServiceObjects;
 @using SquishIt.Framework;
-@using Yumiki.Entity.MoneyTrace;
+@using Yumiki.Entity.Shopper;
+@using Yumiki.Commons.Report;
 
 @{
     ViewBag.Title = "Report";
@@ -13,30 +13,27 @@
 @section BottomScript{
     @MvcHtmlString.Create(
         Bundle.JavaScript()
-        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace.js")
-        .Add("~/Areas/MoneyTrace/clients/scripts/yumiki-money-trace-report.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper.js")
+        .Add("~/Areas/Shopper/clients/scripts/yumiki-shopper-revenue-report.js")
         .WithMinifier(new SquishIt.Framework.Minifiers.JavaScript.JsMinMinifier())
         .Render("~/cache/yumiki_#.js"))
 
     <script type="text/javascript">
-        yumiki.moneyTrace.report.initReport(
+        yumiki.shopper.init (
+            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+        );
+
+        yumiki.shopper.report.initReport(
             'cvReportChart',
             {
                 '@GetReportRequest.FieldName.ReportType': @((int)EN_ReportType.E_MONTH),
-                '@GetReportRequest.FieldName.CurrencyID': undefined,
                 '@GetReportRequest.FieldName.StartDate': '@ViewBag.CurrentDate',
                 '@GetReportRequest.FieldName.EndDate': '@ViewBag.CurrentDate',
-                '@GetReportRequest.FieldName.Tags': '',
-                '@GetReportRequest.FieldName.TransactionTypes': '@CommonValues.EmptyValue',
-                '@GetReportRequest.FieldName.CalculateTotal': false,
                 '@GetReportRequest.FieldName.SplitIncomeOutcomeView': false
             },
             {
-                currencyGetAllWithShareableItemsUrl: '@Url.HttpRouteUrl(RouteNames.CurrencyGetAllWithShareableItems, null)',
-                reportGetReportTypesUrl: '@Url.HttpRouteUrl(RouteNames.ReportGetReportTypes, null)',
-                reportGetTransactionTypes: '@Url.HttpRouteUrl(RouteNames.ReportGetTransactionTypes, null)',
-                reportGenerateReportUrl: '@Url.HttpRouteUrl(RouteNames.ReportGenerateReport, null)',
-                getTagUrl : '@Url.HttpRouteUrl(RouteNames.TraceGetTags, null)'
+                reportGetReportTypesUrl: '@Url.HttpRouteUrl(RouteNames.ReportGetReportRevenueTypes, null)',
+                reportGenerateReportUrl: '@Url.HttpRouteUrl(RouteNames.ReportGenerateRevenueReport, null)'
             },
             {
                 month: @((int)EN_ReportType.E_MONTH),
@@ -44,15 +41,14 @@
                 year: @((int)EN_ReportType.E_YEAR)
             },
             '@ViewBag.CurrentDate',
-            '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate',
-            '@Yumiki.Commons.Logging.LogLevel.ERROR'
+            '@Yumiki.Commons.Dictionaries.Formats.DateTime.ClientMomentLongDate'
         )
     </script>
 }
 
 <div ng-app="report">
     <div class="container" ng-controller="reportController" ng-init="loadData();">
-        <h1>Trace Report</h1>
+        <h1>Revenue Report</h1>
         <form name="reportForm" ng-submit="getReport(reportForm.$valid)" novalidate>
             <div class="card bg-secondary">
                 <div class="card-body p-2">
@@ -65,26 +61,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Report Type</label>
-                        <select class="form-control selectpicker"
+                        <select class="form-control selectpicker" 
                                 ng-class="{ 'border-danger' : reportForm.reportType.$invalid && reportForm.reportType.$dirty }"
                                 name="reportType" ng-required="true"
                                 ng-model="requestObject.@GetReportRequest.FieldName.ReportType"
                                 ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in reportTypes"
                                 ng-change="updateReportType()"></select>
                         <p ng-show="reportForm.reportType.$error.required && reportForm.reportType.$dirty" class="text-danger">Report Type is required.</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Currency</label>
-                        <select class="form-control selectpicker"
-                                ng-class="{ 'border-danger' : reportForm.currency.$invalid && reportForm.currency.$dirty }"
-                                name="currency" ng-required="true"
-                                ng-model="requestObject.@GetReportRequest.FieldName.CurrencyID"
-                                ng-options="item.@CommonProperties.ID as item.@TB_Currency.FieldName.CurrencyName for item in currencyList">
-                            <option value="@CommonValues.EmptyValue">@CommonValues.SelectOneForDropDown</option>
-                        </select>
-                        <p ng-show="reportForm.currency.$error.required && reportForm.currency.$dirty" class="text-danger">Currency is required.</p>
                     </div>
                 </div>
             </div>
@@ -114,22 +97,6 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Tags (with ',' separator)</label>
-                        <textarea ng-model="requestObject.@GetReportRequest.FieldName.Tags" class="form-control auto-complete" rows="5"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Transaction Type</label>
-                        <select class="form-control selectpicker" name="transactionType" multiple
-                                ng-model="requestObject.@GetReportRequest.FieldName.TransactionTypes"
-                                ng-options="item.@ExtendEnum.FieldName.Value as item.@ExtendEnum.FieldName.DisplayText for item in transactionTypes"></select>
                     </div>
                 </div>
             </div>

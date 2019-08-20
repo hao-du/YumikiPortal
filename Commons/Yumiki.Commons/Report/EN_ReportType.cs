@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Yumiki.Entity.MoneyTrace
+namespace Yumiki.Commons.Report
 {
     public enum EN_ReportType
     {

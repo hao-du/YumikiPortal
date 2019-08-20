@@ -12,11 +12,12 @@ using Yumiki.Web.Base;
 using Yumiki.Web.MoneyTrace.Constants;
 using Yumiki.Commons.Helpers;
 using Yumiki.Commons.Entities;
+using Yumiki.Commons.Report;
 
 namespace Yumiki.Web.MoneyTrace.Controllers
 {
     [RoutePrefix("api/report")]
-    public class ApiReportController : ApiBaseController<IReportService>
+    public class ApiShopperReportController : ApiBaseController<IReportService>
     {
         [Route("getReportTypes", Name = RouteNames.ReportGetReportTypes)]
         [HttpGet()]

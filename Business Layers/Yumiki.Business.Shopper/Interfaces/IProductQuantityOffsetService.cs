@@ -7,21 +7,18 @@ using Yumiki.Business.Base;
 using Yumiki.Business.Shopper.Interfaces;
 using Yumiki.Commons.Entities;
 using Yumiki.Commons.Exceptions;
+using Yumiki.Commons.Helpers;
 using Yumiki.Data.Shopper.Interfaces;
 using Yumiki.Entity.Shopper;
 
 namespace Yumiki.Business.Shopper.Interfaces
 {
-    public interface IReceiptService
+    public interface IProductQuantityOffsetService
     {
-        List<TB_Receipt> GetReceipts(bool showInactive);
+        List<TB_ProductQuantityOffset> GetProductQuantityOffsets(bool showInactive, string productID = null);
 
-        TB_Receipt GetReceipt(string receiptID);
+        TB_ProductQuantityOffset GetProductQuantityOffset(string productQuantityOffsetID);
 
-        List<TB_ReceiptDetail> GetReceiptsByProductID(string productID);
-
-        void SaveReceipt(TB_Receipt receipt);
-
-        List<ExtendEnum> GetStatuses();
+        void SaveProductQuantityOffset(TB_ProductQuantityOffset productQuantityOffset);
     }
 }

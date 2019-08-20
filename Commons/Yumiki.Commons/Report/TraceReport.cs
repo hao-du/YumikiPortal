@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Yumiki.Entity.Base;
 
-namespace Yumiki.Entity.MoneyTrace
+namespace Yumiki.Commons.Report
 {
-    public class TraceReport
+    public class ReportObject
     {
-        public TraceReport(string label, decimal value)
+        public ReportObject(string label, decimal value)
         {
             Label = label;
             Value = value;

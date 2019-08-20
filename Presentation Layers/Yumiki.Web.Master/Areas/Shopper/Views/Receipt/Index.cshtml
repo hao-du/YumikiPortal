@@ -94,9 +94,13 @@
                         <tr ng-repeat="item in list">
                             <td>
                                 <a href="#" id="btnEdit" title="Edit" ng-click="onShowDialog(item.@CommonProperties.ID);"><span class="fa fa-edit"></span></a>
-                                <a href="{{ item.@TB_Receipt.FieldName.ExternalReceiptUrl }}" id="btnViewExternalData" title="View External Data" target="_blank"><span class="fa fa-external-link"></span></a>
                             </td>
-                            <td>{{ item.@TB_Receipt.FieldName.ExternalReceiptID }}</td>
+                            <td>
+                                <a href="{{ item.@TB_Receipt.FieldName.ExternalReceiptUrl }}" id="btnViewExternalData" title="View External Data" target="_blank">
+                                    {{ item.@TB_Receipt.FieldName.ExternalReceiptID }}
+                                    <span class="fa fa-external-link"></span>
+                                </a>
+                            </td>
                             <td>{{ item.@TB_Receipt.FieldName.StatusUI }}</td>
                             <td class="text-right">{{ item.@TB_Receipt.FieldName.TotalAmount | number:2 }}</td>
                             <td class="text-right">{{ item.@TB_Receipt.FieldName.ReceiptDateUI }}</td>

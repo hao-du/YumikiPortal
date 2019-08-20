@@ -52,6 +52,24 @@ namespace Yumiki.Web.Shopper.Controllers
             }
         }
 
+        [Route("getbyproductid", Name = RouteNames.ReceiptGetByProductID)]
+        [HttpGet()]
+        public IHttpActionResult GetByProductID(string productId)
+        {
+            try
+            {
+                List<TB_ReceiptDetail> receipts = BusinessService.GetReceiptsByProductID(productId);
+
+                IEnumerable<MD_ReceiptDetail> viewModel = receipts.Select(c => new MD_ReceiptDetail(c));
+
+                return Ok(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("save", Name = RouteNames.ReceiptSave)]
         [HttpPost()]
         public IHttpActionResult Create([FromBody] MD_Receipt viewModel)
